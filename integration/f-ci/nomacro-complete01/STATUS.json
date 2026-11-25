@@ -3,7 +3,7 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
   "branch": "codex/nomacro-frost-calendar-state02",
-  "last_commit": "ab2b6c28873723afb3fe0bd9e10e29be2b3d7b62",
+  "last_commit": "1e63bc3f38b54c10f182f31bdc740ea83d7f1a23",
   "status": "PARTIAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -35563,7 +35563,7 @@
     "canonical_admission": false
   },
   "frost_calendar_state02": {
-    "status": "PERSISTED_CALENDAR_NATIVE_RENDERER_AND_DISPATCH_NOT_TESTED_NOT_QUALIFIED",
+    "status": "PERSISTED_ACTUAL_DAY_TERMINAL_FRAME_COUPLING_CORRECTION_NOT_QUALIFIED",
     "baseline_actual_canonical": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
     "parent_PR": 1800,
     "classification": "B_EXISTING_CALENDAR_NATIVE_STATE_COMPOSITION",
@@ -35578,7 +35578,7 @@
     ],
     "source": "app/hybrid_water/frost_calendar_state.py",
     "source_lf_sha256": "0f3c686f423abc03503f7febf7cf87282fd2a6852baeaa55e9c021aa1a143c9a",
-    "next": "Execute these real representative Windows O0/O2 contexts with original daily water/CDE and every-prefix chemical1e-10, exact required native/cold/output controls, then original Ubuntu targeted source run. Preserve source epochs/default postimages and fresh real source/raw owner before admission.",
+    "next": "First corrected actual O0 twelve-day execution on exact original failed input, compare genuine dense35 physical prefix. Then corrected O0/O2 representative qualification, retain all pre-correction PASS/failure raw.",
     "canonical_admission": false,
     "new_native_format": true,
     "native_codecs": [
@@ -35622,11 +35622,15 @@
       },
       "app/hybrid_water/frost_calendar_output.py": {
         "added": true,
-        "proposed_lf_sha256": "4a67b2ca79da538decf4978e7748b7b6331ca6dc5f072fc9ba6a4dca909799d3"
+        "proposed_lf_sha256": "c646c05f4e813e1537d9f83bdce750b13a42b3e0eec96cca6f0161d62561f4bc"
       },
       "app/hybrid_water/frost_calendar_state.py": {
         "added": true,
         "proposed_lf_sha256": "0f3c686f423abc03503f7febf7cf87282fd2a6852baeaa55e9c021aa1a143c9a"
+      },
+      "app/hybrid_water/frost_calendar_terminal_water.py": {
+        "added": true,
+        "proposed_lf_sha256": "e40812f5b75525a25c7b89efed72c04b0e9bb5743b56c052c59b78220e5c9909"
       },
       "app/hybrid_water/frost_drainage_composition.py": {
         "added": false,
@@ -35714,6 +35718,19 @@
             "base_end": 5251,
             "before": "",
             "after": "    from frost_calendar_state import selection as calendar_selection\n    if calendar_selection(project.input_directory,project.original_output) is not None:\n        from frost_calendar_output import render_macro\n"
+          }
+        ]
+      },
+      "app/hybrid_water/implicit_frost_source_guard.py": {
+        "added": false,
+        "before_lf_sha256": "873d07038adbd2ea493a5cd61ac4914ad55faee8fe089508aaee6ab45778a022",
+        "proposed_lf_sha256": "f795c1228c7993d0ace71287a36d49f5bafe11ec0efa2fe2b09ce4825a2e0e6a",
+        "ordered_literal_edits": [
+          {
+            "base_start": 2943,
+            "base_end": 3060,
+            "before": "        if (bundle/name).read_bytes().replace(b'\\r\\n', b'\\n') != (folder/name).read_bytes().replace(b'\\r\\n', b'\\n'):\n",
+            "after": "        expected=(folder/name).read_bytes().replace(b'\\r\\n', b'\\n')\n        if name=='terminal_water_receipt.f90':\n            from frost_calendar_state import selection as calendar_selection\n            if calendar_selection(project.input_directory,project.original_output) is not None:\n                from frost_calendar_terminal_water import source as terminal_day_source\n                expected=terminal_day_source().encode('cp1252')\n        if (bundle/name).read_bytes().replace(b'\\r\\n', b'\\n') != expected:\n"
           }
         ]
       }
@@ -35827,6 +35844,34 @@
       "builder_wall_cap_seconds": 240,
       "model_wall_cap_seconds": 240,
       "canonical_admission": false
+    },
+    "terminal_day_correction": {
+      "status": "REAL_CANONICAL_DENSE_PASS_AND_NEW_INTERVAL_DAY7_REFUSAL_LOCALIZED_TO_TERMINAL_RECEIPT_INTERVAL_BASIS",
+      "actual_canonical": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
+      "actual_dense_source": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
+      "actual_calendar_source": "1e63bc3f38b54c10f182f31bdc740ea83d7f1a23",
+      "complete_actual_generated_source_hashes_equal": {
+        "headcalc.f90": "15bac3d3cc0ee41918b5c6bf53aa75f50c85a1bbc0f56db66431045ab9d87a69",
+        "timecontrol.f90": "14403e7f9b0a9434388b62fb00c4ef672ac004f7d54ab3c8fbbb8fdd5364b472",
+        "boundtop.f90": "ea9d62eed9518fff6e6f46312d17885fb1a722bf108c5a02a5f30f2df87b4a15",
+        "frozencond.f90": "d529abbca6d45ae8ac5008a2804cf3813bda2b9878c22b06e4093fc015c15a03",
+        "divdra.f90": "81f415e7274b38f973450c1ad1e2d997766e3aebb837c4f3108c20f7bc10d13e",
+        "terminal_water_receipt.f90": "dc491e5faa9c7ca8e0e1e2a573cac965cb2e7f790d1cb6ad89ab82e7b90a6540"
+      },
+      "first_six_pressure_postimages_exact": true,
+      "actual_dense_completed_days": 35,
+      "new_interval_accepted_days": 6,
+      "rejected_day": 7,
+      "dense_day7_residual_cm": -2.8659540018960428e-11,
+      "interval_day7_residual_cm": 1.7304130177364652e-10,
+      "unchanged_owning_limit_cm": "1e-10",
+      "cause": "Existing terminal trial receipt reads original MOD_integral totals/start stocks. Those describe an output interval; new PERIOD7/SWRES0 context exposes cancellation of prior-day residuals. The original hybrid_output_frame is the independent actual day owner.",
+      "correction": "Read-only replacement of terminal cumulative/start-stock terms with the matching actual day-frame terms. All projected physical end stocks/current-step fluxes/real128 summation and existing1e-10 guard remain literal.",
+      "input_of_failed_model_preserved": true,
+      "old_eight_full35_results_retained": true,
+      "requalification": "Correction changes trial acceptance for all new non-daily contexts; rerun the affected new representative cohort. No replay of admitted parent472 models.",
+      "compiler_executions_in_analysis": 0,
+      "model_executions_in_analysis": 0
     }
   },
   "test_selection_frost_calendar_state02_v1": {

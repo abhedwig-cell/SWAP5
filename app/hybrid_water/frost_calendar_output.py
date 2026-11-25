@@ -52,7 +52,8 @@ def metadata(project):
     folder=Path(__file__).parent;sha=lambda p:hashlib.sha256(p.read_bytes().replace(b'\r\n',b'\n')).hexdigest()
     providers=[Path(__file__).name,'frost_calendar_state.py','original_output_thermal.py',
                'original_output_thermal_domain.f90','age_output_calendar.py',
-               'frost_drainage_composition.py','implicit_frost_composition.py','implicit_frost_root_state.py']
+               'frost_drainage_composition.py','implicit_frost_composition.py','implicit_frost_root_state.py',
+               'frost_calendar_terminal_water.py']
     providers.append('cde_interval_snow_state.f90' if project.solute else SNOW_PROVIDER+'.f90')
     if project.solute:providers+=['cde_interval_output.py','cde_interval_source.py','cde_interval_receipt.f90','cde_interval_output_state.f90']
     return dict(policy=POLICY,native_codec=codec(project).decode(),**selected,
@@ -67,7 +68,8 @@ def metadata(project):
         conserved_cde_prefix_offset_bytes=48 if project.solute else None,
         original_pending_dates_not_normalized=True,preserves_requested_groups_and_precision=True,
         undefined_allocation_tails_serialized=False,physical_equations_changed=False,new_physical_state=False,
-        timecontrol_provider='UNCHANGED_EXISTING_FROST_EVENT_CLOSURE',new_native_format=True)
+        timecontrol_provider='UNCHANGED_EXISTING_FROST_EVENT_CLOSURE',new_native_format=True,
+        terminal_water_trial_projection='ACTUAL_DAY_FRAME_WITH_UNCHANGED_ORIGINAL_TERMS_AND_1E_10_LIMIT')
 
 
 def source_age_identity(original,project):
@@ -92,6 +94,8 @@ def apply_build(output,donor_build,project,patched):
     folder=Path(__file__).parent;sha=lambda p:hashlib.sha256(p.read_bytes().replace(b'\r\n',b'\n')).hexdigest()
     if sha(donor_build/'swap-selected/hysteresis.f90')!=thermal.HYSTERESIS_SHA:
         raise ValueError('Changed original Frost calendar hysteresis source')
+    from frost_calendar_terminal_water import install as terminal_day_install
+    terminal_day_install(output)
     (output/(regular.PROVIDER+'.f90')).write_bytes((ROOT/'src/process'/(regular.PROVIDER+'.f90')).read_bytes())
     (output/'hybrid_age_output_state.f90').write_text(regular.state_source(project),encoding='cp1252')
     (output/(DOMAIN+'.f90')).write_bytes((folder/(DOMAIN+'.f90')).read_bytes())

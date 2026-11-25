@@ -46,7 +46,13 @@ def validate_source(bundle, project, identity, reference):
     actual_source((bundle/'boundtop.f90').read_bytes(), True)
     for name in ('implicit_pond_event_state.f90', 'implicit_pond_availability.f90',
                  'original_output_thermal_domain.f90', 'terminal_water_receipt.f90'):
-        if (bundle/name).read_bytes().replace(b'\r\n', b'\n') != (folder/name).read_bytes().replace(b'\r\n', b'\n'):
+        expected=(folder/name).read_bytes().replace(b'\r\n', b'\n')
+        if name=='terminal_water_receipt.f90':
+            from frost_calendar_state import selection as calendar_selection
+            if calendar_selection(project.input_directory,project.original_output) is not None:
+                from frost_calendar_terminal_water import source as terminal_day_source
+                expected=terminal_day_source().encode('cp1252')
+        if (bundle/name).read_bytes().replace(b'\r\n', b'\n') != expected:
             raise ValueError('Foreign actual implicit Frost private provider: ' + name)
     from frost_reference import source as frost_source
     if (bundle/'frozencond.f90').read_bytes() != frost_source(
