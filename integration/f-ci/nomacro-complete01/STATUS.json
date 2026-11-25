@@ -1,9 +1,9 @@
 {
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
-  "canonical": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
-  "branch": "codex/nomacro-frost-calendar-state02",
-  "last_commit": "1e63bc3f38b54c10f182f31bdc740ea83d7f1a23",
+  "canonical": "1c3b8725548c836c9a73570c2579dd6cdc683217",
+  "branch": "codex/nomacro-frost-boundary03",
+  "last_commit": "8396cc3d97",
   "status": "PARTIAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -35992,5 +35992,31 @@
     "real_four_committed_pushed_negatives": "FROST_CALENDAR_STATE02_FINAL_NEGATIVES_V1.json",
     "PR": 1801,
     "ci_materialization": "Same original8 consumers, one exact added archive pattern each. MC-SOL original workflows have no dispatch and are now triggered by their actual workflow changes. No model source changed."
+  },
+  "active_functional_batch": "FROST_BOUNDARY03",
+  "frost_calendar_state02_recovery": {
+    "PR": 1801,
+    "actual_merge": "1c3b8725548c836c9a73570c2579dd6cdc683217",
+    "qualified_candidate": "3250f0c59337334994b0e8edda624afe8f91b11f",
+    "source_anchor": "38d01129d73e9128c93e10d61153970676a2fcf7",
+    "whole_tree": "d20d8d776c52b1e5a6b95d500b5547f78a519f6b",
+    "candidate_public_pass": true,
+    "ordinary_publication_pass": true,
+    "all_workflows_success": 17,
+    "successful_checks": 31,
+    "skipped_checks": 17,
+    "four_actual_pushed_negatives_refused": true,
+    "actual_canonical_public_and_ordinary_publication": "RUNNING_CLEAN14_AND56_ORIGINAL_INPUTS",
+    "canonical_admission_sealed": false,
+    "actual_observer_checkout": "C:/Users/Veldh012/swap5-implicit-conductivity-canonical01",
+    "next": "Observe actual merge PUBLIC/PUB to completion, run external frost-calendar-state02-admission-seal-v1.py, commit its receipt/raw with this functional batch."
+  },
+  "frost_boundary03_recovery": {
+    "contract": "FROST_BOUNDARY03_CONTRACT_V1.json",
+    "discovery_raw_sha256": "d642271cc05c501e8aad0510d32203b402c4ce47ba5287a5e9bece68e11c9521",
+    "implementation": "BOUNDED_EIGHT_PUBLIC_LOADS_FOUR_CODECS_FOURTEEN_DECLINES_AND_SIX_EXACT_DEFAULT_PROVIDERS_PASS_NOT_QUALIFIED",
+    "storage_preflight": "46.898563GiB_FREE_BELOW50_LARGE_LOCAL_JOB_NOT_STARTED",
+    "next": "Push actual source and two source-capturing Windows/Ubuntu O0/O2 scientific workflows; preserve all outcomes. Qualify actual full35/cold/native state and compiled refusal/transaction controls before source/raw admission. No prior complete periods replayed.",
+    "exclusions": "Original full executable initialization crash persists for old bottom6 with unchanged objects and large-stack relink; no boundary-specific physical defect or equivalence claim."
   }
 }
