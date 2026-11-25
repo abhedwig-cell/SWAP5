@@ -322,5 +322,19 @@
     "compiler_executions_in_analysis": 0,
     "model_executions_in_analysis": 0,
     "first_ubuntu_attempt": "Actual new terminal module compiled O0/O2, then old common runtime source validator refused before model launch; common validator now requires exact rendered daily module only for the selected calendar route."
+  },
+  "ci_dependency_materialization": {
+    ".github/workflows/mc-sol01-swp-reader.yml": {
+      "before_lf_sha256": "1365b705586b2414346a46ef6db8c75b8ddf6d0bba9fa1d433e3eed61b66b88a",
+      "proposed_lf_sha256": "2525999df5610785704f2baadfca0ed96a8324b382a86fb9d7915a5baad159b8",
+      "before_literal": "            /integration/f-ci/nomacro-complete01/FROST_HYSTERESIS_STATE01_*\n",
+      "after_literal": "            /integration/f-ci/nomacro-complete01/FROST_HYSTERESIS_STATE01_*\n            /integration/f-ci/nomacro-complete01/FROST_CALENDAR_STATE02_*\n"
+    },
+    ".github/workflows/mc-sol01-column-input.yml": {
+      "before_lf_sha256": "7eeddc1f68ee252e46206ddf5372eb8016364ee989d088a8667f3b2226c75a0c",
+      "proposed_lf_sha256": "420d584b8c850e02ef7e795aa28186a7820b8ffc40af89e9d63e92339d0598d3",
+      "before_literal": "            /integration/f-ci/nomacro-complete01/FROST_HYSTERESIS_STATE01_*\n",
+      "after_literal": "            /integration/f-ci/nomacro-complete01/FROST_HYSTERESIS_STATE01_*\n            /integration/f-ci/nomacro-complete01/FROST_CALENDAR_STATE02_*\n"
+    }
   }
 }
