@@ -1,5 +1,5 @@
 {
-  "status": "ALL24_INDEPENDENT_BUDGET_NATIVE_COLD_CONTROLS_AND_CURRENT_POSTIMAGES_PASS_PUBLIC_SOURCE_OWNER_PENDING",
+  "status": "ALL24_SCIENCE_PRESERVED_FRESH_RUNNER_ORIGINAL_GIT_DATA_READER_FIX_IMPLEMENTED_NEW_EXACT_HEAD_ADMISSION_GATES_PENDING",
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "classification": "B_EXISTING_ORIGINAL_BOUNDARY_AND_FROST_STATE_COMPOSITION",
   "actual_canonical_at_start": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
@@ -422,5 +422,48 @@
       ],
       "reason": "Materialize only current frozen JSON declarations for existing source authority. Full scientific ZIP payload remains actual immutable Git API bytes. Original path triggers, commands, limits and test bodies unchanged."
     }
+  },
+  "original_archived_commit_reader": {
+    "path": "tests/nomacro_drainage/frost_boundary_parent_admission.py",
+    "before_lf_sha256": "b109d466154003c1e047a350e4c20d89ee918c05c4e2a7859cf4ca3f58db58cb",
+    "proposed_lf_sha256": "d0ce7508b54e1724f60255baa60fb51d5f7e6eb2981aa29863574fb787333c08",
+    "ordered_literal_edits": [
+      {
+        "base_start": 614,
+        "base_end": 614,
+        "before": "",
+        "after": ")\n\n\ndef archived_commit(raw,sha,tree,parents):\n    \"\"\"Verify genuine frozen commit data without requiring an ephemeral ref.\"\"\"\n    assert hashlib.sha1(b'commit '+str(len(raw)).encode()+b'\\0'+raw).hexdigest()==sha\n    headers,message=raw.split(b'\\n\\n',1);lines=headers.split(b'\\n')\n    assert [line[5:].decode() for line in lines if line.startswith(b'tree ')]==[tree]\n    assert [line[7:].decode() for line in lines if line.startswith(b'parent ')]==parents\n    assert all(sum(line.startswith(key+b' ') for line in lines)==1 for key in (b'author',b'committer',b'gpgsig'))\n    assert message\n    return dict(status='ORIGINAL_ARCHIVED_SIGNED_COMMIT_EXACT_GIT_SHA1_TREE_AND_ORDERED_PARENTS_PASS',\n                sha=sha,tree=tree,parents=parents,bytes=len(raw),raw_sha256=hashlib.sha256(raw).hexdigest(),\n                archive_data_not_a_local_Git_object_projection=True"
+      },
+      {
+        "base_start": 1503,
+        "base_end": 1503,
+        "before": "",
+        "after": "commits=[]\n        "
+      },
+      {
+        "base_start": 1634,
+        "base_end": 1634,
+        "before": "",
+        "after": "commits.append(archived_commit(raw,sha,tree,receipt['ordered_parents']))\n            if sha==BASE:"
+      },
+      {
+        "base_start": 1674,
+        "base_end": 1753,
+        "before": " and hashlib.sha1(b'commit '+str(len(raw)).encode()+b'\\0'+raw).hexdigest()==sha",
+        "after": ""
+      },
+      {
+        "base_start": 5114,
+        "base_end": 5114,
+        "before": "",
+        "after": "original_archived_signed_commit_custody=commits,\n                "
+      }
+    ],
+    "reason": "Original signed temporary PR1801 synthetic commit ecd8 is present as exact bytes in sealed admission archive5fc9 but is not an ancestor guaranteed in fresh runner object stores. Verify real archived Git SHA1, tree, ordered parents and signed header as data. Actual canonical1c3 still must match its genuine Git object. No object/path/HEAD projection, no missing-object assertion suppressed and no scientific/CI criterion waived.",
+    "focused_controls": "Two genuine original signed objects; ten byte/SHA/tree/ordered-parent corruptions refused; full original canonical500 admission passes; zero compilers and model executions.",
+    "failed_current_FCI_job": 139337302994,
+    "failed_candidate": "74ecc55765df548e758605f3566bc93558a6fefb",
+    "failed_original_log_sha256": "04118859650177940f5a8cc1fec66ddc9b95a1371332613e52085299fdd41440",
+    "APP_src_tools_reference_changed": false
   }
 }

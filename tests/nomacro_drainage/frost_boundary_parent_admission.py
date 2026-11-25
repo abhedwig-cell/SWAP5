@@ -13,6 +13,19 @@ ADMISSION_SHA='5fc94d202dc7b7d1de61418e25f96384eea667f49d63aacd4d86f1da163310a6'
 git=lambda *a:subprocess.check_output(['git',*a],cwd=ROOT)
 
 
+def archived_commit(raw,sha,tree,parents):
+    """Verify genuine frozen commit data without requiring an ephemeral ref."""
+    assert hashlib.sha1(b'commit '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==sha
+    headers,message=raw.split(b'\n\n',1);lines=headers.split(b'\n')
+    assert [line[5:].decode() for line in lines if line.startswith(b'tree ')]==[tree]
+    assert [line[7:].decode() for line in lines if line.startswith(b'parent ')]==parents
+    assert all(sum(line.startswith(key+b' ') for line in lines)==1 for key in (b'author',b'committer',b'gpgsig'))
+    assert message
+    return dict(status='ORIGINAL_ARCHIVED_SIGNED_COMMIT_EXACT_GIT_SHA1_TREE_AND_ORDERED_PARENTS_PASS',
+                sha=sha,tree=tree,parents=parents,bytes=len(raw),raw_sha256=hashlib.sha256(raw).hexdigest(),
+                archive_data_not_a_local_Git_object_projection=True)
+
+
 def parent_admission():
     head=git('rev-parse','HEAD').decode().strip();data=GitArchiveSource(ROOT,head)
     receipt=json.loads((data/'FROST_CALENDAR_STATE02_MERGE_RECEIPT_V1.json').read_text())
@@ -23,9 +36,11 @@ def parent_admission():
     with ExitStack() as stack:
         store=Archive(data,'FROST_CALENDAR_STATE02_ADMISSION_RAW_V1',stack);assert store.record['sha256']==ADMISSION_SHA
         for name in store.names:store.get(name)
+        commits=[]
         for sha in (BASE,SYNTHETIC):
             raw=store.get('FROST_CALENDAR_STATE02_PR1801_GENUINE_GIT_OBJECT_'+sha+'.bin')
-            assert raw==git('cat-file','commit',sha) and hashlib.sha1(b'commit '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==sha
+            commits.append(archived_commit(raw,sha,tree,receipt['ordered_parents']))
+            if sha==BASE:assert raw==git('cat-file','commit',sha)
         observations={};inputs=None;stats=None
         for role,version,sha in [('CANDIDATE','V3',CANDIDATE),('ACTUAL_MERGE','V1',BASE)]:
             for kind in ('PUBLIC','PUBLICATION'):
@@ -60,4 +75,5 @@ def parent_admission():
     assert git('rev-parse','HEAD').decode().strip()==head
     return dict(status='ACTUAL_CANONICAL500_SIGNED_PARENT_ORIGINAL_PUBLIC_PUB_ALL17CI_EIGHT_ORIGINAL_LOGS_AND_REAL_NEGATIVES_PASS',
                 actual_parent=BASE,receipt=receipt,actual_admitted_coadmission=stats,observations=observations,
+                original_archived_signed_commit_custody=commits,
                 inherited_model_periods_reexecuted=0,compiler_executions=0,model_executions=0)
