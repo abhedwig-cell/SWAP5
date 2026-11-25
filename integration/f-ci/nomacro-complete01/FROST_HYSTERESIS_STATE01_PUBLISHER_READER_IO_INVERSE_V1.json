@@ -1,0 +1,13 @@
+{
+  "status": "FROZEN_WHOLE_PE_CODE_DATA_RELOCATION_PARSER_EXACT_ONLY_EXPLICIT_BYTE_IO_CHANGED",
+  "baseline": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
+  "original": "tests/nomacro_drainage/calendar_publisher.py",
+  "original_sha256": "c87bb818324ca75e454fb53e61f56436abb04baebcf5c1adc1b939e41a711652",
+  "current": "tests/nomacro_drainage/frost_history_state_publisher.py",
+  "current_sha256": "2a4ab25001148dc64bc4816817ba54bb2815354feec4540b6ed5353272fd3ad8",
+  "before_literal": "    left=Path(before).read_bytes();right=Path(after).read_bytes()",
+  "after_literal": "    left=before.read_bytes();right=after.read_bytes()",
+  "whole_source_literal_inverse": true,
+  "PE_code_or_data_not_rewritten": true,
+  "no_fake_Path_or_function_namespace": true
+}

@@ -4,11 +4,34 @@ from contextlib import ExitStack
 from frost_history_state_archives import P,LogicalArchive,OriginalProviderArchive,BuildReference,Locations,ReadView,Archive,SHA
 from frost_history_state_model_forensics import audit as model
 from ordinary_pond_evidence import physical
-from calendar_publisher import publisher_equivalence
+from frost_history_state_publisher import publisher_equivalence
 
 
 def read(view):return json.loads(view.read_text())
 def rows(view):return [json.loads(line) for line in (view/'daily.jsonl').read_text().splitlines()]
+
+
+def compiled(left,right):
+    suffixes={'.o','.mod','.smod','.exe','.dll','.so','.a'}
+    files=lambda root:{p.relative_to(root).as_posix():p for p in root.rglob('*') if p.is_file() and (p.suffix.lower() in suffixes or p.name in ('day_donor','day_kernel'))}
+    a,b=files(left),files(right);assert a and a.keys()==b.keys();observed=[]
+    for name,path in sorted(a.items()):
+        old,new=path.read_bytes(),b[name].read_bytes();item=dict(file=name,left_sha256=SHA(old),right_sha256=SHA(new),left_bytes=len(old),right_bytes=len(new))
+        if old==new:item['status']='ACTUAL_COMPLETE_COMPILED_BYTES_EXACT'
+        else:
+            assert path.suffix.lower() in ('.dll','.exe') and old[:2]==new[:2]==b'MZ'
+            item['PE_loader_relative_whole_code_data']=publisher_equivalence(path,b[name]);item['status']='ACTUAL_COMPLETE_PE_CODE_DATA_RELOCATIONS_EXACT_LINK_METADATA_DIFFERENCES_RETAINED'
+        observed.append(item)
+    assert {'day_donor.exe','day_kernel.exe','restart_publish.dll'}<=set(a) or {'day_donor','day_kernel','restart_publish.so'}<=set(a)
+    return dict(status='ALL_ACTUAL_GENERATED_OBJECT_MODULE_EXECUTABLE_PUBLISHER_CODE_DATA_POSTIMAGES_VERIFIED',files=observed,raw_bytes_rewritten=False,model_executions=0,compiler_executions_in_reader=0)
+
+
+def generated(left,right):
+    files=lambda root:{p.relative_to(root).as_posix():p for p in root.rglob('*') if p.is_file() and p.suffix.lower() in ('.f90','.f','.for','.inc')}
+    a,b=files(left),files(right);assert a and a.keys()==b.keys();observed=[]
+    for name,path in sorted(a.items()):
+        old,new=path.read_bytes(),b[name].read_bytes();assert old.replace(b'\r\n',b'\n')==new.replace(b'\r\n',b'\n');observed.append(dict(file=name,left_sha256=SHA(old),right_sha256=SHA(new)))
+    return observed
 
 
 def original_history(raw,kind,mode):
