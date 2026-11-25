@@ -23,8 +23,8 @@ def source():
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--evidence',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();head,contract=source();a.output.mkdir(exist_ok=True);record=a.output/'BATCH.json'
-    q=dict(status='RUNNING_ACTUAL_WINDOWS_FROST_CALENDAR_REPRESENTATIVES_NOT_ADMITTED',actual_controller_source=head,contexts=[],compiler_executions=0,canonical_admission=False)
+    p=argparse.ArgumentParser();p.add_argument('--evidence',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--phase',choices=('v1','daily-v2'),default='v1');a=p.parse_args();head,contract=source();a.output.mkdir(exist_ok=True);record=a.output/'BATCH.json'
+    q=dict(status='RUNNING_ACTUAL_WINDOWS_FROST_CALENDAR_REPRESENTATIVES_NOT_ADMITTED',actual_controller_source=head,phase=a.phase,contexts=[],compiler_executions=0,canonical_admission=False)
     if record.exists():
         previous=json.loads(record.read_text());assert previous['status']!='WINDOWS_FROST_CALENDAR_EIGHT_FULL35_SIX_SHORT_AND_REQUIRED_COLD_PASS_NOT_ADMITTED';q['previous_batch_sha256']=hashlib.sha256(record.read_bytes()).hexdigest();(a.output/('PREVIOUS_BATCH_'+q['previous_batch_sha256']+'.json')).write_bytes(record.read_bytes())
     def save():record.write_text(json.dumps(q,indent=2)+'\n')
@@ -37,14 +37,16 @@ def main():
             assert source()[0]==head;label=case['name']+'-'+opt;inputs=a.output/'inputs'/case['name']
             if case['name']=='water-explicit-monthly-hys0-initial1':inputs=a.evidence/'frost-calendar-state02-first-public-inputs-v2/water-hys0-initial1-implicit0-monthly'
             elif not inputs.exists():prepare(case['kind'],case['hysteresis'],case['initial'],case['implicit'],case['calendar'],inputs,reset=case['reset'],start=case['start'])
-            if case['name']=='water-explicit-monthly-hys0-initial1' and opt=='O0':
+            if case['name']=='water-explicit-monthly-hys0-initial1' and opt=='O0' and a.phase=='v1':
                 profile=a.evidence/'frost-calendar-state02-water-explicit-monthly-hys0-initial1-O0-full35-v1';build_record=a.evidence/'frost-calendar-state02-water-monthly-O0-build-v2/RESULT.json'
             else:
-                stem='frost-calendar-state02-'+label;profile=a.evidence/(stem+'-science-v1');build_record=a.evidence/(stem+'-build-v1/RESULT.json')
+                stem='frost-calendar-state02-'+label;profile=a.evidence/(stem+'-science-'+a.phase);build_record=a.evidence/(stem+'-build-'+a.phase+'/RESULT.json')
             reused=profile.exists()
+            if a.phase=='daily-v2' and reused:
+                prior=json.loads(build_record.read_text());assert not subprocess.check_output(['git','diff',prior['actual_source'],head,'--','app','src','tools','reference'],cwd=R)
             if not reused:
                 if not build_record.exists():
-                    run([sys.executable,'-B','tests/nomacro_drainage/frost_calendar_state_build.py','--inputs',str(inputs),'--reference-work','C:/Users/Veldh012/swap5-coverage-evidence/J_windows_provider','--output',str(build_record.parent),'--label','frost-calendar-state02-'+label+'-v1','--optimization',opt],label+'-build',300);q['compiler_executions']+=1;save()
+                    run([sys.executable,'-B','tests/nomacro_drainage/frost_calendar_state_build.py','--inputs',str(inputs),'--reference-work','C:/Users/Veldh012/swap5-coverage-evidence/J_windows_provider','--output',str(build_record.parent),'--label','frost-calendar-state02-'+label+'-'+a.phase,'--optimization',opt],label+'-build',300);q['compiler_executions']+=1;save()
                 command=[sys.executable,'-B','tests/nomacro_drainage/frost_calendar_state_runtime.py','--build-record',str(build_record),'--reference-work','C:/Users/Veldh012/swap5-coverage-evidence/J_windows_provider','--output',str(profile),'--days',str(case['days'])]
                 if case['start'][5:7]=='12':command.append('--year-seam')
                 run(command,label+'-science',600)

@@ -35901,5 +35901,15 @@
     "builder_wall_cap_seconds": 240,
     "model_wall_cap_seconds": 240,
     "canonical_admission": false
+  },
+  "frost_calendar_state02_execution_recovery_v2": {
+    "status": "PARTIAL_NOT_QUALIFIED",
+    "source_daily_receipt_correction": "a2e0f78e2f492cb90869672eeec02d267b4b84f4",
+    "local_build_not_started_reason": "Shared storage large-job preflight refused at47.8GiB; no compiler/model execution",
+    "next_action": "Centrally preserve and verify all old registered active-python-scratch bytes, release only that owned temp using shared tool, cleanup then restart exact failed input12day on unchanged1e-10 guard; corrected cohort --phase daily-v2",
+    "new_actual_controls": "tests/nomacro_drainage/frost_calendar_state_controls.py",
+    "new_actual_ubuntu_producer": "tests/nomacro_drainage/frost_calendar_state_portable.py",
+    "all_old_failed_and_passed_raw_preserved": true,
+    "rc3_changed": false
   }
 }
