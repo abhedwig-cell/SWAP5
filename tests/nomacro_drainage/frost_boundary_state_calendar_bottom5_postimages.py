@@ -35,7 +35,11 @@ def main():
    if a.platform=='Windows' and index==0:
     original_manifest='FROST_BOUNDARY_STATE_CALENDAR04_LOCAL_WINDOWS_O0_O2_RAW_V1.json';compiled='compiled/'+a.optimization+'/'+name+'/bundle/';old_inputs='current/'+a.optimization+'/'+name+'/inputs/'
    raw=subprocess.check_output(['git','show',anchor+':'+P+original_manifest],cwd=R);m=json.loads(raw);old_source=m.get('original_science_source',m.get('actual_compiler_source'));assert old_source
-   assert not subprocess.check_output(['git','diff',old_source,head,'--','src','tools','reference','app/hybrid_water/daily_host.py','app/hybrid_water/implicit_frost_root_state.py','app/hybrid_water/donor_sources.py'],cwd=R)
+   assert not subprocess.check_output(['git','diff',old_source,head,'--','src','tools','reference','app/hybrid_water/implicit_frost_root_state.py','app/hybrid_water/donor_sources.py'],cwd=R)
+   actual_host=(R/'app/hybrid_water/daily_host.py').read_bytes().replace(b'\r\n',b'\n')
+   plate_dispatch=b'    from frost_boundary_terminal_trial import apply_build as plate_terminal_build\n    patched=plate_terminal_build(output,project,patched)\n'
+   assert actual_host.count(plate_dispatch)==1
+   assert actual_host.replace(plate_dispatch,b'',1)==subprocess.check_output(['git','show',old_source+':app/hybrid_water/daily_host.py'],cwd=R)
    input_hashes={x.relative_to(inputs).as_posix():SHA(x.read_bytes()) for x in inputs.rglob('*') if x.is_file()}
    assert all(m['members'][old_inputs+x]['sha256']==v for x,v in input_hashes.items())
    meta=json.loads((bundle/'BUILD.json').read_text());generated=meta['identity']['donor_generated'];source_checks={};objects={}

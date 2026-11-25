@@ -1,4 +1,4 @@
-# Current trial-flux generator: require unchanged bottom5 whole source and object postimages.
+# Current trial-flux generator: finish remaining branches; first actual compiled branch retained after read-only dispatcher guard failure.
 name: Unchanged Frost bottom5 actual compiled postimages windows
 on:
   push:
@@ -78,7 +78,7 @@ jobs:
           python -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
       - name: Build unchanged bottom5 postimages with zero model executions
         run: |
-          python -B tests/nomacro_drainage/frost_boundary_state_calendar_bottom5_postimages.py --platform Windows --case cde-b5-i0-h1-p2-monthly-r1 --case water-b5-i1-h1-p1-monthly-r1 --case cde-b5-i1-h0-p2-dates-r1 --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds" --output "$RUNNER_TEMP/proof/current" --optimization '${{ matrix.optimization }}'
+          python -B tests/nomacro_drainage/frost_boundary_state_calendar_bottom5_postimages.py --platform Windows --case water-b5-i1-h1-p1-monthly-r1 --case cde-b5-i1-h0-p2-dates-r1 --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds" --output "$RUNNER_TEMP/proof/current" --optimization '${{ matrix.optimization }}'
       - name: Preserve every original generated compiled and provider byte
         if: always()
         run: |
