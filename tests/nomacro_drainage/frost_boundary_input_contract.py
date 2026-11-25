@@ -18,12 +18,18 @@ def main():
     exec(compile(actual,'actual-parent-root-bytes','exec'),old)
     for solute in (False,True):
         for mode in (0,1,2):assert root.source(solute,mode)==old['source'](solute,mode)
-    cases=[]
+    cases=[];retained_numerical_refusals=[]
     for bottom in (5,8):
         for kind in ('water','cde'):
             for implicit in (0,1):
                 name=f'{kind}-bottom{bottom}-implicit{implicit}';folder=a.output/name
                 prepare(kind,implicit,bottom,folder)
+                if implicit and bottom==8:
+                    assert boundary.selection(folder,True) is None
+                    try:public.load(folder,original_output=True,time_step_policy='original-adaptive-event-closure-v1')
+                    except ValueError as error:retained_numerical_refusals.append(dict(case=name,public_refusal=str(error)))
+                    else:raise AssertionError('Unqualified implicit boundary8 admitted')
+                    continue
                 selected=boundary.selection(folder,True);assert selected and selected['bottom']==bottom
                 project=public.load(folder,original_output=True,time_step_policy='original-adaptive-event-closure-v1')
                 from frost_drainage_composition import codec,metadata
@@ -33,6 +39,8 @@ def main():
                     assert '(swbotb/='+str(bottom)+'.or.swfrost/=1' in root.source(project.solute,2,bottom)
                     from implicit_snow_root_carry import enabled as ordinary_snow_root
                     assert not ordinary_snow_root(project),'Two native root owners selected'
+                    from implicit_snow_cde_root_carry import enabled as ordinary_cde_root
+                    assert not ordinary_cde_root(project),'Two CDE native root owners selected'
                 cases.append(dict(case=name,codec=codec(project).decode(),selection=selected))
     donor=a.output/'water-bottom5-implicit0';declined=[]
     changes=dict(SWHYST=0,SWINCO=1,SWBOTB=6,SWDRA=0,SWSOLU=2,SWBR=1,SWMETDETAIL=1,
@@ -48,9 +56,9 @@ def main():
             assert root.boundary(project)==6
             outcome=dict(public_refused=False,existing_bottom6_parent_route_retained=True)
         declined.append(dict(selector=key,value=value,bounded_new_selector_declined=True,**outcome))
-    q=dict(status='EIGHT_ACTUAL_PUBLIC_LOADS_FOUR_CODECS_FOURTEEN_BOUNDED_DECLINES_AND_SIX_EXACT_PARENT_ROOT_PROVIDERS_PASS',
+    q=dict(status='SIX_ACTUAL_PUBLIC_LOADS_TWO_RETAINED_IMPLICIT8_REFUSALS_FOURTEEN_BOUNDED_DECLINES_AND_SIX_EXACT_PARENT_ROOT_PROVIDERS_PASS',
            source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=R,text=True).strip(),
-           cases=cases,declined=declined,default_bottom6_generated_providers_exact=6,
+           cases=cases,retained_implicit8_refusals=retained_numerical_refusals,declined=declined,default_bottom6_generated_providers_exact=6,
            compiler_executions=0,model_executions=0,scientific_equivalence='NOT_QUALIFIED')
     (a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n');print(q['status'],flush=True)
 

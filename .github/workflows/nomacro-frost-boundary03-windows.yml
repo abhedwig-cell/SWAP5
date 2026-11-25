@@ -62,13 +62,13 @@ jobs:
             /reference/swap-4.3.1/frost-corrections/**
             /reference/swap-4.3.1/hydraulic-corrections/**
             /integration/f-ci/nomacro-complete01/*.json
-      - name: Obtain exact original completed first scientific context
+      - name: Obtain five exact completed scientific and native-control contexts
         uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
           repository: abhedwig-cell/SWAP5
-          run-id: 45627301016
-          name: frost-boundary03-windows-${{ matrix.optimization }}-16988131766408867b0c1fa94a3a45cabe68b6fe
+          run-id: 45630288321
+          name: frost-boundary03-windows-${{ matrix.optimization }}-6049f82bcf265ef17de2ff86a69b4ef4c33f768f
           path: ${{ runner.temp }}/previous-proof
       - name: Preserve real source and prepare original provider
         env:

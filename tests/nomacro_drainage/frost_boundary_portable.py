@@ -52,36 +52,43 @@ def main():
             # generated/compiled postimage comparison. Never repeat its full days
             # for this private-owner dispatch repair.
             old=json.loads((a.previous_proof/'current/RESULT.json').read_text())
-            prior=old['contexts'][0];name='water-bottom5-implicit0-hys2-initial2'
-            assert old['source']=='16988131766408867b0c1fa94a3a45cabe68b6fe'
-            assert prior['case']==name and prior['returncode']==0
-            science=prior['science'];assert science['source']==old['source']
-            assert science['status']=='CANDIDATE_ACTUAL_FROST_SWDIVD1_WATER_SHORT_PASS_NOT_ADMITTED'
-            folder=a.output/'preservation';folder.mkdir();inputs=folder/'inputs';prepare('water',0,5,inputs)
-            inventory=lambda root:{p.relative_to(root).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file()}
-            assert inventory(inputs)==inventory(a.previous_proof/'current'/name/'inputs')==science['inventory']
-            projection=json.loads((a.previous_proof/'COMPILED_PROJECTION_V1.json').read_text())
-            original=a.previous_proof/projection[science['build_root']]['archive_prefix']
-            assert hashlib.sha256((original/'BUILD.json').read_bytes()).hexdigest()==projection[science['build_root']]['actual_BUILD_sha256']
-            build=a.build_root/'current-explicit-preservation'
-            command=[sys.executable,'-B','tools/solute/run_water.py','--model','HYBRID_NOMACRO_WATER',
-                     '--experimental-project',str(inputs),'--original-output','--experimental-time-step-policy',
-                     'original-adaptive-event-closure-v1','--reference-work',str(a.reference_work),
-                     '--build-only','--donor-opt',a.optimization,'--kernel-opt',a.optimization,'--output',str(build)]
-            with (folder/'build.stdout.bin').open('xb') as stdout,(folder/'build.stderr.bin').open('xb') as stderr:
-                result=subprocess.run(command,cwd=R,stdout=stdout,stderr=stderr,timeout=300)
-            result.check_returncode()
-            from frost_history_state_central import generated,compiled
-            comparison=dict(generated=generated(original,build),compiled=compiled(original,build))
-            record=dict(case=name,source=old['source'],actual_current_compiler=head,
-                        original_science= science,current_generated_compiled=comparison,
-                        completed_full35_reused_without_model_replay=True,model_executions=0)
-            (folder/'RESULT.json').write_text(json.dumps(record,indent=2)+'\n')
-            q['contexts'].append(record);save()
+            assert old['source']=='6049f82bcf265ef17de2ff86a69b4ef4c33f768f'
+            completed=[x for x in old['contexts'] if x.get('compiled_controls',{}).get('returncode')==0]
+            assert len(completed)==5
+            for prior in completed:
+                name=prior['case'];parts=name.split('-');kind=parts[0];bottom=int(parts[1][-1]);implicit=int(parts[2][-1])
+                assert bottom in (5,8) and kind in ('water','cde') and not (bottom==8 and implicit)
+                profile=a.previous_proof/'current'/name/'science'
+                science=json.loads((profile/'RESULT.json').read_text())
+                assert science['source'] in ('16988131766408867b0c1fa94a3a45cabe68b6fe','6049f82bcf265ef17de2ff86a69b4ef4c33f768f')
+                assert science['status']=='CANDIDATE_ACTUAL_FROST_SWDIVD1_'+kind.upper()+'_SHORT_PASS_NOT_ADMITTED'
+                folder=a.output/'preservation'/name;folder.mkdir(parents=True);inputs=folder/'inputs';prepare(kind,implicit,bottom,inputs)
+                inventory=lambda root:{p.relative_to(root).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file()}
+                assert inventory(inputs)==inventory(a.previous_proof/'current'/name/'inputs')==science['inventory']
+                projection=json.loads((a.previous_proof/'COMPILED_PROJECTION_V1.json').read_text())
+                original=a.previous_proof/projection[science['build_root']]['archive_prefix']
+                assert hashlib.sha256((original/'BUILD.json').read_bytes()).hexdigest()==projection[science['build_root']]['actual_BUILD_sha256']
+                build=a.build_root/'current-preservation'/name
+                command=[sys.executable,'-B','tools/solute/run_water.py','--model','HYBRID_NOMACRO_WATER',
+                         '--experimental-project',str(inputs),'--original-output','--experimental-time-step-policy',
+                         'original-adaptive-event-closure-v1','--reference-work',str(a.reference_work),
+                         '--build-only','--donor-opt',a.optimization,'--kernel-opt',a.optimization,'--output',str(build)]
+                with (folder/'build.stdout.bin').open('xb') as stdout,(folder/'build.stderr.bin').open('xb') as stderr:
+                    result=subprocess.run(command,cwd=R,stdout=stdout,stderr=stderr,timeout=300)
+                result.check_returncode()
+                from frost_history_state_central import generated,compiled
+                comparison=dict(generated=generated(original,build),compiled=compiled(original,build))
+                record=dict(case=name,source=science['source'],actual_current_compiler=head,
+                            original_science=science,current_generated_compiled=comparison,
+                            compiled_controls=prior['compiled_controls'],
+                            completed_full35_reused_without_model_replay=True,model_executions=0)
+                (folder/'RESULT.json').write_text(json.dumps(record,indent=2)+'\n')
+                q['contexts'].append(record);save()
         for bottom,kind,implicit in itertools.product((5,8),('water','cde'),(0,1)):
+            if bottom==8 and implicit:continue
             assert source()==head
             name=f'{kind}-bottom{bottom}-implicit{implicit}-hys2-initial2'
-            if a.previous_proof is not None and name=='water-bottom5-implicit0-hys2-initial2':continue
+            if name in {x['case'] for x in q['contexts']}:continue
             folder=a.output/name;folder.mkdir();inputs=folder/'inputs';prepare(kind,implicit,bottom,inputs)
             build=a.build_root/name;logs=folder/'controller';logs.mkdir()
             command=[sys.executable,'-B','tests/nomacro_drainage/frost_cde_drainage_runtime.py',
@@ -102,26 +109,10 @@ def main():
             item['science']=science;save()
             item['compiled_controls']=compiled_controls(folder/'science',folder);save()
             print('FULL35_AND_CONTROLS',name,a.optimization,item['compiled_controls']['returncode'],flush=True)
-        if a.previous_proof is not None:
-            # Materialize the actual original accepted case and its actual
-            # original binary at its recorded runner location. Retain compiler
-            # identity169...; the separate current postimage proof owns reuse.
-            name='water-bottom5-implicit0-hys2-initial2';target=a.output/name
-            shutil.copytree(a.previous_proof/'current'/name,target)
-            original_build=original
-            build_target=a.build_root/name/'bundle'
-            old_science=q['contexts'][0]['original_science']
-            assert Path(old_science['input_root']).resolve()==(target/'inputs').resolve()
-            assert Path(old_science['build_root']).resolve()==build_target.resolve()
-            shutil.copytree(original_build,build_target)
-            if a.platform=='Ubuntu':
-                for executable in ('day_donor','day_kernel'):
-                    path=build_target/executable;path.chmod(path.stat().st_mode|0o111)
-            q['contexts'][0]['compiled_controls']=compiled_controls(target/'science',target);save()
-        assert len(q['contexts'])==8 and source()==head
+        assert len(q['contexts'])==6 and source()==head
         assert not any(item.get('returncode',0) for item in q['contexts']),'Actual failed contexts retained; whole cohort not qualified'
         assert all(item['compiled_controls']['returncode']==0 for item in q['contexts']),'Actual compiled native/transaction controls failed'
-        q['status']='EIGHT_ACTUAL_FROST_BOUNDARY_FULL35_COLD_COMPILED_NATIVE_AND_TRANSACTIONS_PASS_NOT_ADMITTED'
+        q['status']='SIX_ACTUAL_BOUNDED_FROST_BOUNDARY_FULL35_COLD_COMPILED_NATIVE_AND_TRANSACTIONS_PASS_NOT_ADMITTED'
     except Exception as error:
         q.update(status='FAILED_ACTUAL_FROST_BOUNDARY_COHORT_NOT_QUALIFIED',error=repr(error));raise
     finally:save()

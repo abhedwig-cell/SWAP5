@@ -2823,10 +2823,11 @@
     "whole_family_closed": false
   },
   "frost_boundary58_composition": {
-    "status": "FOUR_FIRST_FULL35_CONTEXTS_PASS_PRIVATE_OWNER_REPAIR_PENDING_COMPOSITION_QUALIFICATION",
+    "status": "TWENTY_SAFE_FULL35_NATIVE_CONTEXTS_PASS_SIX_DOMAIN_CDE_COMPLETION_PENDING",
     "classification": "MISSING_COMPOSITION",
-    "scope": "Original hydraulic model1 Snow/Frost numerical heat2, primary SWDRA1/SWDIVD1, SWBOTB5 or8, water/CDE, explicit or fitted implicit conductivity, hysteresis2, initialization2, original dense daily output and SWRES1. No boundary-file indirection.",
+    "scope": "Model1 Snow/Frost numerical heat2, primaryDRA1/DIVD1; explicit water/CDE bottom5/8 and fitted implicit water/CDE bottom5 only; hys2 initialization2, original dense daily reset1 output. Implicit bottom8 remains hard-refused.",
     "contract": "FROST_BOUNDARY03_CONTRACT_V1.json",
-    "whole_family_closed": false
+    "whole_family_closed": false,
+    "retained_numerical_failure": "Water implicit bottom8 source6049f82bcf, four O0/O2 Windows/Ubuntu zero-day clock-resolution refusals; CDE counterpart not numerically executed and remains MISSING_COMPOSITION."
   }
 }

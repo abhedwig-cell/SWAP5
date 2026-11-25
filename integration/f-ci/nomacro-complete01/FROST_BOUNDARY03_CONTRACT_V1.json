@@ -1,12 +1,12 @@
 {
-  "status": "FOUR_CURRENT_COMPLETE_COMPILED_POSTIMAGES_AND_EXACT_QUALIFIED_HEADCALC_RECONSTRUCTION_PASS_NOT_QUALIFIED",
+  "status": "TWENTY_FULL35_NATIVE_CONTEXTS_PASS_IMPLICIT5_CDE_OWNER_CORRECTED_IMPLICIT8_HARD_REFUSED_NOT_ADMITTED",
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "classification": "B_EXISTING_ORIGINAL_BOUNDARY_AND_FROST_STATE_COMPOSITION",
   "actual_canonical_at_start": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
   "dependency_candidate": "3250f0c59337334994b0e8edda624afe8f91b11f",
   "dependency_PR": 1801,
   "dependency_admission": "ACTUAL_CANONICAL500_PUBLIC_AND_ORDINARY_PUBLICATION_ALL17CI_FOUR_NEGATIVES_AND_SIGNED_OBJECT_ADMISSION_SEALED",
-  "scope": "Original hydraulic model1 Snow/Frost numerical heat2, primary SWDRA1/SWDIVD1, SWBOTB5 or8, water/CDE, explicit or fitted implicit conductivity, hysteresis2, initialization2, original dense daily output and SWRES1. No boundary-file indirection.",
+  "scope": "Model1 Snow/Frost numerical heat2, primaryDRA1/DIVD1; explicit water/CDE bottom5/8 and fitted implicit water/CDE bottom5 only; hys2 initialization2, original dense daily reset1 output. Implicit bottom8 remains hard-refused.",
   "owning_interfaces": [
     "experimental_project original input admission",
     "implicit_frost_composition domain and codec",
@@ -38,7 +38,7 @@
   "files": {
     "app/hybrid_water/frost_boundary_composition.py": {
       "added": true,
-      "proposed_lf_sha256": "911e5147f97ff84fe7e869d2cb586de874ccc6bf75060e2d68b0f9f146e4028a"
+      "proposed_lf_sha256": "cc912a9085de43ddd6569e99ccf900ba547d407e21a037b3d27a887e2becf74a"
     },
     "app/hybrid_water/experimental_project.py": {
       "added": false,
@@ -185,8 +185,8 @@
     },
     "app/hybrid_water/implicit_frost_source_guard.py": {
       "added": false,
-      "before_lf_sha256": "f795c1228c7993d0ace71287a36d49f5bafe11ec0efa2fe2b09ce4825a2e0e6a",
       "proposed_lf_sha256": "4253775eaf245f93801af7032a918b500aac7f3f2b7379b7c664b49981f0c1e7",
+      "before_lf_sha256": "f795c1228c7993d0ace71287a36d49f5bafe11ec0efa2fe2b09ce4825a2e0e6a",
       "ordered_literal_edits": [
         {
           "base_start": 651,
@@ -231,6 +231,19 @@
           "after": ""
         }
       ]
+    },
+    "app/hybrid_water/implicit_snow_cde_root_carry.py": {
+      "added": false,
+      "proposed_lf_sha256": "e2606b30ebced5f4903068bb560dc0fe8fa4e1e868dc9348f2e8d30828004ac9",
+      "before_lf_sha256": "17706b7587d3f1f173209270d411deaf6c0f3832ef72795e2c77add31bf11e4b",
+      "ordered_literal_edits": [
+        {
+          "base_start": 879,
+          "base_end": 879,
+          "before": "",
+          "after": "e:return False\n    from frost_boundary_composition import selection as frost_boundary_selection\n    if frost_boundary_selection(project.input_directory,project.original_output) is not Non"
+        }
+      ]
     }
   },
   "actual_dependency_merge": "1c3b8725548c836c9a73570c2579dd6cdc683217",
@@ -240,11 +253,70 @@
     "ok": false,
     "compiler_executions": 0
   },
-  "next": "Execute seven missing full35/cold contexts per platform/opt, retain all independent failures; apply actual compiled native/root/active transactions to eight contexts including preserved original first binaries with their genuine original identities.",
+  "next": "Use fresh current complete generated/compiled postimages to inherit each five completed contexts per opt/platform; run only missing implicit CDE bottom5 full35/cold/native/transaction case. No full-period replay for metadata or source-reader changes.",
   "admission_receipt": "FROST_CALENDAR_STATE02_MERGE_RECEIPT_V1.json",
   "first_scientific_source": "16988131766408867b0c1fa94a3a45cabe68b6fe",
   "private_owner_correction": "Existing generic implicit Snow rate carry must decline exactly the selected Frost boundary58 domain, whose own typed Frost rate carry is installed later. No codec allowlist or double state owner.",
   "no_replay_rule": "Keep the four completed explicit water bottom5 full35 contexts. Fresh current generated/compiled postimages must match their actual original CI artifacts before inheritance; run only the seven missing contexts per opt/platform.",
   "read_only_source_guard_correction": "Original boundary5/8 trial receipt was already installed. Reconstruct via exact existing boundary5 inverse and canonical8 form; complete ordinary HeadCalc SHA remains frozen. Actual failed-source O0/O2 generated5 bodies reconstruct exactly; an expression corruption is refused. No numerical producer source changed.",
-  "read_only_source_guard_result": "FROST_BOUNDARY03_REAL_COMPILED_HEADCALC_SOURCE_GUARD_V2.json"
+  "read_only_source_guard_result": "FROST_BOUNDARY03_REAL_COMPILED_HEADCALC_SOURCE_GUARD_V2.json",
+  "retained_implicit8": {
+    "water_status": "NUMERICAL_FAILURE",
+    "actual_producer": "6049f82bcf265ef17de2ff86a69b4ef4c33f768f",
+    "actual_zero_day_failure": "Implicit original retry reached clock resolution",
+    "platform_opt_contexts": 4,
+    "cde_status": "MISSING_COMPOSITION_NOT_NUMERICALLY_TESTED",
+    "no_tolerance_or_flux_substitution": true
+  },
+  "first_twenty_complete_science_and_compiled_controls": [
+    {
+      "platform": "UBUNTU",
+      "optimization": "O0",
+      "archive_sha256": "be39a74fb5c063e5af1215831120689a85242d29ee8fb604306393fddcd3ce17",
+      "successful_case_names": [
+        "water-bottom5-implicit0-hys2-initial2",
+        "water-bottom5-implicit1-hys2-initial2",
+        "cde-bottom5-implicit0-hys2-initial2",
+        "water-bottom8-implicit0-hys2-initial2",
+        "cde-bottom8-implicit0-hys2-initial2"
+      ]
+    },
+    {
+      "platform": "UBUNTU",
+      "optimization": "O2",
+      "archive_sha256": "5449d1d85fb4af5f61438f3c816f3101bd08d685926af2f631d453bbc17929e9",
+      "successful_case_names": [
+        "water-bottom5-implicit0-hys2-initial2",
+        "water-bottom5-implicit1-hys2-initial2",
+        "cde-bottom5-implicit0-hys2-initial2",
+        "water-bottom8-implicit0-hys2-initial2",
+        "cde-bottom8-implicit0-hys2-initial2"
+      ]
+    },
+    {
+      "platform": "WINDOWS",
+      "optimization": "O0",
+      "archive_sha256": "60e338cec3b98d43a57b2927452af4ea6c5a8740f5961ec5beece16e43ff9df4",
+      "successful_case_names": [
+        "water-bottom5-implicit0-hys2-initial2",
+        "water-bottom5-implicit1-hys2-initial2",
+        "cde-bottom5-implicit0-hys2-initial2",
+        "water-bottom8-implicit0-hys2-initial2",
+        "cde-bottom8-implicit0-hys2-initial2"
+      ]
+    },
+    {
+      "platform": "WINDOWS",
+      "optimization": "O2",
+      "archive_sha256": "891fb78a8187b72e146d4791483bd937fa918a44db76f40bf6783cc8667feb4b",
+      "successful_case_names": [
+        "water-bottom5-implicit0-hys2-initial2",
+        "water-bottom5-implicit1-hys2-initial2",
+        "cde-bottom5-implicit0-hys2-initial2",
+        "water-bottom8-implicit0-hys2-initial2",
+        "cde-bottom8-implicit0-hys2-initial2"
+      ]
+    }
+  ],
+  "cde_private_owner_correction": "Generic existing Snow CDE root carry declines exactly selected Frost boundary domain; its actual typed Frost owner remains sole state owner."
 }
