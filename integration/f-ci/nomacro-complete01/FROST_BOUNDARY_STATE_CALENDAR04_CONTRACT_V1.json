@@ -1,0 +1,276 @@
+{
+  "status": "PERSISTED_PROPOSED_EXISTING_PROCESS_COMPOSITION_NOT_TESTED_OR_QUALIFIED",
+  "work_unit": "SWAP5-NOMACRO-COMPLETE01",
+  "batch": "FROST_BOUNDARY_STATE_CALENDAR04",
+  "classification": "B_EXISTING_PROCESS_COMPOSITION_WITH_C_CONFIGURATION_REUSE",
+  "dependency_candidate": "74ecc55765df548e758605f3566bc93558a6fefb",
+  "dependency_PR": 1802,
+  "actual_canonical_at_start": "1c3b8725548c836c9a73570c2579dd6cdc683217",
+  "dependency_admission": "FINAL_HEAD_PUBLIC_ORDINARY_PUBLICATION_FOUR_REAL_NEGATIVES_PASS_CI_AND_ACTUAL_CANONICAL_ADMISSION_PENDING",
+  "scope": "Model1 numerical heat2 Snow/Frost primaryDRA1/DIVD1, explicit original boundary5/8 or fitted implicit5; existing hysteresis0/1/2 and initialization1/2, original monthly/dates/regular/dense reset output. Old dense hys2/initial2 boundary03 dispatch remains literal.",
+  "design": "One existing Frost calendar/state owner composes all newly selected configurations, including dense requests, with four distinct existing-frame codec tags. Existing root provider already validates actual bottom and hysteresis through its owning selector. No process Fortran, physical state, mass/convergence limit, correction or fallback is changed.",
+  "native_codecs": [
+    "S5BCW001",
+    "S5BCC001",
+    "S5BCW002",
+    "S5BCC002"
+  ],
+  "representative_cases": [
+    {
+      "name": "water-b5-i0-h0-p1-regular-r0",
+      "kind": "water",
+      "bottom": 5,
+      "implicit": 0,
+      "hysteresis": 0,
+      "initial": 1,
+      "calendar": "regular",
+      "reset": 0,
+      "start": null,
+      "days": 35
+    },
+    {
+      "name": "cde-b5-i0-h1-p2-monthly-r1",
+      "kind": "cde",
+      "bottom": 5,
+      "implicit": 0,
+      "hysteresis": 1,
+      "initial": 2,
+      "calendar": "monthly",
+      "reset": 1,
+      "start": null,
+      "days": 35
+    },
+    {
+      "name": "water-b8-i0-h1-p1-dates-r1",
+      "kind": "water",
+      "bottom": 8,
+      "implicit": 0,
+      "hysteresis": 1,
+      "initial": 1,
+      "calendar": "dates",
+      "reset": 1,
+      "start": null,
+      "days": 35
+    },
+    {
+      "name": "cde-b8-i0-h0-p2-regular-r1",
+      "kind": "cde",
+      "bottom": 8,
+      "implicit": 0,
+      "hysteresis": 0,
+      "initial": 2,
+      "calendar": "regular",
+      "reset": 1,
+      "start": null,
+      "days": 35
+    },
+    {
+      "name": "water-b5-i1-h1-p1-monthly-r1",
+      "kind": "water",
+      "bottom": 5,
+      "implicit": 1,
+      "hysteresis": 1,
+      "initial": 1,
+      "calendar": "monthly",
+      "reset": 1,
+      "start": null,
+      "days": 35
+    },
+    {
+      "name": "cde-b5-i1-h0-p2-dates-r1",
+      "kind": "cde",
+      "bottom": 5,
+      "implicit": 1,
+      "hysteresis": 0,
+      "initial": 2,
+      "calendar": "dates",
+      "reset": 1,
+      "start": null,
+      "days": 35
+    },
+    {
+      "name": "water-b5-i0-h0-p1-dense-r1",
+      "kind": "water",
+      "bottom": 5,
+      "implicit": 0,
+      "hysteresis": 0,
+      "initial": 1,
+      "calendar": "dense",
+      "reset": 1,
+      "start": null,
+      "days": 35
+    },
+    {
+      "name": "cde-b8-i0-h1-p2-dense-r1",
+      "kind": "cde",
+      "bottom": 8,
+      "implicit": 0,
+      "hysteresis": 1,
+      "initial": 2,
+      "calendar": "dense",
+      "reset": 1,
+      "start": null,
+      "days": 35
+    },
+    {
+      "name": "cde-b5-i1-h1-p1-dense-r1",
+      "kind": "cde",
+      "bottom": 5,
+      "implicit": 1,
+      "hysteresis": 1,
+      "initial": 1,
+      "calendar": "dense",
+      "reset": 1,
+      "start": null,
+      "days": 35
+    },
+    {
+      "name": "water-b5-i0-h2-p2-monthly-r1-year-seam",
+      "kind": "water",
+      "bottom": 5,
+      "implicit": 0,
+      "hysteresis": 2,
+      "initial": 2,
+      "calendar": "monthly",
+      "reset": 1,
+      "start": "2002-12-26",
+      "days": 12
+    },
+    {
+      "name": "cde-b8-i0-h2-p2-dates-r0-year-seam",
+      "kind": "cde",
+      "bottom": 8,
+      "implicit": 0,
+      "hysteresis": 2,
+      "initial": 2,
+      "calendar": "dates",
+      "reset": 0,
+      "start": "2002-12-26",
+      "days": 12
+    },
+    {
+      "name": "cde-b5-i1-h2-p2-regular-r0-year-seam",
+      "kind": "cde",
+      "bottom": 5,
+      "implicit": 1,
+      "hysteresis": 2,
+      "initial": 2,
+      "calendar": "regular",
+      "reset": 0,
+      "start": "2002-12-26",
+      "days": 12
+    }
+  ],
+  "files": {
+    "app/hybrid_water/frost_boundary_composition.py": {
+      "added": false,
+      "proposed_lf_sha256": "30020b96968cc971fb482ce4123f1fe1f2550ae0b33ae31fc1f6bef6c4d5fe0c",
+      "before_lf_sha256": "cc912a9085de43ddd6569e99ccf900ba547d407e21a037b3d27a887e2becf74a",
+      "ordered_literal_edits": [
+        {
+          "base_start": 505,
+          "base_end": 505,
+          "before": "",
+          "after": "from frost_boundary_state_calendar import input_domain as composed_domain\n    if composed_domain(selectors,boundary,original_output):return True\n    "
+        },
+        {
+          "base_start": 989,
+          "base_end": 989,
+          "before": "",
+          "after": "\n    from frost_boundary_state_calendar import selection as composed_selection\n    composed=composed_selection(directory,original_output)\n    if composed is not None:return composed"
+        },
+        {
+          "base_start": 2993,
+          "base_end": 2993,
+          "before": "",
+          "after": "if selected.get('boundary_state_calendar'):\n        from frost_boundary_state_calendar import codec as composed_codec\n        return composed_codec(selected)\n    "
+        },
+        {
+          "base_start": 3310,
+          "base_end": 3310,
+          "before": "",
+          "after": "sul"
+        },
+        {
+          "base_start": 3311,
+          "base_end": 3315,
+          "before": "urn ",
+          "after": "="
+        },
+        {
+          "base_start": 3481,
+          "base_end": 3481,
+          "before": "",
+          "after": "    if selected.get('boundary_state_calendar'):\n        from frost_boundary_state_calendar import source_identity\n        result['state_calendar_provider_sha256']=source_identity()\n    return result\n"
+        }
+      ]
+    },
+    "app/hybrid_water/frost_calendar_state.py": {
+      "added": false,
+      "proposed_lf_sha256": "b1892f6a97768cc4f6371eefa4c28e6fcee2afa81f62b514d76d503df39a30f3",
+      "before_lf_sha256": "0f3c686f423abc03503f7febf7cf87282fd2a6852baeaa55e9c021aa1a143c9a",
+      "ordered_literal_edits": [
+        {
+          "base_start": 239,
+          "base_end": 239,
+          "before": "",
+          "after": "\n    from frost_boundary_state_calendar import selection as composed_selection\n    composed=composed_selection(directory,original_output)\n    if composed is not None:return composed"
+        }
+      ]
+    },
+    "app/hybrid_water/frost_calendar_output.py": {
+      "added": false,
+      "proposed_lf_sha256": "673130ff2ae6911905eab369b562686c05f3f1412c8f70c13ecd4e2a63858e01",
+      "before_lf_sha256": "c646c05f4e813e1537d9f83bdce750b13a42b3e0eec96cca6f0161d62561f4bc",
+      "ordered_literal_edits": [
+        {
+          "base_start": 2632,
+          "base_end": 2632,
+          "before": "",
+          "after": "if selected.get('boundary_state_calendar'):\n        from frost_boundary_state_calendar import codec as composed_codec\n        return composed_codec(selected)\n    "
+        },
+        {
+          "base_start": 2891,
+          "base_end": 2891,
+          "before": "",
+          "after": "\n    boundary=input_selection(project.input_directory,project.original_output)\n    policy=boundary['policy'] if boundary.get('boundary_state_calendar') else POLICY"
+        },
+        {
+          "base_start": 3227,
+          "base_end": 3227,
+          "before": "",
+          "after": "if boundary.get('boundary_state_calendar'):providers+=['frost_boundary_state_calendar.py','frost_boundary_composition.py']\n    "
+        },
+        {
+          "base_start": 3486,
+          "base_end": 3492,
+          "before": "POLICY",
+          "after": "policy"
+        }
+      ]
+    },
+    "app/hybrid_water/frost_boundary_state_calendar.py": {
+      "added": true,
+      "proposed_lf_sha256": "efc0662cfa2c03f80bf73082157db4a7262740fbcaa07e78a0275821e7c4c622"
+    }
+  },
+  "held_fixed": [
+    "src",
+    "tools",
+    "reference",
+    "implicit_frost_root_state.py",
+    "implicit_frost_surface_conductivity.py",
+    "frost_divdra_overlap.py",
+    "frost_reference.py",
+    "all parent scientific raw bytes"
+  ],
+  "qualification": "Real public loads and excluded-mode controls; preserve old named selection/default root bytes and exact parent source inverse; targeted actual O0/O2 build and scientific smoke then independent Ubuntu/Windows complete selected periods, original daily/prefix budgets, active Snow/Frost, complete native/cold/user output, compiled refusals and real transactions. Reuse parent periods only through actual unchanged dependency/postimage evidence. Final public/CI/merge admission requires genuine parent PR1802 receipt.",
+  "original_reference_limit": "Prior original executable and same-object stack-only relink crash at initialization including existing boundary6 control; preserve those failed/censored raw, no repeat merely metadata and no legacy equivalence claim.",
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "canonical_admission": false,
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false
+}
