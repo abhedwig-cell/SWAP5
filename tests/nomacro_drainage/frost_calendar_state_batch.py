@@ -52,8 +52,14 @@ def main():
                 run(command,label+'-science',600)
             result=json.loads((profile/'RESULT.json').read_text());assert result['status']=='ACTUAL_FROST_CALENDAR_ORIGINAL_BUDGETS_NATIVE_HISTORY_COLD_AND_USER_OUTPUT_PASS_NOT_ADMITTED' and result['duration_days']==case['days']
             assert result['kind']==case['kind'] and result['selection']['hysteresis']==case['hysteresis'] and result['selection']['implicit']==case['implicit']
+            controls=None
+            if a.phase=='daily-v2' and case['days']==35:
+                controls_path=a.evidence/('frost-calendar-state02-'+label+'-controls-'+a.phase)
+                if not controls_path.exists():
+                    run([sys.executable,'-B','tests/nomacro_drainage/frost_calendar_state_controls.py','--reference-work','C:/Users/Veldh012/swap5-coverage-evidence/J_windows_provider','--profile',str(profile),'--output',str(controls_path)],label+'-controls',600)
+                controls=json.loads((controls_path/'RESULT.json').read_text());assert controls['status']=='ACTUAL_FROST_CALENDAR_COMPILED_NATIVE_SNOW_CDE_ROOT_AND_TRANSACTIONS_PASS_NOT_ADMITTED'
             assert source()[0]==head
-            q['contexts'].append(dict(case=case,optimization=opt,profile=str(profile),build_record=str(build_record),actual_compiler_source=result['source'],actual_science_controller=result['actual_controller_source'],original_completed_context_reused_without_replay=reused,input_inventory=inventory(inputs),result_sha256=hashlib.sha256((profile/'RESULT.json').read_bytes()).hexdigest()));save();print('PASS',label,case['days'],'reused' if reused else 'new',len(q['contexts']),flush=True)
+            q['contexts'].append(dict(case=case,optimization=opt,compiled_controls=controls,profile=str(profile),build_record=str(build_record),actual_compiler_source=result['source'],actual_science_controller=result['actual_controller_source'],original_completed_context_reused_without_replay=reused,input_inventory=inventory(inputs),result_sha256=hashlib.sha256((profile/'RESULT.json').read_bytes()).hexdigest()));save();print('PASS',label,case['days'],'reused' if reused else 'new',len(q['contexts']),flush=True)
         assert len(q['contexts'])==14 and sum(x['case']['days']==35 for x in q['contexts'])==8
         q['status']='WINDOWS_FROST_CALENDAR_EIGHT_FULL35_SIX_SHORT_AND_REQUIRED_COLD_PASS_NOT_ADMITTED'
     except Exception as error:q.update(status='FAILED_ACTUAL_WINDOWS_FROST_CALENDAR_BATCH_NOT_QUALIFIED',error=repr(error));raise
