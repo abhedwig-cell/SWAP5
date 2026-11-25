@@ -1,11 +1,12 @@
 """Actual short Frost calendar month seam and original exact cold/output control."""
-import argparse,json,subprocess,sys
+import argparse,json,math,subprocess,sys
 from decimal import Decimal,localcontext
 from pathlib import Path
 R=Path(__file__).resolve().parents[2]
 sys.path[:0]=[str(R/'app/hybrid_water'),str(R/'tests/nomacro_scheduled_subsurface')]
 from explicit_bottom9_runtime import m,own
 from frost_calendar_output import metadata
+from original_output_files import records
 
 
 def budgets(folder,kind,expected_days):
@@ -24,8 +25,14 @@ def budgets(folder,kind,expected_days):
                 assert abs(residual)<=Decimal('1e-10') and abs(end-ledger[0])<=Decimal('1e-10')
                 flows=[a+b for a,b in zip(flows,ledger[2:8])];prefix=end-rows[0]['solute_start_mg_cm2']-sum(flows[:3])+sum(flows[3:]);prefix_max=max(prefix_max,abs(prefix));assert abs(prefix)<=Decimal('1e-10')
     witness=[list(map(float,line.split()[1:])) for line in (folder/'original/donor.stdout').read_text().splitlines() if line.startswith('HYBRID_FROST_WITNESS ')]
-    assert len(witness)==expected_days+1
-    return dict(days=expected_days,daily_water_max_cm=str(water),daily_cde_max_mg_cm2=str(chemical),every_prefix_cde_max_mg_cm2=str(prefix_max),actual_partial_frost_days=[day for day,value in enumerate(witness[1:],1) if 0<value[0]<1],accumulated_water_equivalence_claimed=False)
+    candidates=[folder/'original/result_output.bin',folder/'original/result_output.csv']
+    output=next((path for path in candidates if path.is_file()),None)
+    assert output is not None,'Short calendar witness audit requires actual original CSV/binary output'
+    events=records(output);assert len(witness)==len(events)
+    assert all(len(value)==6 and all(map(math.isfinite,value)) for value in witness)
+    assert all(value[-1]==1 for value in witness[1:])
+    stamp=lambda row:row[:19].decode('ascii').strip() if isinstance(row,bytes) else row.split(',')[0].strip()
+    return dict(days=expected_days,daily_water_max_cm=str(water),daily_cde_max_mg_cm2=str(chemical),every_prefix_cde_max_mg_cm2=str(prefix_max),actual_frost_output_events=len(events),actual_partial_frost_output_dates=[stamp(event) for event,value in zip(events,witness) if 0<value[0]<1],accumulated_water_equivalence_claimed=False)
 
 
 def main():
