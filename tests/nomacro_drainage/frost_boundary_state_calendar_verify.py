@@ -15,13 +15,14 @@ from frost_calendar_state_central import audit as parent_calendar_audit
 from frost_boundary_convergence import require_convergence
 import frost_boundary_verify as previous
 
-SEALED='f7f91138f0065c293a0424d0c2121dedfb9b9377'
+SEALED='0000000000000000000000000000000000000000'
 PREFIX='integration/f-ci/nomacro-complete01/'
 
 
 def frozen(name):
     path=PREFIX+name+'.json'
-    raw=(ROOT/path).read_bytes().replace(b'\r\n',b'\n')
+    from frost_boundary_state_calendar_metadata import raw as metadata_raw
+    raw=metadata_raw(name+'.json')
     assert raw==git('show',SEALED+':'+path)
     return json.loads(raw)
 

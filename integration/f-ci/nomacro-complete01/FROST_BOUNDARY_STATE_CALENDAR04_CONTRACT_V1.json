@@ -603,5 +603,14 @@
   "current_physical_postimage_record": "FROST_BOUNDARY_STATE_CALENDAR04_CURRENT16_POSTIMAGE_CENTRAL_V1.json",
   "parent_plate_requalification": "EIGHT_ACTUAL_CURRENT_FULL35_NATIVE_COLD_CONTROLS_ZERO_CONVERGENCE_WARNINGS_PASS_NOT_ADMITTED",
   "source_owner": "tests/nomacro_drainage/frost_boundary_state_calendar_verify.py",
-  "expected_current_coadmission_contexts": 568
+  "expected_current_coadmission_contexts": 568,
+  "current04_metadata_api": {
+    "file": "tests/nomacro_drainage/frost_boundary_state_calendar_metadata.py",
+    "scope": "Only flat current04 JSON metadata",
+    "authority": "Actual HEAD Git blob equals actual stage0 index blob; existing working file must match exact bytes or declared original Git LF text; absent working metadata requires real skip-worktree S.",
+    "scientific_raw": "Explicit immutable GitArchiveSource/Archive bytes retain original member hashes and identities",
+    "sparse_patterns_or_source_identity_projected": false,
+    "compiler_executions": 0,
+    "model_executions": 0
+  }
 }

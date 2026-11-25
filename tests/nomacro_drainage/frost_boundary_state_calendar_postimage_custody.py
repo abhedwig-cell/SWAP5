@@ -11,7 +11,8 @@ DISPATCH=b'    from frost_boundary_terminal_trial import apply_build as plate_te
 
 
 def audit(proof):
-    baseline=json.loads((P/'FROST_BOUNDARY_STATE_CALENDAR04_BOTTOM5_PHYSICAL_POSTIMAGE_BASELINES_V1.json').read_text())
+    from frost_boundary_state_calendar_metadata import read as read_metadata
+    baseline=read_metadata('FROST_BOUNDARY_STATE_CALENDAR04_BOTTOM5_PHYSICAL_POSTIMAGE_BASELINES_V1.json')
     results=[];provenance=[]
     def compare(store,prefix,meta,host,opt,case,producer):
         original=baseline['records'][host+'/'+opt+'/'+case]

@@ -15,7 +15,8 @@ SHA=lambda raw:hashlib.sha256(raw).hexdigest()
 
 
 def source():
-    contract=json.loads((R/'integration/f-ci/nomacro-complete01/FROST_BOUNDARY_STATE_CALENDAR04_CONTRACT_V1.json').read_text())
+    from frost_boundary_state_calendar_metadata import read as read_metadata
+    contract=read_metadata('FROST_BOUNDARY_STATE_CALENDAR04_CONTRACT_V1.json')
     assert not git('status','--porcelain=v1','--untracked-files=all','--','app','src','tools','tests','.github')
     assert set(git('diff','--name-only',BASE,'HEAD','--','app','src','tools','reference').decode().splitlines())==set(contract['files'])
     for path,item in contract['files'].items():

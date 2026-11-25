@@ -25,8 +25,9 @@ def local_source(store,producer,new=False):
    assert item.name in entries and entries[item.name] in (blob(value),blob(normal)),('Original Git archive member identity differs',item.name,entries.get(item.name))
    if entries[item.name]!=blob(value):line_endings.append(dict(path=item.name,actual_raw_sha256=SHA(value),actual_LF_sha256=SHA(normal),actual_original_Git_blob=entries[item.name]))
  return dict(actual_source=producer,source_type='EXPLICIT_GENUINE_GIT_ARCHIVE_DATA_OF_ACTUAL_LOCAL_COMPILER_NOT_CURRENT_CHECKOUT',tar_sha256=SHA(raw),source_files=len(files),commit_bytes_exact=True,explicit_original_raw_and_LF_source_identities=line_endings)
-def audit(proof):
- contract=json.loads((P/'FROST_BOUNDARY_STATE_CALENDAR04_CONTRACT_V1.json').read_text());cases=contract['representative_cases'];assert len(cases)==11
+def audit(proof,verbose=False):
+ from frost_boundary_state_calendar_metadata import read as read_metadata
+ contract=read_metadata('FROST_BOUNDARY_STATE_CALENDAR04_CONTRACT_V1.json');cases=contract['representative_cases'];assert len(cases)==11
  result=[];provenance=[];used={}
  with ExitStack() as stack:
   stores={}
@@ -66,7 +67,7 @@ def audit(proof):
       batch=json.loads(store.get('current/RESULT.json'));items=[x for x in batch['contexts'] if x['case']['name']==name]
       assert len(items)==1 and items[0]['science'] is not None
      x=case_audit(store,prefix,build,provider,case,producer,opt,control,refusals,trial_flux=case['bottom']==8);result.append(dict(platform=platform,original_archive_sha256=store.record['sha256'],**x))
-     print('INDEPENDENT_ACTUAL_FROST_BOUNDARY_CALENDAR_CONTEXT_PASS',platform,opt,name,flush=True)
+     if verbose:print('INDEPENDENT_ACTUAL_FROST_BOUNDARY_CALENDAR_CONTEXT_PASS',platform,opt,name,flush=True)
   reopened=[]
   from explicit_bottom9_archive_science import ReadView
   from frost_boundary_archive_science import case_audit as parent_audit
@@ -86,7 +87,7 @@ def audit(proof):
      from frost_calendar_terminal_water import PARENT
      assert (build/'terminal_water_receipt.f90').read_text(encoding='cp1252')==receipt_source(PARENT.read_text(encoding='cp1252'))
      reopened.append(dict(platform=platform,original_archive_sha256=store.record['sha256'],**x))
-     print('INDEPENDENT_REOPENED_PARENT_CONVERGENCE_NATIVE_COLD_CONTROLS_PASS',platform,opt,name,flush=True)
+     if verbose:print('INDEPENDENT_REOPENED_PARENT_CONVERGENCE_NATIVE_COLD_CONTROLS_PASS',platform,opt,name,flush=True)
   # The original implicit year failure is a real numerical block, not a PASS.
   blocked=contract['known_numerically_blocked_cases'];assert len(blocked)==1;failures=[]
   for platform in ('WINDOWS','UBUNTU'):
@@ -106,5 +107,5 @@ if __name__=='__main__':
   from frost_boundary_git_archive import GitArchiveSource
   proof=GitArchiveSource(R,a.source_ref)
  else:proof=a.proof
- q=audit(proof);a.output.write_text(json.dumps(q,indent=2)+'\n');print(q['status'],q['actual_compiled_refusals'],flush=True)
+ q=audit(proof,verbose=True);a.output.write_text(json.dumps(q,indent=2)+'\n');print(q['status'],q['actual_compiled_refusals'],flush=True)
 
