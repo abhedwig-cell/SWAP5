@@ -1,0 +1,616 @@
+{
+  "status": "ACTUAL52_SCIENCE_AND_CURRENT16_POSTIMAGES_COMPLETE_PENDING_CURRENT_SOURCE_PUBLICATION_ADMISSION",
+  "work_unit": "SWAP5-NOMACRO-COMPLETE01",
+  "batch": "FROST_BOUNDARY_STATE_CALENDAR04",
+  "classification": "A_NUMERICAL_CONVERGENCE_GUARD_RECEIPT_REPAIR_AND_B_EXISTING_PROCESS_COMPOSITION",
+  "dependency_candidate": "74ecc55765df548e758605f3566bc93558a6fefb",
+  "dependency_PR": 1802,
+  "actual_canonical_at_start": "1c3b8725548c836c9a73570c2579dd6cdc683217",
+  "dependency_admission": "FINAL_HEAD_PUBLIC_ORDINARY_PUBLICATION_FOUR_REAL_NEGATIVES_PASS_CI_AND_ACTUAL_CANONICAL_ADMISSION_PENDING",
+  "scope": "Model1 numerical heat2 Snow/Frost primaryDRA1/DIVD1, explicit original boundary5/8 or fitted implicit5; existing hysteresis0/1/2 and initialization1/2, original monthly/dates/regular/dense reset output. Old dense hys2/initial2 boundary03 dispatch remains literal.",
+  "design": "Explicit Frost/SWDIVD1 SWBOTB8 only, both existing03 dense and new04 calendars; implicit and bottom5 physical postimages unchanged; actual candidate lower flux is supplied to the unchanged day/interval terminal receipt. No physical-state or conservation correction. Existing original clock restored.",
+  "native_codecs": [
+    "S5BCW001",
+    "S5BCC001",
+    "S5BCW002",
+    "S5BCC002"
+  ],
+  "representative_cases": [
+    {
+      "name": "water-b5-i0-h0-p1-regular-r0",
+      "kind": "water",
+      "bottom": 5,
+      "implicit": 0,
+      "hysteresis": 0,
+      "initial": 1,
+      "calendar": "regular",
+      "reset": 0,
+      "start": null,
+      "days": 35
+    },
+    {
+      "name": "cde-b5-i0-h1-p2-monthly-r1",
+      "kind": "cde",
+      "bottom": 5,
+      "implicit": 0,
+      "hysteresis": 1,
+      "initial": 2,
+      "calendar": "monthly",
+      "reset": 1,
+      "start": null,
+      "days": 35
+    },
+    {
+      "name": "water-b8-i0-h1-p1-dates-r1",
+      "kind": "water",
+      "bottom": 8,
+      "implicit": 0,
+      "hysteresis": 1,
+      "initial": 1,
+      "calendar": "dates",
+      "reset": 1,
+      "start": null,
+      "days": 35
+    },
+    {
+      "name": "cde-b8-i0-h0-p2-regular-r1",
+      "kind": "cde",
+      "bottom": 8,
+      "implicit": 0,
+      "hysteresis": 0,
+      "initial": 2,
+      "calendar": "regular",
+      "reset": 1,
+      "start": null,
+      "days": 35
+    },
+    {
+      "name": "water-b5-i1-h1-p1-monthly-r1",
+      "kind": "water",
+      "bottom": 5,
+      "implicit": 1,
+      "hysteresis": 1,
+      "initial": 1,
+      "calendar": "monthly",
+      "reset": 1,
+      "start": null,
+      "days": 35
+    },
+    {
+      "name": "cde-b5-i1-h0-p2-dates-r1",
+      "kind": "cde",
+      "bottom": 5,
+      "implicit": 1,
+      "hysteresis": 0,
+      "initial": 2,
+      "calendar": "dates",
+      "reset": 1,
+      "start": null,
+      "days": 35
+    },
+    {
+      "name": "water-b5-i0-h0-p1-dense-r1",
+      "kind": "water",
+      "bottom": 5,
+      "implicit": 0,
+      "hysteresis": 0,
+      "initial": 1,
+      "calendar": "dense",
+      "reset": 1,
+      "start": null,
+      "days": 35
+    },
+    {
+      "name": "cde-b8-i0-h1-p2-dense-r1",
+      "kind": "cde",
+      "bottom": 8,
+      "implicit": 0,
+      "hysteresis": 1,
+      "initial": 2,
+      "calendar": "dense",
+      "reset": 1,
+      "start": null,
+      "days": 35
+    },
+    {
+      "name": "cde-b5-i1-h1-p1-dense-r1",
+      "kind": "cde",
+      "bottom": 5,
+      "implicit": 1,
+      "hysteresis": 1,
+      "initial": 1,
+      "calendar": "dense",
+      "reset": 1,
+      "start": null,
+      "days": 35
+    },
+    {
+      "name": "water-b5-i0-h2-p2-monthly-r1-year-seam",
+      "kind": "water",
+      "bottom": 5,
+      "implicit": 0,
+      "hysteresis": 2,
+      "initial": 2,
+      "calendar": "monthly",
+      "reset": 1,
+      "start": "2002-12-26",
+      "days": 12
+    },
+    {
+      "name": "cde-b8-i0-h2-p2-dates-r0-year-seam",
+      "kind": "cde",
+      "bottom": 8,
+      "implicit": 0,
+      "hysteresis": 2,
+      "initial": 2,
+      "calendar": "dates",
+      "reset": 0,
+      "start": "2002-12-26",
+      "days": 12
+    }
+  ],
+  "files": {
+    "app/hybrid_water/frost_boundary_composition.py": {
+      "added": false,
+      "proposed_lf_sha256": "30020b96968cc971fb482ce4123f1fe1f2550ae0b33ae31fc1f6bef6c4d5fe0c",
+      "before_lf_sha256": "cc912a9085de43ddd6569e99ccf900ba547d407e21a037b3d27a887e2becf74a",
+      "ordered_literal_edits": [
+        {
+          "base_start": 501,
+          "base_end": 501,
+          "before": "",
+          "after": "    from frost_boundary_state_calendar import input_domain as composed_domain\n    if composed_domain(selectors,boundary,original_output):return True\n"
+        },
+        {
+          "base_start": 990,
+          "base_end": 990,
+          "before": "",
+          "after": "    from frost_boundary_state_calendar import selection as composed_selection\n    composed=composed_selection(directory,original_output)\n    if composed is not None:return composed\n"
+        },
+        {
+          "base_start": 2989,
+          "base_end": 2989,
+          "before": "",
+          "after": "    if selected.get('boundary_state_calendar'):\n        from frost_boundary_state_calendar import codec as composed_codec\n        return composed_codec(selected)\n"
+        },
+        {
+          "base_start": 3304,
+          "base_end": 3360,
+          "before": "    return dict(selected, source_sha256=hashlib.sha256(\n",
+          "after": "    result=dict(selected, source_sha256=hashlib.sha256(\n"
+        },
+        {
+          "base_start": 3481,
+          "base_end": 3481,
+          "before": "",
+          "after": "    if selected.get('boundary_state_calendar'):\n        from frost_boundary_state_calendar import source_identity\n        result['state_calendar_provider_sha256']=source_identity()\n    return result\n"
+        }
+      ]
+    },
+    "app/hybrid_water/frost_calendar_state.py": {
+      "added": false,
+      "proposed_lf_sha256": "b1892f6a97768cc4f6371eefa4c28e6fcee2afa81f62b514d76d503df39a30f3",
+      "before_lf_sha256": "0f3c686f423abc03503f7febf7cf87282fd2a6852baeaa55e9c021aa1a143c9a",
+      "ordered_literal_edits": [
+        {
+          "base_start": 240,
+          "base_end": 240,
+          "before": "",
+          "after": "    from frost_boundary_state_calendar import selection as composed_selection\n    composed=composed_selection(directory,original_output)\n    if composed is not None:return composed\n"
+        }
+      ]
+    },
+    "app/hybrid_water/frost_calendar_output.py": {
+      "added": false,
+      "proposed_lf_sha256": "673130ff2ae6911905eab369b562686c05f3f1412c8f70c13ecd4e2a63858e01",
+      "before_lf_sha256": "c646c05f4e813e1537d9f83bdce750b13a42b3e0eec96cca6f0161d62561f4bc",
+      "ordered_literal_edits": [
+        {
+          "base_start": 2628,
+          "base_end": 2628,
+          "before": "",
+          "after": "    if selected.get('boundary_state_calendar'):\n        from frost_boundary_state_calendar import codec as composed_codec\n        return composed_codec(selected)\n"
+        },
+        {
+          "base_start": 2892,
+          "base_end": 2892,
+          "before": "",
+          "after": "    boundary=input_selection(project.input_directory,project.original_output)\n    policy=boundary['policy'] if boundary.get('boundary_state_calendar') else POLICY\n"
+        },
+        {
+          "base_start": 3223,
+          "base_end": 3223,
+          "before": "",
+          "after": "    if boundary.get('boundary_state_calendar'):providers+=['frost_boundary_state_calendar.py','frost_boundary_composition.py']\n"
+        },
+        {
+          "base_start": 3463,
+          "base_end": 3542,
+          "before": "    return dict(policy=POLICY,native_codec=codec(project).decode(),**selected,\n",
+          "after": "    return dict(policy=policy,native_codec=codec(project).decode(),**selected,\n"
+        }
+      ]
+    },
+    "app/hybrid_water/frost_boundary_state_calendar.py": {
+      "added": true,
+      "proposed_lf_sha256": "55988979de9dc433b6892cfa50668446a0aa2c8168a169cff87a8bb9e898577c"
+    },
+    "app/hybrid_water/daily_coupling.py": {
+      "added": false,
+      "before_lf_sha256": "94277c35b1c385bd1b7ee544cfb0e8d657a2c6c048b0de2858ccdb4333692c69",
+      "proposed_lf_sha256": "b774b3a6a239e56cc7e7d542abd970f460e6b1e5ac305d79567e683f79b3a532",
+      "ordered_literal_edits": [
+        {
+          "base_start": 15655,
+          "base_end": 16241,
+          "before": "    if expected_event and terminal_calendar_selection(project.input_directory,project.original_output) is not None:\n        from frost_calendar_terminal_water import source as terminal_day_source\n        if (bundle/'terminal_water_receipt.f90').read_text(encoding='cp1252')!=terminal_day_source():\n            raise ValueError('Foreign actual calendar terminal day receipt source')\n    elif expected_event and (bundle/'terminal_water_receipt.f90').read_bytes()!=(h.APP/'terminal_water_receipt.f90').read_bytes():\n        raise ValueError('Foreign actual terminal water receipt source')\n",
+          "after": "    from frost_boundary_terminal_trial import enabled as plate_terminal_enabled,receipt_source as plate_terminal_source,validate as validate_plate_terminal\n    if expected_event:\n        expected_terminal=(h.APP/'terminal_water_receipt.f90').read_text(encoding='cp1252')\n        if terminal_calendar_selection(project.input_directory,project.original_output) is not None:\n            from frost_calendar_terminal_water import source as terminal_day_source\n            expected_terminal=terminal_day_source()\n        if plate_terminal_enabled(project):expected_terminal=plate_terminal_source(expected_terminal)\n        if (bundle/'terminal_water_receipt.f90').read_text(encoding='cp1252')!=expected_terminal:\n            raise ValueError('Foreign actual terminal water receipt source')\n        validate_plate_terminal(bundle,project)\n"
+        }
+      ]
+    },
+    "app/hybrid_water/daily_host.py": {
+      "added": false,
+      "proposed_lf_sha256": "4a7b4ac11874281cf6c472db1409d837498d35b443f2bb5d771e0e691aec4bbe",
+      "before_lf_sha256": "517fb178f1e5b085412ab4904a1160e76ca70bfa5e7669fc1940cd0d54248189",
+      "ordered_literal_edits": [
+        {
+          "base_start": 60808,
+          "base_end": 60808,
+          "before": "",
+          "after": "    from frost_boundary_terminal_trial import apply_build as plate_terminal_build\n    patched=plate_terminal_build(output,project,patched)\n"
+        }
+      ]
+    },
+    "app/hybrid_water/frost_boundary_terminal_trial.py": {
+      "added": true,
+      "proposed_lf_sha256": "27b13684463fcc467dbaabfafab497549f98e3d12552cd3ecd8d65d6a2283f19"
+    }
+  },
+  "held_fixed": [
+    "src",
+    "tools",
+    "reference",
+    "implicit_frost_root_state.py",
+    "implicit_frost_surface_conductivity.py",
+    "frost_divdra_overlap.py",
+    "frost_reference.py",
+    "all parent scientific raw bytes"
+  ],
+  "qualification": "Real public loads and excluded-mode controls; preserve old named selection/default root bytes and exact parent source inverse; targeted actual O0/O2 build and scientific smoke then independent Ubuntu/Windows complete selected periods, original daily/prefix budgets, active Snow/Frost, complete native/cold/user output, compiled refusals and real transactions. Reuse parent periods only through actual unchanged dependency/postimage evidence. Final public/CI/merge admission requires genuine parent PR1802 receipt.",
+  "original_reference_limit": "Prior original executable and same-object stack-only relink crash at initialization including existing boundary6 control; preserve those failed/censored raw, no repeat merely metadata and no legacy equivalence claim.",
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "canonical_admission": false,
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false,
+  "read_only_runtime_witnesses": {
+    "tests/nomacro_drainage/frost_calendar_state_runtime.py": {
+      "before_lf_sha256": "d167419248908272d36544bbcbc75596322779d91c7ae89f996500b4dfe3a8ba",
+      "proposed_lf_sha256": "a54d0882235caa8092d110a5e8c2b18c5c6c4d5147d68f173c9deafdf856e9f3",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1880,
+          "base_end": 1880,
+          "before": "",
+          "after": "selected.get('bottom',"
+        },
+        {
+          "base_start": 1881,
+          "base_end": 1881,
+          "before": "",
+          "after": ")"
+        }
+      ],
+      "scope": "Read actual selected bottom in existing native witness; add real foreign codec controls. Existing independent budgets, periods, process source and 1e-10 guards unchanged."
+    },
+    "tests/nomacro_drainage/frost_calendar_state_root_controls.py": {
+      "before_lf_sha256": "d3db3112b1908eba21cc518b9611343721be3e3c4db7603f25a1b51a10e5b80b",
+      "proposed_lf_sha256": "b008ff1c5fde5787e75bfaf3a4a22423be966d5ef1d38e0a6a54ffd7b2fe3d34",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1241,
+          "base_end": 1243,
+          "before": "mo",
+          "after": "selecte"
+        },
+        {
+          "base_start": 1244,
+          "base_end": 1245,
+          "before": "e",
+          "after": ""
+        },
+        {
+          "base_start": 1329,
+          "base_end": 1329,
+          "before": "",
+          "after": "\n    mode=selected"
+        },
+        {
+          "base_start": 1339,
+          "base_end": 1339,
+          "before": "",
+          "after": ";bottom=selected['SWBOTB'];assert bottom in (5,6,8)"
+        },
+        {
+          "base_start": 1470,
+          "base_end": 1471,
+          "before": "6",
+          "after": "bottom"
+        }
+      ],
+      "scope": "Read actual selected bottom in existing native witness; add real foreign codec controls. Existing independent budgets, periods, process source and 1e-10 guards unchanged."
+    },
+    "tests/nomacro_drainage/frost_calendar_state_extra_native.py": {
+      "before_lf_sha256": "29c3ececebdc5f73704ef84d1a80b1e437ff754e56965a3da73d5875b013c5ea",
+      "proposed_lf_sha256": "a8cd215a5212ed9fd317cdd9088979a68a3fa0c514db7c4bde2d73077d0af505",
+      "ordered_literal_edits": [
+        {
+          "base_start": 602,
+          "base_end": 602,
+          "before": "",
+          "after": ",\n            b'S5FBW001',b'S5FBC001',b'S5FBW002',b'S5FBC002',b'S5BCW001',b'S5BCC001',b'S5BCW002',b'S5BCC002'"
+        },
+        {
+          "base_start": 603,
+          "base_end": 603,
+          "before": "",
+          "after": "\n    assert len(set(codecs))==16 and good[:8] in codecs"
+        },
+        {
+          "base_start": 3582,
+          "base_end": 3582,
+          "before": "",
+          "after": "len(attacks)=="
+        },
+        {
+          "base_start": 3584,
+          "base_end": 3585,
+          "before": "1",
+          "after": "9"
+        },
+        {
+          "base_start": 3609,
+          "base_end": 3611,
+          "before": "27",
+          "after": "35"
+        }
+      ],
+      "scope": "Sixteen distinct known codecs, fifteen actual foreign codec refusals, unchanged20Snow attacks and four extra CDE-private attacks. Correct explicit totals35water/39CDE; no native check or physical limit weakened."
+    }
+  },
+  "implementation_source": "b7d347ec9c95193f571e79f149543667871d82bf",
+  "local_scientific_progress": {
+    "actual_compiler_source": "3feb51229a980331bc12be2d1d265bef7ae6691a",
+    "Windows_O0_full35_and_cold": "PASS",
+    "Windows_O2_full35_and_cold": "PASS",
+    "native_refusal_controller": "Actual39existing and35expanded raw refusals completed before stale aggregate count assertion; raw data and failed reports retained; independent read-only recovery and previously unexecuted real transactions pending.",
+    "compiler_or_model_replay_for_count_correction": false
+  },
+  "original_scientific_workflows": {
+    ".github/workflows/nomacro-frost-boundary-state-calendar04-ubuntu.yml": "6286e8fd56aafc1ffa16c2af7892f03cbd9ee046bde4a30e8f58ff01fb372dfc",
+    ".github/workflows/nomacro-frost-boundary-state-calendar04-windows.yml": "cb7c2e4b8aa4f8bbaa948107bcf6248af734053580951c5688e0d6d7b6e5eccf"
+  },
+  "qualification_plan_counts": {
+    "contexts": 48,
+    "primary_days": 1404,
+    "native_samples": 276,
+    "exact_cold_windows": 120,
+    "actual_compiled_refusals_expected": 3144,
+    "transaction_contexts_expected": 72,
+    "counts_are_target_not_completed": true,
+    "local_Windows_water_full35_contexts": 2,
+    "remaining_Windows_CI_contexts": 22,
+    "Ubuntu_CI_contexts": 24
+  },
+  "local_original_science": {
+    "archive": "FROST_BOUNDARY_STATE_CALENDAR04_LOCAL_WINDOWS_O0_O2_RAW_V1.json",
+    "sha256": "467fbb274a89a4137b91d6f8c7469856236634b8dcf2b2e76af48e7152e85415",
+    "summary": "FROST_BOUNDARY_STATE_CALENDAR04_LOCAL_WINDOWS_CENTRAL_V1.json",
+    "actual_compiler_source": "3feb51229a980331bc12be2d1d265bef7ae6691a",
+    "contexts": 2,
+    "primary_days": 70,
+    "native_samples": 14,
+    "exact_cold_windows": 6,
+    "compiled_refusals": 148,
+    "transaction_contexts": 4,
+    "full_model_replays_for_read_only_control_count_fix": 0
+  },
+  "parent_PR1802_external_CI_issue": "Final74ecc candidate PUBLIC/ordinary publication/four actual pushed negatives pass. LRV cancelled during checkout before compilers/models; exact job and single-job workflow rerun endpoints returnHTTP500 through connector and direct authenticated API. Original logs/API receipts retained. Parent canonical admission remains pending; no scientific or CI criterion waived.",
+  "first_scientific_epoch": {
+    "actual_source": "71806beaee8e532af407ab88298b7bde4ac766c2",
+    "completed_with_local_contexts": 12,
+    "completed_primary_days": 420,
+    "native_samples": 84,
+    "exact_cold_windows": 36,
+    "actual_compiled_refusals": 924,
+    "transaction_contexts": 24,
+    "failed_profile": "cde-b8-i0-h0-p2-regular-r1",
+    "failed_repeated_contexts": 4,
+    "failed_accepted_days": 21,
+    "failed_rejected_day": 22,
+    "water_residual_cm": "1.812687009522529e-8",
+    "unmodified_limit_cm": "1e-10",
+    "root_cause": "NOT_PROVEN",
+    "all_failed_raw_preserved": true
+  },
+  "second_scientific_epoch": {
+    "actual_source": "83810c95b433bf48f8b1bc7c87b005dbe24af197",
+    "Ubuntu_run": 45658886517,
+    "Windows_run": 45658886508,
+    "remaining_contexts": 32,
+    "APP_src_tools_tests_reference_unchanged": true,
+    "completed_period_replays": 0,
+    "qualified_actual_failure_waived": false,
+    "status": "FAILED_ORIGINALS_PRESERVED",
+    "diagnostic": "FROST_BOUNDARY_STATE_CALENDAR04_SECOND_ORIGINALS_DIAGNOSTIC_V2.json"
+  },
+  "third_scientific_epoch": {
+    "status": "ALL_TERMINAL_FAILED_ORIGINAL_BYTES_PRESERVED",
+    "Ubuntu_cases": [
+      "cde-b5-i1-h1-p1-dense-r1",
+      "water-b5-i0-h2-p2-monthly-r1-year-seam",
+      "cde-b8-i0-h2-p2-dates-r0-year-seam",
+      "cde-b5-i1-h2-p2-regular-r0-year-seam"
+    ],
+    "Windows_cases": [
+      "water-b5-i0-h2-p2-monthly-r1-year-seam",
+      "cde-b8-i0-h2-p2-dates-r0-year-seam",
+      "cde-b5-i1-h2-p2-regular-r0-year-seam"
+    ],
+    "prior_completed_periods_replayed": 0,
+    "APP_src_tools_reference_unchanged": true,
+    "changed_controller": "tests/nomacro_drainage/frost_boundary_state_calendar_inputs.py",
+    "input_fix": "Shift genuine varying DATE5 table by same start-date offset already applied to IRDATE; values/order preserved.",
+    "previous_failed_year_case": "INVALID_TEST_TEMPLATE_ORIGINAL_READER_REFUSAL",
+    "numerical_day22_day25_failure_waived": false,
+    "source": "dcae412aae8f65acb48b1e37431334c2c522c071",
+    "Ubuntu_run": 45666500370,
+    "Windows_run": 45666500285,
+    "completed_contexts": 10,
+    "completed_primary_days": 166,
+    "total_completed_all_unchanged_source_epochs": 38,
+    "failed_implicit_year_contexts": 4,
+    "failure": "Implicit original retry reached clock resolution at day5, four original platform/optimization contexts; bounds unchanged.",
+    "diagnostic": "FROST_BOUNDARY_STATE_CALENDAR04_THIRD_ORIGINALS_DIAGNOSTIC_V3.json"
+  },
+  "numerical_plate_event_closure": {
+    "status": "SUPERSEDED_AFTER_CONVERGENCE_WARNING_DISCOVERY",
+    "original_record": {
+      "classification": "A_NUMERICAL_TIME_EXECUTION_REPAIR",
+      "scope": "Only new boundary_state_calendar selection with explicit SWBOTB8; parent03, all bottom5 and implicit routes unchanged",
+      "original_source": "71806beaee8e532af407ab88298b7bde4ac766c2",
+      "actual_observation": "RESULT_V2.json in clock diagnostic archive",
+      "observed_day": 22,
+      "actual_integrated_duration": "0.999999992172108332",
+      "existing_dtCrit": "1e-8 unchanged",
+      "water_limit_cm": "1e-10 unchanged",
+      "original_defect": "TimeControl task5 reduces to dtmin and returns without reapplying event closure; task3 accepts near-EOD while once-daily Snow already advanced full day.",
+      "failed_counterfactual": "Print event alignment alone did not fix the real failure; RESULT_V3 preserved.",
+      "successful_counterfactual": "Same original compiled closure plus print alignment and existing event rule after failed-step reduction completes35days; diagnostic only, no restart or independent qualification claim.",
+      "model_equations_changed": false,
+      "mass_flux_stock_or_residual_corrections": false,
+      "implicit_retry_limit_changed": false,
+      "required_new_science": "Windows/Ubuntu O0/O2 four representative explicit plate configurations; local original failed regular case O0/O2 first.",
+      "unaffected_evidence": "Reuse bottom5 periods only after exact current emitted physical postimage comparison; no metadata-only full-period replay.",
+      "diagnostic_archive": "FROST_BOUNDARY_STATE_CALENDAR04_ACTUAL_CLOCK_DIAGNOSTIC_AND_READERS_RAW_V1.json"
+    }
+  },
+  "fourth_scientific_epoch": {
+    "status": "ALL_FOUR_REAL_CI_JOBS_PASS_ORIGINAL_RAW_ALL_BYTES_PRESERVED",
+    "source_anchor": "060c66cb8343019e9b9f5ef0be07ddd9f61311f4",
+    "local_science_source": "0566877f3d1ef27a472c4fae6f5275e8e76871a4",
+    "local_complete_contexts": 2,
+    "local_primary_days": 70,
+    "local_refusals": 166,
+    "local_transactions": 4,
+    "workflow_cases": {
+      "ubuntu": [
+        "water-b8-i0-h1-p1-dates-r1",
+        "cde-b8-i0-h0-p2-regular-r1",
+        "cde-b8-i0-h1-p2-dense-r1",
+        "cde-b8-i0-h2-p2-dates-r0-year-seam"
+      ],
+      "windows": [
+        "water-b8-i0-h1-p1-dates-r1",
+        "cde-b8-i0-h1-p2-dense-r1",
+        "cde-b8-i0-h2-p2-dates-r0-year-seam"
+      ]
+    },
+    "remaining_affected_contexts": 14,
+    "original_failed_implicit_year_unchanged": true,
+    "unchanged_bottom5_full_periods_selected_for_replay": 0,
+    "unaffected_bottom5_actual_postimage_preservation_gate": "PENDING",
+    "canonical_admission": false,
+    "actual_source": "0fae846dec07fb3b1a317a55b975accbbf110128",
+    "Ubuntu_run": 45671144167,
+    "Windows_run": 45671144337,
+    "completed_CI_contexts": 14,
+    "completed_total_plate_contexts": 16,
+    "primary_plate_days_with_local": 468
+  },
+  "known_numerically_blocked_cases": [
+    {
+      "name": "cde-b5-i1-h2-p2-regular-r0-year-seam",
+      "kind": "cde",
+      "bottom": 5,
+      "implicit": 1,
+      "hysteresis": 2,
+      "initial": 2,
+      "calendar": "regular",
+      "reset": 0,
+      "start": "2002-12-26",
+      "days": 12
+    }
+  ],
+  "blocked_new_implicit_hysteresis2_calendar_domain": {
+    "classification": "NUMERICAL_FAILURE",
+    "actual_source": "dcae412aae8f65acb48b1e37431334c2c522c071",
+    "day": 5,
+    "accepted_days": 4,
+    "actual_four_original_failures": "Implicit original retry reached clock resolution",
+    "hard_public_exclusion": "New implicit hysteresis2 calendars remain closed; original admitted boundary03 hysteresis2 initial2 dense route is unchanged.",
+    "raw": "FROST_BOUNDARY_STATE_CALENDAR04_THIRD_ORIGINALS_DIAGNOSTIC_V3.json",
+    "solver_bounds_or_restart_mass_limits_changed": false
+  },
+  "postimage_candidate_scope": {
+    "representative_cases": 11,
+    "contexts_if_all_gates_pass": 44,
+    "full35_contexts": 36,
+    "year12_contexts": 8,
+    "whole_functional_completion": "PARTIAL",
+    "canonical_admission": false
+  },
+  "bottom5_postimage_workflows": {
+    ".github/workflows/nomacro-frost-boundary-state-calendar04-postimages-ubuntu.yml": {
+      "sha256": "8d1a949b92a7a647b79bafddae6210801fd00573a72498e47c08186e83faad73",
+      "model_executions": 0
+    },
+    ".github/workflows/nomacro-frost-boundary-state-calendar04-postimages-windows.yml": {
+      "sha256": "3e1a8b190e0c6a78764d6ddd4f8c954693dea6fa0cf4f29be6ab017c42f1d9b2",
+      "model_executions": 0
+    }
+  },
+  "current_public_reader": {
+    "status": "CURRENT_PUBLIC_COMPOSITIONS_HARD_REFUSALS_PARENT_SELECTIONS_AND_UNCHANGED_ROOT_PROVIDER_SOURCE_PASS_NOT_SCIENTIFICALLY_QUALIFIED",
+    "record": "FROST_BOUNDARY_STATE_CALENDAR04_INPUT_CONTRACT_V2.json",
+    "sha256": "a2d86c8f6708f229c3f64e180c01542178da30fb0709a5126f008bdad55dbb33",
+    "actual_source": "a5ce23a703177dd4e2c90fd0aa9c3eadd9d494b6",
+    "recognized_cases": 11,
+    "actual_hard_refusals": 14,
+    "old_parent_selections_unchanged": 6,
+    "compiler_executions": 0,
+    "model_executions": 0
+  },
+  "source_scope_guard_delta_after_science": {
+    "scientific_source": "0fae846dec07fb3b1a317a55b975accbbf110128",
+    "actual_narrowed_reader_source": "a5ce23a703177dd4e2c90fd0aa9c3eadd9d494b6",
+    "only_new_APP_delta": "One additional implicit SWKIMPL1/SWHYST2 refusal predicate in new composition's input_domain; no generated numerical source arithmetic changes.",
+    "actual_11_accepted_and_14_refused_cases_verified": true,
+    "old_03_dense_hysteresis2_implicit_path_retained": true
+  },
+  "numerical_trial_receipt_repair": {
+    "record": "FROST_BOUNDARY_STATE_CALENDAR04_TERMINAL_TRIAL_DISCOVERY_V1.json",
+    "scope": "Explicit Frost/SWDIVD1 SWBOTB8 only, both existing03 dense and new04 calendars; implicit and bottom5 physical postimages unchanged",
+    "required_qualification": "24 actual platform/optimization plate contexts incl two reopened03 case families: local2 complete, remaining22 CI. Unchanged bottom5 inherits only exact physical postimages.",
+    "local_actual_source": "dfb4337cb5fffcf70b1fa20a672683c6ea034690",
+    "local_O0_O2": "PASS_FULL35_NATIVE_COLD_COMPILED_CONTROLS_ZERO_WARNINGS",
+    "remaining_affected_actual_CI_contexts": 22
+  },
+  "physical_compiler_source": "dfb4337cb5fffcf70b1fa20a672683c6ea034690",
+  "new_scientific_record": "FROST_BOUNDARY_STATE_CALENDAR04_COMPLETE52_CENTRAL_V1.json",
+  "current_physical_postimage_record": "FROST_BOUNDARY_STATE_CALENDAR04_CURRENT16_POSTIMAGE_CENTRAL_V1.json",
+  "parent_plate_requalification": "EIGHT_ACTUAL_CURRENT_FULL35_NATIVE_COLD_CONTROLS_ZERO_CONVERGENCE_WARNINGS_PASS_NOT_ADMITTED",
+  "source_owner": "tests/nomacro_drainage/frost_boundary_state_calendar_verify.py",
+  "expected_current_coadmission_contexts": 568,
+  "current04_metadata_api": {
+    "file": "tests/nomacro_drainage/frost_boundary_state_calendar_metadata.py",
+    "scope": "Only flat current04 JSON metadata",
+    "authority": "Actual HEAD Git blob equals actual stage0 index blob; existing working file must match exact bytes or declared original Git LF text; absent working metadata requires real skip-worktree S.",
+    "scientific_raw": "Explicit immutable GitArchiveSource/Archive bytes retain original member hashes and identities",
+    "sparse_patterns_or_source_identity_projected": false,
+    "compiler_executions": 0,
+    "model_executions": 0
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "status": "FIRST_ORIGINAL_COHORTS_FAILED_PROFILE_RETAINED_COMPLETED_PRECEDING_PERIODS_PRESERVED_NOT_ADMITTED",
+  "actual_source": "71806beaee8e532af407ab88298b7bde4ac766c2",
+  "archives": [
+    {
+      "name": "FROST_BOUNDARY_STATE_CALENDAR04_UBUNTU_O0_ORIGINAL_V1",
+      "sha256": "b7cb352caf1d1911cd305afdf12a44ac7c9b278e59d8bb1c00de5f673d8900a6",
+      "bytes": 45862807,
+      "members": 7761,
+      "completed_contexts": 3
+    },
+    {
+      "name": "FROST_BOUNDARY_STATE_CALENDAR04_UBUNTU_O2_ORIGINAL_V1",
+      "sha256": "4e0bc97d1c238f4844de1bb1eff210a58b7125488e75c10b2aac7a0eda24edbd",
+      "bytes": 45949866,
+      "members": 7761,
+      "completed_contexts": 3
+    },
+    {
+      "name": "FROST_BOUNDARY_STATE_CALENDAR04_WINDOWS_O0_ORIGINAL_V1",
+      "sha256": "c00c6f638b5d20f0be81071449854a056ec8271ab577053e06150f81f5176940",
+      "bytes": 35236437,
+      "members": 5498,
+      "completed_contexts": 2
+    },
+    {
+      "name": "FROST_BOUNDARY_STATE_CALENDAR04_WINDOWS_O2_ORIGINAL_V1",
+      "sha256": "040215a8c009e12a8fa7d744b4bc78152b8a574ceb95760ab8a98494414ce177",
+      "bytes": 35310969,
+      "members": 5498,
+      "completed_contexts": 2
+    }
+  ],
+  "completed_contexts": 10,
+  "completed_primary_days": 350,
+  "native_samples": 70,
+  "exact_cold_windows": 30,
+  "actual_compiled_refusals": 776,
+  "transaction_contexts": 20,
+  "failed_profile": "cde-b8-i0-h0-p2-regular-r1",
+  "failure_classification": "NUMERICAL_FAILURE_WATER_GUARD_REJECTION_ROOT_CAUSE_NOT_PROVEN",
+  "failed_profiles": [
+    {
+      "platform": "UBUNTU",
+      "optimization": "O0",
+      "accepted_days": 21,
+      "rejected_day": 22,
+      "water_residual_cm": "1.812687009522529E-8",
+      "kernel_residual_cm": "-1.8126878886803865E-8",
+      "chemical_residual_mg_cm2": "-6.100829378721584E-15",
+      "original_integrated_guard_residual_cm": "3.745521671001629E-15",
+      "budget_step_retries": 0,
+      "actual_cause": "NOT_PROVEN",
+      "no_tolerance_or_inventory_or_flux_correction": true
+    },
+    {
+      "platform": "UBUNTU",
+      "optimization": "O2",
+      "accepted_days": 21,
+      "rejected_day": 22,
+      "water_residual_cm": "1.812687009522529E-8",
+      "kernel_residual_cm": "-1.8126878886803865E-8",
+      "chemical_residual_mg_cm2": "-6.100829378721584E-15",
+      "original_integrated_guard_residual_cm": "3.745521671001629E-15",
+      "budget_step_retries": 0,
+      "actual_cause": "NOT_PROVEN",
+      "no_tolerance_or_inventory_or_flux_correction": true
+    },
+    {
+      "platform": "WINDOWS",
+      "optimization": "O0",
+      "accepted_days": 21,
+      "rejected_day": 22,
+      "water_residual_cm": "1.812687009522529E-8",
+      "kernel_residual_cm": "-1.8126878886803865E-8",
+      "chemical_residual_mg_cm2": "-1.109762565190038E-14",
+      "original_integrated_guard_residual_cm": "-6.14755591403374E-15",
+      "budget_step_retries": 0,
+      "actual_cause": "NOT_PROVEN",
+      "no_tolerance_or_inventory_or_flux_correction": true
+    },
+    {
+      "platform": "WINDOWS",
+      "optimization": "O2",
+      "accepted_days": 21,
+      "rejected_day": 22,
+      "water_residual_cm": "1.812687009522529E-8",
+      "kernel_residual_cm": "-1.8126878886803865E-8",
+      "chemical_residual_mg_cm2": "-1.109762565190038E-14",
+      "original_integrated_guard_residual_cm": "-6.14755591403374E-15",
+      "budget_step_retries": 0,
+      "actual_cause": "NOT_PROVEN",
+      "no_tolerance_or_inventory_or_flux_correction": true
+    }
+  ],
+  "local_completed_contexts": 2,
+  "total_with_local_completed_contexts": 12,
+  "total_with_local_primary_days": 420,
+  "remaining_unexecuted_contexts": 32,
+  "failed_repeated_contexts": 4,
+  "whole_historical_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false
+}

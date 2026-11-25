@@ -1,0 +1,796 @@
+{
+  "status": "ORIGINAL_WHOLE_ARCHIVES_AND_CONVERGENCE_DIAGNOSTICS_PASS_NOT_ADMITTED",
+  "actual_source": "36be92ae8aa7fe56b604c685d55af32c4a89f3b4",
+  "archives": [
+    {
+      "optimization": "O0",
+      "archive": "FROST_BOUNDARY_STATE_CALENDAR04_WINDOWS_O0_ORIGINAL_V5",
+      "sha256": "fdc1d84110ebd42bbd360b5c500eb4db37fa5093675a370e123a06475ac552a2",
+      "bytes": 50822006,
+      "contexts": [
+        {
+          "case": {
+            "name": "water-b8-i0-h1-p1-dates-r1",
+            "kind": "water",
+            "bottom": 8,
+            "implicit": 0,
+            "hysteresis": 1,
+            "initial": 1,
+            "calendar": "dates",
+            "reset": 1,
+            "start": null,
+            "days": 35
+          },
+          "reopened_parent": false,
+          "convergence": {
+            "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+            "files": [
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002013F0FD150>",
+                "sha256": "8c900c74a6bd0239ada0406a40d6a17b32994f4a6adc09791c3b93b6fcab80ca"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002013F1A19A0>",
+                "sha256": "e867a7d482691dfc6f44dce542d759584657e85e44b812ff55539717486eae43"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A0AEB0>",
+                "sha256": "3e5c99eae5b215fe4aa3c23cd1d02aec423dfd895cca68ff3fa05c808674d950"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A24710>",
+                "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A24950>",
+                "sha256": "e792a75d649c4cafd2b6e8b781dcf884eb2f84b2acd55cc2efa2854e49e84bb2"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A24AD0>",
+                "sha256": "911875b6237f4c74ae535244968886378e56c5786d75c42601bc54fcb2b14dec"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25010>",
+                "sha256": "736bec38f9ca184352130df02c41a531b6c1e8efeb79691b3c328423727681d2"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25190>",
+                "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A253D0>",
+                "sha256": "84b338b4c53e69b389852704a6e6ef899975f26ebb01c0132df03900cc217405"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25550>",
+                "sha256": "ffae6f1d5942265a2231d5acc7331c852d5dd422665ba5ca061ed5f2c4f25126"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25A90>",
+                "sha256": "dbc1d91a2e6143425e878202b86deea38df578ca2df2acb327ad731436c099f8"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25C10>",
+                "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A26030>",
+                "sha256": "e166edc68bbe0707417cfc6817baa8b95c1f08826aecdaebf00d57bd18c52284"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A261B0>",
+                "sha256": "4083cfdde16970a78441fd88f447b354bc317725b87baee6a17c94a4c03351aa"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A26630>",
+                "sha256": "befd7656c599128accf1dfaa0964f5b99c71705ff8c9c27ad0fc2991afee200c"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A267B0>",
+                "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+              }
+            ],
+            "unconverged_continuations": 0
+          }
+        },
+        {
+          "case": {
+            "name": "cde-b8-i0-h1-p2-dense-r1",
+            "kind": "cde",
+            "bottom": 8,
+            "implicit": 0,
+            "hysteresis": 1,
+            "initial": 2,
+            "calendar": "dense",
+            "reset": 1,
+            "start": null,
+            "days": 35
+          },
+          "reopened_parent": false,
+          "convergence": {
+            "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+            "files": [
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A24890>",
+                "sha256": "0d869e278978cbdff7d0c6f3f5e7f91ebee72b04e6530288814786d758b9331b"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A24A10>",
+                "sha256": "14b41884bfc253aa9aeae36ebcc4dfea61b4876aaa75adf20c41156263a1aea5"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A24F50>",
+                "sha256": "db5912062d258f91f20477735cd7076fc40dcc6e958b0cdb274d010d28a28a2c"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A250D0>",
+                "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25310>",
+                "sha256": "bda79e2827252d5fa614228e437ff2410079f3d10a7b832b8599c597f5297584"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25490>",
+                "sha256": "37bdebb6f6f64c3a93d2e05f0bfe662db0de497bab73874f23703d453a1ce250"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A259D0>",
+                "sha256": "549ec6392a4f5167a1cd941553ee3fe2e7f7e9b013de1013782b7fe5cd2326a3"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25B50>",
+                "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25D90>",
+                "sha256": "1e880cefab3aa5693ff3e0ecf3211ea45078b422328b8f918c54d475e69b4ea3"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25F10>",
+                "sha256": "d6f48548889655d213277167820a7e0b65abdf70aa1ece3e9653e8886c61c80f"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A26450>",
+                "sha256": "83dcb4d74c4b9e9342d32dc452707926a4a95c9476e2c02d086cbe7da4e5ce60"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A265D0>",
+                "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A26C30>",
+                "sha256": "124fde5cf1c7d6a5c6a4f09a5c03e53cf1d5a17eecdd98395e2a5618e5af8d4d"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A26DB0>",
+                "sha256": "dd82923f69ba7b0e7574466f7e5a59d7793a1ed4ee4f41dcd770e061a3950db7"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A27230>",
+                "sha256": "f6c8cff4320a2929e8d1c42beac787e8b803f57e3809acd87785bd04a83e69b4"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A273B0>",
+                "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+              }
+            ],
+            "unconverged_continuations": 0
+          }
+        },
+        {
+          "case": {
+            "name": "cde-b8-i0-h2-p2-dates-r0-year-seam",
+            "kind": "cde",
+            "bottom": 8,
+            "implicit": 0,
+            "hysteresis": 2,
+            "initial": 2,
+            "calendar": "dates",
+            "reset": 0,
+            "start": "2002-12-26",
+            "days": 12
+          },
+          "reopened_parent": false,
+          "convergence": {
+            "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+            "files": [
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A24890>",
+                "sha256": "119e2bf24feb147c4e2554f4df7106059f1632aec8a4d130b2ca87747b7b810c"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A24A10>",
+                "sha256": "a1167aafab92eb56fe945cfcabb284fe298fac5bef886031d82545fdfb3d1cc6"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A24F50>",
+                "sha256": "b47d332bef6cfa70439d684bef0db4bf82ba6eb655aaf76f39de77de9440eab9"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A250D0>",
+                "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25310>",
+                "sha256": "9987a5ca57856c88f73bb385499e49e3470b913b786c41981b225827347e2015"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25490>",
+                "sha256": "6deef885a8e7deebd6be4f0ea5cda3a484f0c4766099cf5f2b420349b184bbe1"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25910>",
+                "sha256": "bce40a6be36be8db318f12a5a9effca5178a6177f4c2ff0f11893019a9f0a418"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25A90>",
+                "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+              }
+            ],
+            "unconverged_continuations": 0
+          }
+        },
+        {
+          "case": {
+            "name": "water-bottom8-implicit0-hys2-initial2",
+            "kind": "water",
+            "bottom": 8,
+            "implicit": 0,
+            "hysteresis": 2,
+            "initial": 2,
+            "days": 35
+          },
+          "reopened_parent": true,
+          "convergence": {
+            "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+            "files": [
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A24950>",
+                "sha256": "b041d3b1b506ff7f320923cca23886db0a42fc450a4028dcc41cad7204fa65e2"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A24AD0>",
+                "sha256": "e7e5067f3c6faa2ed4cd9f8ef261563557ef8a8b2cb7248ed7e67318abd8d516"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25010>",
+                "sha256": "cb8d02afd928cedf66092db7dccd84dc60d641b906ce7e7474d95602259b57f6"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25190>",
+                "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A253D0>",
+                "sha256": "5d4048ac63ceb2232615abaec2879c89a8a5bcac4858942a8ca6f42d93700abc"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25550>",
+                "sha256": "09264a83400dbe90f8687ae4c182526e31fa633a14d47878b381536491d1f2b7"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A24530>",
+                "sha256": "fb9b663f9c1b0b8b40f3b85773855726c72c436896b5010360636f99d25c7871"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25C10>",
+                "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25E50>",
+                "sha256": "cce42807c4e9ed9d6d6fd2521d8aaacb164790d3d8c67a0d52b78e4ae1ca9a3a"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25FD0>",
+                "sha256": "e06a80a1be340603bf1f380bd7d2182a0a0f22d240d8ed8c3285b30b460ac187"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A26510>",
+                "sha256": "9503565f154ecbfb9fd2b51a092ccb4acb9ca36583bbb7b9480eda9c97d0ca25"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A26690>",
+                "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A26CF0>",
+                "sha256": "83362f31aed5dea05854c3fec1da6d75be975300e7980e8f63d8f4a6cf8b68dc"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A26E70>",
+                "sha256": "eb08118392bfc7a6f8fab694d576836d177b1530fa2ca86107b94b271a5e2916"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A272F0>",
+                "sha256": "c8a7d4d0d63757a3fe9c0fb7d4b5d9dd719409b5860fce95103ae2a9ba1064bf"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A27470>",
+                "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+              }
+            ],
+            "unconverged_continuations": 0
+          }
+        },
+        {
+          "case": {
+            "name": "cde-bottom8-implicit0-hys2-initial2",
+            "kind": "cde",
+            "bottom": 8,
+            "implicit": 0,
+            "hysteresis": 2,
+            "initial": 2,
+            "days": 35
+          },
+          "reopened_parent": true,
+          "convergence": {
+            "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+            "files": [
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A24950>",
+                "sha256": "b041d3b1b506ff7f320923cca23886db0a42fc450a4028dcc41cad7204fa65e2"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A24AD0>",
+                "sha256": "7b7e2674934e42eb1a7ec3048bb173a3967a0ce553208a89db082cb4d1d67524"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25010>",
+                "sha256": "9b76e3324db142b3ea61b9158a1b2f7754a6fdaf80a0f39912e4562e22faec52"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25190>",
+                "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A253D0>",
+                "sha256": "5d4048ac63ceb2232615abaec2879c89a8a5bcac4858942a8ca6f42d93700abc"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25550>",
+                "sha256": "e2ea266c61aee00a6f65a8842ffb512bddb28ef2456d0419c826477a79181b89"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A24530>",
+                "sha256": "41c27f73f73f33b8b4afb01d46e7758fc888b2a389b276807161c6dceb7e1f69"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25C10>",
+                "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25E50>",
+                "sha256": "cce42807c4e9ed9d6d6fd2521d8aaacb164790d3d8c67a0d52b78e4ae1ca9a3a"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A25FD0>",
+                "sha256": "f026b0986e5053b0c07f914962fd697f622b1e068a8a90f77770a31690f85aac"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A26510>",
+                "sha256": "ad4fd9e540368d5ae4530c93a9270936177bef29c79d9eda564b4450dc2ea82c"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A26690>",
+                "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A26CF0>",
+                "sha256": "83362f31aed5dea05854c3fec1da6d75be975300e7980e8f63d8f4a6cf8b68dc"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A26E70>",
+                "sha256": "0d111901ba8d7dda0a93dcaa4613894786e9cfae43942f6a5a0c9ded477c3ad5"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A272F0>",
+                "sha256": "d45917101d05ab2dc75b68fd36f7ef83dac74b68c75e861126fc64baa5bdde1b"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A273B0>",
+                "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+              }
+            ],
+            "unconverged_continuations": 0
+          }
+        }
+      ]
+    },
+    {
+      "optimization": "O2",
+      "archive": "FROST_BOUNDARY_STATE_CALENDAR04_WINDOWS_O2_ORIGINAL_V5",
+      "sha256": "ac678c4251df4133b618fd5ea87d0d44cc5ec5b638f6ccce40bfeab99be9e77e",
+      "bytes": 50948885,
+      "contexts": [
+        {
+          "case": {
+            "name": "water-b8-i0-h1-p1-dates-r1",
+            "kind": "water",
+            "bottom": 8,
+            "implicit": 0,
+            "hysteresis": 1,
+            "initial": 1,
+            "calendar": "dates",
+            "reset": 1,
+            "start": null,
+            "days": 35
+          },
+          "reopened_parent": false,
+          "convergence": {
+            "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+            "files": [
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A24350>",
+                "sha256": "8c900c74a6bd0239ada0406a40d6a17b32994f4a6adc09791c3b93b6fcab80ca"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287AF90>",
+                "sha256": "e867a7d482691dfc6f44dce542d759584657e85e44b812ff55539717486eae43"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287B4D0>",
+                "sha256": "5ed41ab7293589e7cad5b80a4d5e3370a17ebda07f2438b662b7b3ef866e3961"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287B650>",
+                "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287B890>",
+                "sha256": "e792a75d649c4cafd2b6e8b781dcf884eb2f84b2acd55cc2efa2854e49e84bb2"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287BA10>",
+                "sha256": "911875b6237f4c74ae535244968886378e56c5786d75c42601bc54fcb2b14dec"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287A390>",
+                "sha256": "deab702c65431d6d50bffe35e8c539d8c6ea16304def5b53a0ea35869d07ad44"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287A510>",
+                "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287A750>",
+                "sha256": "84b338b4c53e69b389852704a6e6ef899975f26ebb01c0132df03900cc217405"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287A8D0>",
+                "sha256": "ffae6f1d5942265a2231d5acc7331c852d5dd422665ba5ca061ed5f2c4f25126"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287AE10>",
+                "sha256": "8d2d453786d609014e813423aa11d71c1270f17395eeb66e68f91454489d294e"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287A090>",
+                "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287BE30>",
+                "sha256": "e166edc68bbe0707417cfc6817baa8b95c1f08826aecdaebf00d57bd18c52284"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142879D30>",
+                "sha256": "4083cfdde16970a78441fd88f447b354bc317725b87baee6a17c94a4c03351aa"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002013F1F10D0>",
+                "sha256": "c24155f7744b52c18a41d27c44165bf263cdbf59e97fd985683bdd058bc39033"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002013F1F1250>",
+                "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+              }
+            ],
+            "unconverged_continuations": 0
+          }
+        },
+        {
+          "case": {
+            "name": "cde-b8-i0-h1-p2-dense-r1",
+            "kind": "cde",
+            "bottom": 8,
+            "implicit": 0,
+            "hysteresis": 1,
+            "initial": 2,
+            "calendar": "dense",
+            "reset": 1,
+            "start": null,
+            "days": 35
+          },
+          "reopened_parent": false,
+          "convergence": {
+            "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+            "files": [
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287B2F0>",
+                "sha256": "0d869e278978cbdff7d0c6f3f5e7f91ebee72b04e6530288814786d758b9331b"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287B470>",
+                "sha256": "14b41884bfc253aa9aeae36ebcc4dfea61b4876aaa75adf20c41156263a1aea5"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287B9B0>",
+                "sha256": "d732a6ca4fc2ad4169b395b9faf3ef5934931fb74a6743ffda77d7db7162eacf"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287BB30>",
+                "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287A1B0>",
+                "sha256": "bda79e2827252d5fa614228e437ff2410079f3d10a7b832b8599c597f5297584"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287A330>",
+                "sha256": "37bdebb6f6f64c3a93d2e05f0bfe662db0de497bab73874f23703d453a1ce250"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287A870>",
+                "sha256": "c9201e1e06953313299e7887374951b678be948c1c32eb556ae725b936cbee0f"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287A9F0>",
+                "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287AC30>",
+                "sha256": "1e880cefab3aa5693ff3e0ecf3211ea45078b422328b8f918c54d475e69b4ea3"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287ADB0>",
+                "sha256": "d6f48548889655d213277167820a7e0b65abdf70aa1ece3e9653e8886c61c80f"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287BEF0>",
+                "sha256": "8cee96a98ea9d78a9a2311a3bf0e530fe0e1b108f911e09e61427230810f33cd"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287BD70>",
+                "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A242F0>",
+                "sha256": "124fde5cf1c7d6a5c6a4f09a5c03e53cf1d5a17eecdd98395e2a5618e5af8d4d"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A27470>",
+                "sha256": "dd82923f69ba7b0e7574466f7e5a59d7793a1ed4ee4f41dcd770e061a3950db7"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002013F1F1070>",
+                "sha256": "8250968fa47a567448cdaacd99cf504db2a050d30c495afebef9a430fbde68ef"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002013F1F11F0>",
+                "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+              }
+            ],
+            "unconverged_continuations": 0
+          }
+        },
+        {
+          "case": {
+            "name": "cde-b8-i0-h2-p2-dates-r0-year-seam",
+            "kind": "cde",
+            "bottom": 8,
+            "implicit": 0,
+            "hysteresis": 2,
+            "initial": 2,
+            "calendar": "dates",
+            "reset": 0,
+            "start": "2002-12-26",
+            "days": 12
+          },
+          "reopened_parent": false,
+          "convergence": {
+            "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+            "files": [
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A243B0>",
+                "sha256": "119e2bf24feb147c4e2554f4df7106059f1632aec8a4d130b2ca87747b7b810c"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287AFF0>",
+                "sha256": "a1167aafab92eb56fe945cfcabb284fe298fac5bef886031d82545fdfb3d1cc6"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287B530>",
+                "sha256": "734de771c706d72c9232a2ee7992da96874deefed81d57593c64303f823e97f9"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287B6B0>",
+                "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287B8F0>",
+                "sha256": "9987a5ca57856c88f73bb385499e49e3470b913b786c41981b225827347e2015"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287BA70>",
+                "sha256": "6deef885a8e7deebd6be4f0ea5cda3a484f0c4766099cf5f2b420349b184bbe1"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287A330>",
+                "sha256": "8b4f271cd8fa87b94df3f17270321221d7af8241ed9cb312e7bf98e10b9f3801"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287A4B0>",
+                "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+              }
+            ],
+            "unconverged_continuations": 0
+          }
+        },
+        {
+          "case": {
+            "name": "water-bottom8-implicit0-hys2-initial2",
+            "kind": "water",
+            "bottom": 8,
+            "implicit": 0,
+            "hysteresis": 2,
+            "initial": 2,
+            "days": 35
+          },
+          "reopened_parent": true,
+          "convergence": {
+            "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+            "files": [
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A24050>",
+                "sha256": "b041d3b1b506ff7f320923cca23886db0a42fc450a4028dcc41cad7204fa65e2"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287B050>",
+                "sha256": "e7e5067f3c6faa2ed4cd9f8ef261563557ef8a8b2cb7248ed7e67318abd8d516"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287B590>",
+                "sha256": "a0693dc8d5ef9047cb2080e8a70b75250d8933546b96b6fd93bb6b9d6e2f99ac"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287B710>",
+                "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287B950>",
+                "sha256": "5d4048ac63ceb2232615abaec2879c89a8a5bcac4858942a8ca6f42d93700abc"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287BAD0>",
+                "sha256": "09264a83400dbe90f8687ae4c182526e31fa633a14d47878b381536491d1f2b7"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287A450>",
+                "sha256": "3d6a9010aa24625d19f177f3c511768349b24e4288cd3a76d530d3e6e30262f4"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287A630>",
+                "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287A870>",
+                "sha256": "cce42807c4e9ed9d6d6fd2521d8aaacb164790d3d8c67a0d52b78e4ae1ca9a3a"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287A9F0>",
+                "sha256": "e06a80a1be340603bf1f380bd7d2182a0a0f22d240d8ed8c3285b30b460ac187"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287AF30>",
+                "sha256": "c1b17d1f816ef7d775f513230f0feefa126fa9b058c2563ce194f18b85b5eac5"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142879F70>",
+                "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287BD10>",
+                "sha256": "83362f31aed5dea05854c3fec1da6d75be975300e7980e8f63d8f4a6cf8b68dc"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002013F1F1250>",
+                "sha256": "eb08118392bfc7a6f8fab694d576836d177b1530fa2ca86107b94b271a5e2916"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002013F1F10D0>",
+                "sha256": "37e2ec76c7d2630dada9f1afc8dbce1120f3a5392d9d52e2cbff16ef087cf182"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002013F1F1310>",
+                "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+              }
+            ],
+            "unconverged_continuations": 0
+          }
+        },
+        {
+          "case": {
+            "name": "cde-bottom8-implicit0-hys2-initial2",
+            "kind": "cde",
+            "bottom": 8,
+            "implicit": 0,
+            "hysteresis": 2,
+            "initial": 2,
+            "days": 35
+          },
+          "reopened_parent": true,
+          "convergence": {
+            "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+            "files": [
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287B3B0>",
+                "sha256": "b041d3b1b506ff7f320923cca23886db0a42fc450a4028dcc41cad7204fa65e2"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287B530>",
+                "sha256": "7b7e2674934e42eb1a7ec3048bb173a3967a0ce553208a89db082cb4d1d67524"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287BA70>",
+                "sha256": "2d56accdfe605af8496be9eff3d7c9d5509554b961707002a37f6d7cb4e038dd"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287BBF0>",
+                "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287A270>",
+                "sha256": "5d4048ac63ceb2232615abaec2879c89a8a5bcac4858942a8ca6f42d93700abc"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287A3F0>",
+                "sha256": "e2ea266c61aee00a6f65a8842ffb512bddb28ef2456d0419c826477a79181b89"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287A990>",
+                "sha256": "9acad8dff811827015cca9aad11f96fbee764e5d9252a78b21d2d49c6da1c9f0"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287AB10>",
+                "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287AD50>",
+                "sha256": "cce42807c4e9ed9d6d6fd2521d8aaacb164790d3d8c67a0d52b78e4ae1ca9a3a"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287AED0>",
+                "sha256": "f026b0986e5053b0c07f914962fd697f622b1e068a8a90f77770a31690f85aac"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287BDD0>",
+                "sha256": "0880e881b8e851bc53c503217572f8d512fabd62435285697fc17908dda4218a"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002014287BCB0>",
+                "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x0000020142A27470>",
+                "sha256": "83362f31aed5dea05854c3fec1da6d75be975300e7980e8f63d8f4a6cf8b68dc"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002013F1F11F0>",
+                "sha256": "0d111901ba8d7dda0a93dcaa4613894786e9cfae43942f6a5a0c9ded477c3ad5"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002013F1F1070>",
+                "sha256": "a1373231ad356b8ef5f0aee0e797d9dcce9910caa8c34f6f22de01fe2a30bea7"
+              },
+              {
+                "path": "<explicit_bottom9_archive_science.ReadView object at 0x000002013F1F12B0>",
+                "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+              }
+            ],
+            "unconverged_continuations": 0
+          }
+        }
+      ]
+    }
+  ]
+}

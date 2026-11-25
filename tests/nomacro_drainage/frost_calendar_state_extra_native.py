@@ -6,7 +6,9 @@ def extra(m,build,reference,project,full,out):
     meta,case=m.validate_bundle(build,reference,project);source=full/'accepted-column-1-day-4.zip';before=m.sha(source)
     with zipfile.ZipFile(source) as z:good=z.read('macro.bin')
     expected=struct.pack('<4i',1,project.nodes,int(project.solute),7);assert good.count(expected+expected)==1;snow=good.index(expected+expected)
-    codecs=(b'S5FCW001',b'S5FCC001',b'S5FCW002',b'S5FCC002',b'S5FDW001',b'S5FDC001',b'S5FIW002',b'S5FIC002')
+    codecs=(b'S5FCW001',b'S5FCC001',b'S5FCW002',b'S5FCC002',b'S5FDW001',b'S5FDC001',b'S5FIW002',b'S5FIC002',
+            b'S5FBW001',b'S5FBC001',b'S5FBW002',b'S5FBC002',b'S5BCW001',b'S5BCC001',b'S5BCW002',b'S5BCC002')
+    assert len(set(codecs))==16 and good[:8] in codecs
     attacks=[('foreign-codec-'+code.decode(),code) for code in codecs if code!=good[:8]]
     attacks += [('snow-domain-'+str(i),i) for i in range(4)]
     attacks += [('snow-header-witness',None),('snow-missing-block',None)]
@@ -42,5 +44,5 @@ def extra(m,build,reference,project,full,out):
             checks.append(dict(attack=label,status='ACTUAL_COMPILED_NATIVE_REFUSED',diagnostic=diagnostic,error=str(error)))
         else:raise AssertionError('Malformed actual calendar native accepted: '+label)
         assert m.sha(source)==before
-    assert len(checks)==(31 if project.solute else 27)
+    assert len(checks)==len(attacks)==(39 if project.solute else 35)
     return checks
