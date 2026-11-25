@@ -184,8 +184,8 @@
       "function": "Frost geometry/flow/uptake",
       "classification": "PARTIAL",
       "original_source": "frozencond.f90, rootextraction.f90",
-      "scope": "Bounded ordinary primary-drained explicit and implicit Frost water/CDE are admitted by PR1775/1776: Snow1/history2, numerical heat2, model1 fitted conductivity, BOT6, effective DIVD1 and dense original daily output. Examined Ksat, original DIVD0+solute, invalid/fully closed Frost geometry, AGE and broader calendars remain outside those receipts. Initialpressure Frost extension is actually admitted by PR1787 canonical84e815a0, with actual clean43 canonical public and publication PASS and INITIAL_PROFILE_FROST_MERGE_RECEIPT_V1.json.",
-      "authority": "integration/f-ci/nomacro-complete01/FROST_IMPLICIT_MERGE_RECEIPT_V1.json",
+      "scope": "Actual canonical087fc67 PR1803 admits bounded Frost bottom5 and explicit plate8 water/CDE state/calendars:44 new contexts and8 requalified parent plate contexts. Existing ordinary bottom6 Frost remains inherited. Implicit plate zero-day and new implicit5 hysteresis2 calendar day5 failures remain closed; whole historical family not declared complete.",
+      "authority": "integration/f-ci/nomacro-complete01/FROST_BOUNDARY_STATE_CALENDAR04_MERGE_RECEIPT_V1.json",
       "authority_present": true,
       "full_historical_family_closed": "UNKNOWN",
       "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed.",
@@ -2107,9 +2107,9 @@
   "next_coherent_batches": [
     {
       "priority": 1,
-      "family": "Original Frost boundary/hysteresis/initialization/calendar composition",
-      "classification": "MISSING_COMPOSITION",
-      "status": "ACTIVE_FROST_BOUNDARY_STATE_CALENDAR04; twelve actual current public reader refusals; existing unchanged state/physical owners can be composed as one block. Parent1802 final CI/admission pending."
+      "family": "Original implicit hysteresis2 boundary/calendar failures",
+      "classification": "NUMERICAL_FAILURE",
+      "status": "After current plate05 canonical admission: preserve and instrument the original bottom5 day5 year failure. Compare original physical convergence, actual lower-boundary trial flux and the extra terminal receipt before selecting a correction. Keep new implicit hysteresis2 calendars closed until qualified."
     },
     {
       "priority": 2,
@@ -2835,7 +2835,7 @@
     "admission": "ACTUAL_FINAL_MERGE_RECEIPT_REQUIRED"
   },
   "frost_boundary_state_calendar04": {
-    "status": "ACTUAL52_INDEPENDENT_SCIENCE_PASS_CURRENT_SOURCE_AND_ADMISSION_PENDING",
+    "status": "ACTUAL_CANONICAL568_ADMITTED_COMPLETE_SOURCE_RAW_PUBLIC_PUBLICATION_AND_CI",
     "contract": "FROST_BOUNDARY_STATE_CALENDAR04_CONTRACT_V1.json",
     "whole_family_closed": false,
     "global_family_and_gap_counts": "UNKNOWN",
@@ -2892,7 +2892,7 @@
       "diagnostic": "FROST_BOUNDARY_STATE_CALENDAR04_THIRD_ORIGINALS_DIAGNOSTIC_V3.json"
     },
     "completed_full_period_contexts": 28,
-    "canonical_admission": false,
+    "canonical_admission": true,
     "plate_clock_repair": {
       "classification": "A_NUMERICAL_TIME_EXECUTION_REPAIR",
       "scope": "Only new boundary_state_calendar selection with explicit SWBOTB8; parent03, all bottom5 and implicit routes unchanged",
@@ -2984,6 +2984,43 @@
     "reopened_parent_contexts_requalified": 8,
     "current_postimage_status": "ALL16_CURRENT_SAME_COMPILER_WHOLE_SOURCES_AND_432_OBJECTS_EXACT_ZERO_MODELS",
     "superseded_clock_only_plate_evidence": "RETAINED_NEGATIVE_CONVERGENCE_QUALIFICATION",
-    "remaining_implicit_hys2_calendar_failure": "FOUR_GENUINE_DAY5_FAILURES_HARD_PUBLIC_REFUSAL"
+    "remaining_implicit_hys2_calendar_failure": "FOUR_GENUINE_DAY5_FAILURES_HARD_PUBLIC_REFUSAL",
+    "actual_merge": "087fc67db3e1e58d45215522eb284e89cb6c12f1",
+    "qualified_candidate": "e66867c5de454f45fd8d4adde31f68454c61cf9c",
+    "source_anchor": "f28db55d7653d6029e870af45cc97ff310c5ffd4",
+    "admission_receipt": "FROST_BOUNDARY_STATE_CALENDAR04_MERGE_RECEIPT_V1.json",
+    "admission_archive_sha256": "6ea2618bb8115ba18b1222aa92d18b5f10647af330703faad6a44882ca9f7455",
+    "new_admitted_contexts": 44,
+    "whole_historical_completion": "PARTIAL",
+    "whole_scientific_equivalence": "NOT_QUALIFIED",
+    "RC3_changed": false
+  },
+  "frost_implicit_plate05": {
+    "classification": [
+      "MISSING_COMPOSITION",
+      "NUMERICAL_FAILURE",
+      "OVERRESTRICTIVE_GUARD"
+    ],
+    "status": "SOURCE_SCIENCE_QUALIFIED_ALL32_EXACT_NATIVE_COLD_CONTROLS_AND_468_CURRENT_OBJECT_COMPARISONS_PUBLIC_CANONICAL_PENDING",
+    "historical_availability": "Original SWBOTB8 SWKIMPL1 fitted conductivity Frost/Snow/SWDIVD1 water/CDE; actual original zero-day failure diagnosed and corrected via true trial receipt.",
+    "actual_current_source": "c55c1a212d669758d09634dcb77eeac57864403d",
+    "qualified_contexts": 32,
+    "source_science": {
+      "primary_days": 936,
+      "native_samples": 184,
+      "exact_cold_windows": 80,
+      "compiled_refusals": 2188,
+      "transaction_contexts": 48,
+      "unchanged_current_postimages": 16,
+      "whole_object_comparisons": 468
+    },
+    "native_guard": "Preserves original pending pre-TSTART output dates at pointer1; whole Integral inverse; no normalization.",
+    "canonical_admission": false,
+    "current_admitted_contexts": 568,
+    "candidate_coadmission": 600,
+    "whole_family_closed": false,
+    "global_family_and_gap_counts": "UNKNOWN",
+    "contract": "FROST_IMPLICIT_PLATE05_CONTRACT_V1.json",
+    "next_code_action": "Freeze actual current source and wire existing joint owner to plate05. Run genuine clean14/56 PUBLIC and ordinary-Python publication, four committed never-merge controls, selected current CI and actual canonical observation. Then diagnose the retained original bottom5 implicit hysteresis2 year failure without tolerance or state changes."
   }
 }

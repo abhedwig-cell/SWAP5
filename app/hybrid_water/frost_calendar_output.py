@@ -60,6 +60,8 @@ def metadata(project):
                'frost_drainage_composition.py','implicit_frost_composition.py','implicit_frost_root_state.py',
                'frost_calendar_terminal_water.py']
     if boundary.get('boundary_state_calendar'):providers+=['frost_boundary_state_calendar.py','frost_boundary_composition.py']
+    from frost_implicit_plate_calendar import selected as implicit_plate_water
+    if implicit_plate_water(project):providers.append('frost_implicit_plate_calendar.py')
     providers.append('cde_interval_snow_state.f90' if project.solute else SNOW_PROVIDER+'.f90')
     if project.solute:providers+=['cde_interval_output.py','cde_interval_source.py','cde_interval_receipt.f90','cde_interval_output_state.f90']
     return dict(policy=policy,native_codec=codec(project).decode(),**selected,
@@ -108,6 +110,8 @@ def apply_build(output,donor_build,project,patched):
     (output/(SNOW_PROVIDER+'.f90')).write_bytes((folder/('cde_interval_snow_state.f90' if project.solute else SNOW_PROVIDER+'.f90')).read_bytes())
     original=(donor_build/'swap-selected/integral.f90').read_text(encoding='cp1252')
     integral=chemical.render_integral(original,selected) if project.solute else thermal.render_integral(original,None,selected)
+    from frost_implicit_plate_calendar import render_integral as implicit_plate_integral
+    integral=implicit_plate_integral(integral,project)
     (output/'integral.f90').write_text(integral,encoding='cp1252')
     probe=chemical.probe_source(project,selected) if project.solute else thermal.probe_source(project)
     (output/'age_output_calendar_probe.f90').write_text(probe,encoding='cp1252')

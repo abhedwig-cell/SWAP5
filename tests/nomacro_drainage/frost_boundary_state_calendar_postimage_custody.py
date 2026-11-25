@@ -10,7 +10,13 @@ P=R/'integration/f-ci/nomacro-complete01'
 DISPATCH=b'    from frost_boundary_terminal_trial import apply_build as plate_terminal_build\n    patched=plate_terminal_build(output,project,patched)\n'
 
 
-def audit(proof):
+def audit(proof,comparison_revision='HEAD'):
+    # A later owner may verify this historical data against its real canonical
+    # commit. The default still checks the actual current HEAD.
+    if comparison_revision!='HEAD':
+        import re
+        assert re.fullmatch('[0-9a-f]{40}',comparison_revision)
+        assert subprocess.check_output(['git','cat-file','-t',comparison_revision],cwd=R).strip()==b'commit'
     from frost_boundary_state_calendar_metadata import read as read_metadata
     baseline=read_metadata('FROST_BOUNDARY_STATE_CALENDAR04_BOTTOM5_PHYSICAL_POSTIMAGE_BASELINES_V1.json')
     results=[];provenance=[]
@@ -21,7 +27,7 @@ def audit(proof):
         actual_host=subprocess.check_output(['git','show',producer+':app/hybrid_water/daily_host.py'],cwd=R)
         assert actual_host.count(DISPATCH)==1
         assert actual_host.replace(DISPATCH,b'',1)==subprocess.check_output(['git','show','3feb51229a980331bc12be2d1d265bef7ae6691a:app/hybrid_water/daily_host.py'],cwd=R)
-        assert not subprocess.check_output(['git','diff',producer,'HEAD','--','app','src','tools','reference'],cwd=R)
+        assert not subprocess.check_output(['git','diff',producer,comparison_revision,'--','app','src','tools','reference'],cwd=R)
         sources={};objects={}
         for file,item in original['generated'].items():
             raw=store.get(prefix+file);assert SHA(raw)==meta['identity']['donor_generated'][file]

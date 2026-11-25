@@ -15,7 +15,6 @@ def input_domain(selectors, boundary, original_output):
     if composed_domain(selectors,boundary,original_output):return True
     return bool(original_output is not False
                 and boundary.get('SWBOTB') in (5, 8)
-                and not (boundary.get('SWBOTB')==8 and selectors.get('SWKIMPL')==1)
                 and selectors.get('SWSOLU') in (0, 1)
                 and selectors.get('SWKIMPL') in (0, 1)
                 and all(selectors.get(key) == value for key, value in FIXED.items()

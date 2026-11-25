@@ -47,6 +47,8 @@ def validate_source(bundle, project, identity, reference):
     bundle = Path(bundle); folder = Path(__file__).parent
     from implicit_frost_surface_conductivity import restore
     source = restore((bundle/'headcalc.f90').read_text(encoding='cp1252'))
+    from frost_boundary_terminal_trial import enabled as trial_enabled, original_head_source, receipt_source
+    if trial_enabled(project):source=original_head_source(source)
     for part in TERMINAL_PARTS:
         if source.count(part) != 1:
             raise ValueError('Foreign actual implicit Frost terminal water owner')
@@ -75,6 +77,7 @@ def validate_source(bundle, project, identity, reference):
             if calendar_selection(project.input_directory,project.original_output) is not None:
                 from frost_calendar_terminal_water import source as terminal_day_source
                 expected=terminal_day_source().encode('cp1252')
+            if trial_enabled(project):expected=receipt_source(expected.decode('cp1252')).encode('cp1252')
         if (bundle/name).read_bytes().replace(b'\r\n', b'\n') != expected:
             raise ValueError('Foreign actual implicit Frost private provider: ' + name)
     from frost_reference import source as frost_source

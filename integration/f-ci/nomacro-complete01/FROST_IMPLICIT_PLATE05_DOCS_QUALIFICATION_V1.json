@@ -1,0 +1,22 @@
+{
+  "status": "DOCS_SOURCE_AND_STRICT_MKDOCS_PASS",
+  "document": "docs/science/NOMACRO_FROST_IMPLICIT_PLATE05.md",
+  "actual_document_LF_sha256": "52fa7b017b6e76c6a06fefeab3d2d73fd4c2b18744f4da1342647b95d44fc8a0",
+  "commands": [
+    "python -B tools/docs/check_docs.py",
+    "python -B -m mkdocs build --strict --site-dir <allocated outside repository>"
+  ],
+  "strict_build_seconds": 34.3,
+  "logs": {
+    "FROST_IMPLICIT_PLATE05_DOCS_SOURCE_V2.log": {
+      "bytes": 37,
+      "sha256": "f1d4798e9e81b657a787f8dbb15d82f6b4f248d4827fce9ba9ccbeb9d424bf0e"
+    },
+    "FROST_IMPLICIT_PLATE05_MKDOCS_STRICT_V2.log": {
+      "bytes": 77725,
+      "sha256": "c6539b84d9c42aab4d1a927a420fffc2262f9d7971774b093eabf56723c06cad"
+    }
+  },
+  "compiler_executions": 0,
+  "model_executions": 0
+}
