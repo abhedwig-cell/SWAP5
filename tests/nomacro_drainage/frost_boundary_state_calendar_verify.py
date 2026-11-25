@@ -15,7 +15,7 @@ from frost_calendar_state_central import audit as parent_calendar_audit
 from frost_boundary_convergence import require_convergence
 import frost_boundary_verify as previous
 
-SEALED='eae9cf21ec982674531ea18570b7a2092b7413d5'
+SEALED='f28db55d7653d6029e870af45cc97ff310c5ffd4'
 PREFIX='integration/f-ci/nomacro-complete01/'
 
 
