@@ -11,7 +11,7 @@ from frost_implicit_plate_central import audit
 from frost_boundary_state_calendar_central import audit as previous_science
 from frost_boundary_state_calendar_postimage_custody import audit as previous_postimages
 import frost_boundary_state_calendar_verify as previous
-SEALED='c55c1a212d669758d09634dcb77eeac57864403d'
+SEALED='81f4f9ad7d7debf7bddc17e991e689341a28192c'
 PREFIX='integration/f-ci/nomacro-complete01/'
 
 
