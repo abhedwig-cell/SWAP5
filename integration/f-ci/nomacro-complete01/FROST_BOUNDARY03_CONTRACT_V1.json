@@ -1,5 +1,5 @@
 {
-  "status": "TWENTY_FULL35_NATIVE_CONTEXTS_PASS_IMPLICIT5_CDE_OWNER_CORRECTED_IMPLICIT8_HARD_REFUSED_NOT_ADMITTED",
+  "status": "ALL24_INDEPENDENT_BUDGET_NATIVE_COLD_CONTROLS_AND_CURRENT_POSTIMAGES_PASS_PUBLIC_SOURCE_OWNER_PENDING",
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "classification": "B_EXISTING_ORIGINAL_BOUNDARY_AND_FROST_STATE_COMPOSITION",
   "actual_canonical_at_start": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
@@ -253,7 +253,7 @@
     "ok": false,
     "compiler_executions": 0
   },
-  "next": "Use fresh current complete generated/compiled postimages to inherit each five completed contexts per opt/platform; run only missing implicit CDE bottom5 full35/cold/native/transaction case. No full-period replay for metadata or source-reader changes.",
+  "next": "Freeze actual current source, install four literal public callbacks, run actual clean14/56 PUBLIC and ordinary Python publication, four real committed/pushed negatives, applicable final-head CI, then actual canonical merge observers. Historical closure remains PARTIAL.",
   "admission_receipt": "FROST_CALENDAR_STATE02_MERGE_RECEIPT_V1.json",
   "first_scientific_source": "16988131766408867b0c1fa94a3a45cabe68b6fe",
   "private_owner_correction": "Existing generic implicit Snow rate carry must decline exactly the selected Frost boundary58 domain, whose own typed Frost rate carry is installed later. No codec allowlist or double state owner.",
@@ -318,5 +318,81 @@
       ]
     }
   ],
-  "cde_private_owner_correction": "Generic existing Snow CDE root carry declines exactly selected Frost boundary domain; its actual typed Frost owner remains sole state owner."
+  "cde_private_owner_correction": "Generic existing Snow CDE root carry declines exactly selected Frost boundary domain; its actual typed Frost owner remains sole state owner.",
+  "read_only_archive_api": {
+    "tests/nomacro_drainage/analytical_hydraulic_archives.py": {
+      "before_lf_sha256": "febf31af46fe11f13d0257efe153c7c49bcf4666a1550a1103c0c9ccb1e2e46c",
+      "proposed_lf_sha256": "2177e4e0d547318a6bcd109ae8dedba9633ee3ad8bc0e5787557e15924755e85",
+      "ordered_literal_edits": [
+        {
+          "base_start": 317,
+          "base_end": 385,
+          "before": "proof=Path(proof);self.record=json.loads((proof/(name+'.json')).read",
+          "after": "from frost"
+        },
+        {
+          "base_start": 386,
+          "base_end": 398,
+          "before": "text(encodin",
+          "after": "boundary_"
+        },
+        {
+          "base_start": 399,
+          "base_end": 408,
+          "before": "='utf-8')",
+          "after": "it_archive import GitArchiveSource\n        if isinstance(proof,GitArchiveSource):\n            self.record,raw=proof.archive_bytes(name"
+        },
+        {
+          "base_start": 423,
+          "base_end": 432,
+          "before": "\n        ",
+          "after": ";"
+        },
+        {
+          "base_start": 448,
+          "base_end": 449,
+          "before": ";",
+          "after": "\n            "
+        },
+        {
+          "base_start": 592,
+          "base_end": 679,
+          "before": "if len(parts)==1:\n            path=proof/parts[0]['file'];assert path.stat().st_size==q",
+          "after": "    assert all(len(value)==item"
+        },
+        {
+          "base_start": 697,
+          "base_end": 697,
+          "before": "",
+          "after": "value)==item['sha256'] for item,value in zip(parts,raw))\n            value=b''.join(raw);assert len(value)==q['bytes'] and SHA(value)==q['sha256']\n            self.z=stack.enter_context(zipfile.ZipFile(io.BytesIO(value)));self.names=q['members']\n            assert len(self.z.namelist())==len(set(self.z.namelist()))==len(self.names) and set(self.z.namelist())==set(self.names)\n            return\n        proof=Path(proof);self.record=json.loads((proof/(name+'.json')).read_text(encoding='utf-8'));q=self.record\n        parts=q['parts'];assert parts and all(item['file']==(q['archive'] if len(parts)==1 else q['archive']+f'.part{i:03d}') for i,item in enumerate(parts,1))\n        if len(parts)==1:\n            path=proof/parts[0]['file'];assert path.stat().st_size==q['bytes'] and SHA("
+        }
+      ]
+    },
+    "tests/nomacro_drainage/frost_calendar_state_windows_local_science.py": {
+      "before_lf_sha256": "5d477a06b2d4b06bc4c92699f72c2ae549a0bafee1dd7ee60658542cb65339cb",
+      "proposed_lf_sha256": "ede6df4fea7648762f4b5a9f981db3f7a41d19f4fb7476d8e820fdb29829748b",
+      "ordered_literal_edits": [
+        {
+          "base_start": 8057,
+          "base_end": 8057,
+          "before": "",
+          "after": "from frost_boundary_git_archive import GitArchiveSource\n    "
+        },
+        {
+          "base_start": 8059,
+          "base_end": 8059,
+          "before": "",
+          "after": "proof if isinstance(proof,GitArchiveSource) else "
+        }
+      ]
+    }
+  },
+  "complete_scientific_source": "3a30d3829d0355b316f93cc69daa280f01034817",
+  "actual_workflows": [
+    45633407125,
+    45633407248
+  ],
+  "independent_cohort": "FROST_BOUNDARY03_COMPLETE24_CENTRAL_V1.json",
+  "new_public_owner": "tests/nomacro_drainage/frost_boundary_verify.py",
+  "archive_api": "Explicit immutable GitArchiveSource at real40-character Git revision. Filesystem API unchanged; actual single/multipart member bytes match. No pretend filesystem/source/head or mutable index projection."
 }
