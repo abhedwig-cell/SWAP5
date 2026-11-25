@@ -1,0 +1,1922 @@
+{
+  "status": "TWO_ACTUAL_PUBLIC_EXPLICIT_PLATE_FULL35_NATIVE_COLD_CONTROLS_AND_ZERO_CONVERGENCE_WARNINGS_PASS_NOT_ADMITTED",
+  "actual_source": "dfb4337cb5fffcf70b1fa20a672683c6ea034690",
+  "contexts": [
+    {
+      "optimization": "O0",
+      "actual_source": "dfb4337cb5fffcf70b1fa20a672683c6ea034690",
+      "case": {
+        "name": "cde-b8-i0-h0-p2-regular-r1",
+        "kind": "cde",
+        "bottom": 8,
+        "implicit": 0,
+        "hysteresis": 0,
+        "initial": 2,
+        "calendar": "regular",
+        "reset": 1,
+        "start": null,
+        "days": 35
+      },
+      "build": {
+        "status": "ACTUAL_BOUNDARY_STATE_CALENDAR_PUBLIC_BUILD_PASS_NOT_SCIENTIFICALLY_QUALIFIED",
+        "actual_source": "dfb4337cb5fffcf70b1fa20a672683c6ea034690",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O0\\cde-b8-i0-h0-p2-regular-r1\\inputs",
+        "build_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-O0-v1\\cde-b8-i0-h0-p2-regular-r1\\bundle",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tools/solute/run_water.py",
+          "--model",
+          "HYBRID_NOMACRO_WATER",
+          "--experimental-project",
+          "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O0\\cde-b8-i0-h0-p2-regular-r1\\inputs",
+          "--original-output",
+          "--experimental-time-step-policy",
+          "original-adaptive-event-closure-v1",
+          "--reference-work",
+          "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+          "--build-only",
+          "--donor-opt",
+          "O0",
+          "--kernel-opt",
+          "O0",
+          "--output",
+          "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-O0-v1\\cde-b8-i0-h0-p2-regular-r1\\bundle"
+        ],
+        "public_builder_invocations": 1,
+        "compiler_executions": 1,
+        "model_executions": 0,
+        "returncode": 0,
+        "actual_public_builder_wall_seconds": 33.52413360029459
+      },
+      "science": {
+        "status": "ACTUAL_FROST_CALENDAR_ORIGINAL_BUDGETS_NATIVE_HISTORY_COLD_AND_USER_OUTPUT_PASS_NOT_ADMITTED",
+        "source": "dfb4337cb5fffcf70b1fa20a672683c6ea034690",
+        "actual_controller_source": "dfb4337cb5fffcf70b1fa20a672683c6ea034690",
+        "build_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-O0-v1\\cde-b8-i0-h0-p2-regular-r1\\bundle",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O0\\cde-b8-i0-h0-p2-regular-r1\\inputs",
+        "kind": "cde",
+        "duration_days": 35,
+        "selection": {
+          "boundary_state_calendar": true,
+          "frost_calendar": true,
+          "dense_daily_requested": false,
+          "policy": "original-frost-boundary58-hysteresis012-initial12-calendar-state-v1",
+          "bottom": 8,
+          "kind": "cde",
+          "implicit": 0,
+          "hysteresis": 0,
+          "initial": 2,
+          "swmonth": 0,
+          "swodat": 0,
+          "swres": 1,
+          "requested_period": 7,
+          "physical_equations_changed": false
+        },
+        "output": {
+          "policy": "original-frost-boundary58-hysteresis012-initial12-calendar-state-v1",
+          "native_codec": "S5BCC001",
+          "thermal_output": true,
+          "thermal_calendar": true,
+          "frost_calendar": true,
+          "cde_interval_output": true,
+          "kind": "cde",
+          "swsnow": 1,
+          "swhea": 1,
+          "swcalt": 2,
+          "swfrost": 1,
+          "swdra": 1,
+          "swhyst": 0,
+          "swcsv": 3,
+          "nprintday": 1,
+          "swmonth": 0,
+          "swodat": 0,
+          "swres": 1,
+          "requested_period": 7,
+          "period": 7,
+          "flprintdt": false,
+          "groups": "WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS",
+          "num_decimals": 12,
+          "providers": {
+            "frost_calendar_output.py": "673130ff2ae6911905eab369b562686c05f3f1412c8f70c13ecd4e2a63858e01",
+            "frost_calendar_state.py": "b1892f6a97768cc4f6371eefa4c28e6fcee2afa81f62b514d76d503df39a30f3",
+            "original_output_thermal.py": "d6e8789d39892382993bfa8d93754eeafba27e1c1678ce36ddcfdd67575c8b2d",
+            "original_output_thermal_domain.f90": "86bd406b343ed5025317548fae285d8a6bb0bc03b5a61d1eb0b1e5b8c2b043b8",
+            "age_output_calendar.py": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+            "frost_drainage_composition.py": "93cf4274f876364aa28189b53bdbd2cf14ef909a4eda3bffdeacfccfd7caefd8",
+            "implicit_frost_composition.py": "c2425ae3ab8378c13b90ab86842c808decfe7484aa687f89a0a4cfff5d59b261",
+            "implicit_frost_root_state.py": "8c11c7b22b9d9189481db4d36297ed063cc1c3ea97ccddbe4edafb60d88344ed",
+            "frost_calendar_terminal_water.py": "e40812f5b75525a25c7b89efed72c04b0e9bb5743b56c052c59b78220e5c9909",
+            "frost_boundary_state_calendar.py": "55988979de9dc433b6892cfa50668446a0aa2c8168a169cff87a8bb9e898577c",
+            "frost_boundary_composition.py": "30020b96968cc971fb482ce4123f1fe1f2550ae0b33ae31fc1f6bef6c4d5fe0c",
+            "cde_interval_snow_state.f90": "477374c748a3713001ee6c9e5c6f9ca9820a6f9599cd6c683e01315aba1150a2",
+            "cde_interval_output.py": "7ae55997c88e76eb7e9e0ca65e2cb84c4a08552ad6ef2c52f598f8bcd126fd7b",
+            "cde_interval_source.py": "023258ed9756897968e8cb89c2d5f74aee9cf5af0d7564ead4c4251ab7a036e7",
+            "cde_interval_receipt.f90": "7b862886162137e9ce9b1a257814d061a0cde164c87f99c77c0092da2fc6f4a9",
+            "cde_interval_output_state.f90": "edd27ab82112896b0e9ca972cbdd8a3bf8527c64fdf9a538c8182bfb8824b02f"
+          },
+          "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+          "original_hysteresis_sha256": "e6f5e4744e0a393a9e890abc0aaedaead91fe0128d84c9a7f8864b381c4c2fb8",
+          "original_output_epoch": 37256,
+          "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+          "snow_output_fields": [
+            "cgsnow",
+            "cmelt",
+            "csnrai",
+            "csubl",
+            "isnrai",
+            "igsnow",
+            "isubl"
+          ],
+          "snow_output_domain_bytes": 32,
+          "snow_output_value_bytes": 56,
+          "cde_output_state_version": 2,
+          "cde_output_state_reals": 54,
+          "cde_output_state_private_reals": 2,
+          "cde_daily_mass_guard_mg_cm2": 1e-10,
+          "conserved_cde_prefix_offset_bytes": 48,
+          "original_pending_dates_not_normalized": true,
+          "preserves_requested_groups_and_precision": true,
+          "undefined_allocation_tails_serialized": false,
+          "physical_equations_changed": false,
+          "new_physical_state": false,
+          "timecontrol_provider": "UNCHANGED_EXISTING_FROST_EVENT_CLOSURE",
+          "new_native_format": true,
+          "terminal_water_trial_projection": "ACTUAL_DAY_FRAME_WITH_UNCHANGED_ORIGINAL_TERMS_AND_1E_10_LIMIT"
+        },
+        "compiler_executions": 0,
+        "canonical_admission": false,
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 35,
+          "budgets": {
+            "days": 35,
+            "max_water_cm": 3.019936731241124e-15,
+            "max_kernel_cm": 1.27675647831893e-14,
+            "max_solute_mg_cm2": 4.2573566627104785e-14,
+            "sum_water_residual_cm": 1.0812282398076946e-14
+          },
+          "model_seconds": 5.516116000246257,
+          "build_sha256": "9f1798954237fb98e430adf36f94d4464c064ac81517bfce24d4afdbfb757cd1"
+        },
+        "independent_original_budgets": {
+          "days": 35,
+          "daily_water_max_cm": "1.0502E-14",
+          "daily_cde_max_mg_cm2": "3.994100248149877564E-14",
+          "every_prefix_cde_max_mg_cm2": "3.1282050330462523070805277049047371E-14",
+          "actual_frost_output_events": 6,
+          "actual_partial_frost_output_dates": [
+            "2002-01-14",
+            "2002-01-21",
+            "2002-01-28",
+            "2002-02-04"
+          ],
+          "accumulated_water_equivalence_claimed": false
+        },
+        "own": [
+          {
+            "start": 2,
+            "end": 4,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 1.602062199730426
+          },
+          {
+            "start": 19,
+            "end": 23,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 1,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 1.1780342999845743
+          },
+          {
+            "start": 30,
+            "end": 34,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 1.292635599616915
+          }
+        ],
+        "native_samples": [
+          {
+            "day": 2,
+            "snow_output_totals": [
+              0.0,
+              0.0,
+              0.0,
+              0.003658493713738796,
+              0.0,
+              0.0,
+              0.003658493713738796
+            ],
+            "original": {
+              "original_hysteresis_mode": 0,
+              "history_arrays": 0,
+              "actual_direction_reversal": false,
+              "original_head_nodes": 34
+            },
+            "original_private_cde_version": 2
+          },
+          {
+            "day": 4,
+            "snow_output_totals": [
+              0.0,
+              0.0,
+              0.0,
+              0.004058619969602794,
+              0.0,
+              0.0,
+              0.004058619969602794
+            ],
+            "original": {
+              "original_hysteresis_mode": 0,
+              "history_arrays": 0,
+              "actual_direction_reversal": false,
+              "original_head_nodes": 34
+            },
+            "original_private_cde_version": 2
+          },
+          {
+            "day": 19,
+            "snow_output_totals": [
+              0.026750000000000024,
+              8.190175244319207,
+              0.6832500000000004,
+              0.08211623621669184,
+              0.590000000000001,
+              0.0,
+              0.04961954741280001
+            ],
+            "original": {
+              "original_hysteresis_mode": 0,
+              "history_arrays": 0,
+              "actual_direction_reversal": false,
+              "original_head_nodes": 34
+            },
+            "original_private_cde_version": 2
+          },
+          {
+            "day": 23,
+            "snow_output_totals": [
+              0.026750000000000024,
+              18.576879051298246,
+              1.4332499999999977,
+              0.1291755072188526,
+              0.22000000000000006,
+              0.0,
+              0.03351976840509382
+            ],
+            "original": {
+              "original_hysteresis_mode": 0,
+              "history_arrays": 0,
+              "actual_direction_reversal": false,
+              "original_head_nodes": 34
+            },
+            "original_private_cde_version": 2
+          },
+          {
+            "day": 30,
+            "snow_output_totals": [
+              0.026750000000000024,
+              25.147531227127107,
+              3.2832499999999936,
+              0.16246877287282593,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "original": {
+              "original_hysteresis_mode": 0,
+              "history_arrays": 0,
+              "actual_direction_reversal": false,
+              "original_head_nodes": 34
+            },
+            "original_private_cde_version": 2
+          },
+          {
+            "day": 34,
+            "snow_output_totals": [
+              0.026750000000000024,
+              25.147531227127107,
+              3.2832499999999936,
+              0.16246877287282593,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "original": {
+              "original_hysteresis_mode": 0,
+              "history_arrays": 0,
+              "actual_direction_reversal": false,
+              "original_head_nodes": 34
+            },
+            "original_private_cde_version": 2
+          },
+          {
+            "day": 35,
+            "snow_output_totals": [
+              0.026750000000000024,
+              25.147531227127107,
+              3.2832499999999936,
+              0.16246877287282593,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "original": {
+              "original_hysteresis_mode": 0,
+              "history_arrays": 0,
+              "actual_direction_reversal": false,
+              "original_head_nodes": 34
+            },
+            "original_private_cde_version": 2
+          }
+        ]
+      },
+      "controls": {
+        "status": "ACTUAL_FROST_CALENDAR_COMPILED_NATIVE_SNOW_CDE_ROOT_AND_TRANSACTIONS_PASS_NOT_ADMITTED",
+        "actual_controller_source": "dfb4337cb5fffcf70b1fa20a672683c6ea034690",
+        "actual_compiler_source": "dfb4337cb5fffcf70b1fa20a672683c6ea034690",
+        "actual_BUILD_sha256": "9f1798954237fb98e430adf36f94d4464c064ac81517bfce24d4afdbfb757cd1",
+        "implicit": 0,
+        "hysteresis": 0,
+        "kind": "cde",
+        "accepted_mutant_model_days": 0,
+        "existing_calendar_thermal_refusals": [
+          {
+            "attack": "old002",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old003",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old004",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old005",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-kind",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "truncated",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Incomplete original CDE output values\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de5002d\n#4  0x9dd832c3\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "trailing",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Trailing nonmacro checkpoint bytes\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd83354\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "header-witness",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Original output calendar header witness mismatch\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd68737\n#4  0x9dd832ad\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "shape",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output calendar shape/policy\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd68876\n#4  0x9dd832ad\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "policy",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output calendar shape/policy\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd68876\n#4  0x9dd832ad\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "negative-day",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output calendar counters\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd688d6\n#4  0x9dd832ad\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-day",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output calendar day\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd6625b\n#4  0x9de24be0\n#5  0x9de254a0\n#6  0x9dd51156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "negative-counter",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output calendar counters\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd688d6\n#4  0x9dd832ad\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "changed-counter",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original schedule periodic counter\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd68995\n#4  0x9dd832ad\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "print-counter",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original annual print counter\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd6894d\n#4  0x9dd832ad\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "zero-pointer",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output date pointers\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd68a5b\n#4  0x9dd832ad\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "overflow-pointer",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output date pointers\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd68a5b\n#4  0x9dd832ad\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "future-pointer",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original interval date pointer\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd682f6\n#4  0x9de24be0\n#5  0x9de254a0\n#6  0x9dd51156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "flag-domain",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output calendar flags\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd68ad9\n#4  0x9dd832ad\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "short-flag",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original age output clock flags\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd68b37\n#4  0x9dd832ad\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "step-flag",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original age output clock flags\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd68b37\n#4  0x9dd832ad\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "nonfinite",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original output calendar values\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd68f8a\n#4  0x9dd832ad\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "value-witness",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Original output calendar value witness mismatch\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd6923a\n#4  0x9dd832ad\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "negative-period",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Negative original output period\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd6927d\n#4  0x9dd832ad\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "ordinary-water",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "ordinary-cde",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "ordinary-age",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-version",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original thermal output domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de518fe\n#4  0x9dd83281\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-shape",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original thermal output domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de518fe\n#4  0x9dd83281\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-macro",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original thermal output domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de518fe\n#4  0x9dd83281\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-mode",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original thermal output domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de518fe\n#4  0x9dd83281\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-kind",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original thermal output domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de518fe\n#4  0x9dd83281\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-witness",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original thermal output domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de518fe\n#4  0x9dd83281\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-snow",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original thermal output domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de518fe\n#4  0x9dd83281\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-frost",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original thermal output domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de518fe\n#4  0x9dd83281\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-drainage",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original thermal output domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de518fe\n#4  0x9dd83281\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-heat",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original thermal output domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de518fe\n#4  0x9dd83281\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-calculation",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original thermal output domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de518fe\n#4  0x9dd83281\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "aquifer-codec",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "cde-header-witness",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original CDE output shape/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de4ff79\n#4  0x9dd832c3\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "cde-shape",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original CDE output shape/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de4ff79\n#4  0x9dd832c3\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "cde-value-witness",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Original CDE output witness mismatch\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de5032c\n#4  0x9dd832c3\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "cde-nonfinite",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original CDE output values\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de500c1\n#4  0x9dd832c3\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "cde-negative-initial",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Negative original CDE interval stock anchor\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de503a1\n#4  0x9dd832c3\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          }
+        ],
+        "new_snow_private_and_codec_refusals": [
+          {
+            "attack": "foreign-codec-S5FCW001",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5FCC001",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5FCW002",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5FCC002",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5FDW001",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5FDC001",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5FIW002",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5FIC002",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5FBW001",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5FBC001",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5FBW002",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5FBC002",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5BCW001",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5BCW002",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5BCC002",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9dd82be7\n#4  0x9ddfcfcc\n#5  0x9de24bc4\n#6  0x9de254a0\n#7  0x9dd51156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-domain-0",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign original CDE Snow output calendar domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de51e9b\n#4  0x9dd83297\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-domain-1",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign original CDE Snow output calendar domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de51e9b\n#4  0x9dd83297\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-domain-2",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign original CDE Snow output calendar domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de51e9b\n#4  0x9dd83297\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-domain-3",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign original CDE Snow output calendar domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de51e9b\n#4  0x9dd83297\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-header-witness",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign original CDE Snow output calendar domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de51e9b\n#4  0x9dd83297\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-missing-block",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign original CDE Snow output calendar domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de51e9b\n#4  0x9dd83297\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-nan-0",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de51ff8\n#4  0x9dd83297\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-nan-1",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de51ff8\n#4  0x9dd83297\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-nan-2",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de51ff8\n#4  0x9dd83297\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-nan-3",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de51ff8\n#4  0x9dd83297\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-nan-4",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de51ff8\n#4  0x9dd83297\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-nan-5",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de51ff8\n#4  0x9dd83297\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-nan-6",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de51ff8\n#4  0x9dd83297\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-negative-0",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Invalid original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de5204a\n#4  0x9dd83297\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-negative-1",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Invalid original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de5204a\n#4  0x9dd83297\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-negative-2",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Invalid original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de5204a\n#4  0x9dd83297\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-negative-3",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Invalid original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de5204a\n#4  0x9dd83297\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-negative-4",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Invalid original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de5204a\n#4  0x9dd83297\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-negative-5",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Invalid original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de5204a\n#4  0x9dd83297\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-negative-6",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Invalid original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de5204a\n#4  0x9dd83297\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "private-sampro0-negative",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Negative original CDE interval stock anchor\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de503a1\n#4  0x9dd832c3\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "private-sampro0-inconsistent",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent actual CDE interval stock anchor\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de4f53c\n#4  0x9de24bea\n#5  0x9de254a0\n#6  0x9dd51156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "private-rounderr-nan",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original CDE output values\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de500c1\n#4  0x9dd832c3\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "private-value-witness",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Original CDE output witness mismatch\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9de5032c\n#4  0x9dd832c3\n#5  0x9ddfcfcc\n#6  0x9de24bc4\n#7  0x9de254a0\n#8  0x9dd51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          }
+        ],
+        "snow_transaction": {
+          "start_day": 4,
+          "actual_snow_required": true,
+          "discard_no_day_advance": true,
+          "replay_exact": true,
+          "accept_exact": true,
+          "recovered_next_day_exact": true,
+          "origin_unchanged": true
+        },
+        "frost_calendar_transaction": {
+          "start_day": 4,
+          "actual_snow_required": false,
+          "discard_no_day_advance": true,
+          "replay_exact": true,
+          "accept_exact": true,
+          "recovered_next_day_exact": true,
+          "origin_unchanged": true
+        }
+      },
+      "convergence": {
+        "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+        "files": [
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O0\\cde-b8-i0-h0-p2-regular-r1\\science\\own-19\\kernel.stdout",
+            "sha256": "81c425d0fd8f781099a059bd8b9bf4f1ac3b134321698609fdb8b0e0cc34a98e"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O0\\cde-b8-i0-h0-p2-regular-r1\\science\\own-2\\kernel.stdout",
+            "sha256": "bd7ada2c23fda285548242c3d17a9544323c835698bdc3660ccf09022688061a"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O0\\cde-b8-i0-h0-p2-regular-r1\\science\\own-30\\kernel.stdout",
+            "sha256": "76b55e0a39c0d354372ac047b34d712901d2a01dd17945ea11ab34884990430d"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O0\\cde-b8-i0-h0-p2-regular-r1\\science\\trajectory\\kernel.stdout",
+            "sha256": "544b508244de1070da2d79c4814309b822be13fc553c10b90654e04159d06ce1"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O0\\cde-b8-i0-h0-p2-regular-r1\\science\\trajectory\\original\\donor.stdout",
+            "sha256": "9e576f5e758b839cfe85e804fbe06c53a96649eeb560743efe83491b9b60d29b"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O0\\cde-b8-i0-h0-p2-regular-r1\\science\\trajectory\\original\\swap.log",
+            "sha256": "a28e4ace07f61572879259683dafb24c6b0119c7d9522240e3ed0bc7df34151c"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O0\\cde-b8-i0-h0-p2-regular-r1\\science\\trajectory\\original\\swap.wrn",
+            "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O0\\cde-b8-i0-h0-p2-regular-r1\\science\\own-30\\original\\donor.stdout",
+            "sha256": "8c5b0b869ff5f92119a97012ec4f58ee3488cd57a960cf83ab4fc1fd9eff6601"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O0\\cde-b8-i0-h0-p2-regular-r1\\science\\own-30\\original\\swap.log",
+            "sha256": "a0cc73fc5966d9fa351be9cc5c80af2b6ec5d81b19306bcdb4c4ff7ef698d5fc"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O0\\cde-b8-i0-h0-p2-regular-r1\\science\\own-30\\original\\swap.wrn",
+            "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O0\\cde-b8-i0-h0-p2-regular-r1\\science\\own-2\\original\\donor.stdout",
+            "sha256": "3d8f0a0acf69fb6824ec0112e34300b966511fc61f6eedc46ce9116d99c4249a"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O0\\cde-b8-i0-h0-p2-regular-r1\\science\\own-2\\original\\swap.log",
+            "sha256": "5c52f1eadef90ef52e41d78f35cf9371220f8d10de97a45738d739ad8c1b3955"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O0\\cde-b8-i0-h0-p2-regular-r1\\science\\own-2\\original\\swap.wrn",
+            "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O0\\cde-b8-i0-h0-p2-regular-r1\\science\\own-19\\original\\donor.stdout",
+            "sha256": "6e06c8a18e1cfd6f211e874169ffd64b13b50b00201faddd4f4a0759a0d56469"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O0\\cde-b8-i0-h0-p2-regular-r1\\science\\own-19\\original\\swap.log",
+            "sha256": "36467a0cc06edda353d33e7a3f8bc3ac78a1927455c2286c25b4d98319abe25b"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O0\\cde-b8-i0-h0-p2-regular-r1\\science\\own-19\\original\\swap.wrn",
+            "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+          }
+        ],
+        "unconverged_continuations": 0
+      }
+    },
+    {
+      "optimization": "O2",
+      "actual_source": "dfb4337cb5fffcf70b1fa20a672683c6ea034690",
+      "case": {
+        "name": "cde-b8-i0-h0-p2-regular-r1",
+        "kind": "cde",
+        "bottom": 8,
+        "implicit": 0,
+        "hysteresis": 0,
+        "initial": 2,
+        "calendar": "regular",
+        "reset": 1,
+        "start": null,
+        "days": 35
+      },
+      "build": {
+        "status": "ACTUAL_BOUNDARY_STATE_CALENDAR_PUBLIC_BUILD_PASS_NOT_SCIENTIFICALLY_QUALIFIED",
+        "actual_source": "dfb4337cb5fffcf70b1fa20a672683c6ea034690",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O2\\cde-b8-i0-h0-p2-regular-r1\\inputs",
+        "build_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-O2-v1\\cde-b8-i0-h0-p2-regular-r1\\bundle",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tools/solute/run_water.py",
+          "--model",
+          "HYBRID_NOMACRO_WATER",
+          "--experimental-project",
+          "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O2\\cde-b8-i0-h0-p2-regular-r1\\inputs",
+          "--original-output",
+          "--experimental-time-step-policy",
+          "original-adaptive-event-closure-v1",
+          "--reference-work",
+          "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+          "--build-only",
+          "--donor-opt",
+          "O2",
+          "--kernel-opt",
+          "O2",
+          "--output",
+          "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-O2-v1\\cde-b8-i0-h0-p2-regular-r1\\bundle"
+        ],
+        "public_builder_invocations": 1,
+        "compiler_executions": 1,
+        "model_executions": 0,
+        "returncode": 0,
+        "actual_public_builder_wall_seconds": 36.38469239976257
+      },
+      "science": {
+        "status": "ACTUAL_FROST_CALENDAR_ORIGINAL_BUDGETS_NATIVE_HISTORY_COLD_AND_USER_OUTPUT_PASS_NOT_ADMITTED",
+        "source": "dfb4337cb5fffcf70b1fa20a672683c6ea034690",
+        "actual_controller_source": "dfb4337cb5fffcf70b1fa20a672683c6ea034690",
+        "build_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-O2-v1\\cde-b8-i0-h0-p2-regular-r1\\bundle",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O2\\cde-b8-i0-h0-p2-regular-r1\\inputs",
+        "kind": "cde",
+        "duration_days": 35,
+        "selection": {
+          "boundary_state_calendar": true,
+          "frost_calendar": true,
+          "dense_daily_requested": false,
+          "policy": "original-frost-boundary58-hysteresis012-initial12-calendar-state-v1",
+          "bottom": 8,
+          "kind": "cde",
+          "implicit": 0,
+          "hysteresis": 0,
+          "initial": 2,
+          "swmonth": 0,
+          "swodat": 0,
+          "swres": 1,
+          "requested_period": 7,
+          "physical_equations_changed": false
+        },
+        "output": {
+          "policy": "original-frost-boundary58-hysteresis012-initial12-calendar-state-v1",
+          "native_codec": "S5BCC001",
+          "thermal_output": true,
+          "thermal_calendar": true,
+          "frost_calendar": true,
+          "cde_interval_output": true,
+          "kind": "cde",
+          "swsnow": 1,
+          "swhea": 1,
+          "swcalt": 2,
+          "swfrost": 1,
+          "swdra": 1,
+          "swhyst": 0,
+          "swcsv": 3,
+          "nprintday": 1,
+          "swmonth": 0,
+          "swodat": 0,
+          "swres": 1,
+          "requested_period": 7,
+          "period": 7,
+          "flprintdt": false,
+          "groups": "WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS",
+          "num_decimals": 12,
+          "providers": {
+            "frost_calendar_output.py": "673130ff2ae6911905eab369b562686c05f3f1412c8f70c13ecd4e2a63858e01",
+            "frost_calendar_state.py": "b1892f6a97768cc4f6371eefa4c28e6fcee2afa81f62b514d76d503df39a30f3",
+            "original_output_thermal.py": "d6e8789d39892382993bfa8d93754eeafba27e1c1678ce36ddcfdd67575c8b2d",
+            "original_output_thermal_domain.f90": "86bd406b343ed5025317548fae285d8a6bb0bc03b5a61d1eb0b1e5b8c2b043b8",
+            "age_output_calendar.py": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+            "frost_drainage_composition.py": "93cf4274f876364aa28189b53bdbd2cf14ef909a4eda3bffdeacfccfd7caefd8",
+            "implicit_frost_composition.py": "c2425ae3ab8378c13b90ab86842c808decfe7484aa687f89a0a4cfff5d59b261",
+            "implicit_frost_root_state.py": "8c11c7b22b9d9189481db4d36297ed063cc1c3ea97ccddbe4edafb60d88344ed",
+            "frost_calendar_terminal_water.py": "e40812f5b75525a25c7b89efed72c04b0e9bb5743b56c052c59b78220e5c9909",
+            "frost_boundary_state_calendar.py": "55988979de9dc433b6892cfa50668446a0aa2c8168a169cff87a8bb9e898577c",
+            "frost_boundary_composition.py": "30020b96968cc971fb482ce4123f1fe1f2550ae0b33ae31fc1f6bef6c4d5fe0c",
+            "cde_interval_snow_state.f90": "477374c748a3713001ee6c9e5c6f9ca9820a6f9599cd6c683e01315aba1150a2",
+            "cde_interval_output.py": "7ae55997c88e76eb7e9e0ca65e2cb84c4a08552ad6ef2c52f598f8bcd126fd7b",
+            "cde_interval_source.py": "023258ed9756897968e8cb89c2d5f74aee9cf5af0d7564ead4c4251ab7a036e7",
+            "cde_interval_receipt.f90": "7b862886162137e9ce9b1a257814d061a0cde164c87f99c77c0092da2fc6f4a9",
+            "cde_interval_output_state.f90": "edd27ab82112896b0e9ca972cbdd8a3bf8527c64fdf9a538c8182bfb8824b02f"
+          },
+          "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+          "original_hysteresis_sha256": "e6f5e4744e0a393a9e890abc0aaedaead91fe0128d84c9a7f8864b381c4c2fb8",
+          "original_output_epoch": 37256,
+          "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+          "snow_output_fields": [
+            "cgsnow",
+            "cmelt",
+            "csnrai",
+            "csubl",
+            "isnrai",
+            "igsnow",
+            "isubl"
+          ],
+          "snow_output_domain_bytes": 32,
+          "snow_output_value_bytes": 56,
+          "cde_output_state_version": 2,
+          "cde_output_state_reals": 54,
+          "cde_output_state_private_reals": 2,
+          "cde_daily_mass_guard_mg_cm2": 1e-10,
+          "conserved_cde_prefix_offset_bytes": 48,
+          "original_pending_dates_not_normalized": true,
+          "preserves_requested_groups_and_precision": true,
+          "undefined_allocation_tails_serialized": false,
+          "physical_equations_changed": false,
+          "new_physical_state": false,
+          "timecontrol_provider": "UNCHANGED_EXISTING_FROST_EVENT_CLOSURE",
+          "new_native_format": true,
+          "terminal_water_trial_projection": "ACTUAL_DAY_FRAME_WITH_UNCHANGED_ORIGINAL_TERMS_AND_1E_10_LIMIT"
+        },
+        "compiler_executions": 0,
+        "canonical_admission": false,
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 35,
+          "budgets": {
+            "days": 35,
+            "max_water_cm": 3.019936731241124e-15,
+            "max_kernel_cm": 1.27675647831893e-14,
+            "max_solute_mg_cm2": 4.2573566627104785e-14,
+            "sum_water_residual_cm": 1.0812282398076946e-14
+          },
+          "model_seconds": 5.372470200061798,
+          "build_sha256": "a30ea7c37ae935bbdf90c51b6d4803a0fe9f841af450301b7c20f9e0d205a125"
+        },
+        "independent_original_budgets": {
+          "days": 35,
+          "daily_water_max_cm": "1.0502E-14",
+          "daily_cde_max_mg_cm2": "3.994100248149877564E-14",
+          "every_prefix_cde_max_mg_cm2": "3.1282050330462523070805277049047371E-14",
+          "actual_frost_output_events": 6,
+          "actual_partial_frost_output_dates": [
+            "2002-01-14",
+            "2002-01-21",
+            "2002-01-28",
+            "2002-02-04"
+          ],
+          "accumulated_water_equivalence_claimed": false
+        },
+        "own": [
+          {
+            "start": 2,
+            "end": 4,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 1.4702719999477267
+          },
+          {
+            "start": 19,
+            "end": 23,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 1,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.962363800033927
+          },
+          {
+            "start": 30,
+            "end": 34,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 1.1853873999789357
+          }
+        ],
+        "native_samples": [
+          {
+            "day": 2,
+            "snow_output_totals": [
+              0.0,
+              0.0,
+              0.0,
+              0.003658493713738796,
+              0.0,
+              0.0,
+              0.003658493713738796
+            ],
+            "original": {
+              "original_hysteresis_mode": 0,
+              "history_arrays": 0,
+              "actual_direction_reversal": false,
+              "original_head_nodes": 34
+            },
+            "original_private_cde_version": 2
+          },
+          {
+            "day": 4,
+            "snow_output_totals": [
+              0.0,
+              0.0,
+              0.0,
+              0.004058619969602794,
+              0.0,
+              0.0,
+              0.004058619969602794
+            ],
+            "original": {
+              "original_hysteresis_mode": 0,
+              "history_arrays": 0,
+              "actual_direction_reversal": false,
+              "original_head_nodes": 34
+            },
+            "original_private_cde_version": 2
+          },
+          {
+            "day": 19,
+            "snow_output_totals": [
+              0.026750000000000024,
+              8.190175244319207,
+              0.6832500000000004,
+              0.08211623621669184,
+              0.590000000000001,
+              0.0,
+              0.04961954741280001
+            ],
+            "original": {
+              "original_hysteresis_mode": 0,
+              "history_arrays": 0,
+              "actual_direction_reversal": false,
+              "original_head_nodes": 34
+            },
+            "original_private_cde_version": 2
+          },
+          {
+            "day": 23,
+            "snow_output_totals": [
+              0.026750000000000024,
+              18.576879051298246,
+              1.4332499999999977,
+              0.1291755072188526,
+              0.22000000000000006,
+              0.0,
+              0.03351976840509382
+            ],
+            "original": {
+              "original_hysteresis_mode": 0,
+              "history_arrays": 0,
+              "actual_direction_reversal": false,
+              "original_head_nodes": 34
+            },
+            "original_private_cde_version": 2
+          },
+          {
+            "day": 30,
+            "snow_output_totals": [
+              0.026750000000000024,
+              25.147531227127107,
+              3.2832499999999936,
+              0.16246877287282593,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "original": {
+              "original_hysteresis_mode": 0,
+              "history_arrays": 0,
+              "actual_direction_reversal": false,
+              "original_head_nodes": 34
+            },
+            "original_private_cde_version": 2
+          },
+          {
+            "day": 34,
+            "snow_output_totals": [
+              0.026750000000000024,
+              25.147531227127107,
+              3.2832499999999936,
+              0.16246877287282593,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "original": {
+              "original_hysteresis_mode": 0,
+              "history_arrays": 0,
+              "actual_direction_reversal": false,
+              "original_head_nodes": 34
+            },
+            "original_private_cde_version": 2
+          },
+          {
+            "day": 35,
+            "snow_output_totals": [
+              0.026750000000000024,
+              25.147531227127107,
+              3.2832499999999936,
+              0.16246877287282593,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "original": {
+              "original_hysteresis_mode": 0,
+              "history_arrays": 0,
+              "actual_direction_reversal": false,
+              "original_head_nodes": 34
+            },
+            "original_private_cde_version": 2
+          }
+        ]
+      },
+      "controls": {
+        "status": "ACTUAL_FROST_CALENDAR_COMPILED_NATIVE_SNOW_CDE_ROOT_AND_TRANSACTIONS_PASS_NOT_ADMITTED",
+        "actual_controller_source": "dfb4337cb5fffcf70b1fa20a672683c6ea034690",
+        "actual_compiler_source": "dfb4337cb5fffcf70b1fa20a672683c6ea034690",
+        "actual_BUILD_sha256": "a30ea7c37ae935bbdf90c51b6d4803a0fe9f841af450301b7c20f9e0d205a125",
+        "implicit": 0,
+        "hysteresis": 0,
+        "kind": "cde",
+        "accepted_mutant_model_days": 0,
+        "existing_calendar_thermal_refusals": [
+          {
+            "attack": "old002",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old003",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old004",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old005",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-kind",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "truncated",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Incomplete original CDE output values\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94219bbd\n#4  0x94167d94\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "trailing",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Trailing nonmacro checkpoint bytes\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e0b\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "header-witness",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Original output calendar header witness mismatch\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x941547e8\n#4  0x94167d85\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "shape",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output calendar shape/policy\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94154ee0\n#4  0x94167d85\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "policy",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output calendar shape/policy\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94154ee0\n#4  0x94167d85\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "negative-day",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output calendar counters\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94154ef4\n#4  0x94167d85\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-day",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output calendar day\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94153194\n#4  0x941f4897\n#5  0x9423c5cf\n#6  0x94141156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "negative-counter",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output calendar counters\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94154ef4\n#4  0x94167d85\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "changed-counter",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original schedule periodic counter\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94154ea4\n#4  0x94167d85\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "print-counter",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original annual print counter\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94154bac\n#4  0x94167d85\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "zero-pointer",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output date pointers\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94154e90\n#4  0x94167d85\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "overflow-pointer",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output date pointers\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94154e90\n#4  0x94167d85\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "future-pointer",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original interval date pointer\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x941531a8\n#4  0x941f4897\n#5  0x9423c5cf\n#6  0x94141156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "flag-domain",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output calendar flags\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94154e7c\n#4  0x94167d85\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "short-flag",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original age output clock flags\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94154e3c\n#4  0x94167d85\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "step-flag",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original age output clock flags\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94154e3c\n#4  0x94167d85\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "nonfinite",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original output calendar values\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94154b8f\n#4  0x94167d85\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "value-witness",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Original output calendar value witness mismatch\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94154c76\n#4  0x94167d85\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "negative-period",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Negative original output period\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94154dfe\n#4  0x94167d85\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "ordinary-water",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "ordinary-cde",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "ordinary-age",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-version",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original thermal output domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421a60f\n#4  0x94167d67\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-shape",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original thermal output domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421a60f\n#4  0x94167d67\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-macro",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original thermal output domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421a60f\n#4  0x94167d67\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-mode",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original thermal output domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421a60f\n#4  0x94167d67\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-kind",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original thermal output domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421a60f\n#4  0x94167d67\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-witness",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original thermal output domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421a60f\n#4  0x94167d67\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-snow",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original thermal output domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421a60f\n#4  0x94167d67\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-frost",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original thermal output domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421a60f\n#4  0x94167d67\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-drainage",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original thermal output domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421a60f\n#4  0x94167d67\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-heat",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original thermal output domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421a60f\n#4  0x94167d67\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-calculation",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original thermal output domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421a60f\n#4  0x94167d67\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "aquifer-codec",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "cde-header-witness",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original CDE output shape/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94219ba9\n#4  0x94167d94\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "cde-shape",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original CDE output shape/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94219ba9\n#4  0x94167d94\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "cde-value-witness",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Original CDE output witness mismatch\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94219bf5\n#4  0x94167d94\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "cde-nonfinite",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original CDE output values\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94219793\n#4  0x94167d94\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "cde-negative-initial",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Negative original CDE interval stock anchor\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94219b59\n#4  0x94167d94\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          }
+        ],
+        "new_snow_private_and_codec_refusals": [
+          {
+            "attack": "foreign-codec-S5FCW001",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5FCC001",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5FCW002",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5FCC002",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5FDW001",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5FDC001",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5FIW002",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5FIC002",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5FBW001",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5FBC001",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5FBW002",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5FBC002",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5BCW001",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5BCW002",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-codec-S5BCC002",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94167e4f\n#4  0x941d7311\n#5  0x941f487d\n#6  0x9423c5cf\n#7  0x94141156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-domain-0",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign original CDE Snow output calendar domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421ae85\n#4  0x94167d76\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-domain-1",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign original CDE Snow output calendar domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421ae85\n#4  0x94167d76\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-domain-2",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign original CDE Snow output calendar domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421ae85\n#4  0x94167d76\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-domain-3",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign original CDE Snow output calendar domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421ae85\n#4  0x94167d76\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-header-witness",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign original CDE Snow output calendar domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421ae85\n#4  0x94167d76\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-missing-block",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Foreign original CDE Snow output calendar domain/witness\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421ae85\n#4  0x94167d76\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-nan-0",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421aead\n#4  0x94167d76\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-nan-1",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421aead\n#4  0x94167d76\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-nan-2",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421aead\n#4  0x94167d76\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-nan-3",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421aead\n#4  0x94167d76\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-nan-4",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421aead\n#4  0x94167d76\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-nan-5",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421aead\n#4  0x94167d76\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-nan-6",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421aead\n#4  0x94167d76\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-negative-0",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Invalid original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421aec1\n#4  0x94167d76\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-negative-1",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Invalid original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421aec1\n#4  0x94167d76\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-negative-2",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Invalid original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421aec1\n#4  0x94167d76\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-negative-3",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Invalid original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421aec1\n#4  0x94167d76\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-negative-4",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Invalid original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421aec1\n#4  0x94167d76\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-negative-5",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Invalid original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421aec1\n#4  0x94167d76\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "snow-negative-6",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Invalid original CDE Snow output calendar totals\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x9421aec1\n#4  0x94167d76\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "private-sampro0-negative",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Negative original CDE interval stock anchor\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94219b59\n#4  0x94167d94\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "private-sampro0-inconsistent",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent actual CDE interval stock anchor\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94219136\n#4  0x941f48a1\n#5  0x9423c5cf\n#6  0x94141156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "private-rounderr-nan",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original CDE output values\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94219793\n#4  0x94167d94\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "private-value-witness",
+            "status": "ACTUAL_COMPILED_NATIVE_REFUSED",
+            "diagnostic": "ERROR STOP Original CDE output witness mismatch\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd8279b94\n#1  0xd81f4471\n#2  0xd80a28f4\n#3  0x94219bf5\n#4  0x94167d94\n#5  0x941d7311\n#6  0x941f487d\n#7  0x9423c5cf\n#8  0x94141156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          }
+        ],
+        "snow_transaction": {
+          "start_day": 4,
+          "actual_snow_required": true,
+          "discard_no_day_advance": true,
+          "replay_exact": true,
+          "accept_exact": true,
+          "recovered_next_day_exact": true,
+          "origin_unchanged": true
+        },
+        "frost_calendar_transaction": {
+          "start_day": 4,
+          "actual_snow_required": false,
+          "discard_no_day_advance": true,
+          "replay_exact": true,
+          "accept_exact": true,
+          "recovered_next_day_exact": true,
+          "origin_unchanged": true
+        }
+      },
+      "convergence": {
+        "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+        "files": [
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O2\\cde-b8-i0-h0-p2-regular-r1\\science\\own-19\\kernel.stdout",
+            "sha256": "81c425d0fd8f781099a059bd8b9bf4f1ac3b134321698609fdb8b0e0cc34a98e"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O2\\cde-b8-i0-h0-p2-regular-r1\\science\\own-2\\kernel.stdout",
+            "sha256": "bd7ada2c23fda285548242c3d17a9544323c835698bdc3660ccf09022688061a"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O2\\cde-b8-i0-h0-p2-regular-r1\\science\\own-30\\kernel.stdout",
+            "sha256": "76b55e0a39c0d354372ac047b34d712901d2a01dd17945ea11ab34884990430d"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O2\\cde-b8-i0-h0-p2-regular-r1\\science\\trajectory\\kernel.stdout",
+            "sha256": "544b508244de1070da2d79c4814309b822be13fc553c10b90654e04159d06ce1"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O2\\cde-b8-i0-h0-p2-regular-r1\\science\\trajectory\\original\\donor.stdout",
+            "sha256": "9e576f5e758b839cfe85e804fbe06c53a96649eeb560743efe83491b9b60d29b"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O2\\cde-b8-i0-h0-p2-regular-r1\\science\\trajectory\\original\\swap.log",
+            "sha256": "66a15bd915a7ce469eaf340832a2893bfcfabe3c04f60dd6dd62cf52b85d7d98"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O2\\cde-b8-i0-h0-p2-regular-r1\\science\\trajectory\\original\\swap.wrn",
+            "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O2\\cde-b8-i0-h0-p2-regular-r1\\science\\own-30\\original\\donor.stdout",
+            "sha256": "8c5b0b869ff5f92119a97012ec4f58ee3488cd57a960cf83ab4fc1fd9eff6601"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O2\\cde-b8-i0-h0-p2-regular-r1\\science\\own-30\\original\\swap.log",
+            "sha256": "a0cc73fc5966d9fa351be9cc5c80af2b6ec5d81b19306bcdb4c4ff7ef698d5fc"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O2\\cde-b8-i0-h0-p2-regular-r1\\science\\own-30\\original\\swap.wrn",
+            "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O2\\cde-b8-i0-h0-p2-regular-r1\\science\\own-2\\original\\donor.stdout",
+            "sha256": "3d8f0a0acf69fb6824ec0112e34300b966511fc61f6eedc46ce9116d99c4249a"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O2\\cde-b8-i0-h0-p2-regular-r1\\science\\own-2\\original\\swap.log",
+            "sha256": "2a1eba690b54183b64dc7cd5b6318d9575e5b9e8d5960a6044fd1559f7cbde9b"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O2\\cde-b8-i0-h0-p2-regular-r1\\science\\own-2\\original\\swap.wrn",
+            "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O2\\cde-b8-i0-h0-p2-regular-r1\\science\\own-19\\original\\donor.stdout",
+            "sha256": "6e06c8a18e1cfd6f211e874169ffd64b13b50b00201faddd4f4a0759a0d56469"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O2\\cde-b8-i0-h0-p2-regular-r1\\science\\own-19\\original\\swap.log",
+            "sha256": "2d1355ded64a3cb410dc9981f42d96fcd576ba5d0ec353305e615187c684e61f"
+          },
+          {
+            "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-boundary-state-calendar04-trial-flux-public-v1\\O2\\cde-b8-i0-h0-p2-regular-r1\\science\\own-19\\original\\swap.wrn",
+            "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+          }
+        ],
+        "unconverged_continuations": 0
+      }
+    }
+  ],
+  "primary_days": 70,
+  "native_samples": 14,
+  "exact_cold_windows": 6,
+  "compiled_refusals": 166,
+  "transaction_contexts": 4,
+  "canonical_admission": false
+}

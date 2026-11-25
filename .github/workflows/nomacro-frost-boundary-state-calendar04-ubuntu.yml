@@ -60,7 +60,7 @@ jobs:
           python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
       - name: Run selected original boundary state/calendar periods and actual compiled controls
         run: |
-          python3 -B tests/nomacro_drainage/frost_boundary_state_calendar_portable.py --platform Ubuntu --case water-b8-i0-h1-p1-dates-r1 --case cde-b8-i0-h0-p2-regular-r1 --case cde-b8-i0-h1-p2-dense-r1 --case cde-b8-i0-h2-p2-dates-r0-year-seam --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds" --output "$RUNNER_TEMP/proof/current" --optimization '${{ matrix.optimization }}'
+          python3 -B tests/nomacro_drainage/frost_boundary_state_calendar_portable.py --platform Ubuntu --case water-b8-i0-h1-p1-dates-r1 --case cde-b8-i0-h0-p2-regular-r1 --case cde-b8-i0-h1-p2-dense-r1 --case cde-b8-i0-h2-p2-dates-r0-year-seam --reopened-parent-kind water --reopened-parent-kind cde --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds" --output "$RUNNER_TEMP/proof/current" --optimization '${{ matrix.optimization }}'
       - name: Preserve every original generated compiled and provider byte
         if: always()
         run: |

@@ -389,20 +389,8 @@
     "compiler_or_model_replay_for_count_correction": false
   },
   "original_scientific_workflows": {
-    ".github/workflows/nomacro-frost-boundary-state-calendar04-ubuntu.yml": {
-      "sha256": "d8a2bda59b3cda61c1979ef10758ac5edc0a3360b2e16f4328b7b7b71f875921",
-      "platform": "ubuntu",
-      "expected_contexts_per_optimization": 12,
-      "completed_local_Windows_water_context_excluded_without_replay": false,
-      "trigger": "Explicit push of persisted scientific source to codex/nomacro-frost-boundary-state-calendar04-science01; no metadata-only numerical retrigger"
-    },
-    ".github/workflows/nomacro-frost-boundary-state-calendar04-windows.yml": {
-      "sha256": "65323fb61ad28195b4917dbb853a85f0273b630bb7c41791253dbfc75963111e",
-      "platform": "windows",
-      "expected_contexts_per_optimization": 11,
-      "completed_local_Windows_water_context_excluded_without_replay": true,
-      "trigger": "Explicit push of persisted scientific source to codex/nomacro-frost-boundary-state-calendar04-science01; no metadata-only numerical retrigger"
-    }
+    ".github/workflows/nomacro-frost-boundary-state-calendar04-ubuntu.yml": "6286e8fd56aafc1ffa16c2af7892f03cbd9ee046bde4a30e8f58ff01fb372dfc",
+    ".github/workflows/nomacro-frost-boundary-state-calendar04-windows.yml": "cb7c2e4b8aa4f8bbaa948107bcf6248af734053580951c5688e0d6d7b6e5eccf"
   },
   "qualification_plan_counts": {
     "contexts": 48,
@@ -605,6 +593,9 @@
   "numerical_trial_receipt_repair": {
     "record": "FROST_BOUNDARY_STATE_CALENDAR04_TERMINAL_TRIAL_DISCOVERY_V1.json",
     "scope": "Explicit Frost/SWDIVD1 SWBOTB8 only, both existing03 dense and new04 calendars; implicit and bottom5 physical postimages unchanged",
-    "required_qualification": "24 actual Windows/Ubuntu O0/O2 explicit plate contexts: four new04 and two reopened03 cases; whole periods, native, cold, transactions and zero convergence warnings. Unchanged bottom5 uses exact compiled postimages."
+    "required_qualification": "24 actual platform/optimization plate contexts incl two reopened03 case families: local2 complete, remaining22 CI. Unchanged bottom5 inherits only exact physical postimages.",
+    "local_actual_source": "dfb4337cb5fffcf70b1fa20a672683c6ea034690",
+    "local_O0_O2": "PASS_FULL35_NATIVE_COLD_COMPILED_CONTROLS_ZERO_WARNINGS",
+    "remaining_affected_actual_CI_contexts": 22
   }
 }

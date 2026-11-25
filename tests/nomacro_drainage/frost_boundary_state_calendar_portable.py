@@ -12,6 +12,7 @@ def main():
     p.add_argument('--optimization',choices=('O0','O2'),required=True)
     p.add_argument('--platform',choices=('Windows','Ubuntu'),required=True)
     p.add_argument('--case',action='append',default=[])
+    p.add_argument('--reopened-parent-kind',choices=('water','cde'),action='append',default=[])
     p.add_argument('--exclude-case',action='append',default=[]);a=p.parse_args()
     assert platform.system()==('Windows' if a.platform=='Windows' else 'Linux')
     head,contract=source();a.output.mkdir(parents=True)
@@ -48,7 +49,26 @@ def main():
                 run([sys.executable,'-B','tests/nomacro_drainage/frost_calendar_state_controls.py','--reference-work',str(a.reference_work),'--profile',str(folder/'science'),'--output',str(folder/'controls')],logs,600)
                 item['controls']=json.loads((folder/'controls/RESULT.json').read_text());assert item['controls']['status']=='ACTUAL_FROST_CALENDAR_COMPILED_NATIVE_SNOW_CDE_ROOT_AND_TRANSACTIONS_PASS_NOT_ADMITTED';save()
             print('ACTUAL_BOUNDARY_STATE_CALENDAR_PASS',case['name'],case['days'],a.optimization,flush=True)
-        assert source()[0]==head and len(q['contexts'])==len(selected)
+        assert len(a.reopened_parent_kind)==len(set(a.reopened_parent_kind))
+        for kind in a.reopened_parent_kind:
+            assert source()[0]==head
+            from frost_boundary_inputs import prepare as prepare_parent
+            from frost_boundary_convergence import require_convergence
+            name=kind+'-bottom8-implicit0-hys2-initial2'
+            folder=a.output/name;folder.mkdir();inputs=folder/'inputs';prepare_parent(kind,0,8,inputs)
+            item=dict(reopened_parent=True,case=dict(name=name,kind=kind,bottom=8,implicit=0,hysteresis=2,initial=2,days=35),science=None,controls=None)
+            q['contexts'].append(item);save()
+            logs=folder/'science-controller';logs.mkdir()
+            run([sys.executable,'-B','tests/nomacro_drainage/frost_cde_drainage_runtime.py','--reference-work',str(a.reference_work),'--build-root',str(a.build_root/name),'--output',str(folder/'science'),'--kind',kind,'--optimization',a.optimization,'--phase','short','--existing-input',str(inputs)],logs,600)
+            item['science']=json.loads((folder/'science/RESULT.json').read_text())
+            assert item['science']['source']==head and item['science']['status']=='CANDIDATE_ACTUAL_FROST_SWDIVD1_'+kind.upper()+'_SHORT_PASS_NOT_ADMITTED'
+            q['public_builder_invocations']+=1;item['convergence']=require_convergence(folder/'science');save()
+            logs=folder/'controls-controller';logs.mkdir()
+            run([sys.executable,'-B','tests/nomacro_drainage/frost_boundary_controls.py','--profile',str(folder/'science'),'--reference-work',str(a.reference_work),'--output',str(folder/'controls')],logs,600)
+            item['controls']=json.loads((folder/'controls/RESULT.json').read_text())
+            assert item['controls']['status']=='ACTUAL_FROST_BOUNDARY_COMPILED_NATIVE_ROOT_SNOW_AND_ACTIVE_TRANSACTIONS_PASS_NOT_ADMITTED'
+            save();print('REOPENED_PARENT_PLATE_FULL35_CONVERGENCE_NATIVE_COLD_CONTROLS_PASS',name,a.optimization,flush=True)
+        assert source()[0]==head and len(q['contexts'])==len(selected)+len(a.reopened_parent_kind)
         q['status']='ACTUAL_SELECTED_BOUNDARY_STATE_CALENDAR_PERIODS_NATIVE_COLD_AND_CONTROLS_PASS_NOT_ADMITTED'
     except Exception as error:q.update(status='FAILED_ACTUAL_BOUNDARY_STATE_CALENDAR_NOT_QUALIFIED',error=repr(error));raise
     finally:save()
