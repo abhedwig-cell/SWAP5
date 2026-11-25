@@ -1,5 +1,5 @@
 {
-  "status": "EXPLICIT_PLATE_TERMINAL_TRIAL_FLUX_CORRECTED_NOT_QUALIFIED",
+  "status": "ACTUAL52_SCIENCE_AND_CURRENT16_POSTIMAGES_COMPLETE_PENDING_CURRENT_SOURCE_PUBLICATION_ADMISSION",
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "batch": "FROST_BOUNDARY_STATE_CALENDAR04",
   "classification": "A_NUMERICAL_CONVERGENCE_GUARD_RECEIPT_REPAIR_AND_B_EXISTING_PROCESS_COMPOSITION",
@@ -564,11 +564,11 @@
   },
   "bottom5_postimage_workflows": {
     ".github/workflows/nomacro-frost-boundary-state-calendar04-postimages-ubuntu.yml": {
-      "sha256": "3a6db7ecde4a627c0005b55e889dcf6f2a00c61d298e12e2529d87b2a203027a",
+      "sha256": "8d1a949b92a7a647b79bafddae6210801fd00573a72498e47c08186e83faad73",
       "model_executions": 0
     },
     ".github/workflows/nomacro-frost-boundary-state-calendar04-postimages-windows.yml": {
-      "sha256": "b5967e02c9be80df91f768c6a91d2fa325f6dbb684137a40e3c49408b2229c85",
+      "sha256": "3e1a8b190e0c6a78764d6ddd4f8c954693dea6fa0cf4f29be6ab017c42f1d9b2",
       "model_executions": 0
     }
   },
@@ -597,5 +597,11 @@
     "local_actual_source": "dfb4337cb5fffcf70b1fa20a672683c6ea034690",
     "local_O0_O2": "PASS_FULL35_NATIVE_COLD_COMPILED_CONTROLS_ZERO_WARNINGS",
     "remaining_affected_actual_CI_contexts": 22
-  }
+  },
+  "physical_compiler_source": "dfb4337cb5fffcf70b1fa20a672683c6ea034690",
+  "new_scientific_record": "FROST_BOUNDARY_STATE_CALENDAR04_COMPLETE52_CENTRAL_V1.json",
+  "current_physical_postimage_record": "FROST_BOUNDARY_STATE_CALENDAR04_CURRENT16_POSTIMAGE_CENTRAL_V1.json",
+  "parent_plate_requalification": "EIGHT_ACTUAL_CURRENT_FULL35_NATIVE_COLD_CONTROLS_ZERO_CONVERGENCE_WARNINGS_PASS_NOT_ADMITTED",
+  "source_owner": "tests/nomacro_drainage/frost_boundary_state_calendar_verify.py",
+  "expected_current_coadmission_contexts": 568
 }
