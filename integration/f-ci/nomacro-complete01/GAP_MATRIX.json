@@ -2835,9 +2835,21 @@
     "admission": "ACTUAL_FINAL_MERGE_RECEIPT_REQUIRED"
   },
   "frost_boundary_state_calendar04": {
-    "status": "MISSING_COMPOSITION_DESIGN_PERSISTED_NO_QUALIFICATION_CLAIM",
+    "status": "TWELVE_ACTUAL_COMPLETED_PERIODS_PRESERVED_FOUR_DAY22_WATER_REJECTIONS_NOT_ADMITTED_REMAINING32_REAL_CI_RUNNING",
     "contract": "FROST_BOUNDARY_STATE_CALENDAR04_CONTRACT_V1.json",
     "whole_family_closed": false,
-    "global_family_and_gap_counts": "UNKNOWN"
+    "global_family_and_gap_counts": "UNKNOWN",
+    "water_guard_failure": {
+      "classification": "NUMERICAL_FAILURE",
+      "actual_source": "71806beaee8e532af407ab88298b7bde4ac766c2",
+      "profile": "cde-b8-i0-h0-p2-regular-r1",
+      "four_original_platform_optimization_repetitions": true,
+      "rejected_day": 22,
+      "accepted_days": 21,
+      "water_residual_cm": "1.812687009522529e-8",
+      "mass_limit_changed": false,
+      "cause": "NOT_PROVEN"
+    },
+    "remaining_genuine_contexts": 32
   }
 }
