@@ -15,7 +15,7 @@ def selection(directory,original_output=True):
                SWDRA=1,SWBOTB=6,SWBR=0,SWBBCFILE=0,SWMETDETAIL=0,NPRINTDAY=1)
     if any(selected.get(k)!=v for k,v in fixed.items() if k!='NPRINTDAY'):return None
     domains={k:{v} for k,v in fixed.items()}
-    domains.update(SWHYST={0,1,2},SWINCO={1,2},SWSOLU={0,1},SWKIMPL={0,1},
+    domains.update(SWHYST={0,1,2,3},SWINCO={1,2},SWSOLU={0,1},SWKIMPL={0,1},
                    SWMONTH={0,1},SWODAT={0,1},SWRES={0,1},PERIOD=set(range(367)))
     values={}
     for key,domain in domains.items():
