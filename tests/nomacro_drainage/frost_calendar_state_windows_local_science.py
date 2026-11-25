@@ -83,7 +83,8 @@ def terminal_causal_negative(store,loc):
         old_failure_retained_not_relabelled=True,compiler_executions=0,model_executions=0,canonical_admission=False)
 
 def audit(proof):
-    E=Path(proof)
+    from frost_boundary_git_archive import GitArchiveSource
+    E=proof if isinstance(proof,GitArchiveSource) else Path(proof)
     with ExitStack() as stack:
         store=LogicalArchive(E,'FROST_CALENDAR_STATE02_WINDOWS_LOCAL_RAW_V1',stack);loc=Locations(store,json.loads(store.get('ACTUAL_ARCHIVE_LOCATIONS_V1.json')));provider=OriginalProviderArchive(stack)
         for name in store.physical.names:store.physical.get(name)

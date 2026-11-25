@@ -98,6 +98,7 @@ jobs:
             /integration/f-ci/nomacro-complete01/RIA12_*
             /integration/f-ci/nomacro-complete01/FROST_HYSTERESIS_STATE01_*
             /integration/f-ci/nomacro-complete01/FROST_CALENDAR_STATE02_*
+            /integration/f-ci/nomacro-complete01/FROST_BOUNDARY03_*.json
       - name: Build both optimizations and run actual file/restart qualification
         run: |
           set -euo pipefail

@@ -241,7 +241,9 @@ def inspect(directory, *, original_output=None):
         raise ValueError('Unsupported/missing original lower boundary')
     if selected['SWFROST']:
         expected_bottom=7 if selected['SWDRA']==0 else 6
-        if boundary['SWBOTB']!=expected_bottom or selected['SWTOPBHEA']!=2:
+        from frost_boundary_composition import selection as frost_boundary_selection
+        frost_boundary=frost_boundary_selection(directory,original_output)
+        if (boundary['SWBOTB']!=expected_bottom or selected['SWTOPBHEA']!=2) and frost_boundary is None:
             raise ValueError('Bounded frost qualification requires prescribed surface temperature and free bottom7 or drained bottom6')
     if selected['SWSOLU'] and boundary['SWBOTB']==1:
         age_groundwater=(original_output is not False and selected['SWSOLU']==2

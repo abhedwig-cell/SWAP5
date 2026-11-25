@@ -1,0 +1,482 @@
+{
+  "status": "ALL24_SCIENCE_PRESERVED_STRICT_ARCHIVED_COMMIT_READER_AND_COMPLETE_SMALL_LRV_SOURCE_CHECKOUT_FIX_CURRENT_HEAD_GATES_PENDING",
+  "work_unit": "SWAP5-NOMACRO-COMPLETE01",
+  "classification": "B_EXISTING_ORIGINAL_BOUNDARY_AND_FROST_STATE_COMPOSITION",
+  "actual_canonical_at_start": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
+  "dependency_candidate": "3250f0c59337334994b0e8edda624afe8f91b11f",
+  "dependency_PR": 1801,
+  "dependency_admission": "ACTUAL_CANONICAL500_PUBLIC_AND_ORDINARY_PUBLICATION_ALL17CI_FOUR_NEGATIVES_AND_SIGNED_OBJECT_ADMISSION_SEALED",
+  "scope": "Model1 Snow/Frost numerical heat2, primaryDRA1/DIVD1; explicit water/CDE bottom5/8 and fitted implicit water/CDE bottom5 only; hys2 initialization2, original dense daily reset1 output. Implicit bottom8 remains hard-refused.",
+  "owning_interfaces": [
+    "experimental_project original input admission",
+    "implicit_frost_composition domain and codec",
+    "frost_drainage_composition codec and provider metadata",
+    "implicit_frost_root_state typed two-rate carry"
+  ],
+  "design": "A distinct bounded selector delegates all physical processes to the current qualified Frost and original lower-boundary implementations. Existing nonselected dispatch remains literal. Distinct explicit/implicit water/CDE native codecs identify this composition. The existing 96-byte implicit rate carry stores and validates the actual SWBOTB5/8 domain instead of writing a false bottom6 witness. Default bottom6 generated provider remains byte-exact.",
+  "new_physical_equations": false,
+  "new_physical_state": false,
+  "native_codecs": [
+    "S5FBW001",
+    "S5FBC001",
+    "S5FBW002",
+    "S5FBC002"
+  ],
+  "invariants": "Unchanged 1e-10 water/CDE guards, original boundary fluxes, accepted trial state, rollback, exact cold native/user output, and existing unselected process source. No flux replacement, fallback, mass correction or tolerance change.",
+  "qualification_selection": {
+    "first": "Real public input selection, generated native bottom witnesses, exact nonselected source inverse, then smallest actual O0/O2 build and native process probe.",
+    "integrated": "Eight new boundary5/8 x water/CDE x explicit/implicit contexts per optimization and platform, selected full35 and exact own cold/native/transaction/refusal checks; inherit parent periods only through exact actual dependency/source evidence.",
+    "original_reference_limit": "Existing original Windows executable crashes at initialization for all eight selections and the previous bottom6 control. Relinking unchanged objects with a 256MiB stack does not repair the control. These raw failures are retained and do not prove a new physical boundary defect or qualify equivalence.",
+    "storage": "No new large local campaign below shared-policy capacity; exact source-bound Windows/Ubuntu CI fallback may be selected after actual storage refusal. Small read-only and already-linked original diagnostic probes remain separately identified."
+  },
+  "excluded": "AGE, aquifer, active vapor, non-model1, hysteresis0/1, initialization1/3, subdaily/perstep/non-daily calendars, effective DIVD0 with CDE, unsupported examined Ksat, other lower boundaries and closed/front numerical failures.",
+  "canonical_admission": false,
+  "whole_historical_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false,
+  "files": {
+    "app/hybrid_water/frost_boundary_composition.py": {
+      "added": true,
+      "proposed_lf_sha256": "cc912a9085de43ddd6569e99ccf900ba547d407e21a037b3d27a887e2becf74a"
+    },
+    "app/hybrid_water/experimental_project.py": {
+      "added": false,
+      "proposed_lf_sha256": "381069f8d1fd6203fabf74942224ca96a58f655e077056dd8505dcba72b8efe1",
+      "before_lf_sha256": "958ef2cf948c4c9a5a38b65108a305be00ca3fe71768d6dd13c47ea591f1e108",
+      "ordered_literal_edits": [
+        {
+          "base_start": 15908,
+          "base_end": 15911,
+          "before": "if ",
+          "after": "from frost_boundary_composition import selection as frost_boundary_selection\n        frost_boundary=frost_boundary_selection(directory,original_output)\n        if ("
+        },
+        {
+          "base_start": 15974,
+          "base_end": 15974,
+          "before": "",
+          "after": ") and frost_boundary is None"
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_frost_composition.py": {
+      "added": false,
+      "proposed_lf_sha256": "c2425ae3ab8378c13b90ab86842c808decfe7484aa687f89a0a4cfff5d59b261",
+      "before_lf_sha256": "339bb2966ce1992ecf306f0747adea9b3ef12793a8188f62af5c33458cba4736",
+      "ordered_literal_edits": [
+        {
+          "base_start": 247,
+          "base_end": 247,
+          "before": "",
+          "after": "\n    from frost_boundary_composition import input_domain as boundary_domain\n    if selectors.get('SWKIMPL') == 1 and boundary_domain(selectors,boundary,original_output):return True"
+        },
+        {
+          "base_start": 1489,
+          "base_end": 1489,
+          "before": "",
+          "after": "\n    from frost_boundary_composition import selection as boundary_selection,codec as boundary_codec\n    selected=boundary_selection(project.input_directory,project.original_output)\n    if selected is not None:return boundary_codec(selected)"
+        },
+        {
+          "base_start": 3251,
+          "base_end": 3251,
+          "before": "",
+          "after": "from frost_boundary_composition import metadata as boundary_metadata\n    boundary=boundary_metadata(project)\n    if boundary is not None:\n        result['boundary_composition']=boundary\n        result['providers']['frost_boundary_composition.py']=sha(folder/'frost_boundary_composition.py')\n    "
+        }
+      ]
+    },
+    "app/hybrid_water/frost_drainage_composition.py": {
+      "added": false,
+      "proposed_lf_sha256": "93cf4274f876364aa28189b53bdbd2cf14ef909a4eda3bffdeacfccfd7caefd8",
+      "before_lf_sha256": "a5e3e0b53a1521497e9f30c79d17688ea7886fc71aa9adf58c38395f8d90714b",
+      "ordered_literal_edits": [
+        {
+          "base_start": 852,
+          "base_end": 852,
+          "before": "",
+          "after": "\n    from frost_boundary_composition import selection as boundary_selection,codec as boundary_codec\n    selected=boundary_selection(project.input_directory,project.original_output)\n    if selected is not None:return boundary_codec(selected)"
+        },
+        {
+          "base_start": 2356,
+          "base_end": 2356,
+          "before": "",
+          "after": "from frost_boundary_composition import metadata as boundary_metadata\n    boundary=boundary_metadata(project)\n    if boundary is not None:\n        result['boundary_composition']=boundary\n        result['providers']['frost_boundary_composition.py']=sha(folder/'frost_boundary_composition.py')\n    "
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_frost_root_state.py": {
+      "added": false,
+      "proposed_lf_sha256": "8c11c7b22b9d9189481db4d36297ed063cc1c3ea97ccddbe4edafb60d88344ed",
+      "before_lf_sha256": "e7852f067cdcb2f861a2bf180bedb3ae99d25c6305f16c06d8784d369f68c894",
+      "ordered_literal_edits": [
+        {
+          "base_start": 994,
+          "base_end": 994,
+          "before": "",
+          "after": "boundary(project):\n    from frost_boundary_composition import selection\n    selected=selection(project.input_directory,project.original_output)\n    return selected['bottom'] if selected is not None else 6\n\n\ndef "
+        },
+        {
+          "base_start": 1014,
+          "base_end": 1014,
+          "before": "",
+          "after": ",bottom=6"
+        },
+        {
+          "base_start": 1016,
+          "base_end": 1016,
+          "before": "",
+          "after": "\n    if type(bottom) is not int or bottom not in (5,6,8):\n        raise ValueError('Invalid implicit Frost lower-boundary root domain')"
+        },
+        {
+          "base_start": 1753,
+          "base_end": 1754,
+          "before": "6",
+          "after": "'+str(bottom)+'"
+        },
+        {
+          "base_start": 2590,
+          "base_end": 2590,
+          "before": "",
+          "after": "(project),boundary"
+        },
+        {
+          "base_start": 3589,
+          "base_end": 3589,
+          "before": "",
+          "after": ",boundary(project)"
+        },
+        {
+          "base_start": 3714,
+          "base_end": 3714,
+          "before": "",
+          "after": "(project),boundary"
+        },
+        {
+          "base_start": 4008,
+          "base_end": 4008,
+          "before": "",
+          "after": "(project),boundary"
+        },
+        {
+          "base_start": 4736,
+          "base_end": 4737,
+          "before": "6",
+          "after": "boundary(project)"
+        },
+        {
+          "base_start": 6556,
+          "base_end": 6556,
+          "before": "",
+          "after": ",boundary(project)"
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_snow_root_carry.py": {
+      "added": false,
+      "proposed_lf_sha256": "d2cca37625694e14ff0fb5bc35f129e08201502e00e1a587a7ed4904d36d5990",
+      "before_lf_sha256": "e062c1a8b702762cfec552eb7fbf1214e7732b4d9f63af127be418d588c7fe04",
+      "ordered_literal_edits": [
+        {
+          "base_start": 674,
+          "base_end": 674,
+          "before": "",
+          "after": "e:return False\n    from frost_boundary_composition import selection as frost_boundary_selection\n    if frost_boundary_selection(project.input_directory,project.original_output) is not Non"
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_frost_source_guard.py": {
+      "added": false,
+      "proposed_lf_sha256": "4253775eaf245f93801af7032a918b500aac7f3f2b7379b7c664b49981f0c1e7",
+      "before_lf_sha256": "f795c1228c7993d0ace71287a36d49f5bafe11ec0efa2fe2b09ce4825a2e0e6a",
+      "ordered_literal_edits": [
+        {
+          "base_start": 651,
+          "base_end": 651,
+          "before": "",
+          "after": "canonical_water_headcalc(source,boundary=None):\n    from lower_boundary_receipt import render_headcalc\n    if boundary is None:\n        return render_headcalc(source,8)\n    if boundary==5:\n        from groundwater_snow_retry import inverse\n        template=('logical                          :: flboth, flok\\n'\n                  '         budget_step=projected_water_residual()\\n'\n                  '            budget_step = projected_water_residual()\\n')\n        return render_headcalc(inverse(source,lambda text:render_headcalc(text,5),template),8)\n    if boundary!=8:\n        raise ValueError('Foreign Frost lower-boundary source reconstruction')\n    return source\n\n\ndef qualified_water_headcalc(source,boundary=None):\n    from ordinary_pond_source_guard import HEADS\n    source=canonical_water_headcalc(source,boundary)\n    if hashlib.sha256(source.encode('cp1252')).hexdigest()!=HEADS['water']:\n        raise ValueError('Foreign complete actual implicit Frost HeadCalc parent')\n    return source\n\n\ndef "
+        },
+        {
+          "base_start": 1877,
+          "base_end": 1879,
+          "before": "lo",
+          "after": "frost_boundary_composition import selection as boundary_selection\n    selected_boundary=boundary_selection(project.input_directory,project.original_output)\n    # Selected boundary5/8 already has its exact trial receipt installed.\n    qualified_"
+        },
+        {
+          "base_start": 1880,
+          "base_end": 1882,
+          "before": "er",
+          "after": "ater_headcalc(source,None if selected"
+        },
+        {
+          "base_start": 1891,
+          "base_end": 1937,
+          "before": "_receipt import render_headcalc\n    from ordin",
+          "after": " is None else selected_bound"
+        },
+        {
+          "base_start": 1940,
+          "base_end": 2059,
+          "before": "_pond_source_guard import HEADS\n    if hashlib.sha256(render_headcalc(source, 8).encode('cp1252')).hexdigest() != HEADS",
+          "after": ""
+        },
+        {
+          "base_start": 2061,
+          "base_end": 2066,
+          "before": "water",
+          "after": "bottom"
+        },
+        {
+          "base_start": 2068,
+          "base_end": 2151,
+          "before": ":\n        raise ValueError('Foreign complete actual implicit Frost HeadCalc parent'",
+          "after": ""
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_snow_cde_root_carry.py": {
+      "added": false,
+      "proposed_lf_sha256": "e2606b30ebced5f4903068bb560dc0fe8fa4e1e868dc9348f2e8d30828004ac9",
+      "before_lf_sha256": "17706b7587d3f1f173209270d411deaf6c0f3832ef72795e2c77add31bf11e4b",
+      "ordered_literal_edits": [
+        {
+          "base_start": 879,
+          "base_end": 879,
+          "before": "",
+          "after": "e:return False\n    from frost_boundary_composition import selection as frost_boundary_selection\n    if frost_boundary_selection(project.input_directory,project.original_output) is not Non"
+        }
+      ]
+    }
+  },
+  "actual_dependency_merge": "1c3b8725548c836c9a73570c2579dd6cdc683217",
+  "local_large_job_preflight": {
+    "free_gib": 46.898563385009766,
+    "required_gib": 50,
+    "ok": false,
+    "compiler_executions": 0
+  },
+  "next": "Freeze actual current source, install four literal public callbacks, run actual clean14/56 PUBLIC and ordinary Python publication, four real committed/pushed negatives, applicable final-head CI, then actual canonical merge observers. Historical closure remains PARTIAL.",
+  "admission_receipt": "FROST_CALENDAR_STATE02_MERGE_RECEIPT_V1.json",
+  "first_scientific_source": "16988131766408867b0c1fa94a3a45cabe68b6fe",
+  "private_owner_correction": "Existing generic implicit Snow rate carry must decline exactly the selected Frost boundary58 domain, whose own typed Frost rate carry is installed later. No codec allowlist or double state owner.",
+  "no_replay_rule": "Keep the four completed explicit water bottom5 full35 contexts. Fresh current generated/compiled postimages must match their actual original CI artifacts before inheritance; run only the seven missing contexts per opt/platform.",
+  "read_only_source_guard_correction": "Original boundary5/8 trial receipt was already installed. Reconstruct via exact existing boundary5 inverse and canonical8 form; complete ordinary HeadCalc SHA remains frozen. Actual failed-source O0/O2 generated5 bodies reconstruct exactly; an expression corruption is refused. No numerical producer source changed.",
+  "read_only_source_guard_result": "FROST_BOUNDARY03_REAL_COMPILED_HEADCALC_SOURCE_GUARD_V2.json",
+  "retained_implicit8": {
+    "water_status": "NUMERICAL_FAILURE",
+    "actual_producer": "6049f82bcf265ef17de2ff86a69b4ef4c33f768f",
+    "actual_zero_day_failure": "Implicit original retry reached clock resolution",
+    "platform_opt_contexts": 4,
+    "cde_status": "MISSING_COMPOSITION_NOT_NUMERICALLY_TESTED",
+    "no_tolerance_or_flux_substitution": true
+  },
+  "first_twenty_complete_science_and_compiled_controls": [
+    {
+      "platform": "UBUNTU",
+      "optimization": "O0",
+      "archive_sha256": "be39a74fb5c063e5af1215831120689a85242d29ee8fb604306393fddcd3ce17",
+      "successful_case_names": [
+        "water-bottom5-implicit0-hys2-initial2",
+        "water-bottom5-implicit1-hys2-initial2",
+        "cde-bottom5-implicit0-hys2-initial2",
+        "water-bottom8-implicit0-hys2-initial2",
+        "cde-bottom8-implicit0-hys2-initial2"
+      ]
+    },
+    {
+      "platform": "UBUNTU",
+      "optimization": "O2",
+      "archive_sha256": "5449d1d85fb4af5f61438f3c816f3101bd08d685926af2f631d453bbc17929e9",
+      "successful_case_names": [
+        "water-bottom5-implicit0-hys2-initial2",
+        "water-bottom5-implicit1-hys2-initial2",
+        "cde-bottom5-implicit0-hys2-initial2",
+        "water-bottom8-implicit0-hys2-initial2",
+        "cde-bottom8-implicit0-hys2-initial2"
+      ]
+    },
+    {
+      "platform": "WINDOWS",
+      "optimization": "O0",
+      "archive_sha256": "60e338cec3b98d43a57b2927452af4ea6c5a8740f5961ec5beece16e43ff9df4",
+      "successful_case_names": [
+        "water-bottom5-implicit0-hys2-initial2",
+        "water-bottom5-implicit1-hys2-initial2",
+        "cde-bottom5-implicit0-hys2-initial2",
+        "water-bottom8-implicit0-hys2-initial2",
+        "cde-bottom8-implicit0-hys2-initial2"
+      ]
+    },
+    {
+      "platform": "WINDOWS",
+      "optimization": "O2",
+      "archive_sha256": "891fb78a8187b72e146d4791483bd937fa918a44db76f40bf6783cc8667feb4b",
+      "successful_case_names": [
+        "water-bottom5-implicit0-hys2-initial2",
+        "water-bottom5-implicit1-hys2-initial2",
+        "cde-bottom5-implicit0-hys2-initial2",
+        "water-bottom8-implicit0-hys2-initial2",
+        "cde-bottom8-implicit0-hys2-initial2"
+      ]
+    }
+  ],
+  "cde_private_owner_correction": "Generic existing Snow CDE root carry declines exactly selected Frost boundary domain; its actual typed Frost owner remains sole state owner.",
+  "read_only_archive_api": {
+    "tests/nomacro_drainage/analytical_hydraulic_archives.py": {
+      "before_lf_sha256": "febf31af46fe11f13d0257efe153c7c49bcf4666a1550a1103c0c9ccb1e2e46c",
+      "proposed_lf_sha256": "2177e4e0d547318a6bcd109ae8dedba9633ee3ad8bc0e5787557e15924755e85",
+      "ordered_literal_edits": [
+        {
+          "base_start": 317,
+          "base_end": 385,
+          "before": "proof=Path(proof);self.record=json.loads((proof/(name+'.json')).read",
+          "after": "from frost"
+        },
+        {
+          "base_start": 386,
+          "base_end": 398,
+          "before": "text(encodin",
+          "after": "boundary_"
+        },
+        {
+          "base_start": 399,
+          "base_end": 408,
+          "before": "='utf-8')",
+          "after": "it_archive import GitArchiveSource\n        if isinstance(proof,GitArchiveSource):\n            self.record,raw=proof.archive_bytes(name"
+        },
+        {
+          "base_start": 423,
+          "base_end": 432,
+          "before": "\n        ",
+          "after": ";"
+        },
+        {
+          "base_start": 448,
+          "base_end": 449,
+          "before": ";",
+          "after": "\n            "
+        },
+        {
+          "base_start": 592,
+          "base_end": 679,
+          "before": "if len(parts)==1:\n            path=proof/parts[0]['file'];assert path.stat().st_size==q",
+          "after": "    assert all(len(value)==item"
+        },
+        {
+          "base_start": 697,
+          "base_end": 697,
+          "before": "",
+          "after": "value)==item['sha256'] for item,value in zip(parts,raw))\n            value=b''.join(raw);assert len(value)==q['bytes'] and SHA(value)==q['sha256']\n            self.z=stack.enter_context(zipfile.ZipFile(io.BytesIO(value)));self.names=q['members']\n            assert len(self.z.namelist())==len(set(self.z.namelist()))==len(self.names) and set(self.z.namelist())==set(self.names)\n            return\n        proof=Path(proof);self.record=json.loads((proof/(name+'.json')).read_text(encoding='utf-8'));q=self.record\n        parts=q['parts'];assert parts and all(item['file']==(q['archive'] if len(parts)==1 else q['archive']+f'.part{i:03d}') for i,item in enumerate(parts,1))\n        if len(parts)==1:\n            path=proof/parts[0]['file'];assert path.stat().st_size==q['bytes'] and SHA("
+        }
+      ]
+    },
+    "tests/nomacro_drainage/frost_calendar_state_windows_local_science.py": {
+      "before_lf_sha256": "5d477a06b2d4b06bc4c92699f72c2ae549a0bafee1dd7ee60658542cb65339cb",
+      "proposed_lf_sha256": "ede6df4fea7648762f4b5a9f981db3f7a41d19f4fb7476d8e820fdb29829748b",
+      "ordered_literal_edits": [
+        {
+          "base_start": 8057,
+          "base_end": 8057,
+          "before": "",
+          "after": "from frost_boundary_git_archive import GitArchiveSource\n    "
+        },
+        {
+          "base_start": 8059,
+          "base_end": 8059,
+          "before": "",
+          "after": "proof if isinstance(proof,GitArchiveSource) else "
+        }
+      ]
+    }
+  },
+  "complete_scientific_source": "3a30d3829d0355b316f93cc69daa280f01034817",
+  "actual_workflows": [
+    45633407125,
+    45633407248
+  ],
+  "independent_cohort": "FROST_BOUNDARY03_COMPLETE24_CENTRAL_V1.json",
+  "new_public_owner": "tests/nomacro_drainage/frost_boundary_verify.py",
+  "archive_api": "Explicit immutable GitArchiveSource at real40-character Git revision. Filesystem API unchanged; actual single/multipart member bytes match. No pretend filesystem/source/head or mutable index projection.",
+  "ci_dependency_materialization": {
+    ".github/workflows/mc-sol01-swp-reader.yml": {
+      "before_lf_sha256": "2525999df5610785704f2baadfca0ed96a8324b382a86fb9d7915a5baad159b8",
+      "proposed_lf_sha256": "9bbdfb0da391ed93eb3811dd08618209b2990addd004b85bc8d08381f47be6ba",
+      "ordered_literal_edits": [
+        {
+          "base_start": 3952,
+          "base_end": 3952,
+          "before": "",
+          "after": "      /integration/f-ci/nomacro-complete01/FROST_BOUNDARY03_*.json\n      "
+        }
+      ],
+      "reason": "Materialize only current frozen JSON declarations for existing source authority. Full scientific ZIP payload remains actual immutable Git API bytes. Original path triggers, commands, limits and test bodies unchanged."
+    },
+    ".github/workflows/mc-sol01-column-input.yml": {
+      "before_lf_sha256": "420d584b8c850e02ef7e795aa28186a7820b8ffc40af89e9d63e92339d0598d3",
+      "proposed_lf_sha256": "5229b1d5612a29acc990fcd4282bec65bbb3526ac0b9a0bfe6a61abf3cde21c3",
+      "ordered_literal_edits": [
+        {
+          "base_start": 4539,
+          "base_end": 4539,
+          "before": "",
+          "after": "      /integration/f-ci/nomacro-complete01/FROST_BOUNDARY03_*.json\n      "
+        }
+      ],
+      "reason": "Materialize only current frozen JSON declarations for existing source authority. Full scientific ZIP payload remains actual immutable Git API bytes. Original path triggers, commands, limits and test bodies unchanged."
+    },
+    ".github/workflows/swap431-root-lrv-constant.yml": {
+      "before_lf_sha256": "2954942a25c5201a74a38163ff6bbb99973c4334bef377be1473c3402bbca7e1",
+      "proposed_lf_sha256": "bacb688bcc21896ea236ad4e45733f3f41aad26b1898c563fe77aa20e484170d",
+      "ordered_literal_edits": [
+        {
+          "base_start": 599,
+          "base_end": 599,
+          "before": "",
+          "after": "  with:\n          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /src/\n            /tests/fmig431/\n            /tests/physics/\n            /tests/fsi/\n            /.github/workflows/\n      "
+        }
+      ],
+      "reason": "Original constant-LRV qualifier reads onlysrc, tests/fmig431, tests/physics and tests/fsi. Keep exact historical job, timeout, compiler installation, O0/O2 commands and test bodies; fetch real source blobs lazily and materialize this complete actual dependency surface. Prior final-head run cancelled after25min while unfiltered repository fetch had not completed, before any compiler/model; rerun API routes returned500."
+    }
+  },
+  "original_archived_commit_reader": {
+    "path": "tests/nomacro_drainage/frost_boundary_parent_admission.py",
+    "before_lf_sha256": "b109d466154003c1e047a350e4c20d89ee918c05c4e2a7859cf4ca3f58db58cb",
+    "proposed_lf_sha256": "d0ce7508b54e1724f60255baa60fb51d5f7e6eb2981aa29863574fb787333c08",
+    "ordered_literal_edits": [
+      {
+        "base_start": 614,
+        "base_end": 614,
+        "before": "",
+        "after": ")\n\n\ndef archived_commit(raw,sha,tree,parents):\n    \"\"\"Verify genuine frozen commit data without requiring an ephemeral ref.\"\"\"\n    assert hashlib.sha1(b'commit '+str(len(raw)).encode()+b'\\0'+raw).hexdigest()==sha\n    headers,message=raw.split(b'\\n\\n',1);lines=headers.split(b'\\n')\n    assert [line[5:].decode() for line in lines if line.startswith(b'tree ')]==[tree]\n    assert [line[7:].decode() for line in lines if line.startswith(b'parent ')]==parents\n    assert all(sum(line.startswith(key+b' ') for line in lines)==1 for key in (b'author',b'committer',b'gpgsig'))\n    assert message\n    return dict(status='ORIGINAL_ARCHIVED_SIGNED_COMMIT_EXACT_GIT_SHA1_TREE_AND_ORDERED_PARENTS_PASS',\n                sha=sha,tree=tree,parents=parents,bytes=len(raw),raw_sha256=hashlib.sha256(raw).hexdigest(),\n                archive_data_not_a_local_Git_object_projection=True"
+      },
+      {
+        "base_start": 1503,
+        "base_end": 1503,
+        "before": "",
+        "after": "commits=[]\n        "
+      },
+      {
+        "base_start": 1634,
+        "base_end": 1634,
+        "before": "",
+        "after": "commits.append(archived_commit(raw,sha,tree,receipt['ordered_parents']))\n            if sha==BASE:"
+      },
+      {
+        "base_start": 1674,
+        "base_end": 1753,
+        "before": " and hashlib.sha1(b'commit '+str(len(raw)).encode()+b'\\0'+raw).hexdigest()==sha",
+        "after": ""
+      },
+      {
+        "base_start": 5114,
+        "base_end": 5114,
+        "before": "",
+        "after": "original_archived_signed_commit_custody=commits,\n                "
+      }
+    ],
+    "reason": "Original signed temporary PR1801 synthetic commit ecd8 is present as exact bytes in sealed admission archive5fc9 but is not an ancestor guaranteed in fresh runner object stores. Verify real archived Git SHA1, tree, ordered parents and signed header as data. Actual canonical1c3 still must match its genuine Git object. No object/path/HEAD projection, no missing-object assertion suppressed and no scientific/CI criterion waived.",
+    "focused_controls": "Two genuine original signed objects; ten byte/SHA/tree/ordered-parent corruptions refused; full original canonical500 admission passes; zero compilers and model executions.",
+    "failed_current_FCI_job": 139337302994,
+    "failed_candidate": "74ecc55765df548e758605f3566bc93558a6fefb",
+    "failed_original_log_sha256": "04118859650177940f5a8cc1fec66ddc9b95a1371332613e52085299fdd41440",
+    "APP_src_tools_reference_changed": false
+  }
+}

@@ -11,6 +11,15 @@ SHA=lambda raw:hashlib.sha256(raw).hexdigest()
 
 class Archive:
     def __init__(self,proof,name,stack):
+        from frost_boundary_git_archive import GitArchiveSource
+        if isinstance(proof,GitArchiveSource):
+            self.record,raw=proof.archive_bytes(name);q=self.record;parts=q['parts']
+            assert parts and all(item['file']==(q['archive'] if len(parts)==1 else q['archive']+f'.part{i:03d}') for i,item in enumerate(parts,1))
+            assert all(len(value)==item['bytes'] and SHA(value)==item['sha256'] for item,value in zip(parts,raw))
+            value=b''.join(raw);assert len(value)==q['bytes'] and SHA(value)==q['sha256']
+            self.z=stack.enter_context(zipfile.ZipFile(io.BytesIO(value)));self.names=q['members']
+            assert len(self.z.namelist())==len(set(self.z.namelist()))==len(self.names) and set(self.z.namelist())==set(self.names)
+            return
         proof=Path(proof);self.record=json.loads((proof/(name+'.json')).read_text(encoding='utf-8'));q=self.record
         parts=q['parts'];assert parts and all(item['file']==(q['archive'] if len(parts)==1 else q['archive']+f'.part{i:03d}') for i,item in enumerate(parts,1))
         if len(parts)==1:

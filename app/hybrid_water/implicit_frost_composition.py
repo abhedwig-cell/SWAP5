@@ -6,6 +6,8 @@ POLICY = 'original-implicit-frost-fitted-surface-daily-drainage-v1'
 
 
 def input_domain(selectors, boundary, original_output):
+    from frost_boundary_composition import input_domain as boundary_domain
+    if selectors.get('SWKIMPL') == 1 and boundary_domain(selectors,boundary,original_output):return True
     from frost_hysteresis_composition import implicit_input_domain
     if implicit_input_domain(selectors,boundary,original_output):return True
     required = dict(SWMACRO=0, SWKIMPL=1, SWFROST=1, SWSNOW=1, SWHYST=2,
@@ -32,6 +34,9 @@ def source_identity():
 
 
 def codec(project):
+    from frost_boundary_composition import selection as boundary_selection,codec as boundary_codec
+    selected=boundary_selection(project.input_directory,project.original_output)
+    if selected is not None:return boundary_codec(selected)
     from frost_calendar_state import selection as calendar_selection
     if calendar_selection(project.input_directory,project.original_output) is not None:
         from frost_calendar_output import codec as calendar_codec
@@ -60,6 +65,11 @@ def metadata(project):
     from frost_hysteresis_composition import metadata as history_metadata
     history=history_metadata(project)
     if history is not None:result['hysteresis_state_composition']=history
+    from frost_boundary_composition import metadata as boundary_metadata
+    boundary=boundary_metadata(project)
+    if boundary is not None:
+        result['boundary_composition']=boundary
+        result['providers']['frost_boundary_composition.py']=sha(folder/'frost_boundary_composition.py')
     return result
 
 

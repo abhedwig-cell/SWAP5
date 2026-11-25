@@ -16,6 +16,15 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /src/
+            /tests/fmig431/
+            /tests/physics/
+            /tests/fsi/
+            /.github/workflows/
       - name: Install gfortran
         run: sudo apt-get update -qq && sudo apt-get install -y gfortran
       - name: Constant absolute LRV component and production MICRO
