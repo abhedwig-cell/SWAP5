@@ -1,0 +1,1096 @@
+{
+  "status": "ALL_ACTUAL28_SELECTED_CALENDAR_CONTEXTS_FRESH_SOURCE_BUDGET_NATIVE_COLD_CONTROLS_PASS_NOT_ADMITTED",
+  "contexts": 28,
+  "full35_contexts": 16,
+  "short8_12_contexts": 12,
+  "primary_accepted_model_days": 672,
+  "native_samples": 140,
+  "exact_cold_windows": 64,
+  "actual_compiled_native_refusals": 1328,
+  "actual_unchanged_dense_generated_compiled_postimages": 4,
+  "actual_scientific_sources": [
+    "9bf80bb2b3c63081e0f98afc123f1416db91fca5",
+    "a6823044669a113bfb3b5329c36377ed5941155b",
+    "adc75253ed353f7121b43280f7a084953ec05024",
+    "ed7042f02214b492eb23c1e7a9fda393865e8dc4"
+  ],
+  "source_app_src_tools_reference_exact_to": "a6823044669a113bfb3b5329c36377ed5941155b",
+  "contexts_original": [
+    {
+      "platform": "Ubuntu",
+      "optimization": "O0",
+      "case": {
+        "name": "water-explicit-monthly-hys0-initial1",
+        "kind": "water",
+        "implicit": 0,
+        "hysteresis": 0,
+        "initial": 1,
+        "calendar": "monthly",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 35
+      },
+      "actual_source": "ed7042f02214b492eb23c1e7a9fda393865e8dc4",
+      "science": {
+        "days": 35,
+        "daily_water_max_cm": "9.9922133E-11",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 3,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 7,
+      "exact_cold_windows": 3,
+      "controls": {
+        "actual_compiled_refusals": 66,
+        "accepted_mutant_days": 0,
+        "transactions": [
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          },
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          }
+        ]
+      }
+    },
+    {
+      "platform": "Ubuntu",
+      "optimization": "O0",
+      "case": {
+        "name": "cde-implicit-regular-year-hys1-initial2",
+        "kind": "cde",
+        "implicit": 1,
+        "hysteresis": 1,
+        "initial": 2,
+        "calendar": "regular",
+        "start": "2002-12-15",
+        "reset": 1,
+        "days": 35
+      },
+      "actual_source": "ed7042f02214b492eb23c1e7a9fda393865e8dc4",
+      "science": {
+        "days": 35,
+        "daily_water_max_cm": "3.6555E-14",
+        "daily_cde_max_mg_cm2": "3.61E-14",
+        "every_prefix_cde_max_mg_cm2": "3.61846288563E-14",
+        "actual_frost_output_events": 6,
+        "actual_partial_frost_output_dates": [
+          "2003-01-14"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 8,
+      "exact_cold_windows": 4,
+      "controls": {
+        "actual_compiled_refusals": 100,
+        "accepted_mutant_days": 0,
+        "transactions": [
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          },
+          {
+            "start": 30,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          }
+        ]
+      }
+    },
+    {
+      "platform": "Ubuntu",
+      "optimization": "O0",
+      "case": {
+        "name": "water-implicit-dates-hys2-initial2",
+        "kind": "water",
+        "implicit": 1,
+        "hysteresis": 2,
+        "initial": 2,
+        "calendar": "dates",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 35
+      },
+      "actual_source": "ed7042f02214b492eb23c1e7a9fda393865e8dc4",
+      "science": {
+        "days": 35,
+        "daily_water_max_cm": "4.925E-14",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 4,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31",
+          "2002-02-02",
+          "2002-02-05"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 7,
+      "exact_cold_windows": 3,
+      "controls": {
+        "actual_compiled_refusals": 91,
+        "accepted_mutant_days": 0,
+        "transactions": [
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          },
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          }
+        ]
+      }
+    },
+    {
+      "platform": "Ubuntu",
+      "optimization": "O0",
+      "case": {
+        "name": "cde-explicit-monthly-hys2-initial1",
+        "kind": "cde",
+        "implicit": 0,
+        "hysteresis": 2,
+        "initial": 1,
+        "calendar": "monthly",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 35
+      },
+      "actual_source": "ed7042f02214b492eb23c1e7a9fda393865e8dc4",
+      "science": {
+        "days": 35,
+        "daily_water_max_cm": "9.9852545E-11",
+        "daily_cde_max_mg_cm2": "2.552E-13",
+        "every_prefix_cde_max_mg_cm2": "4.599502E-13",
+        "actual_frost_output_events": 3,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 7,
+      "exact_cold_windows": 3,
+      "controls": {
+        "actual_compiled_refusals": 75,
+        "accepted_mutant_days": 0,
+        "transactions": [
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          },
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          }
+        ]
+      }
+    },
+    {
+      "platform": "Ubuntu",
+      "optimization": "O0",
+      "case": {
+        "name": "water-explicit-regular-noreset-year-hys1-initial2",
+        "kind": "water",
+        "implicit": 0,
+        "hysteresis": 1,
+        "initial": 2,
+        "calendar": "regular",
+        "start": "2002-12-29",
+        "reset": 0,
+        "days": 12
+      },
+      "actual_source": "ed7042f02214b492eb23c1e7a9fda393865e8dc4",
+      "science": {
+        "days": 12,
+        "daily_water_max_cm": "9.98048E-11",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 3,
+        "actual_partial_frost_output_dates": [],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 2,
+      "exact_cold_windows": 1
+    },
+    {
+      "platform": "Ubuntu",
+      "optimization": "O0",
+      "case": {
+        "name": "cde-implicit-dates-hys0-initial1",
+        "kind": "cde",
+        "implicit": 1,
+        "hysteresis": 0,
+        "initial": 1,
+        "calendar": "dates",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 8
+      },
+      "actual_source": "ed7042f02214b492eb23c1e7a9fda393865e8dc4",
+      "science": {
+        "days": 8,
+        "daily_water_max_cm": "2.0365E-14",
+        "daily_cde_max_mg_cm2": "1.35997E-14",
+        "every_prefix_cde_max_mg_cm2": "1.17997E-14",
+        "actual_frost_output_events": 3,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31",
+          "2002-02-02"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 2,
+      "exact_cold_windows": 1
+    },
+    {
+      "platform": "Ubuntu",
+      "optimization": "O0",
+      "case": {
+        "name": "water-implicit-monthly-hys1-initial1",
+        "kind": "water",
+        "implicit": 1,
+        "hysteresis": 1,
+        "initial": 1,
+        "calendar": "monthly",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 8
+      },
+      "actual_source": "ed7042f02214b492eb23c1e7a9fda393865e8dc4",
+      "science": {
+        "days": 8,
+        "daily_water_max_cm": "5.195E-14",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 2,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 2,
+      "exact_cold_windows": 1
+    },
+    {
+      "platform": "Windows",
+      "optimization": "O0",
+      "case": {
+        "name": "water-implicit-dates-hys2-initial2",
+        "kind": "water",
+        "implicit": 1,
+        "hysteresis": 2,
+        "initial": 2,
+        "calendar": "dates",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 35
+      },
+      "actual_source": "a6823044669a113bfb3b5329c36377ed5941155b",
+      "science": {
+        "days": 35,
+        "daily_water_max_cm": "5.0026E-14",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 4,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31",
+          "2002-02-02",
+          "2002-02-05"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 7,
+      "exact_cold_windows": 3,
+      "controls": {
+        "actual_compiled_refusals": 91,
+        "accepted_mutant_days": 0,
+        "transactions": [
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          },
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          }
+        ]
+      }
+    },
+    {
+      "platform": "Windows",
+      "optimization": "O0",
+      "case": {
+        "name": "cde-explicit-monthly-hys2-initial1",
+        "kind": "cde",
+        "implicit": 0,
+        "hysteresis": 2,
+        "initial": 1,
+        "calendar": "monthly",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 35
+      },
+      "actual_source": "a6823044669a113bfb3b5329c36377ed5941155b",
+      "science": {
+        "days": 35,
+        "daily_water_max_cm": "9.9864245E-11",
+        "daily_cde_max_mg_cm2": "1.249E-13",
+        "every_prefix_cde_max_mg_cm2": "3.781232E-13",
+        "actual_frost_output_events": 3,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 7,
+      "exact_cold_windows": 3,
+      "controls": {
+        "actual_compiled_refusals": 75,
+        "accepted_mutant_days": 0,
+        "transactions": [
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          },
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          }
+        ]
+      }
+    },
+    {
+      "platform": "Windows",
+      "optimization": "O0",
+      "case": {
+        "name": "cde-implicit-dates-hys0-initial1",
+        "kind": "cde",
+        "implicit": 1,
+        "hysteresis": 0,
+        "initial": 1,
+        "calendar": "dates",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 8
+      },
+      "actual_source": "a6823044669a113bfb3b5329c36377ed5941155b",
+      "science": {
+        "days": 8,
+        "daily_water_max_cm": "2.4500E-14",
+        "daily_cde_max_mg_cm2": "1.74E-14",
+        "every_prefix_cde_max_mg_cm2": "2.34E-14",
+        "actual_frost_output_events": 3,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31",
+          "2002-02-02"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 2,
+      "exact_cold_windows": 1
+    },
+    {
+      "platform": "Windows",
+      "optimization": "O0",
+      "case": {
+        "name": "water-implicit-monthly-hys1-initial1",
+        "kind": "water",
+        "implicit": 1,
+        "hysteresis": 1,
+        "initial": 1,
+        "calendar": "monthly",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 8
+      },
+      "actual_source": "a6823044669a113bfb3b5329c36377ed5941155b",
+      "science": {
+        "days": 8,
+        "daily_water_max_cm": "4.645E-14",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 2,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 2,
+      "exact_cold_windows": 1
+    },
+    {
+      "platform": "Ubuntu",
+      "optimization": "O2",
+      "case": {
+        "name": "water-explicit-monthly-hys0-initial1",
+        "kind": "water",
+        "implicit": 0,
+        "hysteresis": 0,
+        "initial": 1,
+        "calendar": "monthly",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 35
+      },
+      "actual_source": "ed7042f02214b492eb23c1e7a9fda393865e8dc4",
+      "science": {
+        "days": 35,
+        "daily_water_max_cm": "9.9922133E-11",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 3,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 7,
+      "exact_cold_windows": 3,
+      "controls": {
+        "actual_compiled_refusals": 66,
+        "accepted_mutant_days": 0,
+        "transactions": [
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          },
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          }
+        ]
+      }
+    },
+    {
+      "platform": "Ubuntu",
+      "optimization": "O2",
+      "case": {
+        "name": "cde-implicit-regular-year-hys1-initial2",
+        "kind": "cde",
+        "implicit": 1,
+        "hysteresis": 1,
+        "initial": 2,
+        "calendar": "regular",
+        "start": "2002-12-15",
+        "reset": 1,
+        "days": 35
+      },
+      "actual_source": "ed7042f02214b492eb23c1e7a9fda393865e8dc4",
+      "science": {
+        "days": 35,
+        "daily_water_max_cm": "3.6555E-14",
+        "daily_cde_max_mg_cm2": "3.61E-14",
+        "every_prefix_cde_max_mg_cm2": "3.61846288563E-14",
+        "actual_frost_output_events": 6,
+        "actual_partial_frost_output_dates": [
+          "2003-01-14"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 8,
+      "exact_cold_windows": 4,
+      "controls": {
+        "actual_compiled_refusals": 100,
+        "accepted_mutant_days": 0,
+        "transactions": [
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          },
+          {
+            "start": 30,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          }
+        ]
+      }
+    },
+    {
+      "platform": "Ubuntu",
+      "optimization": "O2",
+      "case": {
+        "name": "water-implicit-dates-hys2-initial2",
+        "kind": "water",
+        "implicit": 1,
+        "hysteresis": 2,
+        "initial": 2,
+        "calendar": "dates",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 35
+      },
+      "actual_source": "ed7042f02214b492eb23c1e7a9fda393865e8dc4",
+      "science": {
+        "days": 35,
+        "daily_water_max_cm": "4.925E-14",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 4,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31",
+          "2002-02-02",
+          "2002-02-05"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 7,
+      "exact_cold_windows": 3,
+      "controls": {
+        "actual_compiled_refusals": 91,
+        "accepted_mutant_days": 0,
+        "transactions": [
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          },
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          }
+        ]
+      }
+    },
+    {
+      "platform": "Ubuntu",
+      "optimization": "O2",
+      "case": {
+        "name": "cde-explicit-monthly-hys2-initial1",
+        "kind": "cde",
+        "implicit": 0,
+        "hysteresis": 2,
+        "initial": 1,
+        "calendar": "monthly",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 35
+      },
+      "actual_source": "ed7042f02214b492eb23c1e7a9fda393865e8dc4",
+      "science": {
+        "days": 35,
+        "daily_water_max_cm": "9.9852545E-11",
+        "daily_cde_max_mg_cm2": "2.552E-13",
+        "every_prefix_cde_max_mg_cm2": "4.599502E-13",
+        "actual_frost_output_events": 3,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 7,
+      "exact_cold_windows": 3,
+      "controls": {
+        "actual_compiled_refusals": 75,
+        "accepted_mutant_days": 0,
+        "transactions": [
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          },
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          }
+        ]
+      }
+    },
+    {
+      "platform": "Ubuntu",
+      "optimization": "O2",
+      "case": {
+        "name": "water-explicit-regular-noreset-year-hys1-initial2",
+        "kind": "water",
+        "implicit": 0,
+        "hysteresis": 1,
+        "initial": 2,
+        "calendar": "regular",
+        "start": "2002-12-29",
+        "reset": 0,
+        "days": 12
+      },
+      "actual_source": "ed7042f02214b492eb23c1e7a9fda393865e8dc4",
+      "science": {
+        "days": 12,
+        "daily_water_max_cm": "9.98048E-11",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 3,
+        "actual_partial_frost_output_dates": [],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 2,
+      "exact_cold_windows": 1
+    },
+    {
+      "platform": "Ubuntu",
+      "optimization": "O2",
+      "case": {
+        "name": "cde-implicit-dates-hys0-initial1",
+        "kind": "cde",
+        "implicit": 1,
+        "hysteresis": 0,
+        "initial": 1,
+        "calendar": "dates",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 8
+      },
+      "actual_source": "ed7042f02214b492eb23c1e7a9fda393865e8dc4",
+      "science": {
+        "days": 8,
+        "daily_water_max_cm": "2.0365E-14",
+        "daily_cde_max_mg_cm2": "1.35997E-14",
+        "every_prefix_cde_max_mg_cm2": "1.17997E-14",
+        "actual_frost_output_events": 3,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31",
+          "2002-02-02"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 2,
+      "exact_cold_windows": 1
+    },
+    {
+      "platform": "Ubuntu",
+      "optimization": "O2",
+      "case": {
+        "name": "water-implicit-monthly-hys1-initial1",
+        "kind": "water",
+        "implicit": 1,
+        "hysteresis": 1,
+        "initial": 1,
+        "calendar": "monthly",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 8
+      },
+      "actual_source": "ed7042f02214b492eb23c1e7a9fda393865e8dc4",
+      "science": {
+        "days": 8,
+        "daily_water_max_cm": "5.195E-14",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 2,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 2,
+      "exact_cold_windows": 1
+    },
+    {
+      "platform": "Windows",
+      "optimization": "O2",
+      "case": {
+        "name": "water-implicit-dates-hys2-initial2",
+        "kind": "water",
+        "implicit": 1,
+        "hysteresis": 2,
+        "initial": 2,
+        "calendar": "dates",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 35
+      },
+      "actual_source": "a6823044669a113bfb3b5329c36377ed5941155b",
+      "science": {
+        "days": 35,
+        "daily_water_max_cm": "5.0026E-14",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 4,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31",
+          "2002-02-02",
+          "2002-02-05"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 7,
+      "exact_cold_windows": 3,
+      "controls": {
+        "actual_compiled_refusals": 91,
+        "accepted_mutant_days": 0,
+        "transactions": [
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          },
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          }
+        ]
+      }
+    },
+    {
+      "platform": "Windows",
+      "optimization": "O2",
+      "case": {
+        "name": "cde-explicit-monthly-hys2-initial1",
+        "kind": "cde",
+        "implicit": 0,
+        "hysteresis": 2,
+        "initial": 1,
+        "calendar": "monthly",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 35
+      },
+      "actual_source": "a6823044669a113bfb3b5329c36377ed5941155b",
+      "science": {
+        "days": 35,
+        "daily_water_max_cm": "9.9864245E-11",
+        "daily_cde_max_mg_cm2": "1.249E-13",
+        "every_prefix_cde_max_mg_cm2": "3.781232E-13",
+        "actual_frost_output_events": 3,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 7,
+      "exact_cold_windows": 3,
+      "controls": {
+        "actual_compiled_refusals": 75,
+        "accepted_mutant_days": 0,
+        "transactions": [
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          },
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          }
+        ]
+      }
+    },
+    {
+      "platform": "Windows",
+      "optimization": "O2",
+      "case": {
+        "name": "water-explicit-regular-noreset-year-hys1-initial2",
+        "kind": "water",
+        "implicit": 0,
+        "hysteresis": 1,
+        "initial": 2,
+        "calendar": "regular",
+        "start": "2002-12-29",
+        "reset": 0,
+        "days": 12
+      },
+      "actual_source": "a6823044669a113bfb3b5329c36377ed5941155b",
+      "science": {
+        "days": 12,
+        "daily_water_max_cm": "9.980134E-11",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 3,
+        "actual_partial_frost_output_dates": [],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 2,
+      "exact_cold_windows": 1
+    },
+    {
+      "platform": "Windows",
+      "optimization": "O2",
+      "case": {
+        "name": "cde-implicit-dates-hys0-initial1",
+        "kind": "cde",
+        "implicit": 1,
+        "hysteresis": 0,
+        "initial": 1,
+        "calendar": "dates",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 8
+      },
+      "actual_source": "a6823044669a113bfb3b5329c36377ed5941155b",
+      "science": {
+        "days": 8,
+        "daily_water_max_cm": "2.4500E-14",
+        "daily_cde_max_mg_cm2": "1.74E-14",
+        "every_prefix_cde_max_mg_cm2": "2.34E-14",
+        "actual_frost_output_events": 3,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31",
+          "2002-02-02"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 2,
+      "exact_cold_windows": 1
+    },
+    {
+      "platform": "Windows",
+      "optimization": "O2",
+      "case": {
+        "name": "water-implicit-monthly-hys1-initial1",
+        "kind": "water",
+        "implicit": 1,
+        "hysteresis": 1,
+        "initial": 1,
+        "calendar": "monthly",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 8
+      },
+      "actual_source": "a6823044669a113bfb3b5329c36377ed5941155b",
+      "science": {
+        "days": 8,
+        "daily_water_max_cm": "4.645E-14",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 2,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 2,
+      "exact_cold_windows": 1
+    },
+    {
+      "platform": "Windows",
+      "case": {
+        "name": "water-explicit-monthly-hys0-initial1",
+        "kind": "water",
+        "implicit": 0,
+        "hysteresis": 0,
+        "initial": 1,
+        "calendar": "monthly",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 35
+      },
+      "optimization": "O0",
+      "actual_compiler_source": "9bf80bb2b3c63081e0f98afc123f1416db91fca5",
+      "science": {
+        "days": 35,
+        "daily_water_max_cm": "9.9880967E-11",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 3,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 7,
+      "exact_cold_windows": 3,
+      "controls": {
+        "actual_compiled_refusals": 66,
+        "accepted_mutant_days": 0,
+        "transactions": [
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          },
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          }
+        ]
+      }
+    },
+    {
+      "platform": "Windows",
+      "case": {
+        "name": "water-explicit-monthly-hys0-initial1",
+        "kind": "water",
+        "implicit": 0,
+        "hysteresis": 0,
+        "initial": 1,
+        "calendar": "monthly",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 35
+      },
+      "optimization": "O2",
+      "actual_compiler_source": "9bf80bb2b3c63081e0f98afc123f1416db91fca5",
+      "science": {
+        "days": 35,
+        "daily_water_max_cm": "9.9880967E-11",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 3,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 7,
+      "exact_cold_windows": 3,
+      "controls": {
+        "actual_compiled_refusals": 66,
+        "accepted_mutant_days": 0,
+        "transactions": [
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          },
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          }
+        ]
+      }
+    },
+    {
+      "platform": "Windows",
+      "case": {
+        "name": "cde-implicit-regular-year-hys1-initial2",
+        "kind": "cde",
+        "implicit": 1,
+        "hysteresis": 1,
+        "initial": 2,
+        "calendar": "regular",
+        "start": "2002-12-15",
+        "reset": 1,
+        "days": 35
+      },
+      "optimization": "O0",
+      "actual_compiler_source": "9bf80bb2b3c63081e0f98afc123f1416db91fca5",
+      "science": {
+        "days": 35,
+        "daily_water_max_cm": "5.1595E-14",
+        "daily_cde_max_mg_cm2": "3.1E-14",
+        "every_prefix_cde_max_mg_cm2": "5.11777950284E-14",
+        "actual_frost_output_events": 6,
+        "actual_partial_frost_output_dates": [
+          "2003-01-14"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 8,
+      "exact_cold_windows": 4,
+      "controls": {
+        "actual_compiled_refusals": 100,
+        "accepted_mutant_days": 0,
+        "transactions": [
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          },
+          {
+            "start": 30,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          }
+        ]
+      }
+    },
+    {
+      "platform": "Windows",
+      "case": {
+        "name": "cde-implicit-regular-year-hys1-initial2",
+        "kind": "cde",
+        "implicit": 1,
+        "hysteresis": 1,
+        "initial": 2,
+        "calendar": "regular",
+        "start": "2002-12-15",
+        "reset": 1,
+        "days": 35
+      },
+      "optimization": "O2",
+      "actual_compiler_source": "9bf80bb2b3c63081e0f98afc123f1416db91fca5",
+      "science": {
+        "days": 35,
+        "daily_water_max_cm": "5.1595E-14",
+        "daily_cde_max_mg_cm2": "3.1E-14",
+        "every_prefix_cde_max_mg_cm2": "5.11777950284E-14",
+        "actual_frost_output_events": 6,
+        "actual_partial_frost_output_dates": [
+          "2003-01-14"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 8,
+      "exact_cold_windows": 4,
+      "controls": {
+        "actual_compiled_refusals": 100,
+        "accepted_mutant_days": 0,
+        "transactions": [
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          },
+          {
+            "start": 30,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          }
+        ]
+      }
+    },
+    {
+      "platform": "Windows",
+      "case": {
+        "name": "water-explicit-regular-noreset-year-hys1-initial2",
+        "kind": "water",
+        "implicit": 0,
+        "hysteresis": 1,
+        "initial": 2,
+        "calendar": "regular",
+        "start": "2002-12-29",
+        "reset": 0,
+        "days": 12
+      },
+      "optimization": "O0",
+      "actual_compiler_source": "adc75253ed353f7121b43280f7a084953ec05024",
+      "science": {
+        "days": 12,
+        "daily_water_max_cm": "9.980134E-11",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 3,
+        "actual_partial_frost_output_dates": [],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 2,
+      "exact_cold_windows": 1
+    }
+  ],
+  "canonical_admission": false,
+  "functional_completion": "PARTIAL",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false
+}

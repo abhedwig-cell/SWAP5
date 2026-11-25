@@ -1,0 +1,63 @@
+{
+  "status": "ORIGINAL_TERMINAL_INTERVAL_DAY7_REFUSAL_AND_DENSE_CONTROL_AND_CORRECTED_EXACT12_FRESH_ARCHIVE_PROOF_PASS",
+  "raw_archive_sha256": "392e04277161e7cbacc67fc4a995d4b572bd182a7961671b097662fce573e811",
+  "original_accepted_days": 6,
+  "original_refused_day": 7,
+  "original_refused_water_residual_cm": "1.73041140E-10",
+  "unchanged_owning_limit_cm": "1e-10",
+  "actual_dense_source": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
+  "actual_dense35_budgets": {
+    "days": 35,
+    "daily_water_max_cm": "9.985010E-11",
+    "daily_cde_max_mg_cm2": "0",
+    "every_prefix_cde_max_mg_cm2": "0",
+    "actual_frost_output_events": 36,
+    "actual_partial_frost_output_dates": [
+      "2003-01-11",
+      "2003-01-12",
+      "2003-01-13",
+      "2003-01-14",
+      "2003-01-15",
+      "2003-01-16",
+      "2003-01-17",
+      "2003-01-18",
+      "2003-01-19",
+      "2003-01-20",
+      "2003-01-21",
+      "2003-01-22",
+      "2003-01-23",
+      "2003-01-24",
+      "2003-01-25",
+      "2003-01-26",
+      "2003-01-27",
+      "2003-01-28",
+      "2003-01-29",
+      "2003-01-30",
+      "2003-01-31",
+      "2003-02-01"
+    ],
+    "accumulated_water_equivalence_claimed": false
+  },
+  "six_complete_original_generated_modules_equal": {
+    "headcalc.f90": "15bac3d3cc0ee41918b5c6bf53aa75f50c85a1bbc0f56db66431045ab9d87a69",
+    "timecontrol.f90": "14403e7f9b0a9434388b62fb00c4ef672ac004f7d54ab3c8fbbb8fdd5364b472",
+    "boundtop.f90": "ea9d62eed9518fff6e6f46312d17885fb1a722bf108c5a02a5f30f2df87b4a15",
+    "frozencond.f90": "d529abbca6d45ae8ac5008a2804cf3813bda2b9878c22b06e4093fc015c15a03",
+    "divdra.f90": "81f415e7274b38f973450c1ad1e2d997766e3aebb837c4f3108c20f7bc10d13e",
+    "terminal_water_receipt.f90": "dc491e5faa9c7ca8e0e1e2a573cac965cb2e7f790d1cb6ad89ab82e7b90a6540"
+  },
+  "prior_six_days_field_equality_diagnostics": {
+    "stock_start_cm": false,
+    "stock_end_cm": false,
+    "external_flux_cm": false,
+    "pressure_head_cm": true,
+    "groundwater_cm": false,
+    "drainage_outward_cm": false,
+    "bottom_outward_cm": true
+  },
+  "corrected_all_twelve_physical_fields_exact_to_actual_canonical_dense": true,
+  "old_failure_retained_not_relabelled": true,
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "canonical_admission": false
+}

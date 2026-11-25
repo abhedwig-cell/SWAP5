@@ -1,0 +1,177 @@
+{
+  "status": "FRESH_ACTUAL_CALENDAR_ARCHIVE_SOURCE_ORIGINAL_BUDGET_NATIVE_COLD_OUTPUT_AND_CONTROLS_PASS",
+  "optimization": "O0",
+  "archive_sha256": "781fa5000d296f6f0b0dfd1dc2f30ad606a7f886db85b1cd9cad7cc2d935c84c",
+  "source": {
+    "producer": "a6823044669a113bfb3b5329c36377ed5941155b",
+    "source_sha256": "4ce989a38a51e68e4b9d58560dfc4fb79bd50cfadc00e844752cd726ff082f67",
+    "controller_sha256": "5b15cf072f472c5a126f9f420acdfb2bdffc67b4e70d13d1e901993d94e8bdb0",
+    "source_members": 1543,
+    "controller_members": 1056,
+    "toolchain": {
+      "gfortran": {
+        "version": "GNU Fortran (Rev7, Built by MSYS2 project) 16.2.0",
+        "sha256": "34631b549c843e5ce1c3d83a3317cab525dcd3230d7acd995a64ca1dd859b882",
+        "target": "x86_64-w64-mingw32"
+      },
+      "gcc": {
+        "version": "gcc.EXE (Rev7, Built by MSYS2 project) 16.2.0",
+        "sha256": "f6ff9378c1edb591131304518eac6456708d28720284105930d0d687136bcdd3",
+        "target": "x86_64-w64-mingw32"
+      },
+      "ar": {
+        "version": "GNU ar (GNU Binutils) 2.47.20260726",
+        "sha256": "8e9e295334fa6d99031a7214ca769c5f1da14992137205275ce48f266e5a1421"
+      }
+    },
+    "original_SWAP_ZIP_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+  },
+  "contexts": [
+    {
+      "case": {
+        "name": "water-implicit-dates-hys2-initial2",
+        "kind": "water",
+        "implicit": 1,
+        "hysteresis": 2,
+        "initial": 2,
+        "calendar": "dates",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 35
+      },
+      "actual_source": "a6823044669a113bfb3b5329c36377ed5941155b",
+      "science": {
+        "days": 35,
+        "daily_water_max_cm": "5.0026E-14",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 4,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31",
+          "2002-02-02",
+          "2002-02-05"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 7,
+      "exact_cold_windows": 3,
+      "controls": {
+        "actual_compiled_refusals": 91,
+        "accepted_mutant_days": 0,
+        "transactions": [
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          },
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "name": "cde-explicit-monthly-hys2-initial1",
+        "kind": "cde",
+        "implicit": 0,
+        "hysteresis": 2,
+        "initial": 1,
+        "calendar": "monthly",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 35
+      },
+      "actual_source": "a6823044669a113bfb3b5329c36377ed5941155b",
+      "science": {
+        "days": 35,
+        "daily_water_max_cm": "9.9864245E-11",
+        "daily_cde_max_mg_cm2": "1.249E-13",
+        "every_prefix_cde_max_mg_cm2": "3.781232E-13",
+        "actual_frost_output_events": 3,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 7,
+      "exact_cold_windows": 3,
+      "controls": {
+        "actual_compiled_refusals": 75,
+        "accepted_mutant_days": 0,
+        "transactions": [
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          },
+          {
+            "start": 4,
+            "discard_replay_accept_exact": true,
+            "recovered_next_day_exact": true
+          }
+        ]
+      }
+    },
+    {
+      "case": {
+        "name": "cde-implicit-dates-hys0-initial1",
+        "kind": "cde",
+        "implicit": 1,
+        "hysteresis": 0,
+        "initial": 1,
+        "calendar": "dates",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 8
+      },
+      "actual_source": "a6823044669a113bfb3b5329c36377ed5941155b",
+      "science": {
+        "days": 8,
+        "daily_water_max_cm": "2.4500E-14",
+        "daily_cde_max_mg_cm2": "1.74E-14",
+        "every_prefix_cde_max_mg_cm2": "2.34E-14",
+        "actual_frost_output_events": 3,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31",
+          "2002-02-02"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 2,
+      "exact_cold_windows": 1
+    },
+    {
+      "case": {
+        "name": "water-implicit-monthly-hys1-initial1",
+        "kind": "water",
+        "implicit": 1,
+        "hysteresis": 1,
+        "initial": 1,
+        "calendar": "monthly",
+        "start": "2002-01-28",
+        "reset": 1,
+        "days": 8
+      },
+      "actual_source": "a6823044669a113bfb3b5329c36377ed5941155b",
+      "science": {
+        "days": 8,
+        "daily_water_max_cm": "4.645E-14",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 2,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "native_samples": 2,
+      "exact_cold_windows": 1
+    }
+  ],
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "canonical_admission": false
+}
