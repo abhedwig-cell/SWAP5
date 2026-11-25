@@ -1,7 +1,6 @@
 # Original implicit Frost hysteresis2 boundary calendars
 
-Status: implemented and locally tested; complete scientific qualification and
-canonical admission pending. Historical closure remains PARTIAL, whole scientific
+Status: bounded source/science qualified; public and canonical admission pending. Historical closure remains PARTIAL, whole scientific
 equivalence NOT_QUALIFIED, family/gap counts UNKNOWN and fixed RC3 unchanged.
 The admitted dependency is canonical `47124f4de18a752fc466d50e2752e843548e5fea`
 (PR1804, bounded coadmission600). Its actual clean public and ordinary publication
@@ -58,7 +57,11 @@ Windows/Ubuntu O0/O2:64 contexts,48 full35 periods and16 twelve-day year seams,
 for1872 primary days. These comprise48 new contexts and16 requalified previous
 implicit5 contexts. They require original daily budgets, exact native/cold/output
 history, real compiled refusals and transaction controls, and zero original
-convergence warnings. Complete qualification is still pending.
+convergence warnings. All four original portable cohorts succeed. Independent original-byte auditing
+passes all64 contexts,368 native samples,160 exact cold windows,4672 compiled
+refusals and96 transaction contexts in163.016 seconds at unchanged real
+`9b4efb16a4c29bc5713e6861d10de41e130742eb`. The32 fresh unchanged implicit8
+build contexts compare all916 whole objects exactly, with no model replay.
 
 Eight prior implicit8 cases per platform/optimization receive new public builds
 and complete whole-object comparisons against their actual original archives.
