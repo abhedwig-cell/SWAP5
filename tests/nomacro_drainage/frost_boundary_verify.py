@@ -11,7 +11,7 @@ from frost_boundary_central import audit
 from frost_calendar_state_central import audit as parent_calendar_audit
 import frost_calendar_state_verify as previous
 
-SEALED='61f099f4c5ea2a496e6da5d6d55ca57d93192fea'
+SEALED='0000000000000000000000000000000000000000'
 RAW_NAMES=('FROST_BOUNDARY03_DISCOVERY_RAW_V1',)+tuple('FROST_BOUNDARY03_'+platform+'_'+opt+'_ORIGINAL_V'+str(version)
     for platform in ('WINDOWS','UBUNTU') for opt in ('O0','O2') for version in (1,2,3,4))
 

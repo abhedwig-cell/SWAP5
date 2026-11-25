@@ -1,5 +1,5 @@
 {
-  "status": "ALL24_SCIENCE_PRESERVED_FRESH_RUNNER_ORIGINAL_GIT_DATA_READER_FIX_IMPLEMENTED_NEW_EXACT_HEAD_ADMISSION_GATES_PENDING",
+  "status": "ALL24_SCIENCE_PRESERVED_STRICT_ARCHIVED_COMMIT_READER_AND_COMPLETE_SMALL_LRV_SOURCE_CHECKOUT_FIX_CURRENT_HEAD_GATES_PENDING",
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "classification": "B_EXISTING_ORIGINAL_BOUNDARY_AND_FROST_STATE_COMPOSITION",
   "actual_canonical_at_start": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
@@ -421,6 +421,19 @@
         }
       ],
       "reason": "Materialize only current frozen JSON declarations for existing source authority. Full scientific ZIP payload remains actual immutable Git API bytes. Original path triggers, commands, limits and test bodies unchanged."
+    },
+    ".github/workflows/swap431-root-lrv-constant.yml": {
+      "before_lf_sha256": "2954942a25c5201a74a38163ff6bbb99973c4334bef377be1473c3402bbca7e1",
+      "proposed_lf_sha256": "bacb688bcc21896ea236ad4e45733f3f41aad26b1898c563fe77aa20e484170d",
+      "ordered_literal_edits": [
+        {
+          "base_start": 599,
+          "base_end": 599,
+          "before": "",
+          "after": "  with:\n          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /src/\n            /tests/fmig431/\n            /tests/physics/\n            /tests/fsi/\n            /.github/workflows/\n      "
+        }
+      ],
+      "reason": "Original constant-LRV qualifier reads onlysrc, tests/fmig431, tests/physics and tests/fsi. Keep exact historical job, timeout, compiler installation, O0/O2 commands and test bodies; fetch real source blobs lazily and materialize this complete actual dependency surface. Prior final-head run cancelled after25min while unfiltered repository fetch had not completed, before any compiler/model; rerun API routes returned500."
     }
   },
   "original_archived_commit_reader": {
