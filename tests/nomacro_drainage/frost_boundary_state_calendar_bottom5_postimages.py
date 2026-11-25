@@ -13,13 +13,15 @@ SHA=lambda raw:hashlib.sha256(raw).hexdigest()
 def main():
  p=argparse.ArgumentParser()
  for k in ('reference-work','build-root','output'):p.add_argument('--'+k,type=Path,required=True)
- p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--platform',choices=('Windows','Ubuntu'),required=True);a=p.parse_args()
+ p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--platform',choices=('Windows','Ubuntu'),required=True);p.add_argument('--case',action='append',default=[]);a=p.parse_args()
  assert platform.system()==('Windows' if a.platform=='Windows' else 'Linux')
  head,c=source();a.output.mkdir(parents=True);q=dict(status='RUNNING_ACTUAL_BOTTOM5_BUILD_POSTIMAGES_NOT_ADMITTED',source=head,platform=a.platform,optimization=a.optimization,contexts=[],model_executions=0)
  save=lambda:(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
  save()
  try:
-  for index in (0,1,4,5):
+  selected=[i for i in (0,1,4,5) if not a.case or c['representative_cases'][i]['name'] in a.case]
+  assert selected and set(a.case)<={c['representative_cases'][i]['name'] for i in (0,1,4,5)}
+  for index in selected:
    case=c['representative_cases'][index];name=case['name'];assert case['bottom']==5
    folder=a.output/name;folder.mkdir();inputs=folder/'inputs';prepare(case,inputs);bundle=a.build_root/name/'bundle'
    cmd=[sys.executable,'-B','tools/solute/run_water.py','--model','HYBRID_NOMACRO_WATER','--experimental-project',str(inputs),'--original-output','--experimental-time-step-policy','original-adaptive-event-closure-v1','--reference-work',str(a.reference_work),'--build-only','--donor-opt',a.optimization,'--kernel-opt',a.optimization,'--output',str(bundle)]
@@ -28,7 +30,7 @@ def main():
    item=dict(case=name,actual_current_source=head,command=cmd,returncode=r.returncode,seconds=time.perf_counter()-started,model_executions=0);q['contexts'].append(item);save();r.check_returncode()
    host=a.platform.upper();version=1 if index<2 else 2
    original_manifest=f'FROST_BOUNDARY_STATE_CALENDAR04_{host}_{a.optimization}_ORIGINAL_V{version}.json'
-   anchor='71806beaee8e532af407ab88298b7bde4ac766c2' if version==1 else 'bc79f1dd87ec89198a27f5a3b28c3b722d08236c'
+   anchor='511d207f7ab9c0d543b5edab7aa7ad649c6896ce' if version==1 else 'bc79f1dd87ec89198a27f5a3b28c3b722d08236c'
    compiled='compiled/'+name+'/bundle/';old_inputs='current/'+name+'/inputs/'
    if a.platform=='Windows' and index==0:
     original_manifest='FROST_BOUNDARY_STATE_CALENDAR04_LOCAL_WINDOWS_O0_O2_RAW_V1.json';compiled='compiled/'+a.optimization+'/'+name+'/bundle/';old_inputs='current/'+a.optimization+'/'+name+'/inputs/'
@@ -46,7 +48,7 @@ def main():
    assert all(x['exact'] for x in objects.values()),'Actual bottom5 compiled object changed; inspect original bytes before inheritance'
    assert source()[0]==head
    print('ACTUAL_BOTTOM5_CURRENT_PUBLIC_COMPILED_POSTIMAGE_EXACT',name,a.optimization,len(generated),flush=True)
-  q['status']='ACTUAL_BOTTOM5_FOUR_PHYSICAL_BRANCHES_PUBLIC_GENERATED_AND_COMPILED_POSTIMAGES_EXACT_NO_MODEL_REPLAY_NOT_ADMITTED'
+  q['status']='ACTUAL_SELECTED_BOTTOM5_PHYSICAL_BRANCHES_PUBLIC_GENERATED_AND_COMPILED_POSTIMAGES_EXACT_NO_MODEL_REPLAY_NOT_ADMITTED'
  except Exception as error:q.update(status='FAILED_ACTUAL_BOTTOM5_POSTIMAGE_PRESERVATION_NOT_ADMITTED',error=repr(error));raise
  finally:save()
 if __name__=='__main__':main()
