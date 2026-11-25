@@ -36292,6 +36292,14 @@
       "convergence_warning_continuations": 0,
       "reopened_parent_contexts": 8,
       "new04_plate_contexts": 16
+    },
+    "current_postimage_requalification": {
+      "scope": "Only current bottom5 public builds; 16 branch/platform/optimization contexts; zero model periods",
+      "classification": "D_EVIDENCE_PRESERVATION_FOR_SCOPED_A_NUMERICAL_GUARD_CHANGE",
+      "reason": "Explicit plate trial fix changed daily_host build dispatcher. Prior eab postimage proof predates this change. Actual emitted source/object postimages must match original qualified bottom5, with identical compiler.",
+      "CI_contexts": 14,
+      "local_JRev4_contexts": 2,
+      "status": "SELECTED_BUILD_ONLY_CURRENT_PHYSICAL_POSTIMAGES"
     }
   },
   "canonical524_actual_admission": {
