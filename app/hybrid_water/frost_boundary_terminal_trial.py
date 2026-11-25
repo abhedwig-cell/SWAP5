@@ -20,7 +20,7 @@ HEAD5_TRIAL_GUARD='            if(abs(terminal_water_trial_residual(-kmean(NN+1)
 def enabled(project):
     from frost_boundary_composition import selection
     selected=selection(project.input_directory,project.original_output)
-    return bool(selected and (selected['bottom']==8 or selected['bottom']==5 and selected['implicit']==1))
+    return bool(selected and (selected['bottom']==8 or selected['bottom']==6 and selected['implicit']==1))
 
 
 def _replace(text, before, after):
