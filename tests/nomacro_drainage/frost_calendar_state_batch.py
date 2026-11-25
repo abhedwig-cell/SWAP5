@@ -23,7 +23,7 @@ def source():
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--evidence',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--phase',choices=('v1','daily-v2'),default='v1');a=p.parse_args();head,contract=source();a.output.mkdir(exist_ok=True);record=a.output/'BATCH.json'
+    p=argparse.ArgumentParser();p.add_argument('--evidence',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--phase',choices=('v1','daily-v2'),default='v1');p.add_argument('--verified-year-profile',type=Path);p.add_argument('--verified-year-build-record',type=Path);a=p.parse_args();assert bool(a.verified_year_profile)==bool(a.verified_year_build_record);assert a.verified_year_profile is None or a.phase=='daily-v2';head,contract=source();a.output.mkdir(exist_ok=True);record=a.output/'BATCH.json'
     q=dict(status='RUNNING_ACTUAL_WINDOWS_FROST_CALENDAR_REPRESENTATIVES_NOT_ADMITTED',actual_controller_source=head,phase=a.phase,contexts=[],compiler_executions=0,canonical_admission=False)
     if record.exists():
         previous=json.loads(record.read_text());assert previous['status']!='WINDOWS_FROST_CALENDAR_EIGHT_FULL35_SIX_SHORT_AND_REQUIRED_COLD_PASS_NOT_ADMITTED';q['previous_batch_sha256']=hashlib.sha256(record.read_bytes()).hexdigest();(a.output/('PREVIOUS_BATCH_'+q['previous_batch_sha256']+'.json')).write_bytes(record.read_bytes())
@@ -41,6 +41,12 @@ def main():
                 profile=a.evidence/'frost-calendar-state02-water-explicit-monthly-hys0-initial1-O0-full35-v1';build_record=a.evidence/'frost-calendar-state02-water-monthly-O0-build-v2/RESULT.json'
             else:
                 stem='frost-calendar-state02-'+label;profile=a.evidence/(stem+'-science-'+a.phase);build_record=a.evidence/(stem+'-build-'+a.phase+'/RESULT.json')
+            if a.verified_year_profile is not None and case['name']=='water-explicit-regular-noreset-year-hys1-initial2' and opt=='O0':
+                profile=a.verified_year_profile;build_record=a.verified_year_build_record
+                verified=json.loads((profile/'RESULT.json').read_text());actual_inputs=Path(verified['input_root'])
+                assert inventory(inputs)==inventory(actual_inputs),'Completed diagnostic input differs from selected original case'
+                prior=json.loads(build_record.read_text());assert prior['input_root']==str(actual_inputs) and prior['actual_source']==verified['source'] and prior['build_root']==verified['build_root']
+                inputs=actual_inputs
             reused=profile.exists()
             if a.phase=='daily-v2' and reused:
                 prior=json.loads(build_record.read_text());assert not subprocess.check_output(['git','diff',prior['actual_source'],head,'--','app','src','tools','reference'],cwd=R)

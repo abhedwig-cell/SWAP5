@@ -1,0 +1,63 @@
+{
+  "status": "BOUNDED_FRESH_JSON_EOL_READER_EXACT_OLD_ACCEPTANCE_AND_OPAQUE_REFUSALS_PASS",
+  "checks": [
+    {
+      "path": "integration/f-ci/nomacro-complete01/FROST_CALENDAR_STATE02_UBUNTU_O0_CENTRAL_V1.json",
+      "variant": "actual",
+      "old_and_new": {
+        "accepted": true,
+        "sha256": "d8485108ffcd367df6fed3ed31e09e7fb3ff97772f7ce30578d183778dc5b42a",
+        "storage": "ACTUAL_GIT_TEXT_CRLF_LF_SPELLING_WITH_EXACT_ORIGINAL_GIT_BLOB_AND_SEPARATE_RAW_HASH"
+      }
+    },
+    {
+      "path": "integration/f-ci/nomacro-complete01/FROST_CALENDAR_STATE02_UBUNTU_O0_CENTRAL_V1.json",
+      "variant": "changed",
+      "old_and_new": {
+        "accepted": false
+      }
+    },
+    {
+      "path": "integration/f-ci/nomacro-complete01/FROST_CALENDAR_STATE02_UBUNTU_O0_CENTRAL_V1.json",
+      "variant": "changed-with-nul",
+      "old_and_new": {
+        "accepted": false
+      }
+    },
+    {
+      "path": "integration/f-ci/nomacro-complete01/FROST_CALENDAR_STATE02_UBUNTU_O0_CENTRAL_V1.json",
+      "variant": "original-CRLF-spelling",
+      "old_and_new": {
+        "accepted": true,
+        "sha256": "d8485108ffcd367df6fed3ed31e09e7fb3ff97772f7ce30578d183778dc5b42a",
+        "storage": "ACTUAL_GIT_TEXT_CRLF_LF_SPELLING_WITH_EXACT_ORIGINAL_GIT_BLOB_AND_SEPARATE_RAW_HASH"
+      }
+    },
+    {
+      "path": "integration/f-ci/nomacro-complete01/FROST_CALENDAR_STATE02_UBUNTU_O0_ORIGINAL_V1.zip.part001",
+      "variant": "actual",
+      "old_and_new": {
+        "accepted": true,
+        "sha256": "934dbde062f80486ec3efb682490fe7b06ec57d3dd0ad16cb8e5939b6985ad97",
+        "storage": "ACTUAL_WORKING_BYTES_EXACT"
+      }
+    },
+    {
+      "path": "integration/f-ci/nomacro-complete01/FROST_CALENDAR_STATE02_UBUNTU_O0_ORIGINAL_V1.zip.part001",
+      "variant": "changed",
+      "old_and_new": {
+        "accepted": false
+      }
+    },
+    {
+      "path": "integration/f-ci/nomacro-complete01/FROST_CALENDAR_STATE02_UBUNTU_O0_ORIGINAL_V1.zip.part001",
+      "variant": "changed-with-nul",
+      "old_and_new": {
+        "accepted": false
+      }
+    }
+  ],
+  "initial_inventory_scope": "actual tracked JSON declarations only; old exact per-path EOL fallback otherwise",
+  "model_executions": 0,
+  "compiler_executions": 0
+}
