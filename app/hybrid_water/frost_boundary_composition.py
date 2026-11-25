@@ -6,7 +6,7 @@ from pathlib import Path
 POLICY = 'original-frost-boundary58-dense-state-composition-v1'
 FIXED = dict(SWMACRO=0, SWFROST=1, SWSNOW=1, SWHEA=1, SWCALT=2,
              SWSOPHY=0, SWDRA=1, SWBR=0, SWBBCFILE=0, SWMETDETAIL=0,
-             SWHYST=2, SWINCO=2, NPRINTDAY=1, PERIOD=1, SWMONTH=0,
+             SWHYST=2, SWINCO=1, NPRINTDAY=1, PERIOD=1, SWMONTH=0,
              SWODAT=0, SWRES=1, SWTOPBHEA=2)
 
 
