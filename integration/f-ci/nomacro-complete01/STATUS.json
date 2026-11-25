@@ -3,7 +3,7 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
   "branch": "codex/nomacro-frost-calendar-state02",
-  "last_commit": "14d91abe6a4a417e57acb032aa5132f1c91ecf27",
+  "last_commit": "16efb12ff4b365b5fd208f8a2c262e4a1e2fe2f7",
   "status": "PARTIAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -35709,6 +35709,9 @@
           }
         ]
       }
-    }
+    },
+    "first_actual_build": "PASS original water monthly O0 at actual be9a06ffa6; original compiler/control records retained",
+    "first_actual_short_probe": "Original reader refused IRDATE outside Jan28..Feb2 before HYBRID_READY; zero accepted model days, not a numerical or native-state failure. Original failed input/result preserved unchanged.",
+    "input_fixture_correction": "New v2 input preserves original irrigation amount/concentration/type/rate and shifts only its actual date by the original TSTART-to-newTSTART offset. Failed v1 not rewritten."
   }
 }
