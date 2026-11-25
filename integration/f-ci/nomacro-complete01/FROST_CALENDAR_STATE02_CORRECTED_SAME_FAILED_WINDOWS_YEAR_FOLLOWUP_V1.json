@@ -1,0 +1,61 @@
+{
+  "status": "CORRECTED_EXACT_ORIGINAL_FAILED_WINDOWS_INPUT12_DAYS_AND_NATIVE_COLD_PASS",
+  "actual_compiler": "adc75253ed353f7121b43280f7a084953ec05024",
+  "old_actual_dense_compiler": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
+  "owning_limit_cm": "1e-10",
+  "fresh_Decimal_budgets": {
+    "days": 12,
+    "daily_water_max_cm": "9.980134E-11",
+    "daily_cde_max_mg_cm2": "0",
+    "every_prefix_cde_max_mg_cm2": "0",
+    "actual_frost_output_events": 3,
+    "actual_partial_frost_output_dates": [],
+    "accumulated_water_equivalence_claimed": false
+  },
+  "original_failed_day": 7,
+  "new_day7_kernel_residual_cm": 2.8668623031080642e-11,
+  "same_host_canonical_dense_comparison": {
+    "stock_start_cm": {
+      "exact": true
+    },
+    "stock_end_cm": {
+      "exact": true
+    },
+    "external_flux_cm": {
+      "exact": true
+    },
+    "pressure_head_cm": {
+      "exact": true
+    },
+    "groundwater_cm": {
+      "exact": true
+    },
+    "drainage_outward_cm": {
+      "exact": true
+    },
+    "bottom_outward_cm": {
+      "exact": true
+    }
+  },
+  "max_abs_pressure_difference_cm": 0.0,
+  "cold": [
+    {
+      "start": 2,
+      "end": 12,
+      "exact_physical": true,
+      "exact_complete_native": true,
+      "exact_user_output": {
+        "result_output.bin": {
+          "exact": true,
+          "continuation_records": 2,
+          "kind": "original_REAL4_binary"
+        }
+      },
+      "origin_unchanged": true,
+      "seconds": 3.426512399688363
+    }
+  ],
+  "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-calendar-state02-windows-batch-v1\\inputs\\water-explicit-regular-noreset-year-hys1-initial2",
+  "original_failed_raw_preserved": true,
+  "canonical_admission": false
+}

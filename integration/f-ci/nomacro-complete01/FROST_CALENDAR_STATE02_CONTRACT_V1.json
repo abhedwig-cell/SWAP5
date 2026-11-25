@@ -1,0 +1,340 @@
+{
+  "status": "PERSISTED_ACTUAL_DAY_TERMINAL_FRAME_COUPLING_CORRECTION_NOT_QUALIFIED",
+  "baseline_actual_canonical": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
+  "parent_PR": 1800,
+  "classification": "B_EXISTING_CALENDAR_NATIVE_STATE_COMPOSITION",
+  "scope": "Model1 Snow/Frost primaryDIVD1 bottom6 water/CDE hys0/1/2 initial1/2 explicit/fittedimplicit, NPRINTDAY1 regular/monthly/explicit dates and reset; retain event closure, exclude perstep/subdaily",
+  "new_physical_equations": false,
+  "implementation": "Real original thermal/calendar/Snow7 and CDE interval provider APIs; four distinct native codecs; exact nonselected daily delegation. Actual short producer/native/month seam next.",
+  "state_dependencies": [
+    "Actual seven original Snow cumulative output fields",
+    "Existing original calendar/crop pending-date frame",
+    "Existing CDE interval20+nodes state and observed daily six-RHS mass receipt",
+    "Existing implicit Frost root96-byte typed carry"
+  ],
+  "source": "app/hybrid_water/frost_calendar_state.py",
+  "source_lf_sha256": "0f3c686f423abc03503f7febf7cf87282fd2a6852baeaa55e9c021aa1a143c9a",
+  "next": "First corrected actual O0 twelve-day execution on exact original failed input, compare genuine dense35 physical prefix. Then corrected O0/O2 representative qualification, retain all pre-correction PASS/failure raw.",
+  "canonical_admission": false,
+  "new_native_format": true,
+  "native_codecs": [
+    "S5FCW001",
+    "S5FCC001",
+    "S5FCW002",
+    "S5FCC002"
+  ],
+  "files": {
+    "app/hybrid_water/daily_host.py": {
+      "added": false,
+      "before_lf_sha256": "0152f8ebddc8a1215ec34991ae9f743e9cff2fed8459fdaaa3514ac7c7829cd9",
+      "proposed_lf_sha256": "517fb178f1e5b085412ab4904a1160e76ca70bfa5e7669fc1940cd0d54248189",
+      "ordered_literal_edits": [
+        {
+          "base_start": 73001,
+          "base_end": 73080,
+          "before": "        from age_groundwater_output import source_age_identity as age_identity\n",
+          "after": "        from groundwater_water_output import source_age_identity as age_identity\n"
+        }
+      ]
+    },
+    "app/hybrid_water/experimental_project.py": {
+      "added": false,
+      "before_lf_sha256": "41c0dbed87feef466533dc2a659aaf53454696ebba85baabb09a9417414d454b",
+      "proposed_lf_sha256": "958ef2cf948c4c9a5a38b65108a305be00ca3fe71768d6dd13c47ea591f1e108",
+      "ordered_literal_edits": [
+        {
+          "base_start": 11058,
+          "base_end": 11316,
+          "before": "                or len(flags)>1 or flags and flags[0].strip().upper() not in ('.FALSE.','FALSE','.F.','F')) and initial_calendar is None and initial_age is None and initial_groundwater is None and paired_boundary is None and initial_analytical_snow is None:\n",
+          "after": "                or len(flags)>1 or flags and flags[0].strip().upper() not in ('.FALSE.','FALSE','.F.','F')) and initial_calendar is None and initial_age is None and initial_groundwater is None and paired_boundary is None and initial_analytical_snow is None and not (initial_frost or {}).get('frost_calendar'):\n"
+        },
+        {
+          "base_start": 29308,
+          "base_end": 29308,
+          "before": "",
+          "after": "    from frost_calendar_output import selection as frost_calendar_selection,codec as frost_calendar_codec\n    if frost_calendar_selection(project) is not None:return frost_calendar_codec(project)\n"
+        }
+      ]
+    },
+    "app/hybrid_water/frost_calendar_output.py": {
+      "added": true,
+      "proposed_lf_sha256": "c646c05f4e813e1537d9f83bdce750b13a42b3e0eec96cca6f0161d62561f4bc"
+    },
+    "app/hybrid_water/frost_calendar_state.py": {
+      "added": true,
+      "proposed_lf_sha256": "0f3c686f423abc03503f7febf7cf87282fd2a6852baeaa55e9c021aa1a143c9a"
+    },
+    "app/hybrid_water/frost_calendar_terminal_water.py": {
+      "added": true,
+      "proposed_lf_sha256": "e40812f5b75525a25c7b89efed72c04b0e9bb5743b56c052c59b78220e5c9909"
+    },
+    "app/hybrid_water/frost_drainage_composition.py": {
+      "added": false,
+      "before_lf_sha256": "58d0111a47ad5419ed576eb273d1c03e896c927baff7d61edc2de02fed69693d",
+      "proposed_lf_sha256": "a5e3e0b53a1521497e9f30c79d17688ea7886fc71aa9adf58c38395f8d90714b",
+      "ordered_literal_edits": [
+        {
+          "base_start": 853,
+          "base_end": 853,
+          "before": "",
+          "after": "    from frost_calendar_state import selection as calendar_selection\n    if calendar_selection(project.input_directory,project.original_output) is not None:\n        from frost_calendar_output import codec as calendar_codec\n        return calendar_codec(project)\n"
+        }
+      ]
+    },
+    "app/hybrid_water/frost_hysteresis_composition.py": {
+      "added": false,
+      "before_lf_sha256": "b63e7ac50646689158ff32f35fca6678cb6ddac1007f4b5157522c7325c1ba19",
+      "proposed_lf_sha256": "4b2a04c5361c16c19b21b177d13a86e2d805a886bc159d10d379705595514953",
+      "ordered_literal_edits": [
+        {
+          "base_start": 873,
+          "base_end": 873,
+          "before": "",
+          "after": "    from frost_calendar_state import selection as calendar_selection\n    calendar=calendar_selection(directory,original_output)\n    if calendar is not None:return calendar\n"
+        }
+      ]
+    },
+    "app/hybrid_water/groundwater_water_output.py": {
+      "added": false,
+      "before_lf_sha256": "f8844e285fb144b30494f3ee2db49267ffebcb01a3bc5156b859ae31a1a43c5f",
+      "proposed_lf_sha256": "c6b8901f12870d5ba4d210169d86fa15cf1f509193edf5e37769c84251268548",
+      "ordered_literal_edits": [
+        {
+          "base_start": 2916,
+          "base_end": 2916,
+          "before": "",
+          "after": "    from frost_calendar_output import selection as frost_selection,selection as frost_result\n    if frost_selection(project) is not None:return frost_result(project)\n"
+        },
+        {
+          "base_start": 3200,
+          "base_end": 3200,
+          "before": "",
+          "after": "    from frost_calendar_output import selection as frost_selection,codec as frost_result\n    if frost_selection(project) is not None:return frost_result(project)\n"
+        },
+        {
+          "base_start": 3392,
+          "base_end": 3392,
+          "before": "",
+          "after": "    from frost_calendar_output import selection as frost_selection,metadata as frost_result\n    if frost_selection(project) is not None:return frost_result(project)\n"
+        },
+        {
+          "base_start": 5257,
+          "base_end": 5350,
+          "before": "def source_age_identity(original,project):return prior.source_age_identity(original,project)\n",
+          "after": "def source_age_identity(original,project):\n    from frost_calendar_output import selection as frost_selection,source_age_identity as frost_identity\n    if frost_selection(project) is not None:return frost_identity(original,project)\n    return prior.source_age_identity(original,project)\n"
+        },
+        {
+          "base_start": 7159,
+          "base_end": 7159,
+          "before": "",
+          "after": "    from frost_calendar_output import selection as frost_selection,apply_build as frost_build\n    if frost_selection(project) is not None:return frost_build(output,donor_build,project,patched)\n"
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_frost_composition.py": {
+      "added": false,
+      "before_lf_sha256": "496a8f9879d0ef0669a127b017d3a56f15ab20fe4fe8981ac462d523e13995b6",
+      "proposed_lf_sha256": "339bb2966ce1992ecf306f0747adea9b3ef12793a8188f62af5c33458cba4736",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1490,
+          "base_end": 1490,
+          "before": "",
+          "after": "    from frost_calendar_state import selection as calendar_selection\n    if calendar_selection(project.input_directory,project.original_output) is not None:\n        from frost_calendar_output import codec as calendar_codec\n        return calendar_codec(project)\n"
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_frost_root_state.py": {
+      "added": false,
+      "before_lf_sha256": "dfb3b6141f3d84f687d48018f3ee2352ec03b2e8bcc4807edb5e7bd178d09bb3",
+      "proposed_lf_sha256": "e7852f067cdcb2f861a2bf180bedb3ae99d25c6305f16c06d8784d369f68c894",
+      "ordered_literal_edits": [
+        {
+          "base_start": 5251,
+          "base_end": 5251,
+          "before": "",
+          "after": "    from frost_calendar_state import selection as calendar_selection\n    if calendar_selection(project.input_directory,project.original_output) is not None:\n        from frost_calendar_output import render_macro\n"
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_frost_source_guard.py": {
+      "added": false,
+      "before_lf_sha256": "873d07038adbd2ea493a5cd61ac4914ad55faee8fe089508aaee6ab45778a022",
+      "proposed_lf_sha256": "f795c1228c7993d0ace71287a36d49f5bafe11ec0efa2fe2b09ce4825a2e0e6a",
+      "ordered_literal_edits": [
+        {
+          "base_start": 2943,
+          "base_end": 3060,
+          "before": "        if (bundle/name).read_bytes().replace(b'\\r\\n', b'\\n') != (folder/name).read_bytes().replace(b'\\r\\n', b'\\n'):\n",
+          "after": "        expected=(folder/name).read_bytes().replace(b'\\r\\n', b'\\n')\n        if name=='terminal_water_receipt.f90':\n            from frost_calendar_state import selection as calendar_selection\n            if calendar_selection(project.input_directory,project.original_output) is not None:\n                from frost_calendar_terminal_water import source as terminal_day_source\n                expected=terminal_day_source().encode('cp1252')\n        if (bundle/name).read_bytes().replace(b'\\r\\n', b'\\n') != expected:\n"
+        }
+      ]
+    },
+    "app/hybrid_water/daily_coupling.py": {
+      "added": false,
+      "before_lf_sha256": "ae0c1e3c418e29e07070c1b78cb8bc9e79d3e326bd2177dd51d5cc80faadaae8",
+      "proposed_lf_sha256": "94277c35b1c385bd1b7ee544cfb0e8d657a2c6c048b0de2858ccdb4333692c69",
+      "ordered_literal_edits": [
+        {
+          "base_start": 15581,
+          "base_end": 15581,
+          "before": "",
+          "after": "from frost_calendar_state import selection as terminal_calendar_selection\n    if expected_event and terminal_calendar_selection(project.input_directory,project.original_output) is not None:\n        from frost_calendar_terminal_water import source as terminal_day_source\n        if (bundle/'terminal_water_receipt.f90').read_text(encoding='cp1252')!=terminal_day_source():\n            raise ValueError('Foreign actual calendar terminal day receipt source')\n    el"
+        }
+      ]
+    }
+  },
+  "parent_qualified_candidate": "8b7c2925d4c14051b5e5bc6879851702a0780511",
+  "parent_actual_merge_observers": "RUNNING_REAL_CANONICAL_PUBLIC_AND_ORDINARY_PUB",
+  "first_short_month_seam": "Six days/exact cold/native/user-output plus fresh original unchanged1e-10 daily water budget PASS from preserved actual raw. Original failed observer daily-witness assumption retained; corrected output-event reader does not replay models.",
+  "representative_cases": [
+    {
+      "name": "water-explicit-monthly-hys0-initial1",
+      "kind": "water",
+      "implicit": 0,
+      "hysteresis": 0,
+      "initial": 1,
+      "calendar": "monthly",
+      "start": "2002-01-28",
+      "reset": 1,
+      "days": 35
+    },
+    {
+      "name": "cde-implicit-regular-year-hys1-initial2",
+      "kind": "cde",
+      "implicit": 1,
+      "hysteresis": 1,
+      "initial": 2,
+      "calendar": "regular",
+      "start": "2002-12-15",
+      "reset": 1,
+      "days": 35
+    },
+    {
+      "name": "water-implicit-dates-hys2-initial2",
+      "kind": "water",
+      "implicit": 1,
+      "hysteresis": 2,
+      "initial": 2,
+      "calendar": "dates",
+      "start": "2002-01-28",
+      "reset": 1,
+      "days": 35
+    },
+    {
+      "name": "cde-explicit-monthly-hys2-initial1",
+      "kind": "cde",
+      "implicit": 0,
+      "hysteresis": 2,
+      "initial": 1,
+      "calendar": "monthly",
+      "start": "2002-01-28",
+      "reset": 1,
+      "days": 35
+    },
+    {
+      "name": "water-explicit-regular-noreset-year-hys1-initial2",
+      "kind": "water",
+      "implicit": 0,
+      "hysteresis": 1,
+      "initial": 2,
+      "calendar": "regular",
+      "start": "2002-12-29",
+      "reset": 0,
+      "days": 12
+    },
+    {
+      "name": "cde-implicit-dates-hys0-initial1",
+      "kind": "cde",
+      "implicit": 1,
+      "hysteresis": 0,
+      "initial": 1,
+      "calendar": "dates",
+      "start": "2002-01-28",
+      "reset": 1,
+      "days": 8
+    },
+    {
+      "name": "water-implicit-monthly-hys1-initial1",
+      "kind": "water",
+      "implicit": 1,
+      "hysteresis": 1,
+      "initial": 1,
+      "calendar": "monthly",
+      "start": "2002-01-28",
+      "reset": 1,
+      "days": 8
+    }
+  ],
+  "test_selection": {
+    "owner": "SWAP5-NOMACRO-COMPLETE01",
+    "classification": "B_EXISTING_CALENDAR_AND_NATIVE_STATE_COMPOSITION",
+    "platforms": [
+      "Windows",
+      "Ubuntu"
+    ],
+    "optimizations": [
+      "O0",
+      "O2"
+    ],
+    "selected_full35_per_platform_optimization": 4,
+    "selected_short_seams_per_platform_optimization": 3,
+    "new_total_full35_selected": 16,
+    "new_total_short_seams_selected": 12,
+    "scientific_impact": "Existing Frost event/soil/CDE physical source retained; seven Snow output totals and actual CDE interval private state now need exact cold/rollback/date/reset composition. Full monthly water/CDE, year-reset implicit CDE and explicit-date hysteresis2 water cover recurrence; other kernel/history/initial calendar combinations receive discriminating short native/output seams.",
+    "not_selected": [
+      "Replay original admitted472 context model periods",
+      "Cartesian expansion for unchanged selector implementations",
+      "General performance/obsolete low-air stress",
+      "Subdaily or perstep Frost clocks"
+    ],
+    "expected_seconds_per_short_model": 8,
+    "expected_seconds_per_full35_model": 30,
+    "builder_wall_cap_seconds": 240,
+    "model_wall_cap_seconds": 240,
+    "canonical_admission": false
+  },
+  "terminal_day_correction": {
+    "status": "REAL_CANONICAL_DENSE_PASS_AND_NEW_INTERVAL_DAY7_REFUSAL_LOCALIZED_TO_TERMINAL_RECEIPT_INTERVAL_BASIS",
+    "actual_canonical": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
+    "actual_dense_source": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
+    "actual_calendar_source": "1e63bc3f38b54c10f182f31bdc740ea83d7f1a23",
+    "complete_actual_generated_source_hashes_equal": {
+      "headcalc.f90": "15bac3d3cc0ee41918b5c6bf53aa75f50c85a1bbc0f56db66431045ab9d87a69",
+      "timecontrol.f90": "14403e7f9b0a9434388b62fb00c4ef672ac004f7d54ab3c8fbbb8fdd5364b472",
+      "boundtop.f90": "ea9d62eed9518fff6e6f46312d17885fb1a722bf108c5a02a5f30f2df87b4a15",
+      "frozencond.f90": "d529abbca6d45ae8ac5008a2804cf3813bda2b9878c22b06e4093fc015c15a03",
+      "divdra.f90": "81f415e7274b38f973450c1ad1e2d997766e3aebb837c4f3108c20f7bc10d13e",
+      "terminal_water_receipt.f90": "dc491e5faa9c7ca8e0e1e2a573cac965cb2e7f790d1cb6ad89ab82e7b90a6540"
+    },
+    "first_six_pressure_postimages_exact": true,
+    "actual_dense_completed_days": 35,
+    "new_interval_accepted_days": 6,
+    "rejected_day": 7,
+    "dense_day7_residual_cm": -2.8659540018960428e-11,
+    "interval_day7_residual_cm": 1.7304130177364652e-10,
+    "unchanged_owning_limit_cm": "1e-10",
+    "cause": "Existing terminal trial receipt reads original MOD_integral totals/start stocks. Those describe an output interval; new PERIOD7/SWRES0 context exposes cancellation of prior-day residuals. The original hybrid_output_frame is the independent actual day owner.",
+    "correction": "Read-only replacement of terminal cumulative/start-stock terms with the matching actual day-frame terms. All projected physical end stocks/current-step fluxes/real128 summation and existing1e-10 guard remain literal.",
+    "input_of_failed_model_preserved": true,
+    "old_eight_full35_results_retained": true,
+    "requalification": "Correction changes trial acceptance for all new non-daily contexts; rerun the affected new representative cohort. No replay of admitted parent472 models.",
+    "compiler_executions_in_analysis": 0,
+    "model_executions_in_analysis": 0,
+    "first_ubuntu_attempt": "Actual new terminal module compiled O0/O2, then old common runtime source validator refused before model launch; common validator now requires exact rendered daily module only for the selected calendar route."
+  },
+  "ci_dependency_materialization": {
+    ".github/workflows/mc-sol01-swp-reader.yml": {
+      "before_lf_sha256": "1365b705586b2414346a46ef6db8c75b8ddf6d0bba9fa1d433e3eed61b66b88a",
+      "proposed_lf_sha256": "2525999df5610785704f2baadfca0ed96a8324b382a86fb9d7915a5baad159b8",
+      "before_literal": "            /integration/f-ci/nomacro-complete01/FROST_HYSTERESIS_STATE01_*\n",
+      "after_literal": "            /integration/f-ci/nomacro-complete01/FROST_HYSTERESIS_STATE01_*\n            /integration/f-ci/nomacro-complete01/FROST_CALENDAR_STATE02_*\n"
+    },
+    ".github/workflows/mc-sol01-column-input.yml": {
+      "before_lf_sha256": "7eeddc1f68ee252e46206ddf5372eb8016364ee989d088a8667f3b2226c75a0c",
+      "proposed_lf_sha256": "420d584b8c850e02ef7e795aa28186a7820b8ffc40af89e9d63e92339d0598d3",
+      "before_literal": "            /integration/f-ci/nomacro-complete01/FROST_HYSTERESIS_STATE01_*\n",
+      "after_literal": "            /integration/f-ci/nomacro-complete01/FROST_HYSTERESIS_STATE01_*\n            /integration/f-ci/nomacro-complete01/FROST_CALENDAR_STATE02_*\n"
+    }
+  }
+}

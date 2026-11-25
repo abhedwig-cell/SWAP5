@@ -1,0 +1,28 @@
+{
+  "status": "REAL_CANONICAL_DENSE_PASS_AND_NEW_INTERVAL_DAY7_REFUSAL_LOCALIZED_TO_TERMINAL_RECEIPT_INTERVAL_BASIS",
+  "actual_canonical": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
+  "actual_dense_source": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
+  "actual_calendar_source": "1e63bc3f38b54c10f182f31bdc740ea83d7f1a23",
+  "complete_actual_generated_source_hashes_equal": {
+    "headcalc.f90": "15bac3d3cc0ee41918b5c6bf53aa75f50c85a1bbc0f56db66431045ab9d87a69",
+    "timecontrol.f90": "14403e7f9b0a9434388b62fb00c4ef672ac004f7d54ab3c8fbbb8fdd5364b472",
+    "boundtop.f90": "ea9d62eed9518fff6e6f46312d17885fb1a722bf108c5a02a5f30f2df87b4a15",
+    "frozencond.f90": "d529abbca6d45ae8ac5008a2804cf3813bda2b9878c22b06e4093fc015c15a03",
+    "divdra.f90": "81f415e7274b38f973450c1ad1e2d997766e3aebb837c4f3108c20f7bc10d13e",
+    "terminal_water_receipt.f90": "dc491e5faa9c7ca8e0e1e2a573cac965cb2e7f790d1cb6ad89ab82e7b90a6540"
+  },
+  "first_six_pressure_postimages_exact": true,
+  "actual_dense_completed_days": 35,
+  "new_interval_accepted_days": 6,
+  "rejected_day": 7,
+  "dense_day7_residual_cm": -2.8659540018960428e-11,
+  "interval_day7_residual_cm": 1.7304130177364652e-10,
+  "unchanged_owning_limit_cm": "1e-10",
+  "cause": "Existing terminal trial receipt reads original MOD_integral totals/start stocks. Those describe an output interval; new PERIOD7/SWRES0 context exposes cancellation of prior-day residuals. The original hybrid_output_frame is the independent actual day owner.",
+  "correction": "Read-only replacement of terminal cumulative/start-stock terms with the matching actual day-frame terms. All projected physical end stocks/current-step fluxes/real128 summation and existing1e-10 guard remain literal.",
+  "input_of_failed_model_preserved": true,
+  "old_eight_full35_results_retained": true,
+  "requalification": "Correction changes trial acceptance for all new non-daily contexts; rerun the affected new representative cohort. No replay of admitted parent472 models.",
+  "compiler_executions_in_analysis": 0,
+  "model_executions_in_analysis": 0
+}

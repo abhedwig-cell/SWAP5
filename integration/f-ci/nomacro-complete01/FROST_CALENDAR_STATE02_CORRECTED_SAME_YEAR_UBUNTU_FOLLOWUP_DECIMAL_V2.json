@@ -1,0 +1,95 @@
+{
+  "status": "ORIGINAL_FAILED_NO_RESET_YEAR_CONFIGURATION_PASSES_CORRECTED_ACTUAL_DAILY_OWNER_BOTH_UBUNTU_OPTIMIZATIONS",
+  "owning_water_limit_cm": "1e-10",
+  "old_failed_raw_preserved": true,
+  "contexts": [
+    {
+      "optimization": "O0",
+      "actual_source": "ed7042f02214b492eb23c1e7a9fda393865e8dc4",
+      "days": 12,
+      "previously_rejected_day": 7,
+      "new_day7_water_residual_cm": "-2.866753E-11",
+      "new_day7_kernel_residual_cm": 2.8668845075685567e-11,
+      "fresh_Decimal_budgets": {
+        "days": 12,
+        "daily_water_max_cm": "9.98048E-11",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 3,
+        "actual_partial_frost_output_dates": [],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "all_days_committed": true,
+      "exact_cold": [
+        {
+          "start": 2,
+          "end": 12,
+          "exact_physical": true,
+          "exact_complete_native": true,
+          "exact_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          },
+          "origin_unchanged": true,
+          "seconds": 1.13100497100001
+        }
+      ],
+      "raw_archive_sha256": "99dbc6f5bf6c05563844702d9c9274a609525add587b230ccc08e3086e5116f3",
+      "actual_canonical_dense_pressure_comparison": {
+        "exact_all_first12_pressure_vectors": false,
+        "max_abs_pressure_difference_cm": 4.836131495267182e-13,
+        "actual_old_source": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
+        "old_platform": "Windows",
+        "new_platform": "Ubuntu"
+      }
+    },
+    {
+      "optimization": "O2",
+      "actual_source": "ed7042f02214b492eb23c1e7a9fda393865e8dc4",
+      "days": 12,
+      "previously_rejected_day": 7,
+      "new_day7_water_residual_cm": "-2.866753E-11",
+      "new_day7_kernel_residual_cm": 2.8668845075685567e-11,
+      "fresh_Decimal_budgets": {
+        "days": 12,
+        "daily_water_max_cm": "9.98048E-11",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 3,
+        "actual_partial_frost_output_dates": [],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "all_days_committed": true,
+      "exact_cold": [
+        {
+          "start": 2,
+          "end": 12,
+          "exact_physical": true,
+          "exact_complete_native": true,
+          "exact_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          },
+          "origin_unchanged": true,
+          "seconds": 1.0942717180000159
+        }
+      ],
+      "raw_archive_sha256": "abcdd96371887ad15a174456a39fed5c2b5726334e5f55808b2473f2e2aa41c2",
+      "actual_canonical_dense_pressure_comparison": {
+        "exact_all_first12_pressure_vectors": false,
+        "max_abs_pressure_difference_cm": 4.836131495267182e-13,
+        "actual_old_source": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
+        "old_platform": "Windows",
+        "new_platform": "Ubuntu"
+      }
+    }
+  ],
+  "Windows_requalification": "PENDING_STORAGE_PREFLIGHT",
+  "canonical_admission": false
+}

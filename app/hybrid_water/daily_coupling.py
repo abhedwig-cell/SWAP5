@@ -256,7 +256,12 @@ def validate_bundle(bundle, reference, project):
             actual_time=(bundle/'timecontrol.f90').read_bytes()
         if actual_time!=expected_time:
             raise ValueError('Foreign actual corrected TimeControl source')
-    if expected_event and (bundle/'terminal_water_receipt.f90').read_bytes()!=(h.APP/'terminal_water_receipt.f90').read_bytes():
+    from frost_calendar_state import selection as terminal_calendar_selection
+    if expected_event and terminal_calendar_selection(project.input_directory,project.original_output) is not None:
+        from frost_calendar_terminal_water import source as terminal_day_source
+        if (bundle/'terminal_water_receipt.f90').read_text(encoding='cp1252')!=terminal_day_source():
+            raise ValueError('Foreign actual calendar terminal day receipt source')
+    elif expected_event and (bundle/'terminal_water_receipt.f90').read_bytes()!=(h.APP/'terminal_water_receipt.f90').read_bytes():
         raise ValueError('Foreign actual terminal water receipt source')
     expected_frost=None
     if frost_enabled(project):

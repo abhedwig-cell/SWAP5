@@ -2800,12 +2800,27 @@
   },
   "frost_hysteresis_state_composition": {
     "classification": "OVERRESTRICTIVE_GUARD_AND_MISSING_COMPOSITION",
-    "status": "BOUNDED_EXPLICIT_IMPLEMENTED_FIRST_O0_35DAY_AND_COLD_PASS_NOT_ADMITTED",
+    "status": "BOUNDED_ACTUAL_CANONICAL_472_ADMITTED",
     "baseline": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
-    "scope": "Original model1 corrected Frost/SWDIVD1 bottom6 withhys0/1 andinitial1/2,densewater/CDE; implicit nativebindings next in samebatch",
+    "scope": "Original model1 corrected Frost/SWDIVD1 bottom6 hys0/1 initial1/2 dense water/CDE, explicit and fittedKsat implicit together",
     "physical_equations_changed": false,
     "new_native_format": false,
     "whole_family_closed": false,
-    "authority": "FROST_HYSTERESIS_STATE01_CONTRACT_V1.json"
+    "authority": "FROST_HYSTERESIS_STATE01_MERGE_RECEIPT_V1.json",
+    "actual_canonical": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
+    "PR": 1800,
+    "canonical_admission": true,
+    "actual_full35_contexts": 48,
+    "actual_cold_windows": 144,
+    "actual_native_snapshots": 336
+  },
+  "frost_calendar_state_composition": {
+    "classification": "MISSING_COMPOSITION",
+    "status": "IMPLEMENTED_FIRST_REAL_MONTHLY_WATER_AND_IMPLICIT_REGULAR_CDE_SHORT_NATIVE_OUTPUT_BUDGET_PASS_NOT_QUALIFIED",
+    "scope": "Existing original regular/monthly/explicit date output, Snow7 and CDEprivate frame with existing Frost event/root owners",
+    "new_physical_equations": false,
+    "canonical_admission": false,
+    "whole_family_closed": false,
+    "authority": "FROST_CALENDAR_STATE02_CONTRACT_V1.json"
   }
 }

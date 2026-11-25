@@ -102,6 +102,9 @@ def parent_macro(reference, project):
     from experimental_project import inspect
     from snow_undrained_source_guard import checkpoint_parent
     from original_output_thermal import render_macro
+    from frost_calendar_state import selection as calendar_selection
+    if calendar_selection(project.input_directory,project.original_output) is not None:
+        from frost_calendar_output import render_macro
     report=inspect(project.input_directory)
     text=render_macro(checkpoint_parent(reference,{'swhyst':hysteresis(project),'et':report['selectors']['SWETR']},project),project)
     begin='    subroutine hybrid_macro_checkpoint(';end='    end subroutine hybrid_macro_checkpoint'
