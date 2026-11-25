@@ -19,7 +19,7 @@ TRIAL_GUARD='''            if(flboth)then
 def enabled(project):
     from frost_boundary_composition import selection
     selected=selection(project.input_directory,project.original_output)
-    return bool(selected and selected['bottom']==8)
+    return bool(selected and selected['bottom']==5)
 
 
 def _replace(text, before, after):
