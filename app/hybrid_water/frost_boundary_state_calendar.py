@@ -65,9 +65,9 @@ def plate_timecontrol_source(original):
     historical reduction branch otherwise bypasses the accepted event closure
     and may end a Snow day short of its full integrated duration.
     """
-    from time_event_closure import CORRECTED_SHA
+    from implicit_frost_source_guard import EXPLICIT_FROST_TIME
     raw=original.replace(b'\r\n',b'\n')
-    if hashlib.sha256(raw).hexdigest()!=CORRECTED_SHA:
+    if hashlib.sha256(raw).hexdigest()!=EXPLICIT_FROST_TIME:
         raise ValueError('Changed original plate-boundary event clock')
     text=raw.decode('cp1252')
     edits=[('      get_dtEvent = min(dtEventEOD, dtEventPrint)',
