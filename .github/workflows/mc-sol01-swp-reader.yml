@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'app/solute_column/**'
+      - 'tests/nomacro_drainage/frost_boundary_*.py'
       - 'tools/solute/**'
       - 'tests/nut-sol/*swp*'
       - 'integration/audits/*swp*'
@@ -11,6 +12,7 @@ on:
     branches: [integration/f-ci-canonical]
     paths:
       - 'app/solute_column/**'
+      - 'tests/nomacro_drainage/frost_boundary_*.py'
       - 'tools/solute/**'
       - 'tests/nut-sol/*swp*'
       - 'integration/audits/*swp*'

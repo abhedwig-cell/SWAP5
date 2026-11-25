@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'app/solute_column/**'
+      - 'tests/nomacro_drainage/frost_boundary_*.py'
       - 'tools/solute/**'
       - 'examples/solute_column/**'
       - 'tests/nut-sol/test_column_input.py'
@@ -18,6 +19,7 @@ on:
     branches: [integration/f-ci-canonical]
     paths:
       - 'app/solute_column/**'
+      - 'tests/nomacro_drainage/frost_boundary_*.py'
       - 'tools/solute/**'
       - 'examples/solute_column/**'
       - 'tests/nut-sol/test_column_input.py'
