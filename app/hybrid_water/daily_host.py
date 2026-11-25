@@ -942,6 +942,8 @@ end module plant_interface""")
     patched=ria12_corrected_build(output,donor_build,project,patched)
     from ria12_water_polish import apply_build as ria12_water_polish_build
     patched=ria12_water_polish_build(output,donor_build,project,patched)
+    from frost_boundary_terminal_trial import apply_build as plate_terminal_build
+    patched=plate_terminal_build(output,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")

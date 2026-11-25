@@ -73,9 +73,11 @@ def case_audit(store,folder_prefix,build_prefix,provider_store,case,producer,opt
  assert all(values[k]==v for k,v in dict(SWBOTB=case['bottom'],SWKIMPL=case['implicit'],SWHYST=case['hysteresis'],SWINCO=case['initial']).items())
  if case['bottom']==8:
   from time_event_closure import source as event
-  from frost_boundary_state_calendar import plate_timecontrol_source
+  from frost_boundary_convergence import historical_clock_source as plate_timecontrol_source
   parent=provider_store.get('original-provider-build/swap-selected/timecontrol.f90')
   assert (build/'timecontrol.f90').read_bytes().replace(b'\r\n',b'\n')==plate_timecontrol_source(event(parent))
+ from frost_boundary_convergence import require_convergence
+ require_convergence(profile)
  scientific=budgets(warm,case['kind'],case['days']);assert scientific==q['independent_original_budgets']
  data=[json.loads(line) for line in (warm/'daily.jsonl').read_text().splitlines()]
  windows=[(2,4),(19,23),(30,34)] if case['days']==35 else [(2,case['days'])]

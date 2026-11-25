@@ -247,10 +247,6 @@ def validate_bundle(bundle, reference, project):
     if identity.get('time_event_closure')!=expected_event:raise ValueError('Foreign original TimeControl event-closure policy')
     if expected_event:
         expected_time=event_source((reference/'build/swap-selected/timecontrol.f90').read_bytes())
-        from frost_boundary_state_calendar import selection as plate_clock_selection,plate_timecontrol_source
-        plate_clock=plate_clock_selection(project.input_directory,project.original_output)
-        if plate_clock is not None and plate_clock['bottom']==8:
-            expected_time=plate_timecontrol_source(expected_time)
         if implicit_frost:
             from implicit_conductivity_retry import time_source as retry_time
             from implicit_pond_event import time_source as implicit_event_time
@@ -261,12 +257,16 @@ def validate_bundle(bundle, reference, project):
         if actual_time!=expected_time:
             raise ValueError('Foreign actual corrected TimeControl source')
     from frost_calendar_state import selection as terminal_calendar_selection
-    if expected_event and terminal_calendar_selection(project.input_directory,project.original_output) is not None:
-        from frost_calendar_terminal_water import source as terminal_day_source
-        if (bundle/'terminal_water_receipt.f90').read_text(encoding='cp1252')!=terminal_day_source():
-            raise ValueError('Foreign actual calendar terminal day receipt source')
-    elif expected_event and (bundle/'terminal_water_receipt.f90').read_bytes()!=(h.APP/'terminal_water_receipt.f90').read_bytes():
-        raise ValueError('Foreign actual terminal water receipt source')
+    from frost_boundary_terminal_trial import enabled as plate_terminal_enabled,receipt_source as plate_terminal_source,validate as validate_plate_terminal
+    if expected_event:
+        expected_terminal=(h.APP/'terminal_water_receipt.f90').read_text(encoding='cp1252')
+        if terminal_calendar_selection(project.input_directory,project.original_output) is not None:
+            from frost_calendar_terminal_water import source as terminal_day_source
+            expected_terminal=terminal_day_source()
+        if plate_terminal_enabled(project):expected_terminal=plate_terminal_source(expected_terminal)
+        if (bundle/'terminal_water_receipt.f90').read_text(encoding='cp1252')!=expected_terminal:
+            raise ValueError('Foreign actual terminal water receipt source')
+        validate_plate_terminal(bundle,project)
     expected_frost=None
     if frost_enabled(project):
         guarded=frost_source((reference/'build/swap-selected/frozencond.f90').read_bytes())

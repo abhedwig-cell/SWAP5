@@ -1,14 +1,14 @@
 {
-  "status": "ELEVEN_CASE44_CANDIDATE_SCIENCE_COMPLETE_POSTIMAGE_AND_INDEPENDENT_ADMISSION_PENDING_KNOWN_IMPLICIT_HYS2_HARD_CLOSED",
+  "status": "EXPLICIT_PLATE_TERMINAL_TRIAL_FLUX_CORRECTED_NOT_QUALIFIED",
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "batch": "FROST_BOUNDARY_STATE_CALENDAR04",
-  "classification": "B_EXISTING_PROCESS_COMPOSITION_WITH_C_CONFIGURATION_REUSE",
+  "classification": "A_NUMERICAL_CONVERGENCE_GUARD_RECEIPT_REPAIR_AND_B_EXISTING_PROCESS_COMPOSITION",
   "dependency_candidate": "74ecc55765df548e758605f3566bc93558a6fefb",
   "dependency_PR": 1802,
   "actual_canonical_at_start": "1c3b8725548c836c9a73570c2579dd6cdc683217",
   "dependency_admission": "FINAL_HEAD_PUBLIC_ORDINARY_PUBLICATION_FOUR_REAL_NEGATIVES_PASS_CI_AND_ACTUAL_CANONICAL_ADMISSION_PENDING",
   "scope": "Model1 numerical heat2 Snow/Frost primaryDRA1/DIVD1, explicit original boundary5/8 or fitted implicit5; existing hysteresis0/1/2 and initialization1/2, original monthly/dates/regular/dense reset output. Old dense hys2/initial2 boundary03 dispatch remains literal.",
-  "design": "One existing Frost calendar/state owner composes all newly selected configurations, including dense requests, with four distinct existing-frame codec tags. Existing root provider already validates actual bottom and hysteresis through its owning selector. No process Fortran, physical state, mass/convergence limit, correction or fallback is changed.",
+  "design": "Explicit Frost/SWDIVD1 SWBOTB8 only, both existing03 dense and new04 calendars; implicit and bottom5 physical postimages unchanged; actual candidate lower flux is supplied to the unchanged day/interval terminal receipt. No physical-state or conservation correction. Existing original clock restored.",
   "native_codecs": [
     "S5BCW001",
     "S5BCC001",
@@ -156,34 +156,28 @@
       "before_lf_sha256": "cc912a9085de43ddd6569e99ccf900ba547d407e21a037b3d27a887e2becf74a",
       "ordered_literal_edits": [
         {
-          "base_start": 505,
-          "base_end": 505,
+          "base_start": 501,
+          "base_end": 501,
           "before": "",
-          "after": "from frost_boundary_state_calendar import input_domain as composed_domain\n    if composed_domain(selectors,boundary,original_output):return True\n    "
+          "after": "    from frost_boundary_state_calendar import input_domain as composed_domain\n    if composed_domain(selectors,boundary,original_output):return True\n"
         },
         {
-          "base_start": 989,
-          "base_end": 989,
+          "base_start": 990,
+          "base_end": 990,
           "before": "",
-          "after": "\n    from frost_boundary_state_calendar import selection as composed_selection\n    composed=composed_selection(directory,original_output)\n    if composed is not None:return composed"
+          "after": "    from frost_boundary_state_calendar import selection as composed_selection\n    composed=composed_selection(directory,original_output)\n    if composed is not None:return composed\n"
         },
         {
-          "base_start": 2993,
-          "base_end": 2993,
+          "base_start": 2989,
+          "base_end": 2989,
           "before": "",
-          "after": "if selected.get('boundary_state_calendar'):\n        from frost_boundary_state_calendar import codec as composed_codec\n        return composed_codec(selected)\n    "
+          "after": "    if selected.get('boundary_state_calendar'):\n        from frost_boundary_state_calendar import codec as composed_codec\n        return composed_codec(selected)\n"
         },
         {
-          "base_start": 3310,
-          "base_end": 3310,
-          "before": "",
-          "after": "sul"
-        },
-        {
-          "base_start": 3311,
-          "base_end": 3315,
-          "before": "urn ",
-          "after": "="
+          "base_start": 3304,
+          "base_end": 3360,
+          "before": "    return dict(selected, source_sha256=hashlib.sha256(\n",
+          "after": "    result=dict(selected, source_sha256=hashlib.sha256(\n"
         },
         {
           "base_start": 3481,
@@ -199,78 +193,77 @@
       "before_lf_sha256": "0f3c686f423abc03503f7febf7cf87282fd2a6852baeaa55e9c021aa1a143c9a",
       "ordered_literal_edits": [
         {
-          "base_start": 239,
-          "base_end": 239,
+          "base_start": 240,
+          "base_end": 240,
           "before": "",
-          "after": "\n    from frost_boundary_state_calendar import selection as composed_selection\n    composed=composed_selection(directory,original_output)\n    if composed is not None:return composed"
+          "after": "    from frost_boundary_state_calendar import selection as composed_selection\n    composed=composed_selection(directory,original_output)\n    if composed is not None:return composed\n"
         }
       ]
     },
     "app/hybrid_water/frost_calendar_output.py": {
       "added": false,
-      "proposed_lf_sha256": "9017ab025b298291a69053138e80fb9e7ef96bde0d9642d082e08797018abb93",
+      "proposed_lf_sha256": "673130ff2ae6911905eab369b562686c05f3f1412c8f70c13ecd4e2a63858e01",
       "before_lf_sha256": "c646c05f4e813e1537d9f83bdce750b13a42b3e0eec96cca6f0161d62561f4bc",
       "ordered_literal_edits": [
         {
-          "base_start": 2632,
-          "base_end": 2632,
+          "base_start": 2628,
+          "base_end": 2628,
           "before": "",
-          "after": "if selected.get('boundary_state_calendar'):\n        from frost_boundary_state_calendar import codec as composed_codec\n        return composed_codec(selected)\n    "
+          "after": "    if selected.get('boundary_state_calendar'):\n        from frost_boundary_state_calendar import codec as composed_codec\n        return composed_codec(selected)\n"
         },
         {
-          "base_start": 2891,
-          "base_end": 2891,
+          "base_start": 2892,
+          "base_end": 2892,
           "before": "",
-          "after": "\n    boundary=input_selection(project.input_directory,project.original_output)\n    policy=boundary['policy'] if boundary.get('boundary_state_calendar') else POLICY"
+          "after": "    boundary=input_selection(project.input_directory,project.original_output)\n    policy=boundary['policy'] if boundary.get('boundary_state_calendar') else POLICY\n"
         },
         {
-          "base_start": 3227,
-          "base_end": 3227,
+          "base_start": 3223,
+          "base_end": 3223,
           "before": "",
-          "after": "if boundary.get('boundary_state_calendar'):providers+=['frost_boundary_state_calendar.py','frost_boundary_composition.py']\n    "
+          "after": "    if boundary.get('boundary_state_calendar'):providers+=['frost_boundary_state_calendar.py','frost_boundary_composition.py']\n"
         },
         {
-          "base_start": 3486,
-          "base_end": 3492,
-          "before": "POLICY",
-          "after": "policy"
-        },
-        {
-          "base_start": 4538,
-          "base_end": 4538,
-          "before": "",
-          "after": "('PLATE_REDUCED_STEP_EVENT_CLOSURE_V1' if boundary.get('boundary_state_calendar') and boundary['bottom']==8 else "
-        },
-        {
-          "base_start": 4578,
-          "base_end": 4578,
-          "before": "",
-          "after": ")"
-        },
-        {
-          "base_start": 6188,
-          "base_end": 6188,
-          "before": "",
-          "after": ")\n    boundary=input_selection(project.input_directory,project.original_output)\n    if boundary.get('boundary_state_calendar') and boundary['bottom']==8:\n        from frost_boundary_state_calendar import plate_timecontrol_source\n        path=output/'timecontrol.f90'\n        if 'timecontrol' not in patched:raise ValueError('Missing original plate-boundary event clock')\n        path.write_bytes(plate_timecontrol_source(path.read_bytes())"
+          "base_start": 3463,
+          "base_end": 3542,
+          "before": "    return dict(policy=POLICY,native_codec=codec(project).decode(),**selected,\n",
+          "after": "    return dict(policy=policy,native_codec=codec(project).decode(),**selected,\n"
         }
       ]
     },
     "app/hybrid_water/frost_boundary_state_calendar.py": {
       "added": true,
-      "proposed_lf_sha256": "d07dae3f7d93bcf76850e00fa250820f70f924437e9457c1457c753d20ba811b"
+      "proposed_lf_sha256": "55988979de9dc433b6892cfa50668446a0aa2c8168a169cff87a8bb9e898577c"
     },
     "app/hybrid_water/daily_coupling.py": {
       "added": false,
       "before_lf_sha256": "94277c35b1c385bd1b7ee544cfb0e8d657a2c6c048b0de2858ccdb4333692c69",
-      "proposed_lf_sha256": "fc06eb1db14c1723933c1ad760c96ae4a8a90df76898b3dd2d8c64dc87fb271e",
+      "proposed_lf_sha256": "b774b3a6a239e56cc7e7d542abd970f460e6b1e5ac305d79567e683f79b3a532",
       "ordered_literal_edits": [
         {
-          "base_start": 15007,
-          "base_end": 15007,
-          "before": "",
-          "after": ")\n        from frost_boundary_state_calendar import selection as plate_clock_selection,plate_timecontrol_source\n        plate_clock=plate_clock_selection(project.input_directory,project.original_output)\n        if plate_clock is not None and plate_clock['bottom']==8:\n            expected_time=plate_timecontrol_source(expected_time"
+          "base_start": 15655,
+          "base_end": 16241,
+          "before": "    if expected_event and terminal_calendar_selection(project.input_directory,project.original_output) is not None:\n        from frost_calendar_terminal_water import source as terminal_day_source\n        if (bundle/'terminal_water_receipt.f90').read_text(encoding='cp1252')!=terminal_day_source():\n            raise ValueError('Foreign actual calendar terminal day receipt source')\n    elif expected_event and (bundle/'terminal_water_receipt.f90').read_bytes()!=(h.APP/'terminal_water_receipt.f90').read_bytes():\n        raise ValueError('Foreign actual terminal water receipt source')\n",
+          "after": "    from frost_boundary_terminal_trial import enabled as plate_terminal_enabled,receipt_source as plate_terminal_source,validate as validate_plate_terminal\n    if expected_event:\n        expected_terminal=(h.APP/'terminal_water_receipt.f90').read_text(encoding='cp1252')\n        if terminal_calendar_selection(project.input_directory,project.original_output) is not None:\n            from frost_calendar_terminal_water import source as terminal_day_source\n            expected_terminal=terminal_day_source()\n        if plate_terminal_enabled(project):expected_terminal=plate_terminal_source(expected_terminal)\n        if (bundle/'terminal_water_receipt.f90').read_text(encoding='cp1252')!=expected_terminal:\n            raise ValueError('Foreign actual terminal water receipt source')\n        validate_plate_terminal(bundle,project)\n"
         }
       ]
+    },
+    "app/hybrid_water/daily_host.py": {
+      "added": false,
+      "proposed_lf_sha256": "4a7b4ac11874281cf6c472db1409d837498d35b443f2bb5d771e0e691aec4bbe",
+      "before_lf_sha256": "517fb178f1e5b085412ab4904a1160e76ca70bfa5e7669fc1940cd0d54248189",
+      "ordered_literal_edits": [
+        {
+          "base_start": 60808,
+          "base_end": 60808,
+          "before": "",
+          "after": "    from frost_boundary_terminal_trial import apply_build as plate_terminal_build\n    patched=plate_terminal_build(output,project,patched)\n"
+        }
+      ]
+    },
+    "app/hybrid_water/frost_boundary_terminal_trial.py": {
+      "added": true,
+      "proposed_lf_sha256": "27b13684463fcc467dbaabfafab497549f98e3d12552cd3ecd8d65d6a2283f19"
     }
   },
   "held_fixed": [
@@ -495,23 +488,26 @@
     "diagnostic": "FROST_BOUNDARY_STATE_CALENDAR04_THIRD_ORIGINALS_DIAGNOSTIC_V3.json"
   },
   "numerical_plate_event_closure": {
-    "classification": "A_NUMERICAL_TIME_EXECUTION_REPAIR",
-    "scope": "Only new boundary_state_calendar selection with explicit SWBOTB8; parent03, all bottom5 and implicit routes unchanged",
-    "original_source": "71806beaee8e532af407ab88298b7bde4ac766c2",
-    "actual_observation": "RESULT_V2.json in clock diagnostic archive",
-    "observed_day": 22,
-    "actual_integrated_duration": "0.999999992172108332",
-    "existing_dtCrit": "1e-8 unchanged",
-    "water_limit_cm": "1e-10 unchanged",
-    "original_defect": "TimeControl task5 reduces to dtmin and returns without reapplying event closure; task3 accepts near-EOD while once-daily Snow already advanced full day.",
-    "failed_counterfactual": "Print event alignment alone did not fix the real failure; RESULT_V3 preserved.",
-    "successful_counterfactual": "Same original compiled closure plus print alignment and existing event rule after failed-step reduction completes35days; diagnostic only, no restart or independent qualification claim.",
-    "model_equations_changed": false,
-    "mass_flux_stock_or_residual_corrections": false,
-    "implicit_retry_limit_changed": false,
-    "required_new_science": "Windows/Ubuntu O0/O2 four representative explicit plate configurations; local original failed regular case O0/O2 first.",
-    "unaffected_evidence": "Reuse bottom5 periods only after exact current emitted physical postimage comparison; no metadata-only full-period replay.",
-    "diagnostic_archive": "FROST_BOUNDARY_STATE_CALENDAR04_ACTUAL_CLOCK_DIAGNOSTIC_AND_READERS_RAW_V1.json"
+    "status": "SUPERSEDED_AFTER_CONVERGENCE_WARNING_DISCOVERY",
+    "original_record": {
+      "classification": "A_NUMERICAL_TIME_EXECUTION_REPAIR",
+      "scope": "Only new boundary_state_calendar selection with explicit SWBOTB8; parent03, all bottom5 and implicit routes unchanged",
+      "original_source": "71806beaee8e532af407ab88298b7bde4ac766c2",
+      "actual_observation": "RESULT_V2.json in clock diagnostic archive",
+      "observed_day": 22,
+      "actual_integrated_duration": "0.999999992172108332",
+      "existing_dtCrit": "1e-8 unchanged",
+      "water_limit_cm": "1e-10 unchanged",
+      "original_defect": "TimeControl task5 reduces to dtmin and returns without reapplying event closure; task3 accepts near-EOD while once-daily Snow already advanced full day.",
+      "failed_counterfactual": "Print event alignment alone did not fix the real failure; RESULT_V3 preserved.",
+      "successful_counterfactual": "Same original compiled closure plus print alignment and existing event rule after failed-step reduction completes35days; diagnostic only, no restart or independent qualification claim.",
+      "model_equations_changed": false,
+      "mass_flux_stock_or_residual_corrections": false,
+      "implicit_retry_limit_changed": false,
+      "required_new_science": "Windows/Ubuntu O0/O2 four representative explicit plate configurations; local original failed regular case O0/O2 first.",
+      "unaffected_evidence": "Reuse bottom5 periods only after exact current emitted physical postimage comparison; no metadata-only full-period replay.",
+      "diagnostic_archive": "FROST_BOUNDARY_STATE_CALENDAR04_ACTUAL_CLOCK_DIAGNOSTIC_AND_READERS_RAW_V1.json"
+    }
   },
   "fourth_scientific_epoch": {
     "status": "ALL_FOUR_REAL_CI_JOBS_PASS_ORIGINAL_RAW_ALL_BYTES_PRESERVED",
@@ -605,5 +601,10 @@
     "only_new_APP_delta": "One additional implicit SWKIMPL1/SWHYST2 refusal predicate in new composition's input_domain; no generated numerical source arithmetic changes.",
     "actual_11_accepted_and_14_refused_cases_verified": true,
     "old_03_dense_hysteresis2_implicit_path_retained": true
+  },
+  "numerical_trial_receipt_repair": {
+    "record": "FROST_BOUNDARY_STATE_CALENDAR04_TERMINAL_TRIAL_DISCOVERY_V1.json",
+    "scope": "Explicit Frost/SWDIVD1 SWBOTB8 only, both existing03 dense and new04 calendars; implicit and bottom5 physical postimages unchanged",
+    "required_qualification": "24 actual Windows/Ubuntu O0/O2 explicit plate contexts: four new04 and two reopened03 cases; whole periods, native, cold, transactions and zero convergence warnings. Unchanged bottom5 uses exact compiled postimages."
   }
 }

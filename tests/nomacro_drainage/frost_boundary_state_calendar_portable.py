@@ -41,6 +41,8 @@ def main():
             if case['start'] and case['start'][5:7]=='12':command.append('--year-seam')
             logs=folder/'science-controller';logs.mkdir();run(command,logs,900)
             item['science']=json.loads((folder/'science/RESULT.json').read_text());assert item['science']['status']=='ACTUAL_FROST_CALENDAR_ORIGINAL_BUDGETS_NATIVE_HISTORY_COLD_AND_USER_OUTPUT_PASS_NOT_ADMITTED';save()
+            from frost_boundary_convergence import require_convergence
+            item['convergence']=require_convergence(folder/'science');save()
             if case['days']==35:
                 logs=folder/'controls-controller';logs.mkdir()
                 run([sys.executable,'-B','tests/nomacro_drainage/frost_calendar_state_controls.py','--reference-work',str(a.reference_work),'--profile',str(folder/'science'),'--output',str(folder/'controls')],logs,600)
