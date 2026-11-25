@@ -1,0 +1,34 @@
+{
+  "status": "READ_ONLY_AUDITOR_AND_OBSERVER_FAILURES_PRESERVED_NOT_QUALIFICATION",
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "failures": [
+    {
+      "role": "Initial original-byte dense auditor",
+      "error": "KeyError: no original-provider-build/swap-obj/arrays.o in local archive",
+      "cause": "Parent auditor assumed provider bytes colocated with science; explicit separately preserved provider interface added.",
+      "model_data_changed": false
+    },
+    {
+      "role": "Initial original-byte dense selector audit",
+      "error": "KeyError: NPRINTDAY",
+      "cause": "Original selector reader exports SW options only; full original integer selector regex retained instead.",
+      "model_data_changed": false
+    },
+    {
+      "role": "Additional actual canonical568 parent audit",
+      "status": "FAILED_HEAD_STABILITY_CHECK_NOT_QUALIFICATION",
+      "controller": "frost-implicit-plate05-audit-actual-canonical568-parent-data-v1.py",
+      "observed_stdout": "INDEPENDENT_GENUINE_CANONICAL568_PARENT52_SCIENCE_PASS",
+      "observed_stderr": "AssertionError at final actual HEAD equality check, controller line13",
+      "final_failure_head": "NOT_CAPTURED_BY_ORIGINAL_CONTROLLER",
+      "cause": "Agent persisted evidence while the read-only observer was still running. Final public owner must repeat both historical data checks with stable real HEAD.",
+      "original_stdout_file_captured": false,
+      "original_stderr_file_captured": false,
+      "tool_transcript_and_actual_controller_preserved": true,
+      "model_data_changed": false,
+      "last_verified_head_before_observer": "e3e8c4c90301558a852a869bcd2a6c2c61d32e2f",
+      "initial_and_final_head_not_saved_in_failed_final_record": true
+    }
+  ]
+}
