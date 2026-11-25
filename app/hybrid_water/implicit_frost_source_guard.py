@@ -48,15 +48,15 @@ def validate_source(bundle, project, identity, reference):
     from implicit_frost_surface_conductivity import restore
     source = restore((bundle/'headcalc.f90').read_text(encoding='cp1252'))
     from frost_boundary_terminal_trial import enabled as trial_enabled, original_head_source, receipt_source
-    if trial_enabled(project):source=original_head_source(source)
+    from frost_boundary_composition import selection as boundary_selection
+    selected_boundary=boundary_selection(project.input_directory,project.original_output)
+    if trial_enabled(project):source=original_head_source(source,selected_boundary['bottom'])
     for part in TERMINAL_PARTS:
         if source.count(part) != 1:
             raise ValueError('Foreign actual implicit Frost terminal water owner')
         source = source.replace(part, '', 1)
     # Compare the whole actual soil body to its already qualified ordinary
     # implicit parent. Only the known boundary receipt projection is restored.
-    from frost_boundary_composition import selection as boundary_selection
-    selected_boundary=boundary_selection(project.input_directory,project.original_output)
     # Selected boundary5/8 already has its exact trial receipt installed.
     qualified_water_headcalc(source,None if selected_boundary is None else selected_boundary['bottom'])
 

@@ -1,4 +1,4 @@
-"""Use the original plate solver's actual trial lower-boundary flux.
+"""Use the original bounded solver's actual trial lower-boundary flux.
 
 Fluxes reconstructs global qbot later. At HeadCalc convergence that global is
 not the current candidate. Only the independent trial receipt receives this
@@ -14,12 +14,13 @@ TRIAL_GUARD='''            if(flboth)then
             else
                if(abs(terminal_water_trial_residual(0d0))>1d-10)flnonconv=.true.
             end if'''
+HEAD5_TRIAL_GUARD='            if(abs(terminal_water_trial_residual(-kmean(NN+1)*hgrad(NN+1)))>1d-10)flnonconv=.true.'
 
 
 def enabled(project):
     from frost_boundary_composition import selection
     selected=selection(project.input_directory,project.original_output)
-    return bool(selected and selected['bottom']==8)
+    return bool(selected and (selected['bottom']==8 or selected['bottom']==5 and selected['implicit']==1))
 
 
 def _replace(text, before, after):
@@ -55,19 +56,27 @@ def receipt_source(text):
     return text
 
 
-def head_source(text):
-    return _replace(_replace(text,IMPORT,TRIAL_IMPORT),GUARD,TRIAL_GUARD)
+def trial_guard(bottom):
+    if bottom==8:return TRIAL_GUARD
+    if bottom==5:return HEAD5_TRIAL_GUARD
+    raise ValueError('Foreign actual trial lower boundary')
 
 
-def original_head_source(text):
-    original=_replace(_replace(text,TRIAL_IMPORT,IMPORT),TRIAL_GUARD,GUARD)
-    if head_source(original)!=text:raise ValueError('Foreign plate terminal trial source')
+def head_source(text,bottom=8):
+    return _replace(_replace(text,IMPORT,TRIAL_IMPORT),GUARD,trial_guard(bottom))
+
+
+def original_head_source(text,bottom=8):
+    original=_replace(_replace(text,TRIAL_IMPORT,IMPORT),trial_guard(bottom),GUARD)
+    if head_source(original,bottom)!=text:raise ValueError('Foreign plate terminal trial source')
     return original
 
 
 def apply_build(output,project,patched):
     if not enabled(project):return patched
-    for name,render in [('terminal_water_receipt',receipt_source),('headcalc',head_source)]:
+    from frost_boundary_composition import selection
+    bottom=selection(project.input_directory,project.original_output)['bottom']
+    for name,render in [('terminal_water_receipt',receipt_source),('headcalc',lambda text:head_source(text,bottom))]:
         if name not in patched:raise ValueError('Missing original plate terminal trial source')
         path=Path(output)/(name+'.f90')
         path.write_text(render(path.read_text(encoding='cp1252')),encoding='cp1252')
@@ -76,5 +85,6 @@ def apply_build(output,project,patched):
 
 def validate(bundle,project):
     if not enabled(project):return
+    from frost_boundary_composition import selection
     text=(Path(bundle)/'headcalc.f90').read_text(encoding='cp1252')
-    original_head_source(text)
+    original_head_source(text,selection(project.input_directory,project.original_output)['bottom'])

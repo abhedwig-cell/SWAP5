@@ -1,0 +1,467 @@
+{
+  "status": "IMPLEMENTED_CANDIDATE_PENDING_ACTUAL_PUBLIC_LOCAL_QUALIFICATION",
+  "workstream": "SWAP5-NOMACRO-COMPLETE01 / ACCELERATE02",
+  "actual_canonical_at_start": "087fc67db3e1e58d45215522eb284e89cb6c12f1",
+  "qualified_dependency_candidate": "cb5946a6d8205462d96495a39611f72f570db58a",
+  "dependency_PR": 1804,
+  "dependency_source_anchor": "81f4f9ad7d7debf7bddc17e991e689341a28192c",
+  "dependency_canonical_admission_pending": true,
+  "original_failure_source": "dcae412aae8f65acb48b1e37431334c2c522c071",
+  "original_failure_case": "cde-b5-i1-h2-p2-regular-r0-year-seam",
+  "original_clock_failure_returned_days": 4,
+  "diagnostic_counterfactual_donor_returned_days": 12,
+  "mixed_compiler_diagnostics_used_as_qualification": false,
+  "files": {
+    "app/hybrid_water/frost_boundary_state_calendar.py": {
+      "before_lf_sha256": "625ab2f4a693cca0c1f6eb61119c024d677f91f2c57c46a8261bce49b3227787",
+      "proposed_lf_sha256": "bd03ee78d851125a6fe7f5d7b924a41f4a5aec23109aec795dc37b70b19c7bef",
+      "ordered_literal_edits": [
+        {
+          "base_start": 540,
+          "base_end": 625,
+          "before": ")\n                and not (selectors.get('SWKIMPL')==1 and selectors.get('SWHYST')==2",
+          "after": ""
+        }
+      ]
+    },
+    "app/hybrid_water/frost_boundary_terminal_trial.py": {
+      "before_lf_sha256": "ed8b8c1e542dac65a7555f9e99b27b621df57f6cf4221a3fd6370e526f9b4ade",
+      "proposed_lf_sha256": "75188acf90e28666ffecc64dcd4394a31933752acfdd8223c7b3b449901c47b2",
+      "ordered_literal_edits": [
+        {
+          "base_start": 20,
+          "base_end": 24,
+          "before": "plat",
+          "after": "bound"
+        },
+        {
+          "base_start": 25,
+          "base_end": 25,
+          "before": "",
+          "after": "d"
+        },
+        {
+          "base_start": 839,
+          "base_end": 839,
+          "before": "",
+          "after": "HEAD5_TRIAL_GUARD='            if(abs(terminal_water_trial_residual(-kmean(NN+1)*hgrad(NN+1)))>1d-10)flnonconv=.true.'\n"
+        },
+        {
+          "base_start": 1017,
+          "base_end": 1017,
+          "before": "",
+          "after": "("
+        },
+        {
+          "base_start": 1038,
+          "base_end": 1038,
+          "before": "",
+          "after": " or selected['bottom']==5 and selected['implicit']==1)"
+        },
+        {
+          "base_start": 2474,
+          "base_end": 2474,
+          "before": "",
+          "after": "trial_guard(bottom):\n    if bottom==8:return TRIAL_GUARD\n    if bottom==5:return HEAD5_TRIAL_GUARD\n    raise ValueError('Foreign actual trial lower boundary')\n\n\ndef "
+        },
+        {
+          "base_start": 2490,
+          "base_end": 2490,
+          "before": "",
+          "after": ",bottom=8"
+        },
+        {
+          "base_start": 2554,
+          "base_end": 2559,
+          "before": "TRIAL",
+          "after": "trial"
+        },
+        {
+          "base_start": 2560,
+          "base_end": 2565,
+          "before": "GUARD",
+          "after": "guard(bottom)"
+        },
+        {
+          "base_start": 2598,
+          "base_end": 2598,
+          "before": "",
+          "after": ",bottom=8"
+        },
+        {
+          "base_start": 2658,
+          "base_end": 2663,
+          "before": "TRIAL",
+          "after": "trial"
+        },
+        {
+          "base_start": 2664,
+          "base_end": 2669,
+          "before": "GUARD",
+          "after": "guard(bottom)"
+        },
+        {
+          "base_start": 2704,
+          "base_end": 2704,
+          "before": "",
+          "after": ",bottom"
+        },
+        {
+          "base_start": 2879,
+          "base_end": 2879,
+          "before": "",
+          "after": "rom frost_boundary_composition import selection\n    bottom=selection(project.input_directory,project.original_output)['bottom']\n    f"
+        },
+        {
+          "base_start": 2952,
+          "base_end": 2952,
+          "before": "",
+          "after": "lambda text:"
+        },
+        {
+          "base_start": 2963,
+          "base_end": 2963,
+          "before": "",
+          "after": "(text,bottom)"
+        },
+        {
+          "base_start": 3278,
+          "base_end": 3278,
+          "before": "",
+          "after": "from frost_boundary_composition import selection\n    "
+        },
+        {
+          "base_start": 3371,
+          "base_end": 3371,
+          "before": "",
+          "after": ",selection(project.input_directory,project.original_output)['bottom']"
+        }
+      ]
+    },
+    "app/hybrid_water/frost_implicit_plate_calendar.py": {
+      "before_lf_sha256": "52353b50533229a4bdd3414dc40d01f479152dce645cd062c1d8a59d948925a7",
+      "proposed_lf_sha256": "82428d61c64c5a0cc193c3c1b13b33583f5f452691b00fdeadcc31596f27f4c2",
+      "ordered_literal_edits": [
+        {
+          "base_start": 7,
+          "base_end": 11,
+          "before": " the",
+          "after": ""
+        },
+        {
+          "base_start": 43,
+          "base_end": 43,
+          "before": "",
+          "after": "s"
+        },
+        {
+          "base_start": 50,
+          "base_end": 50,
+          "before": "",
+          "after": " bounded"
+        },
+        {
+          "base_start": 66,
+          "base_end": 72,
+          "before": "plate ",
+          "after": ""
+        },
+        {
+          "base_start": 77,
+          "base_end": 77,
+          "before": "",
+          "after": "s"
+        },
+        {
+          "base_start": 820,
+          "base_end": 822,
+          "before": "==",
+          "after": " in (5,"
+        },
+        {
+          "base_start": 823,
+          "base_end": 823,
+          "before": "",
+          "after": ")"
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_frost_source_guard.py": {
+      "before_lf_sha256": "73be2b7a13ecb6c5a6f5029ac85cdb33e3ea4232af2488a758e592ad4e534e67",
+      "proposed_lf_sha256": "a49eb975f8f5067407e06897ee267b611ad15d80a896c8254b230f5392cf859c",
+      "ordered_literal_edits": [
+        {
+          "base_start": 2639,
+          "base_end": 2639,
+          "before": "",
+          "after": "from frost_boundary_composition import selection as boundary_selection\n    selected_boundary=boundary_selection(project.input_directory,project.original_output)\n    "
+        },
+        {
+          "base_start": 2699,
+          "base_end": 2699,
+          "before": "",
+          "after": ",selected_boundary['bottom']"
+        },
+        {
+          "base_start": 3050,
+          "base_end": 3215,
+          "before": "\n    from frost_boundary_composition import selection as boundary_selection\n    selected_boundary=boundary_selection(project.input_directory,project.original_output)",
+          "after": ""
+        }
+      ]
+    }
+  },
+  "representative_cases": [
+    {
+      "name": "water-b5-i1-h2-p2-parent-dense",
+      "kind": "water",
+      "bottom": 5,
+      "implicit": 1,
+      "hysteresis": 2,
+      "initial": 2,
+      "calendar": "parent-dense",
+      "reset": 1,
+      "start": null,
+      "days": 35,
+      "requalified_parent": true
+    },
+    {
+      "name": "cde-b5-i1-h2-p2-parent-dense",
+      "kind": "cde",
+      "bottom": 5,
+      "implicit": 1,
+      "hysteresis": 2,
+      "initial": 2,
+      "calendar": "parent-dense",
+      "reset": 1,
+      "start": null,
+      "days": 35,
+      "requalified_parent": true
+    },
+    {
+      "name": "water-b5-i1-h1-p1-monthly-r1",
+      "kind": "water",
+      "bottom": 5,
+      "implicit": 1,
+      "hysteresis": 1,
+      "initial": 1,
+      "calendar": "monthly",
+      "reset": 1,
+      "start": null,
+      "days": 35,
+      "requalified_parent": true
+    },
+    {
+      "name": "cde-b5-i1-h0-p2-dates-r1",
+      "kind": "cde",
+      "bottom": 5,
+      "implicit": 1,
+      "hysteresis": 0,
+      "initial": 2,
+      "calendar": "dates",
+      "reset": 1,
+      "start": null,
+      "days": 35,
+      "requalified_parent": true
+    },
+    {
+      "name": "water-b5-i1-h2-p1-regular-r0",
+      "kind": "water",
+      "bottom": 5,
+      "implicit": 1,
+      "hysteresis": 2,
+      "initial": 1,
+      "calendar": "regular",
+      "reset": 0,
+      "start": null,
+      "days": 35,
+      "requalified_parent": false
+    },
+    {
+      "name": "water-b5-i1-h2-p2-monthly-r1",
+      "kind": "water",
+      "bottom": 5,
+      "implicit": 1,
+      "hysteresis": 2,
+      "initial": 2,
+      "calendar": "monthly",
+      "reset": 1,
+      "start": null,
+      "days": 35,
+      "requalified_parent": false
+    },
+    {
+      "name": "cde-b5-i1-h2-p1-dates-r1",
+      "kind": "cde",
+      "bottom": 5,
+      "implicit": 1,
+      "hysteresis": 2,
+      "initial": 1,
+      "calendar": "dates",
+      "reset": 1,
+      "start": null,
+      "days": 35,
+      "requalified_parent": false
+    },
+    {
+      "name": "cde-b5-i1-h2-p2-dates-r0",
+      "kind": "cde",
+      "bottom": 5,
+      "implicit": 1,
+      "hysteresis": 2,
+      "initial": 2,
+      "calendar": "dates",
+      "reset": 0,
+      "start": null,
+      "days": 35,
+      "requalified_parent": false
+    },
+    {
+      "name": "water-b8-i1-h2-p1-dates-r1",
+      "kind": "water",
+      "bottom": 8,
+      "implicit": 1,
+      "hysteresis": 2,
+      "initial": 1,
+      "calendar": "dates",
+      "reset": 1,
+      "start": null,
+      "days": 35,
+      "requalified_parent": false
+    },
+    {
+      "name": "cde-b8-i1-h2-p1-monthly-r1",
+      "kind": "cde",
+      "bottom": 8,
+      "implicit": 1,
+      "hysteresis": 2,
+      "initial": 1,
+      "calendar": "monthly",
+      "reset": 1,
+      "start": null,
+      "days": 35,
+      "requalified_parent": false
+    },
+    {
+      "name": "water-b8-i1-h2-p2-regular-r0",
+      "kind": "water",
+      "bottom": 8,
+      "implicit": 1,
+      "hysteresis": 2,
+      "initial": 2,
+      "calendar": "regular",
+      "reset": 0,
+      "start": null,
+      "days": 35,
+      "requalified_parent": false
+    },
+    {
+      "name": "cde-b8-i1-h2-p2-dense-r0",
+      "kind": "cde",
+      "bottom": 8,
+      "implicit": 1,
+      "hysteresis": 2,
+      "initial": 2,
+      "calendar": "dense",
+      "reset": 0,
+      "start": null,
+      "days": 35,
+      "requalified_parent": false
+    },
+    {
+      "name": "cde-b5-i1-h2-p2-regular-r0-year-seam",
+      "kind": "cde",
+      "bottom": 5,
+      "implicit": 1,
+      "hysteresis": 2,
+      "initial": 2,
+      "calendar": "regular",
+      "reset": 0,
+      "start": "2002-12-26",
+      "days": 12,
+      "requalified_parent": false
+    },
+    {
+      "name": "water-b5-i1-h2-p2-dates-r0-year-seam",
+      "kind": "water",
+      "bottom": 5,
+      "implicit": 1,
+      "hysteresis": 2,
+      "initial": 2,
+      "calendar": "dates",
+      "reset": 0,
+      "start": "2002-12-26",
+      "days": 12,
+      "requalified_parent": false
+    },
+    {
+      "name": "water-b8-i1-h2-p2-dates-r0-year-seam",
+      "kind": "water",
+      "bottom": 8,
+      "implicit": 1,
+      "hysteresis": 2,
+      "initial": 2,
+      "calendar": "dates",
+      "reset": 0,
+      "start": "2002-12-26",
+      "days": 12,
+      "requalified_parent": false
+    },
+    {
+      "name": "cde-b8-i1-h2-p1-monthly-r0-year-seam",
+      "kind": "cde",
+      "bottom": 8,
+      "implicit": 1,
+      "hysteresis": 2,
+      "initial": 1,
+      "calendar": "monthly",
+      "reset": 0,
+      "start": "2002-12-26",
+      "days": 12,
+      "requalified_parent": false
+    }
+  ],
+  "native_codecs": [
+    "S5FBW002",
+    "S5FBC002",
+    "S5BCW002",
+    "S5BCC002"
+  ],
+  "planned_matrix": {
+    "platforms": [
+      "Windows",
+      "Ubuntu"
+    ],
+    "optimizations": [
+      "O0",
+      "O2"
+    ],
+    "new_contexts": 48,
+    "requalified_old_implicit5_contexts": 16,
+    "total_contexts": 64,
+    "full35_contexts": 48,
+    "year12_contexts": 16,
+    "primary_days": 1872
+  },
+  "scientific_qualification": "NOT_QUALIFIED",
+  "canonical_admission": false,
+  "process_equations_or_state_or_limits_changed": false,
+  "native_counter_or_date_normalized": false,
+  "TimeControl_changed": false,
+  "scope": "Actual terminal trial flux for implicit bottom5; unchanged explicit5; existing plate8 renderer bytes retained; compose existing HYS2 initial12 and calendars/reset; original pending initial water date guard extends only to bounded implicit5 water calendar.",
+  "affected_invariants": [
+    3,
+    4,
+    7,
+    13,
+    21,
+    23,
+    26
+  ],
+  "selection": {
+    "cheap_component": "Original donor4day failure and actual trial receipt twelve-day counterfactual, unchanged TimeControl, mixed compiler diagnostic only.",
+    "local": "Actual public O0/O2 original failed CDE12year plus changed old implicit5 water full35/native/cold/refusal/transaction, expected under five minutes per optimization.",
+    "full": "Coherent full matrix for changed implicit5 and new HYS2 compositions; inherit unchanged explicit5/plate8 only after exact current source/object custody. No unrelated full model replay."
+  },
+  "next_code_action": "Persist actual source; run real public O0/O2 original CDE12year and old water implicit5 full35 controls. Finish PR1804 exact frozen candidate gates and genuine actual canonical observation before final06 source/canonical reconciliation and scientific CI."
+}

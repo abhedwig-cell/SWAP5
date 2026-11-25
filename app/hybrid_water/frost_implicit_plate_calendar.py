@@ -1,4 +1,4 @@
-"""Keep the original pending pre-start date on the implicit water plate route."""
+"""Keep original pending pre-start dates on the bounded implicit water routes."""
 ANCHOR="if(ioutdatint/=1+count(outdatint>0d0.and.outdatint<t1900-1d-8))error stop 'Inconsistent original interval date pointer'"
 GUARD="""! Original TimeControl initializes ioutdatint=1 and advances it only
 ! when its actual selected date equals the completed day. An initial date
@@ -12,7 +12,7 @@ else
 def selected(project):
     from frost_boundary_state_calendar import selection
     item=selection(project.input_directory,project.original_output)
-    return bool(item and item['bottom']==8 and item['implicit']==1 and item['kind']=='water')
+    return bool(item and item['bottom'] in (5,8) and item['implicit']==1 and item['kind']=='water')
 
 
 def source(text):
