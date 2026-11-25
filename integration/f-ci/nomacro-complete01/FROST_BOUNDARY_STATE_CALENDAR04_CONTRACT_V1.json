@@ -587,5 +587,23 @@
       "sha256": "b5967e02c9be80df91f768c6a91d2fa325f6dbb684137a40e3c49408b2229c85",
       "model_executions": 0
     }
+  },
+  "current_public_reader": {
+    "status": "CURRENT_PUBLIC_COMPOSITIONS_HARD_REFUSALS_PARENT_SELECTIONS_AND_UNCHANGED_ROOT_PROVIDER_SOURCE_PASS_NOT_SCIENTIFICALLY_QUALIFIED",
+    "record": "FROST_BOUNDARY_STATE_CALENDAR04_INPUT_CONTRACT_V2.json",
+    "sha256": "a2d86c8f6708f229c3f64e180c01542178da30fb0709a5126f008bdad55dbb33",
+    "actual_source": "a5ce23a703177dd4e2c90fd0aa9c3eadd9d494b6",
+    "recognized_cases": 11,
+    "actual_hard_refusals": 14,
+    "old_parent_selections_unchanged": 6,
+    "compiler_executions": 0,
+    "model_executions": 0
+  },
+  "source_scope_guard_delta_after_science": {
+    "scientific_source": "0fae846dec07fb3b1a317a55b975accbbf110128",
+    "actual_narrowed_reader_source": "a5ce23a703177dd4e2c90fd0aa9c3eadd9d494b6",
+    "only_new_APP_delta": "One additional implicit SWKIMPL1/SWHYST2 refusal predicate in new composition's input_domain; no generated numerical source arithmetic changes.",
+    "actual_11_accepted_and_14_refused_cases_verified": true,
+    "old_03_dense_hysteresis2_implicit_path_retained": true
   }
 }

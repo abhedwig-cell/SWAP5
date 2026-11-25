@@ -36244,7 +36244,23 @@
         "model_executions": 0
       }
     },
-    "proposed_contexts": 44
+    "proposed_contexts": 44,
+    "current_public_reader": {
+      "status": "CURRENT_PUBLIC_COMPOSITIONS_HARD_REFUSALS_PARENT_SELECTIONS_AND_UNCHANGED_ROOT_PROVIDER_SOURCE_PASS_NOT_SCIENTIFICALLY_QUALIFIED",
+      "record": "FROST_BOUNDARY_STATE_CALENDAR04_INPUT_CONTRACT_V2.json",
+      "sha256": "a2d86c8f6708f229c3f64e180c01542178da30fb0709a5126f008bdad55dbb33",
+      "actual_source": "a5ce23a703177dd4e2c90fd0aa9c3eadd9d494b6",
+      "recognized_cases": 11,
+      "actual_hard_refusals": 14,
+      "old_parent_selections_unchanged": 6,
+      "compiler_executions": 0,
+      "model_executions": 0
+    },
+    "bottom5_postimage_comparison_issue": {
+      "status": "EXPLICIT_COMPILED_DIFF_NOT_WAIVED",
+      "cause": "Original Windows scientific CI compilerRev7 differs from current localRev4; copied source raw CRLF differs but actual LF bodies matched in inspected original CDE sample.",
+      "next": "Run dedicated CI with original actual compiler identity and exact whole object byte equality. Keep raw and LF hashes separate."
+    }
   },
   "canonical524_actual_admission": {
     "status": "ACTUAL_CANONICAL524_FROST_BOUNDARY_ADMISSION_VERIFIED",
