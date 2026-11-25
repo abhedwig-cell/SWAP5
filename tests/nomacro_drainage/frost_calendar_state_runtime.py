@@ -23,7 +23,7 @@ def snapshots(folder,meta,data,selected,days):
             if solute:
                 n=20+nodes;header=struct.pack('<3i',2,nodes,n);assert raw.count(header+header)==1;at=raw.index(header+header)+24;values=struct.unpack_from('<'+str(2*n)+'d',raw,at);assert values[:n]==values[n:] and all(map(math.isfinite,values))
             if selected['implicit']:
-                header=(4,nodes,solute,1,hys,6,1,0);assert struct.unpack('<16i',raw[-96:-32])==header+header;values=struct.unpack('<4d',raw[-32:]);assert values[:2]==values[2:] and all(map(math.isfinite,values))
+                header=(4,nodes,solute,1,hys,selected.get('bottom',6),1,0);assert struct.unpack('<16i',raw[-96:-32])==header+header;values=struct.unpack('<4d',raw[-32:]);assert values[:2]==values[2:] and all(map(math.isfinite,values))
             original=original_history(z.read('result.end'),selected['kind'],hys)
         result.append(dict(day=day,snow_output_totals=list(snow),original=original,original_private_cde_version=2 if solute else None))
     return result

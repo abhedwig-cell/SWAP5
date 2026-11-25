@@ -30,9 +30,10 @@ def main():
     expected = codec(project)
     assert raw[:8] == expected
     offset = len(raw)-96
-    mode=m.e.switches((Path(profile['input_root'])/'swap.swp').read_text(encoding='cp1252'))['SWHYST']
+    selected=m.e.switches((Path(profile['input_root'])/'swap.swp').read_text(encoding='cp1252'))
+    mode=selected['SWHYST'];bottom=selected['SWBOTB'];assert bottom in (5,6,8)
     assert mode in (0,1,2)
-    assert list(struct.unpack_from('<8i', raw, offset)) == [4,project.nodes,int(project.solute),1,mode,6,1,0]
+    assert list(struct.unpack_from('<8i', raw, offset)) == [4,project.nodes,int(project.solute),1,mode,bottom,1,0]
     attacks = [(label,None) for label in ('prior-implicit-codec','explicit-parent-codec',
                'missing-tail','truncated-tail','extra-tail')]
     attacks += [('domain-'+str(i),i) for i in range(8)]
