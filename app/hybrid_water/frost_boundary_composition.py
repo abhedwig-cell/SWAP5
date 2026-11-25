@@ -11,6 +11,8 @@ FIXED = dict(SWMACRO=0, SWFROST=1, SWSNOW=1, SWHEA=1, SWCALT=2,
 
 
 def input_domain(selectors, boundary, original_output):
+    from frost_boundary_state_calendar import input_domain as composed_domain
+    if composed_domain(selectors,boundary,original_output):return True
     return bool(original_output is not False
                 and boundary.get('SWBOTB') in (5, 8)
                 and not (boundary.get('SWBOTB')==8 and selectors.get('SWKIMPL')==1)
@@ -21,6 +23,9 @@ def input_domain(selectors, boundary, original_output):
 
 
 def selection(directory, original_output=True):
+    from frost_boundary_state_calendar import selection as composed_selection
+    composed=composed_selection(directory,original_output)
+    if composed is not None:return composed
     if not directory or original_output is False:
         return None
     from experimental_project import switches, one
@@ -59,6 +64,9 @@ def selection(directory, original_output=True):
 
 
 def codec(selected):
+    if selected.get('boundary_state_calendar'):
+        from frost_boundary_state_calendar import codec as composed_codec
+        return composed_codec(selected)
     return {('water', 0): b'S5FBW001', ('cde', 0): b'S5FBC001',
             ('water', 1): b'S5FBW002', ('cde', 1): b'S5FBC002'}[(selected['kind'], selected['implicit'])]
 
@@ -67,6 +75,10 @@ def metadata(project):
     selected = selection(project.input_directory, project.original_output)
     if selected is None:
         return None
-    return dict(selected, source_sha256=hashlib.sha256(
+    result=dict(selected, source_sha256=hashlib.sha256(
         Path(__file__).read_bytes().replace(b'\r\n', b'\n')).hexdigest(),
         native_codec=codec(selected).decode())
+    if selected.get('boundary_state_calendar'):
+        from frost_boundary_state_calendar import source_identity
+        result['state_calendar_provider_sha256']=source_identity()
+    return result

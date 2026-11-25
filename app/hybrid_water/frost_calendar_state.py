@@ -6,6 +6,9 @@ POLICY='existing-frost-original-calendar-state-composition-v1'
 
 
 def selection(directory,original_output=True):
+    from frost_boundary_state_calendar import selection as composed_selection
+    composed=composed_selection(directory,original_output)
+    if composed is not None:return composed
     if not directory or original_output is False:return None
     from experimental_project import switches,one
     folder=Path(directory);text=(folder/'swap.swp').read_text(encoding='cp1252')

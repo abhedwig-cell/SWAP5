@@ -43,6 +43,9 @@ def selection(project):
 def codec(project):
     selected=input_selection(project.input_directory,project.original_output)
     if selected is None:raise ValueError('Outside bounded original Frost calendar native domain')
+    if selected.get('boundary_state_calendar'):
+        from frost_boundary_state_calendar import codec as composed_codec
+        return composed_codec(selected)
     return CODECS[(selected['implicit'],selected['kind'])]
 
 
@@ -50,13 +53,16 @@ def metadata(project):
     selected=selection(project)
     if selected is None:return None
     folder=Path(__file__).parent;sha=lambda p:hashlib.sha256(p.read_bytes().replace(b'\r\n',b'\n')).hexdigest()
+    boundary=input_selection(project.input_directory,project.original_output)
+    policy=boundary['policy'] if boundary.get('boundary_state_calendar') else POLICY
     providers=[Path(__file__).name,'frost_calendar_state.py','original_output_thermal.py',
                'original_output_thermal_domain.f90','age_output_calendar.py',
                'frost_drainage_composition.py','implicit_frost_composition.py','implicit_frost_root_state.py',
                'frost_calendar_terminal_water.py']
+    if boundary.get('boundary_state_calendar'):providers+=['frost_boundary_state_calendar.py','frost_boundary_composition.py']
     providers.append('cde_interval_snow_state.f90' if project.solute else SNOW_PROVIDER+'.f90')
     if project.solute:providers+=['cde_interval_output.py','cde_interval_source.py','cde_interval_receipt.f90','cde_interval_output_state.f90']
-    return dict(policy=POLICY,native_codec=codec(project).decode(),**selected,
+    return dict(policy=policy,native_codec=codec(project).decode(),**selected,
         providers={name:sha(folder/name) for name in providers},
         original_integral_sha256=regular.INTEGRAL_SHA,original_hysteresis_sha256=thermal.HYSTERESIS_SHA,
         original_output_epoch=project.start_clock,receipt_provider_sha256=sha(ROOT/'src/process/mod_original_output_receipt.f90'),
