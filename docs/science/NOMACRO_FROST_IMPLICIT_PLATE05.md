@@ -61,6 +61,23 @@ warnings. Extra local public O0/O2 water/CDE feedback precedes that matrix.
 Unchanged physical branches inherit evidence only with exact dependency custody;
 NOT_SELECTED_IMPACT is not a current scientific PASS.
 
+The first actual CI cohort at `f6fb0167343024723872eb64cf1ed60622b05981`
+exposes a separate water-calendar restore restriction. The 12-day year
+trajectory completes and closes its original budgets, but restoring day2
+rejects the original interval pointer. Exact native headers at days2 and12
+retain ioutdatint=1: the original first requested date precedes immutable
+TSTART, and original TimeControl advances only on equality with that selected
+date. Counting all past dates incorrectly requires pointer4 or pointer6.
+The original failed cold attempt and whole official artifact remain preserved.
+
+The candidate water plate calendar guard now uses the same literal bounded
+pending-date check already used by the qualified CDE renderer. It requires
+pointer1 in that original pre-start condition; otherwise the existing exact
+pointer check remains. No pointer, date, counter or native state is normalized.
+The entire Integral source and exact inverse are checked against the original
+thermal renderer. Changed water-calendar cases require fresh qualification;
+unchanged dense water and CDE bodies may inherit only with exact custody.
+
 Affected invariants are 3,4,7,13,21,23,26: explicit state separation, compact
 native state, rejected-trial rollback, absolute mass conservation, reuse of
 original physics, separate numerical policy and truthful diagnostics. No shared

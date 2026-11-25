@@ -37,6 +37,13 @@ def source_and_build(store,build,provider,case,opt):
     from implicit_pond_event import time_source as pond_time
     expected=pond_time(retry_time(event_time(provider.get('original-provider-build/swap-selected/timecontrol.f90')).decode('cp1252').replace('\r\n','\n')))
     assert (build/'timecontrol.f90').read_text(encoding='cp1252')==expected
+    if case['kind']=='water' and case['calendar']!='parent-dense':
+        from original_output_thermal import render_integral
+        from frost_implicit_plate_calendar import source as pending_date_source,original_source
+        original=provider.get('original-provider-build/swap-selected/integral.f90').decode('cp1252').replace('\r\n','\n')
+        expected=pending_date_source(render_integral(original,None,identity['original_output']))
+        actual=(build/'integral.f90').read_text(encoding='cp1252')
+        assert actual==expected and original_source(actual)==render_integral(original,None,identity['original_output'])
     return meta
 
 

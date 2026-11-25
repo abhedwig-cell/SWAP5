@@ -21,6 +21,9 @@ def source():
     assert set(git('diff','--name-only',BASE,'HEAD','--','app','src','tools','reference').decode().splitlines())==set(contract['files'])
     for name,item in contract['files'].items():
         actual=(R/name).read_bytes().replace(b'\r\n',b'\n');assert actual==git('show','HEAD:'+name) and SHA(actual)==item['proposed_lf_sha256']
+        if item.get('added'):
+            assert subprocess.run(['git','cat-file','-e',BASE+':'+name],cwd=R,capture_output=True).returncode!=0
+            continue
         parent=git('show',BASE+':'+name);assert SHA(parent)==item['before_lf_sha256'];text=parent.decode();pieces=[];cursor=0
         for edit in item['ordered_literal_edits']:
             assert cursor<=edit['base_start']<=edit['base_end'] and text[edit['base_start']:edit['base_end']]==edit['before']

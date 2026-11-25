@@ -267,6 +267,8 @@ def validate_bundle(bundle, reference, project):
         if (bundle/'terminal_water_receipt.f90').read_text(encoding='cp1252')!=expected_terminal:
             raise ValueError('Foreign actual terminal water receipt source')
         validate_plate_terminal(bundle,project)
+    from frost_implicit_plate_calendar import validate as validate_plate_calendar
+    validate_plate_calendar(bundle,project,reference)
     expected_frost=None
     if frost_enabled(project):
         guarded=frost_source((reference/'build/swap-selected/frozencond.f90').read_bytes())
