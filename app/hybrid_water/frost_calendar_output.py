@@ -74,7 +74,7 @@ def metadata(project):
         conserved_cde_prefix_offset_bytes=48 if project.solute else None,
         original_pending_dates_not_normalized=True,preserves_requested_groups_and_precision=True,
         undefined_allocation_tails_serialized=False,physical_equations_changed=False,new_physical_state=False,
-        timecontrol_provider='UNCHANGED_EXISTING_FROST_EVENT_CLOSURE',new_native_format=True,
+        timecontrol_provider=('PLATE_REDUCED_STEP_EVENT_CLOSURE_V1' if boundary.get('boundary_state_calendar') and boundary['bottom']==8 else 'UNCHANGED_EXISTING_FROST_EVENT_CLOSURE'),new_native_format=True,
         terminal_water_trial_projection='ACTUAL_DAY_FRAME_WITH_UNCHANGED_ORIGINAL_TERMS_AND_1E_10_LIMIT')
 
 
@@ -102,6 +102,12 @@ def apply_build(output,donor_build,project,patched):
         raise ValueError('Changed original Frost calendar hysteresis source')
     from frost_calendar_terminal_water import install as terminal_day_install
     terminal_day_install(output)
+    boundary=input_selection(project.input_directory,project.original_output)
+    if boundary.get('boundary_state_calendar') and boundary['bottom']==8:
+        from frost_boundary_state_calendar import plate_timecontrol_source
+        path=output/'timecontrol.f90'
+        if 'timecontrol' not in patched:raise ValueError('Missing original plate-boundary event clock')
+        path.write_bytes(plate_timecontrol_source(path.read_bytes()))
     (output/(regular.PROVIDER+'.f90')).write_bytes((ROOT/'src/process'/(regular.PROVIDER+'.f90')).read_bytes())
     (output/'hybrid_age_output_state.f90').write_text(regular.state_source(project),encoding='cp1252')
     (output/(DOMAIN+'.f90')).write_bytes((folder/(DOMAIN+'.f90')).read_bytes())

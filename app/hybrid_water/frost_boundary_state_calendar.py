@@ -57,3 +57,27 @@ def codec(selected):
 
 def source_identity():return hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest()
 
+
+def plate_timecontrol_source(original):
+    """Retain the existing event closure after a real failed-step reduction.
+
+    Apply only to the selected new explicit plate-boundary composition. The
+    historical reduction branch otherwise bypasses the accepted event closure
+    and may end a Snow day short of its full integrated duration.
+    """
+    from time_event_closure import CORRECTED_SHA
+    raw=original.replace(b'\r\n',b'\n')
+    if hashlib.sha256(raw).hexdigest()!=CORRECTED_SHA:
+        raise ValueError('Changed original plate-boundary event clock')
+    text=raw.decode('cp1252')
+    edits=[('      get_dtEvent = min(dtEventEOD, dtEventPrint)',
+            '      if(abs(dtEventPrint-dtEventEOD)<=dtCrit)dtEventPrint=dtEventEOD\n'
+            '      get_dtEvent = min(dtEventEOD, dtEventPrint)'),
+           ('         fldecdt = .FALSE.\n         return',
+            '         fldecdt = .FALSE.\n         dtEvent=get_dtevent()\n'
+            '         if(dt+dtCrit>dtevent)dt=dtevent\n         return')]
+    for before,after in edits:
+        if text.count(before)!=1:raise ValueError('Changed original plate-boundary clock anchor')
+        text=text.replace(before,after,1)
+    return text.encode('cp1252')
+

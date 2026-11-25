@@ -1,5 +1,5 @@
 {
-  "status": "TWENTYEIGHT_COMPLETE_CONTEXTS_RETAINED_KNOWN_DAY22_DAY25_NUMERICAL_FAILURES_OPEN_YEAR_INPUT_TEMPLATE_CORRECTED",
+  "status": "ACTUAL_DAY_CLOCK_REDUCTION_DEFECT_REPRODUCED_EXPLICIT_PLATE_FIX_IMPLEMENTED_NOT_QUALIFIED",
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "batch": "FROST_BOUNDARY_STATE_CALENDAR04",
   "classification": "B_EXISTING_PROCESS_COMPOSITION_WITH_C_CONFIGURATION_REUSE",
@@ -220,7 +220,7 @@
     },
     "app/hybrid_water/frost_calendar_output.py": {
       "added": false,
-      "proposed_lf_sha256": "673130ff2ae6911905eab369b562686c05f3f1412c8f70c13ecd4e2a63858e01",
+      "proposed_lf_sha256": "9017ab025b298291a69053138e80fb9e7ef96bde0d9642d082e08797018abb93",
       "before_lf_sha256": "c646c05f4e813e1537d9f83bdce750b13a42b3e0eec96cca6f0161d62561f4bc",
       "ordered_literal_edits": [
         {
@@ -246,12 +246,30 @@
           "base_end": 3492,
           "before": "POLICY",
           "after": "policy"
+        },
+        {
+          "base_start": 4538,
+          "base_end": 4538,
+          "before": "",
+          "after": "('PLATE_REDUCED_STEP_EVENT_CLOSURE_V1' if boundary.get('boundary_state_calendar') and boundary['bottom']==8 else "
+        },
+        {
+          "base_start": 4578,
+          "base_end": 4578,
+          "before": "",
+          "after": ")"
+        },
+        {
+          "base_start": 6188,
+          "base_end": 6188,
+          "before": "",
+          "after": ")\n    boundary=input_selection(project.input_directory,project.original_output)\n    if boundary.get('boundary_state_calendar') and boundary['bottom']==8:\n        from frost_boundary_state_calendar import plate_timecontrol_source\n        path=output/'timecontrol.f90'\n        if 'timecontrol' not in patched:raise ValueError('Missing original plate-boundary event clock')\n        path.write_bytes(plate_timecontrol_source(path.read_bytes())"
         }
       ]
     },
     "app/hybrid_water/frost_boundary_state_calendar.py": {
       "added": true,
-      "proposed_lf_sha256": "efc0662cfa2c03f80bf73082157db4a7262740fbcaa07e78a0275821e7c4c622"
+      "proposed_lf_sha256": "0025e8e43f8f1165cbb534e4a2c81bde9fd32046a7a216e4148b04218ad0ee3f"
     }
   },
   "held_fixed": [
@@ -447,7 +465,7 @@
     "diagnostic": "FROST_BOUNDARY_STATE_CALENDAR04_SECOND_ORIGINALS_DIAGNOSTIC_V2.json"
   },
   "third_scientific_epoch": {
-    "status": "PREPARED_MISSING_CASES_ONLY",
+    "status": "ALL_TERMINAL_FAILED_ORIGINAL_BYTES_PRESERVED",
     "Ubuntu_cases": [
       "cde-b5-i1-h1-p1-dense-r1",
       "water-b5-i0-h2-p2-monthly-r1-year-seam",
@@ -464,6 +482,34 @@
     "changed_controller": "tests/nomacro_drainage/frost_boundary_state_calendar_inputs.py",
     "input_fix": "Shift genuine varying DATE5 table by same start-date offset already applied to IRDATE; values/order preserved.",
     "previous_failed_year_case": "INVALID_TEST_TEMPLATE_ORIGINAL_READER_REFUSAL",
-    "numerical_day22_day25_failure_waived": false
+    "numerical_day22_day25_failure_waived": false,
+    "source": "dcae412aae8f65acb48b1e37431334c2c522c071",
+    "Ubuntu_run": 45666500370,
+    "Windows_run": 45666500285,
+    "completed_contexts": 10,
+    "completed_primary_days": 166,
+    "total_completed_all_unchanged_source_epochs": 38,
+    "failed_implicit_year_contexts": 4,
+    "failure": "Implicit original retry reached clock resolution at day5, four original platform/optimization contexts; bounds unchanged.",
+    "diagnostic": "FROST_BOUNDARY_STATE_CALENDAR04_THIRD_ORIGINALS_DIAGNOSTIC_V3.json"
+  },
+  "numerical_plate_event_closure": {
+    "classification": "A_NUMERICAL_TIME_EXECUTION_REPAIR",
+    "scope": "Only new boundary_state_calendar selection with explicit SWBOTB8; parent03, all bottom5 and implicit routes unchanged",
+    "original_source": "71806beaee8e532af407ab88298b7bde4ac766c2",
+    "actual_observation": "RESULT_V2.json in clock diagnostic archive",
+    "observed_day": 22,
+    "actual_integrated_duration": "0.999999992172108332",
+    "existing_dtCrit": "1e-8 unchanged",
+    "water_limit_cm": "1e-10 unchanged",
+    "original_defect": "TimeControl task5 reduces to dtmin and returns without reapplying event closure; task3 accepts near-EOD while once-daily Snow already advanced full day.",
+    "failed_counterfactual": "Print event alignment alone did not fix the real failure; RESULT_V3 preserved.",
+    "successful_counterfactual": "Same original compiled closure plus print alignment and existing event rule after failed-step reduction completes35days; diagnostic only, no restart or independent qualification claim.",
+    "model_equations_changed": false,
+    "mass_flux_stock_or_residual_corrections": false,
+    "implicit_retry_limit_changed": false,
+    "required_new_science": "Windows/Ubuntu O0/O2 four representative explicit plate configurations; local original failed regular case O0/O2 first.",
+    "unaffected_evidence": "Reuse bottom5 periods only after exact current emitted physical postimage comparison; no metadata-only full-period replay.",
+    "diagnostic_archive": "FROST_BOUNDARY_STATE_CALENDAR04_ACTUAL_CLOCK_DIAGNOSTIC_AND_READERS_RAW_V1.json"
   }
 }
