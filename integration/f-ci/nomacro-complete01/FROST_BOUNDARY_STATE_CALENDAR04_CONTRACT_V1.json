@@ -332,17 +332,48 @@
     },
     "tests/nomacro_drainage/frost_calendar_state_extra_native.py": {
       "before_lf_sha256": "29c3ececebdc5f73704ef84d1a80b1e437ff754e56965a3da73d5875b013c5ea",
-      "proposed_lf_sha256": "07ebd27fd8d6271c872dfe0d959b6511ee2bec74748e924764c48f8038c13759",
+      "proposed_lf_sha256": "a8cd215a5212ed9fd317cdd9088979a68a3fa0c514db7c4bde2d73077d0af505",
       "ordered_literal_edits": [
         {
-          "base_start": 597,
-          "base_end": 597,
+          "base_start": 602,
+          "base_end": 602,
           "before": "",
-          "after": "C002',\n            b'S5FBW001',b'S5FBC001',b'S5FBW002',b'S5FBC002',b'S5BCW001',b'S5BCC001',b'S5BCW002',b'S5BC"
+          "after": ",\n            b'S5FBW001',b'S5FBC001',b'S5FBW002',b'S5FBC002',b'S5BCW001',b'S5BCC001',b'S5BCW002',b'S5BCC002'"
+        },
+        {
+          "base_start": 603,
+          "base_end": 603,
+          "before": "",
+          "after": "\n    assert len(set(codecs))==16 and good[:8] in codecs"
+        },
+        {
+          "base_start": 3582,
+          "base_end": 3582,
+          "before": "",
+          "after": "len(attacks)=="
+        },
+        {
+          "base_start": 3584,
+          "base_end": 3585,
+          "before": "1",
+          "after": "9"
+        },
+        {
+          "base_start": 3609,
+          "base_end": 3611,
+          "before": "27",
+          "after": "35"
         }
       ],
-      "scope": "Read actual selected bottom in existing native witness; add real foreign codec controls. Existing independent budgets, periods, process source and 1e-10 guards unchanged."
+      "scope": "Sixteen distinct known codecs, fifteen actual foreign codec refusals, unchanged20Snow attacks and four extra CDE-private attacks. Correct explicit totals35water/39CDE; no native check or physical limit weakened."
     }
   },
-  "implementation_source": "b7d347ec9c95193f571e79f149543667871d82bf"
+  "implementation_source": "b7d347ec9c95193f571e79f149543667871d82bf",
+  "local_scientific_progress": {
+    "actual_compiler_source": "3feb51229a980331bc12be2d1d265bef7ae6691a",
+    "Windows_O0_full35_and_cold": "PASS",
+    "Windows_O2_full35_and_cold": "PASS",
+    "native_refusal_controller": "Actual39existing and35expanded raw refusals completed before stale aggregate count assertion; raw data and failed reports retained; independent read-only recovery and previously unexecuted real transactions pending.",
+    "compiler_or_model_replay_for_count_correction": false
+  }
 }
