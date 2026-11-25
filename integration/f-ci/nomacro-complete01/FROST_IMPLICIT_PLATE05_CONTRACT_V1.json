@@ -320,5 +320,32 @@
     "cde-b8-i1-h0-p2-dates-r1",
     "cde-b8-i1-h1-p1-dense-r1"
   ],
-  "matrix_strategy": "Sixteen current scientific contexts plus sixteen exact unchanged original full35 contexts, each with a fresh same-compiler whole-object public postimage; no unchanged model replay."
+  "matrix_strategy": "Sixteen current scientific contexts plus sixteen exact unchanged original full35 contexts, each with a fresh same-compiler whole-object public postimage; no unchanged model replay.",
+  "read_only_runtime_witnesses": {
+    "tests/nomacro_drainage/frost_boundary_state_calendar_postimage_custody.py": {
+      "before_lf_sha256": "6823669d15b623c5508baf0f9ab296bfb788d35156c23d0db79f085881a047b3",
+      "proposed_lf_sha256": "858689e825109a0a9352fbd2fae3629b42e84c8cb3229d0912e2da5e628d0a50",
+      "ordered_literal_edits": [
+        {
+          "base_start": 604,
+          "base_end": 604,
+          "before": "",
+          "after": ",comparison_revision='HEAD'"
+        },
+        {
+          "base_start": 606,
+          "base_end": 606,
+          "before": "",
+          "after": "\n    # A later owner may verify this historical data against its real canonical\n    # commit. The default still checks the actual current HEAD.\n    if comparison_revision!='HEAD':\n        import re\n        assert re.fullmatch('[0-9a-f]{40}',comparison_revision)\n        assert subprocess.check_output(['git','cat-file','-t',comparison_revision],cwd=R).strip()==b'commit'"
+        },
+        {
+          "base_start": 1507,
+          "base_end": 1513,
+          "before": "'HEAD'",
+          "after": "comparison_revision"
+        }
+      ],
+      "purpose": "Explicit genuine historical comparison_revision parameter; default actual HEAD assertion stays unchanged; no model, source or filesystem projection"
+    }
+  }
 }
