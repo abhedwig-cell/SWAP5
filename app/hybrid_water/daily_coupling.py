@@ -247,6 +247,10 @@ def validate_bundle(bundle, reference, project):
     if identity.get('time_event_closure')!=expected_event:raise ValueError('Foreign original TimeControl event-closure policy')
     if expected_event:
         expected_time=event_source((reference/'build/swap-selected/timecontrol.f90').read_bytes())
+        from frost_boundary_state_calendar import selection as plate_clock_selection,plate_timecontrol_source
+        plate_clock=plate_clock_selection(project.input_directory,project.original_output)
+        if plate_clock is not None and plate_clock['bottom']==8:
+            expected_time=plate_timecontrol_source(expected_time)
         if implicit_frost:
             from implicit_conductivity_retry import time_source as retry_time
             from implicit_pond_event import time_source as implicit_event_time

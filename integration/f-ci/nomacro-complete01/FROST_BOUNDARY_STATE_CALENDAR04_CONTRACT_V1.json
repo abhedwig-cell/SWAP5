@@ -270,6 +270,19 @@
     "app/hybrid_water/frost_boundary_state_calendar.py": {
       "added": true,
       "proposed_lf_sha256": "8b89ac910d9bc977eb4b6d15e049d57a055b0e270b77ed01abb85266940922a2"
+    },
+    "app/hybrid_water/daily_coupling.py": {
+      "added": false,
+      "before_lf_sha256": "94277c35b1c385bd1b7ee544cfb0e8d657a2c6c048b0de2858ccdb4333692c69",
+      "proposed_lf_sha256": "fc06eb1db14c1723933c1ad760c96ae4a8a90df76898b3dd2d8c64dc87fb271e",
+      "ordered_literal_edits": [
+        {
+          "base_start": 15007,
+          "base_end": 15007,
+          "before": "",
+          "after": ")\n        from frost_boundary_state_calendar import selection as plate_clock_selection,plate_timecontrol_source\n        plate_clock=plate_clock_selection(project.input_directory,project.original_output)\n        if plate_clock is not None and plate_clock['bottom']==8:\n            expected_time=plate_timecontrol_source(expected_time"
+        }
+      ]
     }
   },
   "held_fixed": [
