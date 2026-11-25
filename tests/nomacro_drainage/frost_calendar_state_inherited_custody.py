@@ -14,7 +14,7 @@ def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT)
 
 def fresh_eol_inventory():
     result={}
-    for row in git('ls-files','--eol','-z','--',PREFIX).split(b'\0'):
+    for row in git('ls-files','--eol','-z','--',PREFIX+'*.json').split(b'\0'):
         if not row:continue
         meta,name=row.split(b'\t',1);name=name.decode();assert name not in result
         result[name]=meta.decode().split()
@@ -24,7 +24,12 @@ def fresh_eol_inventory():
 def original_git_payload(raw,path,digest,eols):
     blob=lambda value:hashlib.sha1(b'blob '+str(len(value)).encode()+b'\0'+value).hexdigest()
     if blob(raw)==digest:return raw,'ACTUAL_WORKING_BYTES_EXACT'
-    spelling=eols[path]
+    assert b'\0' not in raw,'Changed opaque scientific evidence bytes: '+path
+    if path in eols:spelling=eols[path]
+    else:
+        rows=[row for row in git('ls-files','--eol','-z','--',path).split(b'\0') if row]
+        assert len(rows)==1,'Ambiguous original Git text path: '+path
+        meta,name=rows[0].split(b'\t',1);assert name.decode()==path;spelling=meta.decode().split()
     assert 'i/lf' in spelling and 'attr/-text' not in spelling and b'\0' not in raw,'Changed opaque scientific evidence bytes: '+path
     normalized=raw.replace(b'\r\n',b'\n')
     assert blob(normalized)==digest,'Changed original Git text content: '+path
