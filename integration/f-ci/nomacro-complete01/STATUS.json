@@ -3,7 +3,7 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
   "branch": "codex/nomacro-frost-calendar-state02",
-  "last_commit": "6cbe47b8012fb7590d2200aed338785458cd0cef",
+  "last_commit": "6d895f68b30a5c12490ef784400d51dbaa254977",
   "status": "PARTIAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -61,7 +61,8 @@
     "PR1763 actualcanonical66d6297b1 exactbc927/0dd926orderedparents and completed4b3322tree; all48PR checks terminal without failures; qualifiedclean22patternowner PASS161.1168011s. Actual66detached owner running; next output/calendar functional branch underway.",
     "Actualcanonical66d6297b1 clean detached22pattern public owner PASS151.247505seconds, exit0/empty stderr/clean includingignored. All48PRchecks nofailure and completequalifiedtree/orderedparents exact. Receipt persisted with nextfunctionalbatch, no metadataPR.",
     "PR1777 actualcanonical0abcdd5eb3a00327d505cdc897e92c50030ed3e7: exact ordered085/dcdparents and complete7c5dbb9tree; all53latestchecks terminal38success15skip. Actualclean33patternpublicowner PASS361.5331516s, candidate374.3373006s; fourcommittedpushedsource/raw/inherited/publicationnegativesrefused. Original15minuteCIcancellationretained; onlysame-headfailedjobtargetedretrySUCCESS. Actualadmissionsealed dbd18b19cc8ef08044f5f9b48d1db0e20e9f6ca7bd82cf2da69168325f13ca79; wholemigrationPARTIAL/NOT_QUALIFIED.",
-    "PR1799 actualcanonical e0461f005b95b9f68bc70d4d4698eff903bc04ed exact e252/7e parents and complete66da tree;17workflowsSUCCESS,31successful17skippedchecks; four actualcommittedpushednegativesrefused. Actualclean14/56 PUBLIC906.953592s andordinaryPUB648.756811s PASS; original8CIlogs andfailures/censoredattempts sealed58,433,938B SHA5bd3a60cc8dcdf5d4598df6dad1bb1168ff20418d76b15dffc0f2ec3c23b0caa; explicit bounded waterpolish admitted, wholemigrationPARTIAL/NOT_QUALIFIED."
+    "PR1799 actualcanonical e0461f005b95b9f68bc70d4d4698eff903bc04ed exact e252/7e parents and complete66da tree;17workflowsSUCCESS,31successful17skippedchecks; four actualcommittedpushednegativesrefused. Actualclean14/56 PUBLIC906.953592s andordinaryPUB648.756811s PASS; original8CIlogs andfailures/censoredattempts sealed58,433,938B SHA5bd3a60cc8dcdf5d4598df6dad1bb1168ff20418d76b15dffc0f2ec3c23b0caa; explicit bounded waterpolish admitted, wholemigrationPARTIAL/NOT_QUALIFIED.",
+    "PR1800 actualcanonical8dbe3db7c7 exact e046/8b orderedparents and full8ddtree;16workflowsSUCCESS/30checksPASS17skip;4actualpushednegativesrefused; actualclean14/56 PUBLIC884.124898s and ordinaryPUB779.172683s PASS. Original48Frost periods/144cold/336native+default/initialcompiled preservation admitted; coadmission472. WholemigrationPARTIAL/NOT_QUALIFIED/familygapcountsUNKNOWN/fixedRC3 unchanged."
   ],
   "open": [
     "Complete historical selector inventory",
@@ -35446,11 +35447,11 @@
     "prototype_recovery_head": "d29caa2076"
   },
   "frost_hysteresis_state01": {
-    "status": "ACTUAL_CANONICAL_MERGED_ALL16_CI_PASS_POSTMERGE_OBSERVERS_RUNNING",
+    "status": "BOUNDED_EXISTING_FROST_HYSTERESIS_INITIAL_STATE_ACTUAL_CANONICAL_ADMITTED",
     "baseline": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
     "classification": "B_EXISTING_FROST_HYSTERESIS_ROOT_STATE_COMPOSITION",
     "scope": "Model1 dense original water/CDE, existing corrected Frost DIVDRA1 bottom6 Snow1 numeric heat, explicit/implicit and originalinitial1/2 withhysteresis0/1; currentoriginal hys2 remains unchanged",
-    "next_action": "Observe all16 applicable PR1800 workflows to terminal; preserve remaining exact original joblogs and actual canonical merge+clean14/56 PUBLIC/ordinaryPUB before admission. Parent scientific periods stay unchanged.",
+    "next_action": "COMPLETE actual PR1800 canonical admission; continue current coherent Frost calendar/state batch, no repeated completed parent48 periods.",
     "qualified": false,
     "source_contract": "FROST_HYSTERESIS_STATE01_CONTRACT_V1.json",
     "first_input": "EV/frost-history-state01-explicit-water-hys0-initial1-input-v1",
@@ -35509,7 +35510,10 @@
     "whole_tree": "8dd26c2de238e6be975ad308058e482d31be225e",
     "checks_success": 30,
     "checks_skipped": 17,
-    "workflows_success": 16
+    "workflows_success": 16,
+    "admission_archive_sha256": "4c6da7790d3e0732f1fc474b8ae4373c76e92e2ae93575dd1dea5b5a36c29508",
+    "actual_public_seconds": 884.1248984001577,
+    "actual_ordinary_publication_seconds": 779.1726832999848
   },
   "ria12_water_polish_actual_admission": {
     "status": "BOUNDED_EXPLICIT_RIA_WATER_POLISH_ACTUAL_CANONICAL_ADMITTED",
