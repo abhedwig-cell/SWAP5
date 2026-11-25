@@ -1,0 +1,33 @@
+{
+  "status": "DESIGN_PERSISTED_BEFORE_IMPLEMENTATION_NOT_QUALIFIED",
+  "work_unit": "SWAP5-NOMACRO-COMPLETE01",
+  "classification": "B_EXISTING_ORIGINAL_BOUNDARY_AND_FROST_STATE_COMPOSITION",
+  "actual_canonical_at_start": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
+  "dependency_candidate": "3250f0c59337334994b0e8edda624afe8f91b11f",
+  "dependency_PR": 1801,
+  "dependency_admission": "PENDING_FINAL_CI_AND_ACTUAL_CANONICAL_OBSERVATIONS",
+  "scope": "Original hydraulic model1 Snow/Frost numerical heat2, primary SWDRA1/SWDIVD1, SWBOTB5 or8, water/CDE, explicit or fitted implicit conductivity, hysteresis2, initialization2, original dense daily output and SWRES1. No boundary-file indirection.",
+  "owning_interfaces": [
+    "experimental_project original input admission",
+    "implicit_frost_composition domain and codec",
+    "frost_drainage_composition codec and provider metadata",
+    "implicit_frost_root_state typed two-rate carry"
+  ],
+  "design": "A distinct bounded selector delegates all physical processes to the current qualified Frost and original lower-boundary implementations. Existing nonselected dispatch remains literal. Distinct explicit/implicit water/CDE native codecs identify this composition. The existing 96-byte implicit rate carry stores and validates the actual SWBOTB5/8 domain instead of writing a false bottom6 witness. Default bottom6 generated provider remains byte-exact.",
+  "new_physical_equations": false,
+  "new_physical_state": false,
+  "native_codecs": ["S5FBW001", "S5FBC001", "S5FBW002", "S5FBC002"],
+  "invariants": "Unchanged 1e-10 water/CDE guards, original boundary fluxes, accepted trial state, rollback, exact cold native/user output, and existing unselected process source. No flux replacement, fallback, mass correction or tolerance change.",
+  "qualification_selection": {
+    "first": "Real public input selection, generated native bottom witnesses, exact nonselected source inverse, then smallest actual O0/O2 build and native process probe.",
+    "integrated": "Eight new boundary5/8 x water/CDE x explicit/implicit contexts per optimization and platform, selected full35 and exact own cold/native/transaction/refusal checks; inherit parent periods only through exact actual dependency/source evidence.",
+    "original_reference_limit": "Existing original Windows executable crashes at initialization for all eight selections and the previous bottom6 control. Relinking unchanged objects with a 256MiB stack does not repair the control. These raw failures are retained and do not prove a new physical boundary defect or qualify equivalence.",
+    "storage": "No new large local campaign below shared-policy capacity; exact source-bound Windows/Ubuntu CI fallback may be selected after actual storage refusal. Small read-only and already-linked original diagnostic probes remain separately identified."
+  },
+  "excluded": "AGE, aquifer, active vapor, non-model1, hysteresis0/1, initialization1/3, subdaily/perstep/non-daily calendars, effective DIVD0 with CDE, unsupported examined Ksat, other lower boundaries and closed/front numerical failures.",
+  "canonical_admission": false,
+  "whole_historical_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false
+}
