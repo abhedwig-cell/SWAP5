@@ -1,0 +1,20 @@
+{
+  "status": "EXACT_COMPLETE_ORIGINAL_TERMINAL_PREIMAGE_AND_REAL128_OWNER_PRESERVED",
+  "actual_source": "199a64941ab8550d28f67dcdeacf03b39aad896d",
+  "original_lf_sha256": "dc491e5faa9c7ca8e0e1e2a573cac965cb2e7f790d1cb6ad89ab82e7b90a6540",
+  "new_lf_sha256": "18a216a3d94ab4f85240283474fe57e441f8148d85f9c32978546788f00b5fd5",
+  "source_mutants": [
+    {
+      "attack": "one-byte-physical-term",
+      "status": "REFUSED",
+      "error": "Changed complete original terminal water receipt"
+    },
+    {
+      "attack": "extra-source-byte",
+      "status": "REFUSED",
+      "error": "Changed complete original terminal water receipt"
+    }
+  ],
+  "physical_process_assignment_added": false,
+  "model_executions": 0
+}

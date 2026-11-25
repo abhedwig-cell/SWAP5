@@ -90,9 +90,10 @@ def controls(folder,warm,data,meta,case):
 
 
 def audit(proof,opt):
-    seal(proof,opt)
+    if (proof/('FROST_CALENDAR_STATE02_UBUNTU_'+opt+'_ORIGINAL_V1.zip')).is_file():seal(proof,opt)
     with ExitStack() as stack:
         store=Archive(proof,'FROST_CALENDAR_STATE02_UBUNTU_'+opt+'_ORIGINAL_V1',stack)
+        assert (store.record['actual_artifact'],store.record['bytes'],store.record['sha256'])==ARTIFACTS[opt]
         _,provenance=source(store,stack);batch=json.loads(store.get('current/RESULT.json'))
         assert batch['status']=='ACTUAL_UBUNTU_FOUR_FULL35_THREE_SHORT_NATIVE_AND_TRANSACTIONS_PASS_NOT_ADMITTED' and batch['actual_source']==PRODUCER and batch['optimization']==opt
         cases=json.loads((ROOT/'integration/f-ci/nomacro-complete01/FROST_CALENDAR_STATE02_CONTRACT_V1.json').read_text())['representative_cases']
