@@ -1,0 +1,33 @@
+{
+  "status": "ACTUAL_NEW_READER_COMPLETE_ORIGINAL_BODY_INVERSE_TYPED_DOMAIN_AND_EXPLICIT_ARCHIVE_INPUTS",
+  "frozen_parent": "tests/nomacro_drainage/frost_cde_drainage_model_forensics.py",
+  "baseline": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
+  "frozen_parent_sha256": "f3de9f113ad555a85c313295e1ca14fef3392cecd463066813ca5200060d8c5c",
+  "new_reader": "tests/nomacro_drainage/frost_history_state_model_forensics.py",
+  "new_reader_sha256": "6d18454cd3f5220a28407bdb7ecedc7f03c347f6379208f5d7443f16f42c3125",
+  "ordered_literal_edits": [
+    {
+      "base_start": 855,
+      "base_end": 855,
+      "before": "",
+      "after": "    import re,math\n    text=(inputs/'swap.swp').read_text(encoding='cp1252')\n    def mode(key):\n        values=re.findall(r'(?mi)^\\s*'+key+r'\\s*=\\s*([01])\\s*(?:!.*)?$',text)\n        assert len(values)==1\n        return int(values[0])\n    selected_hysteresis=mode('SWHYST');implicit=mode('SWKIMPL')\n"
+    },
+    {
+      "base_start": 5892,
+      "base_end": 6114,
+      "before": "            native = a.read('macro.bin'); assert native[:8] == (b'S5FDC001' if kind == 'cde' else b'S5FDW001')\n            header = struct.pack('<10i', 1, meta['project']['nodes'], 0, int(kind == 'cde'), 2, 1, 1, 1, 1, 2)\n",
+      "after": "            native = a.read('macro.bin')\n            expected_magic=(b'S5FIC002' if kind=='cde' else b'S5FIW002') if implicit else (b'S5FDC001' if kind=='cde' else b'S5FDW001')\n            assert native[:8]==expected_magic\n            header = struct.pack('<10i', 1, meta['project']['nodes'], 0, int(kind == 'cde'), selected_hysteresis, 1, 1, 1, 1, 2)\n"
+    },
+    {
+      "base_start": 6168,
+      "base_end": 6168,
+      "before": "",
+      "after": "            if implicit:\n                expected=(4,meta['project']['nodes'],int(kind=='cde'),1,selected_hysteresis,6,1,0)\n                assert struct.unpack('<16i',native[-96:-32])==expected+expected\n                values=struct.unpack('<4d',native[-32:])\n                assert values[:2]==values[2:] and all(map(math.isfinite,values))\n"
+    }
+  ],
+  "owning_numeric_body_sha256": "171d21740b54272b0b65439060f9ab05fd0a559b8b00684e79820bdbf506374f",
+  "owning_numeric_body_unchanged": true,
+  "original_compiler_generated_frost_source_and_cold_tests_retained": true,
+  "extra_implicit_root96_exact_typed_header_and_finite_duplicate_values": true,
+  "no_fake_paths_or_source_namespaces": true
+}

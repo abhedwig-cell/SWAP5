@@ -1,0 +1,25 @@
+{
+  "status": "ACTUAL_FROST_STATE_COMPILED_NATIVE_ROOT_SNOW_AND_ACTIVE_FROST_TRANSACTIONS_PASS_NOT_ADMITTED",
+  "controller_source": "ae11ac5599efb01e1b952c871b363253f66d6252",
+  "actual_compiler": "14d0125620ec0cde3b7646a637d30b1ff7e68bf0",
+  "native_refusals": 39,
+  "root_native_refusals": 25,
+  "accepted_mutant_days": 0,
+  "snow_transactions": {
+    "discard_no_day_advance": true,
+    "replay_exact": true,
+    "accept_exact": true,
+    "recovered_next_day_exact": true,
+    "origin_unchanged": true
+  },
+  "frost_transactions": {
+    "discard_no_day_advance": true,
+    "replay_exact": true,
+    "accept_exact": true,
+    "recovered_next_day_exact": true,
+    "origin_unchanged": true,
+    "start_day": 19
+  },
+  "raw": "EV/frost-history-state01-first-implicit-native-transactions-O0-v1",
+  "canonical_admission": false
+}

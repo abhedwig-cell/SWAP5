@@ -1,0 +1,36 @@
+{
+  "status": "ACTUAL_ORIGINAL_FAILED_INPUT_INTERNAL_EXTERNAL_FLUX_MISMATCH_CAUSALLY_LOCALIZED_NOT_QUALIFIED",
+  "source": "18002b09789f20696fe6ec70d21cd32440f5734e",
+  "result_sha256": "f254b4f1caa6e7765cf53e1007ce46968b5f50b5eebe9a60058b204f1c92f336",
+  "same_original_failed_input": true,
+  "accepted_days": 0,
+  "observed_trials": 120,
+  "first_trial": {
+    "internal_minus_prescribed_flux_cm_day": 1.561919145366339e-08,
+    "mass_guard_limit_cm": 2.0000000000000003e-14,
+    "physical_F_sum": -1.883204963498697e-14,
+    "budget_step_cm": 3.123834524322751e-12,
+    "telescoping_identity_error_cm": 0.0
+  },
+  "maximum_telescoping_identity_error_cm": 0.0,
+  "last_node_storage_change_cm": [
+    0.0,
+    0.0
+  ],
+  "observed_internal_external_flux_gap_range_cm_day": [
+    1.5619191425257292e-08,
+    1.561928976922481e-08
+  ],
+  "interpretation": "For observed original-input trials the prescribed boundary flux differs from the actual internal flux into the last fixed node. Summed physical residual plus this gap reconstructs the all-node water-budget defect. Last-node storage is unchanged in these trials: the earlier isolated T9 initialization jump is not this observed runtime defect.",
+  "scope": "Only120observed physically converged trials at first clock and2dt; no accepted model day. This does not establish a complete whole-period causal proof or a qualified correction.",
+  "forbidden_corrections": [
+    "Substitute internal flux for prescribed external QBOT",
+    "Drop last physical node from inventory",
+    "Adjust inventory to close ledger",
+    "Relax mass guard",
+    "Add epsilon carrier or silent fallback"
+  ],
+  "next_action": "Retain paired active-vapor guard closed. A correction requires an explicit scientific decision about simultaneous prescribed head/flux semantics; proceed with independent existing Frost/hysteresis/state compositions.",
+  "scientific_PASS_claimed": false,
+  "canonical_admission": false
+}

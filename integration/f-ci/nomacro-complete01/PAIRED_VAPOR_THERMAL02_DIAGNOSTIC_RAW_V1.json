@@ -1,0 +1,24 @@
+{
+  "status": "ORIGINAL_FAILED_AND_CENSORED_DIAGNOSTIC_RAW_SEALED_NOT_QUALIFIED",
+  "file": "PAIRED_VAPOR_THERMAL02_DIAGNOSTIC_RAW_V1.zip",
+  "bytes": 2770272,
+  "sha256": "c2633ac944b2c2bf2e9e24e3cab442dc88b39afd30097d7ce22e1d5e73aab9cb",
+  "logical_files": 728,
+  "unique_payloads": 283,
+  "all_logical_bytes_readback": true,
+  "raw_results_unchanged": true,
+  "canonical_admission": false,
+  "scientific_PASS_claimed": false,
+  "dependencies": [
+    {
+      "file": "EXPLICIT_BOTTOM9_VAPOR_THERMAL_DIAGNOSTIC_RAW_V1.zip",
+      "sha256": "b84a474e7670309421aa7292fa94f7332a74aad3eff789dfea2bee7ebeaa847f",
+      "owner": "codex/nomacro-explicit-bottom9-vapor01",
+      "role": "Original unchanged input/failed300s and complete original component evidence"
+    },
+    {
+      "file": "RIA12_WINDOWS_RAW_V1.zip",
+      "role": "Once-archived original provider and scientific source identity; retained existing parent owner"
+    }
+  ]
+}

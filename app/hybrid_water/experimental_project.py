@@ -192,8 +192,10 @@ def inspect(directory, *, original_output=None):
         raise ValueError('Original snow requires soil heat transport')
     frost_drain_file=None
     if selected['SWFROST']:
+        from frost_hysteresis_composition import selection as frost_history_selection
+        frost_history=frost_history_selection(directory,original_output)
         if (selected['SWHEA']!=1 or selected['SWCALT']!=2 or selected['SWSNOW']!=1
-                or selected['SWHYST']!=2):
+                or selected['SWHYST']!=2 and frost_history is None):
             raise ValueError('Bounded original frost requires numeric heat, snow, hysteresis2 and SWDIVD0')
         if selected['SWDRA']==1:
             # The original reader owns SWDIVD in DRFIL.dra, not the main deck.

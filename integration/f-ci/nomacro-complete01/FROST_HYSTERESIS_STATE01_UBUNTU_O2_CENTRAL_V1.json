@@ -1,0 +1,718 @@
+{
+  "status": "FRESH_ORIGINAL_FROST_STATE_SOURCE_WATER_CDE_NATIVE_HISTORY_COLD_AND_CONTROLS_PASS",
+  "platform": "Ubuntu",
+  "optimization": "O2",
+  "archive_sha256": "b84b58cd38c7f243bce438c522e169c9ad4d7bb985826b3ee685668a47af552b",
+  "contexts": [
+    {
+      "kind": "water",
+      "hysteresis": 0,
+      "implicit": 0,
+      "initial": 1,
+      "optimization": "O2",
+      "actual_producer": "c505f2d8f34bff737b61915c4bca3d2a9b44a35d",
+      "scientific": {
+        "status": "INDEPENDENT_COMPLETE_COMPILER_SOURCES_DAILY_BUDGETS_COLD_NATIVE_PASS",
+        "producer": "c505f2d8f34bff737b61915c4bca3d2a9b44a35d",
+        "result_sha256": "c9f72a58703d872570025f2dff9c553ba010a240e647c4b6b0489f049264f9a1",
+        "kind": "water",
+        "optimization": "O2",
+        "days": 35,
+        "cold_windows": 3,
+        "partial_frost_days": 25,
+        "actual_frost_day20": true,
+        "water_max_decimal": "9.9876108E-11",
+        "chemical_max_decimal": "0",
+        "chemical_prefix_max_decimal": "0",
+        "model_executions": 0,
+        "compiler_executions": 0,
+        "canonical_admission": false
+      },
+      "native_samples": [
+        {
+          "day": 2,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 4,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 19,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 23,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 30,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 34,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 35,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        }
+      ],
+      "controls": {
+        "compiled_native_refusals": 39,
+        "accepted_mutant_days": 0,
+        "snow": {
+          "start_day": 4,
+          "discard_replay_commit_native_exact": true
+        },
+        "frost": {
+          "start_day": 19,
+          "discard_replay_commit_native_exact": true
+        }
+      }
+    },
+    {
+      "kind": "water",
+      "hysteresis": 1,
+      "implicit": 0,
+      "initial": 1,
+      "optimization": "O2",
+      "actual_producer": "c505f2d8f34bff737b61915c4bca3d2a9b44a35d",
+      "scientific": {
+        "status": "INDEPENDENT_COMPLETE_COMPILER_SOURCES_DAILY_BUDGETS_COLD_NATIVE_PASS",
+        "producer": "c505f2d8f34bff737b61915c4bca3d2a9b44a35d",
+        "result_sha256": "837d22a099bb8bddeb4c5cff4cee8cf5bf8dba35f88d244994cd5ee1755616a0",
+        "kind": "water",
+        "optimization": "O2",
+        "days": 35,
+        "cold_windows": 3,
+        "partial_frost_days": 25,
+        "actual_frost_day20": true,
+        "water_max_decimal": "9.9862082E-11",
+        "chemical_max_decimal": "0",
+        "chemical_prefix_max_decimal": "0",
+        "model_executions": 0,
+        "compiler_executions": 0,
+        "canonical_admission": false
+      },
+      "native_samples": [
+        {
+          "day": 2,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 4,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 19,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 23,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 30,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 34,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 35,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        }
+      ],
+      "controls": {
+        "compiled_native_refusals": 39,
+        "accepted_mutant_days": 0,
+        "snow": {
+          "start_day": 4,
+          "discard_replay_commit_native_exact": true
+        },
+        "frost": {
+          "start_day": 19,
+          "discard_replay_commit_native_exact": true
+        }
+      }
+    },
+    {
+      "kind": "cde",
+      "hysteresis": 0,
+      "implicit": 0,
+      "initial": 2,
+      "optimization": "O2",
+      "actual_producer": "c505f2d8f34bff737b61915c4bca3d2a9b44a35d",
+      "scientific": {
+        "status": "INDEPENDENT_COMPLETE_COMPILER_SOURCES_DAILY_BUDGETS_COLD_NATIVE_PASS",
+        "producer": "c505f2d8f34bff737b61915c4bca3d2a9b44a35d",
+        "result_sha256": "88c798670743fef45258ba0fcfc14a9fa3cd432662a144494b25cc0ea0ae4b7b",
+        "kind": "cde",
+        "optimization": "O2",
+        "days": 35,
+        "cold_windows": 3,
+        "partial_frost_days": 25,
+        "actual_frost_day20": true,
+        "water_max_decimal": "9.9853642E-11",
+        "chemical_max_decimal": "2.145E-13",
+        "chemical_prefix_max_decimal": "2.573888300E-13",
+        "model_executions": 0,
+        "compiler_executions": 0,
+        "canonical_admission": false
+      },
+      "native_samples": [
+        {
+          "day": 2,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 4,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 19,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 23,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 30,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 34,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 35,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        }
+      ],
+      "controls": {
+        "compiled_native_refusals": 44,
+        "accepted_mutant_days": 0,
+        "snow": {
+          "start_day": 4,
+          "discard_replay_commit_native_exact": true
+        },
+        "frost": {
+          "start_day": 19,
+          "discard_replay_commit_native_exact": true
+        }
+      }
+    },
+    {
+      "kind": "cde",
+      "hysteresis": 1,
+      "implicit": 0,
+      "initial": 2,
+      "optimization": "O2",
+      "actual_producer": "c505f2d8f34bff737b61915c4bca3d2a9b44a35d",
+      "scientific": {
+        "status": "INDEPENDENT_COMPLETE_COMPILER_SOURCES_DAILY_BUDGETS_COLD_NATIVE_PASS",
+        "producer": "c505f2d8f34bff737b61915c4bca3d2a9b44a35d",
+        "result_sha256": "31ea98fe3b68dc152444828975fd947a14a3b54facee61b1fd76831679b73f89",
+        "kind": "cde",
+        "optimization": "O2",
+        "days": 35,
+        "cold_windows": 3,
+        "partial_frost_days": 25,
+        "actual_frost_day20": true,
+        "water_max_decimal": "9.998883E-11",
+        "chemical_max_decimal": "1.115E-13",
+        "chemical_prefix_max_decimal": "2.04745102127285855679E-13",
+        "model_executions": 0,
+        "compiler_executions": 0,
+        "canonical_admission": false
+      },
+      "native_samples": [
+        {
+          "day": 2,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 4,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 19,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 23,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 30,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 34,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 35,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        }
+      ],
+      "controls": {
+        "compiled_native_refusals": 44,
+        "accepted_mutant_days": 0,
+        "snow": {
+          "start_day": 4,
+          "discard_replay_commit_native_exact": true
+        },
+        "frost": {
+          "start_day": 19,
+          "discard_replay_commit_native_exact": true
+        }
+      }
+    },
+    {
+      "kind": "water",
+      "hysteresis": 0,
+      "implicit": 1,
+      "initial": 1,
+      "optimization": "O2",
+      "actual_producer": "c505f2d8f34bff737b61915c4bca3d2a9b44a35d",
+      "scientific": {
+        "status": "INDEPENDENT_COMPLETE_COMPILER_SOURCES_DAILY_BUDGETS_COLD_NATIVE_PASS",
+        "producer": "c505f2d8f34bff737b61915c4bca3d2a9b44a35d",
+        "result_sha256": "d397b30a349fc4097114c7786612e357b9a82deeb967f0cf6a958ac1fd7039fe",
+        "kind": "water",
+        "optimization": "O2",
+        "days": 35,
+        "cold_windows": 3,
+        "partial_frost_days": 25,
+        "actual_frost_day20": true,
+        "water_max_decimal": "4.1E-14",
+        "chemical_max_decimal": "0",
+        "chemical_prefix_max_decimal": "0",
+        "model_executions": 0,
+        "compiler_executions": 0,
+        "canonical_admission": false
+      },
+      "native_samples": [
+        {
+          "day": 2,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 4,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 19,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 23,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 30,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 34,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 35,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        }
+      ],
+      "controls": {
+        "compiled_native_refusals": 64,
+        "accepted_mutant_days": 0,
+        "snow": {
+          "start_day": 4,
+          "discard_replay_commit_native_exact": true
+        },
+        "frost": {
+          "start_day": 19,
+          "discard_replay_commit_native_exact": true
+        }
+      }
+    },
+    {
+      "kind": "water",
+      "hysteresis": 1,
+      "implicit": 1,
+      "initial": 1,
+      "optimization": "O2",
+      "actual_producer": "c505f2d8f34bff737b61915c4bca3d2a9b44a35d",
+      "scientific": {
+        "status": "INDEPENDENT_COMPLETE_COMPILER_SOURCES_DAILY_BUDGETS_COLD_NATIVE_PASS",
+        "producer": "c505f2d8f34bff737b61915c4bca3d2a9b44a35d",
+        "result_sha256": "63d8e5d012d047b492b4bea4a2d0e2f9b5113de43134f709f46fef78bb2b53ec",
+        "kind": "water",
+        "optimization": "O2",
+        "days": 35,
+        "cold_windows": 3,
+        "partial_frost_days": 25,
+        "actual_frost_day20": true,
+        "water_max_decimal": "3.4533E-14",
+        "chemical_max_decimal": "0",
+        "chemical_prefix_max_decimal": "0",
+        "model_executions": 0,
+        "compiler_executions": 0,
+        "canonical_admission": false
+      },
+      "native_samples": [
+        {
+          "day": 2,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 4,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 19,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 23,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 30,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 34,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 35,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        }
+      ],
+      "controls": {
+        "compiled_native_refusals": 64,
+        "accepted_mutant_days": 0,
+        "snow": {
+          "start_day": 4,
+          "discard_replay_commit_native_exact": true
+        },
+        "frost": {
+          "start_day": 19,
+          "discard_replay_commit_native_exact": true
+        }
+      }
+    },
+    {
+      "kind": "cde",
+      "hysteresis": 0,
+      "implicit": 1,
+      "initial": 2,
+      "optimization": "O2",
+      "actual_producer": "c505f2d8f34bff737b61915c4bca3d2a9b44a35d",
+      "scientific": {
+        "status": "INDEPENDENT_COMPLETE_COMPILER_SOURCES_DAILY_BUDGETS_COLD_NATIVE_PASS",
+        "producer": "c505f2d8f34bff737b61915c4bca3d2a9b44a35d",
+        "result_sha256": "cd28d78039a5e09ff943e8ddd9b5f8ebd75108366b515b4b7a5b49ad6d080e1f",
+        "kind": "cde",
+        "optimization": "O2",
+        "days": 35,
+        "cold_windows": 3,
+        "partial_frost_days": 25,
+        "actual_frost_day20": true,
+        "water_max_decimal": "2.07773E-14",
+        "chemical_max_decimal": "3.582114476E-14",
+        "chemical_prefix_max_decimal": "3.670372149E-14",
+        "model_executions": 0,
+        "compiler_executions": 0,
+        "canonical_admission": false
+      },
+      "native_samples": [
+        {
+          "day": 2,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 4,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 19,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 23,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 30,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 34,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 35,
+          "original_hysteresis_mode": 0,
+          "history_arrays": 0,
+          "actual_direction_reversal": false,
+          "original_head_nodes": 34
+        }
+      ],
+      "controls": {
+        "compiled_native_refusals": 69,
+        "accepted_mutant_days": 0,
+        "snow": {
+          "start_day": 4,
+          "discard_replay_commit_native_exact": true
+        },
+        "frost": {
+          "start_day": 19,
+          "discard_replay_commit_native_exact": true
+        }
+      }
+    },
+    {
+      "kind": "cde",
+      "hysteresis": 1,
+      "implicit": 1,
+      "initial": 2,
+      "optimization": "O2",
+      "actual_producer": "c505f2d8f34bff737b61915c4bca3d2a9b44a35d",
+      "scientific": {
+        "status": "INDEPENDENT_COMPLETE_COMPILER_SOURCES_DAILY_BUDGETS_COLD_NATIVE_PASS",
+        "producer": "c505f2d8f34bff737b61915c4bca3d2a9b44a35d",
+        "result_sha256": "43630e038dc6b23ed000080830ef3386ece9582ff3f20acb62fb77eff8905901",
+        "kind": "cde",
+        "optimization": "O2",
+        "days": 35,
+        "cold_windows": 3,
+        "partial_frost_days": 25,
+        "actual_frost_day20": true,
+        "water_max_decimal": "3.632E-14",
+        "chemical_max_decimal": "3.4E-14",
+        "chemical_prefix_max_decimal": "7.3568762427464556466E-14",
+        "model_executions": 0,
+        "compiler_executions": 0,
+        "canonical_admission": false
+      },
+      "native_samples": [
+        {
+          "day": 2,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 4,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 19,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 23,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 30,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 34,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        },
+        {
+          "day": 35,
+          "original_hysteresis_mode": 1,
+          "history_arrays": 3,
+          "actual_direction_reversal": true,
+          "original_head_nodes": 34
+        }
+      ],
+      "controls": {
+        "compiled_native_refusals": 69,
+        "accepted_mutant_days": 0,
+        "snow": {
+          "start_day": 4,
+          "discard_replay_commit_native_exact": true
+        },
+        "frost": {
+          "start_day": 19,
+          "discard_replay_commit_native_exact": true
+        }
+      }
+    }
+  ],
+  "full35_contexts": 8,
+  "exact_cold_windows": 24,
+  "native_samples": 56,
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "canonical_admission": false
+}
