@@ -169,6 +169,19 @@
           "after": "        expected=(folder/name).read_bytes().replace(b'\\r\\n', b'\\n')\n        if name=='terminal_water_receipt.f90':\n            from frost_calendar_state import selection as calendar_selection\n            if calendar_selection(project.input_directory,project.original_output) is not None:\n                from frost_calendar_terminal_water import source as terminal_day_source\n                expected=terminal_day_source().encode('cp1252')\n        if (bundle/name).read_bytes().replace(b'\\r\\n', b'\\n') != expected:\n"
         }
       ]
+    },
+    "app/hybrid_water/daily_coupling.py": {
+      "added": false,
+      "before_lf_sha256": "ae0c1e3c418e29e07070c1b78cb8bc9e79d3e326bd2177dd51d5cc80faadaae8",
+      "proposed_lf_sha256": "94277c35b1c385bd1b7ee544cfb0e8d657a2c6c048b0de2858ccdb4333692c69",
+      "ordered_literal_edits": [
+        {
+          "base_start": 15581,
+          "base_end": 15581,
+          "before": "",
+          "after": "from frost_calendar_state import selection as terminal_calendar_selection\n    if expected_event and terminal_calendar_selection(project.input_directory,project.original_output) is not None:\n        from frost_calendar_terminal_water import source as terminal_day_source\n        if (bundle/'terminal_water_receipt.f90').read_text(encoding='cp1252')!=terminal_day_source():\n            raise ValueError('Foreign actual calendar terminal day receipt source')\n    el"
+        }
+      ]
     }
   },
   "parent_qualified_candidate": "8b7c2925d4c14051b5e5bc6879851702a0780511",
@@ -307,6 +320,7 @@
     "old_eight_full35_results_retained": true,
     "requalification": "Correction changes trial acceptance for all new non-daily contexts; rerun the affected new representative cohort. No replay of admitted parent472 models.",
     "compiler_executions_in_analysis": 0,
-    "model_executions_in_analysis": 0
+    "model_executions_in_analysis": 0,
+    "first_ubuntu_attempt": "Actual new terminal module compiled O0/O2, then old common runtime source validator refused before model launch; common validator now requires exact rendered daily module only for the selected calendar route."
   }
 }
