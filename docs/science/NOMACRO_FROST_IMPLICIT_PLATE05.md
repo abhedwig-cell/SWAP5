@@ -1,6 +1,6 @@
 # Original implicit Frost plate composition
 
-Status: implemented candidate, qualification and canonical admission pending.
+Status: bounded source/science qualified; public and canonical admission pending.
 The historical migration remains PARTIAL, whole scientific equivalence
 NOT_QUALIFIED, global family/gap counts UNKNOWN and fixed RC3 unchanged.
 Baseline canonical is `087fc67db3e1e58d45215522eb284e89cb6c12f1`.
@@ -81,5 +81,16 @@ unchanged dense water and CDE bodies may inherit only with exact custody.
 Affected invariants are 3,4,7,13,21,23,26: explicit state separation, compact
 native state, rejected-trial rollback, absolute mass conservation, reuse of
 original physics, separate numerical policy and truthful diagnostics. No shared
-kernel or external coupling API changes. Qualification remains pending until
-the actual integrated builds and owning gates complete.
+kernel or external coupling API changes. Canonical admission remains pending
+until the owning public and merge gates complete.
+
+The actual current cohort at `c55c1a212d669758d09634dcb77eeac57864403d`
+passes Windows/Ubuntu O0/O2 runs45708547385 and45708547326. Independent original
+byte audit confirms all32 contexts,936 primary days,184 native samples,80 exact
+cold windows,2,188 compiled refusals and48 transaction contexts. Sixteen changed
+or previously unreached contexts are current model observations. Sixteen
+unchanged original full35 contexts retain their genuine original producer,
+source and artifacts; fresh public builds compare all468 complete objects with
+the same actual compilers. No unchanged model period is replayed. All original
+failed cohorts remain failed and preserved. Candidate bounded coadmission is600;
+actual canonical remains568 until the public and merge gates complete.
