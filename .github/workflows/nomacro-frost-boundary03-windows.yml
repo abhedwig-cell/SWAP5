@@ -83,7 +83,7 @@ jobs:
           cp .github/workflows/nomacro-frost-boundary03-windows.yml "$proof/actual-workflow.yml"
           git rev-parse HEAD:.github/workflows/nomacro-frost-boundary03-windows.yml > "$proof/actual-workflow-git-blob.txt"
           python -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
-      - name: Run eight actual original lower-boundary full35 and own cold contexts
+      - name: Run missing full35 contexts and actual compiled native and transaction controls
         run: |
           python -B tests/nomacro_drainage/frost_boundary_portable.py --platform Windows --previous-proof "$RUNNER_TEMP/previous-proof" --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds" --output "$RUNNER_TEMP/proof/current" --optimization '${{ matrix.optimization }}'
       - name: Preserve every original generated compiled and provider byte

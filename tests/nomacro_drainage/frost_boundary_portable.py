@@ -1,5 +1,5 @@
 """Actual source-bound original Frost boundary builds and full35/cold science."""
-import argparse,hashlib,itertools,json,platform,subprocess,sys,time
+import argparse,hashlib,itertools,json,platform,shutil,subprocess,sys,time
 from pathlib import Path
 from frost_boundary_inputs import prepare
 R=Path(__file__).resolve().parents[2]
@@ -35,6 +35,16 @@ def main():
     q=dict(status='RUNNING_ACTUAL_FROST_BOUNDARY_FULL35_NOT_QUALIFIED',source=head,platform=a.platform,
            optimization=a.optimization,contexts=[],canonical_admission=False)
     save=lambda:(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
+    def compiled_controls(profile,folder):
+        logs=folder/'compiled-controls-controller';logs.mkdir()
+        command=[sys.executable,'-B','tests/nomacro_drainage/frost_boundary_controls.py',
+                 '--profile',str(profile),'--reference-work',str(a.reference_work),'--output',str(folder/'controls')]
+        with (logs/'stdout.bin').open('xb') as stdout,(logs/'stderr.bin').open('xb') as stderr:
+            result=subprocess.run(command,cwd=R,stdout=stdout,stderr=stderr,timeout=600)
+        observed=dict(returncode=result.returncode,actual_controller_source=head)
+        record=folder/'controls/RESULT.json'
+        if record.is_file():observed['result']=json.loads(record.read_text())
+        return observed
     save()
     try:
         if a.previous_proof is not None:
@@ -83,12 +93,35 @@ def main():
                 result=subprocess.run(command,cwd=R,stdout=stdout,stderr=stderr,timeout=600)
             item=dict(case=name,bottom=bottom,kind=kind,implicit=implicit,returncode=result.returncode,
                       seconds=time.perf_counter()-start,actual_controller_source=head)
-            q['contexts'].append(item);save();result.check_returncode()
+            q['contexts'].append(item);save()
+            if result.returncode:
+                item['status']='FAILED_ACTUAL_INDEPENDENT_CONTEXT_RETAINED_NOT_QUALIFIED';save()
+                continue
             science=json.loads((folder/'science/RESULT.json').read_text())
             assert science['source']==head and science['status']=='CANDIDATE_ACTUAL_FROST_SWDIVD1_'+kind.upper()+'_SHORT_PASS_NOT_ADMITTED'
-            item['science']=science;save();print('PASS',name,a.optimization,flush=True)
+            item['science']=science;save()
+            item['compiled_controls']=compiled_controls(folder/'science',folder);save()
+            print('FULL35_AND_CONTROLS',name,a.optimization,item['compiled_controls']['returncode'],flush=True)
+        if a.previous_proof is not None:
+            # Materialize the actual original accepted case and its actual
+            # original binary at its recorded runner location. Retain compiler
+            # identity169...; the separate current postimage proof owns reuse.
+            name='water-bottom5-implicit0-hys2-initial2';target=a.output/name
+            shutil.copytree(a.previous_proof/'current'/name,target)
+            original_build=original
+            build_target=a.build_root/name/'bundle'
+            old_science=q['contexts'][0]['original_science']
+            assert Path(old_science['input_root']).resolve()==(target/'inputs').resolve()
+            assert Path(old_science['build_root']).resolve()==build_target.resolve()
+            shutil.copytree(original_build,build_target)
+            if a.platform=='Ubuntu':
+                for executable in ('day_donor','day_kernel'):
+                    path=build_target/executable;path.chmod(path.stat().st_mode|0o111)
+            q['contexts'][0]['compiled_controls']=compiled_controls(target/'science',target);save()
         assert len(q['contexts'])==8 and source()==head
-        q['status']='EIGHT_ACTUAL_FROST_BOUNDARY_FULL35_AND_OWN_COLD_PASS_NOT_ADMITTED'
+        assert not any(item.get('returncode',0) for item in q['contexts']),'Actual failed contexts retained; whole cohort not qualified'
+        assert all(item['compiled_controls']['returncode']==0 for item in q['contexts']),'Actual compiled native/transaction controls failed'
+        q['status']='EIGHT_ACTUAL_FROST_BOUNDARY_FULL35_COLD_COMPILED_NATIVE_AND_TRANSACTIONS_PASS_NOT_ADMITTED'
     except Exception as error:
         q.update(status='FAILED_ACTUAL_FROST_BOUNDARY_COHORT_NOT_QUALIFIED',error=repr(error));raise
     finally:save()

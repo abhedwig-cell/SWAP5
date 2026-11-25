@@ -12,6 +12,29 @@ TERMINAL_PARTS = ('   use hybrid_terminal_water_receipt, only: terminal_water_re
     '         end if')
 
 
+def canonical_water_headcalc(source,boundary=None):
+    from lower_boundary_receipt import render_headcalc
+    if boundary is None:
+        return render_headcalc(source,8)
+    if boundary==5:
+        from groundwater_snow_retry import inverse
+        template=('logical                          :: flboth, flok\n'
+                  '         budget_step=projected_water_residual()\n'
+                  '            budget_step = projected_water_residual()\n')
+        return render_headcalc(inverse(source,lambda text:render_headcalc(text,5),template),8)
+    if boundary!=8:
+        raise ValueError('Foreign Frost lower-boundary source reconstruction')
+    return source
+
+
+def qualified_water_headcalc(source,boundary=None):
+    from ordinary_pond_source_guard import HEADS
+    source=canonical_water_headcalc(source,boundary)
+    if hashlib.sha256(source.encode('cp1252')).hexdigest()!=HEADS['water']:
+        raise ValueError('Foreign complete actual implicit Frost HeadCalc parent')
+    return source
+
+
 def validate_source(bundle, project, identity, reference):
     from experimental_project import inspect
     from implicit_frost_composition import input_domain, codec
@@ -30,10 +53,10 @@ def validate_source(bundle, project, identity, reference):
         source = source.replace(part, '', 1)
     # Compare the whole actual soil body to its already qualified ordinary
     # implicit parent. Only the known boundary receipt projection is restored.
-    from lower_boundary_receipt import render_headcalc
-    from ordinary_pond_source_guard import HEADS
-    if hashlib.sha256(render_headcalc(source, 8).encode('cp1252')).hexdigest() != HEADS['water']:
-        raise ValueError('Foreign complete actual implicit Frost HeadCalc parent')
+    from frost_boundary_composition import selection as boundary_selection
+    selected_boundary=boundary_selection(project.input_directory,project.original_output)
+    # Selected boundary5/8 already has its exact trial receipt installed.
+    qualified_water_headcalc(source,None if selected_boundary is None else selected_boundary['bottom'])
 
     from groundwater_snow_retry import inverse, TIME_TEMPLATE
     from implicit_conductivity_retry import time_source

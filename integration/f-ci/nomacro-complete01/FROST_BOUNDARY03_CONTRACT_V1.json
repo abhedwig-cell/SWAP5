@@ -1,5 +1,5 @@
 {
-  "status": "FIRST_EXPLICIT_FULL35_FOUR_PLATFORM_OPT_CONTEXTS_PASS_IMPLICIT_PRIVATE_OWNER_OVERLAP_REPAIRED_NOT_QUALIFIED",
+  "status": "FOUR_CURRENT_COMPLETE_COMPILED_POSTIMAGES_AND_EXACT_QUALIFIED_HEADCALC_RECONSTRUCTION_PASS_NOT_QUALIFIED",
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "classification": "B_EXISTING_ORIGINAL_BOUNDARY_AND_FROST_STATE_COMPOSITION",
   "actual_canonical_at_start": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
@@ -182,6 +182,55 @@
           "after": "e:return False\n    from frost_boundary_composition import selection as frost_boundary_selection\n    if frost_boundary_selection(project.input_directory,project.original_output) is not Non"
         }
       ]
+    },
+    "app/hybrid_water/implicit_frost_source_guard.py": {
+      "added": false,
+      "before_lf_sha256": "f795c1228c7993d0ace71287a36d49f5bafe11ec0efa2fe2b09ce4825a2e0e6a",
+      "proposed_lf_sha256": "4253775eaf245f93801af7032a918b500aac7f3f2b7379b7c664b49981f0c1e7",
+      "ordered_literal_edits": [
+        {
+          "base_start": 651,
+          "base_end": 651,
+          "before": "",
+          "after": "canonical_water_headcalc(source,boundary=None):\n    from lower_boundary_receipt import render_headcalc\n    if boundary is None:\n        return render_headcalc(source,8)\n    if boundary==5:\n        from groundwater_snow_retry import inverse\n        template=('logical                          :: flboth, flok\\n'\n                  '         budget_step=projected_water_residual()\\n'\n                  '            budget_step = projected_water_residual()\\n')\n        return render_headcalc(inverse(source,lambda text:render_headcalc(text,5),template),8)\n    if boundary!=8:\n        raise ValueError('Foreign Frost lower-boundary source reconstruction')\n    return source\n\n\ndef qualified_water_headcalc(source,boundary=None):\n    from ordinary_pond_source_guard import HEADS\n    source=canonical_water_headcalc(source,boundary)\n    if hashlib.sha256(source.encode('cp1252')).hexdigest()!=HEADS['water']:\n        raise ValueError('Foreign complete actual implicit Frost HeadCalc parent')\n    return source\n\n\ndef "
+        },
+        {
+          "base_start": 1877,
+          "base_end": 1879,
+          "before": "lo",
+          "after": "frost_boundary_composition import selection as boundary_selection\n    selected_boundary=boundary_selection(project.input_directory,project.original_output)\n    # Selected boundary5/8 already has its exact trial receipt installed.\n    qualified_"
+        },
+        {
+          "base_start": 1880,
+          "base_end": 1882,
+          "before": "er",
+          "after": "ater_headcalc(source,None if selected"
+        },
+        {
+          "base_start": 1891,
+          "base_end": 1937,
+          "before": "_receipt import render_headcalc\n    from ordin",
+          "after": " is None else selected_bound"
+        },
+        {
+          "base_start": 1940,
+          "base_end": 2059,
+          "before": "_pond_source_guard import HEADS\n    if hashlib.sha256(render_headcalc(source, 8).encode('cp1252')).hexdigest() != HEADS",
+          "after": ""
+        },
+        {
+          "base_start": 2061,
+          "base_end": 2066,
+          "before": "water",
+          "after": "bottom"
+        },
+        {
+          "base_start": 2068,
+          "base_end": 2151,
+          "before": ":\n        raise ValueError('Foreign complete actual implicit Frost HeadCalc parent'",
+          "after": ""
+        }
+      ]
     }
   },
   "actual_dependency_merge": "1c3b8725548c836c9a73570c2579dd6cdc683217",
@@ -191,9 +240,11 @@
     "ok": false,
     "compiler_executions": 0
   },
-  "next": "Four actual Windows/Ubuntu O0/O2 source-bound full35/cold cohorts; compiled active/refusal qualification and independent archive admission still required.",
+  "next": "Execute seven missing full35/cold contexts per platform/opt, retain all independent failures; apply actual compiled native/root/active transactions to eight contexts including preserved original first binaries with their genuine original identities.",
   "admission_receipt": "FROST_CALENDAR_STATE02_MERGE_RECEIPT_V1.json",
   "first_scientific_source": "16988131766408867b0c1fa94a3a45cabe68b6fe",
   "private_owner_correction": "Existing generic implicit Snow rate carry must decline exactly the selected Frost boundary58 domain, whose own typed Frost rate carry is installed later. No codec allowlist or double state owner.",
-  "no_replay_rule": "Keep the four completed explicit water bottom5 full35 contexts. Fresh current generated/compiled postimages must match their actual original CI artifacts before inheritance; run only the seven missing contexts per opt/platform."
+  "no_replay_rule": "Keep the four completed explicit water bottom5 full35 contexts. Fresh current generated/compiled postimages must match their actual original CI artifacts before inheritance; run only the seven missing contexts per opt/platform.",
+  "read_only_source_guard_correction": "Original boundary5/8 trial receipt was already installed. Reconstruct via exact existing boundary5 inverse and canonical8 form; complete ordinary HeadCalc SHA remains frozen. Actual failed-source O0/O2 generated5 bodies reconstruct exactly; an expression corruption is refused. No numerical producer source changed.",
+  "read_only_source_guard_result": "FROST_BOUNDARY03_REAL_COMPILED_HEADCALC_SOURCE_GUARD_V2.json"
 }
