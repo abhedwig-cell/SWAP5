@@ -69,7 +69,7 @@ def main():
                 member='current-unaffected-postimages/model7-cde-d1-b8-dense/inputs/swap.swp';value=donor.get(member)
                 named={}
                 keys=(['ALFA_2','NPAR_2','OMEGA_1','H0'] if not specification else
-                      [*(['ALFA_2','NPAR_2','OMEGA_1'] if any(v in (6,7,10,11) for v in specification['models']) else []),
+                      [*(['ALFA_2','NPAR_2','OMEGA_1'] if any(v in (3,6,7,10,11) for v in specification['models']) else []),
                        *(['H0'] if any(v in (5,7,8,9,10,11) for v in specification['models']) else []),
                        *(['HA','APAR','OMEGA_K','SWVAPOR'] if any(v>=8 for v in specification['models']) else [])])
                 for key in keys:
@@ -86,7 +86,7 @@ def main():
             for crop in inputs.glob('*.crp'):
                 old=crop.read_bytes();after=assignment(old.decode('cp1252'),'SWOXYGEN',1).encode('cp1252');crop.write_bytes(after)
                 q['original_model3_oxygen_composition'].append(dict(file=crop.name,before_sha256=SHA(old),after_sha256=SHA(after),explicit_assignment=dict(SWOXYGEN=1),original_source_rule='Original oxygenstress.f90 refuses model3 with oxygen2; original supported oxygen1 is selected explicitly, as in retained analytical model3 fixtures.'))
-        q['explicit_physical_configuration_edits']=dict(assignments=edits,original_swp_sha256=SHA(before),current_swp_sha256=SHA(path.read_bytes()),all_other_files_original_bytes=True,physical_parameters_or_numerical_limits_edited=False)
+        q['explicit_physical_configuration_edits']=dict(assignments=edits,original_swp_sha256=SHA(before),current_swp_sha256=SHA(path.read_bytes()),all_other_files_original_bytes=not bool(specification and 3 in specification['models']),existing_parameter_table_or_numerical_limits_edited=False)
         project=m.e.load(inputs,original_output=True);item=selected(project);assert item
         q['actual_selection']=item;q['input_inventory']=m.e.inventory(inputs);save()
         build=Path(q['build_root']);command=[sys.executable,'-B','tools/solute/run_water.py','--model',project.model,'--experimental-project',str(inputs),'--original-output','--reference-work',str(a.reference_work),'--build-only','--donor-opt',a.optimization,'--kernel-opt',a.optimization,'--output',str(build)]

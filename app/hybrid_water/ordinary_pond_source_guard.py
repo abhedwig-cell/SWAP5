@@ -73,5 +73,14 @@ def validate(bundle, project, identity):
                   '            budget_step = projected_water_residual()\n')
         source=render_headcalc(inverse(source.decode('cp1252'),
             lambda text:render_headcalc(text,5),template),8).encode('cp1252')
+    if project.solute and form=='cde-step':
+        # The retained B96 cde-step hash is the actual bottom5 receipt form,
+        # not another soil/clock equation. Above, that literal boundary receipt
+        # has been inverted to bottom8. Compare the COMPLETE canonical body
+        # with the retained B96 cde parent (including all clock trial terms).
+        from cde_clock_output import active_selection as clock_selection
+        clock=clock_selection(project)
+        if clock is not None and clock['flprintdt']:
+            form='cde'
     if hashlib.sha256(source).hexdigest() != HEADS[form]:
         raise ValueError('Foreign actual ordinary implicit coupled HeadCalc provider')

@@ -37204,11 +37204,12 @@
   },
   "implicit_hydraulic_state11_active_implementation": {
     "status": "IMPLEMENTED_ORDINARY_AND_SNOW_IMPLICIT_ANALYTICAL_STATE_COMPOSITION_PENDING_REAL_O0_O2_FEEDBACK_NOT_ADMITTED",
-    "proposal": "IMPLICIT_HYDRAULIC_STATE11_SOURCE_PROPOSAL_V4.json",
+    "proposal": "IMPLICIT_HYDRAULIC_STATE11_SOURCE_PROPOSAL_V5.json",
     "scope": "Implicit models2..11/mixed including Gardner; hysteresis0; DRA1 bottoms5/8; numerical heat; Snow0/1; water/CDE; original initial1/2. Frost and remaining boundaries follow within this coherent hydraulic-state batch.",
     "current_science": "NOT_QUALIFIED",
     "canonical_parent": "22520105f5a3ccac2bd2ae1b726f27b7b0d67b1e",
     "unchanged_parent_contexts": 824,
-    "gardner_local_feedback": "O0/O2 each35days,3exactcoldwindows, externaltransactions,20compilednative/Pythonnegative controls each; not portable/canonical qualification"
+    "gardner_local_feedback": "O0/O2 each35days,3exactcoldwindows, externaltransactions,20compilednative/Pythonnegative controls each; not portable/canonical qualification",
+    "broader_local_feedback": "Original implicit model4 Snow and mixed8/9 ordinary, mixed10/11 Snow eachO0/O2 pass35days with3exactcoldwindows andexternaltransactions. Model3 reader fixture, initial1 calendars and CDEclock whole-source guard identified; exact source-backed corrections selected without numeric changes."
   }
 }
