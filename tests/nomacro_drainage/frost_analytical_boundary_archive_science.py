@@ -23,7 +23,10 @@ def git(*args):return subprocess.check_output(['git',*args],cwd=R)
 def read(path):return json.loads(path.read_text())
 
 
-def source_and_build(build,provider,case,opt):
+def source_and_build(build,provider,case,opt,producer=None):
+    if producer in ('b24cebc3993b0f350c7aef7fb773a177d00425ce','45bb6146f5800f4050e95feb5d1912ddfdd23d4d') and case['bottom']==6 and any(x!=1 for x in case['effective_models']):
+        from frost_analytical_boundary_search import inverse
+        inverse((build/'headcalc.f90').read_text(encoding='cp1252'))
     if case['drainage']==0:return undrained_source_and_build(build,provider,case,opt)
     meta=read(build/'BUILD.json');identity=meta['identity']
     assert meta['project']['water_tolerance']==1e-10 and meta['project']['nodes']==34 and case['implicit']==case['hysteresis']==0
@@ -123,7 +126,7 @@ def controls(folder,warm,data,meta,case,producer,limit):
 def case_audit(store,prefix,case,provider,producer,opt,with_controls=True):
     folder=ReadView(store,prefix);profile=folder/'science';q=read(profile/'RESULT.json');warm=profile/'trajectory'
     projection=json.loads(store.get('COMPILED_PROJECTION_V1.json'));entry=projection[q['build_root']]
-    build=ReadView(store,entry['archive_prefix']);meta=source_and_build(build,provider,case,opt)
+    build=ReadView(store,entry['archive_prefix']);meta=source_and_build(build,provider,case,opt,producer)
     assert SHA((build/'BUILD.json').read_bytes())==entry['actual_BUILD_sha256']==q['trajectory']['build_sha256']
     assert q['source']==q['actual_controller_source']==producer and q['kind']==case['kind']
     assert meta['project']['start_date']==(case['start'] or '2002-01-01')
