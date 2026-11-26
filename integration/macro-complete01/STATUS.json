@@ -12,7 +12,7 @@
   "MACRO_SCIENTIFIC_EQUIVALENCE": "NOT_QUALIFIED",
   "MACRO_RELEASE_READINESS": "NOT_READY",
   "current_hypothesis": "Canonical HeadCalc retains frozen macro sources at provisional convergence; migrate proven B1 fresh acceptance discriminator to real typed Richards kernel without changing physical laws or no-macro results.",
-  "first_code_change": "src/legacy/b1_10_port/headcalc.f90: refactor unchanged convergence checks for reuse; refresh all macro rates at provisional convergence; reapply identical full criteria, refuse nonconverged active macros at dtmin.",
+  "first_code_change": "src/legacy/b1_10_port/headcalc.f90: reuse unchanged criteria; refresh macro rates/residual at provisional convergence. Existing typed legacy-fldtmin validation stays unchanged.",
   "interfaces_changed": [],
   "invariants_affected": [
     "same-state coupled residual before accepted publication",
@@ -37,5 +37,6 @@
     "independent_fresh_Fmax": 9.285960722582587e-09,
     "criterion": 1e-10,
     "source": "O0_BASELINE_FRESH.json"
-  }
+  },
+  "minimum_step_disposition": "The existing binding refuses fldtmin at validation (SW_SOLVE_FAILED), so new legacy fallback edit was removed rather than claim unsupported-path qualification. First control expected wrong refusal kind and remains retained. No guard relaxed."
 }

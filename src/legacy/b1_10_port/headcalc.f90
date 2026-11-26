@@ -963,13 +963,6 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       if (legacy_state_binding) call publish_legacy_state(state)
 
       return
-   else if (swmacro == 1 .or. provider_macropore_active) then
-      ! Minimum dt and exhausted legacy source reduction never certify a
-      ! nonconverged coupled candidate. The transaction owner retains origin.
-      state%fldecdt = .true.
-      ctx%control%request_dt_reduction = .true.
-      if (legacy_state_binding) call publish_legacy_state(state)
-      return
    else
 !     write warning to screen and log file
       if (hist%flwarn) then

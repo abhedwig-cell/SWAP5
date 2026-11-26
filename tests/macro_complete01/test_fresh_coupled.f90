@@ -81,17 +81,17 @@ program test_macro_complete_fresh
   nullify(r%evaluation%macropore);r%physical%macropore_active=.false.
   r%boundary%top_flux=0d0
  else if(trim(mode)=='dtmin-refusal')then
-  ! Deliberate iteration-budget fault injection, not a natural V-rejection
-  ! qualification. It tests that the failure branch cannot claim success.
-  r%numerical%max_iterations=1;r%numerical%min_step_duration=step
+  ! The existing typed binding defers legacy fldtmin inputs. Preserve its
+  ! early validation refusal; this is not a numerical V-rejection proof.
+  r%numerical%min_step_duration=step
   fldtmin=.true. ! Explicitly exercise the legacy minimum-step branch.
  end if
  call solver%solve(r,workspace,v)
  if(any(r%base_state%pressure_head/=h0).or.any(r%base_state%water_content/=theta0))error stop 'accepted origin mutated'
  if(trim(mode)=='dtmin-refusal')then
   write(*,*)'DTMIN_RESULT',v%status,v%retry_advised
-  if(v%status/=SW_SOLVE_RETRY_ADVISED.or..not.v%retry_advised)error stop 'dtmin accepted nonconvergence'
-  print *, 'MACRO_COMPLETE_DTMIN_REFUSAL_PASS'
+  if(v%status/=SW_SOLVE_FAILED.or.v%diagnostics%route/='legacy-min-dt-deferred')error stop 'dtmin validation weakened'
+  print *, 'MACRO_COMPLETE_DTMIN_VALIDATION_REFUSAL_PASS'
   stop
  end if
  if(v%status==SW_SOLVE_CONVERGED)then
