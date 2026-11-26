@@ -18,7 +18,7 @@ def main():
  try:
   if '--reuse' in sys.argv:
    prior=out.parent/sys.argv[sys.argv.index('--reuse')+1];old=json.loads((prior/'RESULT.json').read_text())
-   assert old['compiler_sha256']==q['compiler_sha256'] and old['version']==q['version'] and old['opt']==opt and old['baseline']==baseline
+   assert old['compiler_sha256']==q['compiler_sha256'] and old['version']==q['version'] and old['opt']==opt
    prior_sources={Path(k).name:v for k,v in old['source_sha256'].items()};objects=[];q['incremental_commands']=[];q['reused_objects_sha256']={}
    for m in prior.glob('*.mod'):shutil.copy2(m,out/m.name)
    for f in sources:

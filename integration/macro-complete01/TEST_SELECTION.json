@@ -1,0 +1,28 @@
+{
+  "work_unit": "SWAP5-MACRO-COMPLETE01",
+  "baseline": "9af88c3de6198ddec40c2674dd1542a89fa9c0d7",
+  "changed_production": [
+    "src/legacy/b1_10_port/headcalc.f90"
+  ],
+  "selected": [
+    {
+      "driver": "tests/macro_complete01/test_fresh_coupled.f90",
+      "scope": "22-source real kernel fresh residual/no-macro/minimum validation O0/O2 baseline+candidate",
+      "native_cap_seconds": 20
+    },
+    {
+      "driver": "tests/fpm/test_ppa_wu05_perch20_transaction_continuation.f90",
+      "scope": "existing actual inner Richards+standard macro process state, discard/commit and export/restore; needed affected coupling proof",
+      "closure_sources_estimated": 173,
+      "compile_cap_seconds": 120,
+      "native_cap_seconds": 20
+    }
+  ],
+  "not_selected": [
+    "unchanged full481 trajectories",
+    "full moving F-CI",
+    "unrelated heat/nutrient stress suites"
+  ],
+  "qualification_limit": "Focused feedback and actual touched coupling only; canonical admission, original full applications and whole science remain open",
+  "source_guard": "Compare pinned baseline and candidate; preserve all owning assertions."
+}
