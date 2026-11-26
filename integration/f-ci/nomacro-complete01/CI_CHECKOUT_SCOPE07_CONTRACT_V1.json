@@ -1476,16 +1476,16 @@
     },
     "tests/hupsel51/test_successor.py": {
       "before_lf_sha256": "8bf9fbaa97301146ddcc0dacee1edaa8ac3d20b29c1b120f054a5666c01eaf44",
-      "proposed_lf_sha256": "c43ca1cedde9dc2661312e942ac45c13aa815f267da0f44cfe867235f67c98ba",
+      "proposed_lf_sha256": "08311d8af04c1b0d46e8eb3a514a3a42bb202d223f9d1f317b375512e3bceea9",
       "ordered_literal_edits": [
         {
           "base_start": 1843,
           "base_end": 1843,
           "before": "",
-          "after": ")\n            if path==s.FCI:\n                # Compare the exact canonical parent after independently proving\n                # the complete current file differs solely by checkout inputs.\n                spec=importlib.util.spec_from_file_location('bounded_checkout_protocol',s.ROOT/'tests/nomacro_drainage/ci_checkout_scope07.py')\n                checkout=importlib.util.module_from_spec(spec);spec.loader.exec_module(checkout)\n                new=checkout.historical_workflow(path,new"
+          "after": ")\n            if path in (s.FCI,s.QUALIFY):\n                # Compare the exact canonical parent after independently proving\n                # the complete current file differs solely by checkout inputs.\n                spec=importlib.util.spec_from_file_location('bounded_checkout_protocol',s.ROOT/'tests/nomacro_drainage/ci_checkout_scope07.py')\n                checkout=importlib.util.module_from_spec(spec);spec.loader.exec_module(checkout)\n                new=checkout.historical_workflow(path,new"
         }
       ],
-      "purpose": "Exact complete current checkout-file inverse before unchanged original workflow/command negative tests; no test command, numerical assertion or historical validator weakened"
+      "purpose": "Complete exact checkout-only FCI and dependency-only Hupsel workflow inverses before unchanged original scientific-command mutation tests"
     },
     ".github/workflows/hupsel51-water-balance.yml": {
       "before_lf_sha256": "d198a66f921802e3a40089965a50a2297199986096eca8af5ee16bdc82b13662",

@@ -11,6 +11,8 @@ def historical_workflow(path,text):
     """Invert only a complete exact current checkout file for a legacy assertion."""
     contract=json.loads(git('show','HEAD:integration/f-ci/nomacro-complete01/CI_CHECKOUT_SCOPE07_CONTRACT_V1.json'))
     item=contract['files'].get(path)
+    if path in contract.get('read_only_workflow_selection_paths',[]):
+        item=contract['read_only_runtime_witnesses'][path]
     if item is None or SHA(text.encode())!=item['proposed_lf_sha256']:
         raise ValueError('Foreign complete current checkout workflow: '+path)
     original=git('show',contract['actual_canonical_dependency']+':'+path)
