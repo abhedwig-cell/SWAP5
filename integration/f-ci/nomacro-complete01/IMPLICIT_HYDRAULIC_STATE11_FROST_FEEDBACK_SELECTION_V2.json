@@ -1,0 +1,55 @@
+{
+  "status": "SELECTED_SAME_COHERENT_BATCH_ORIGINAL_IMPLICIT_FROST_EXISTING_STATE_COMPOSITION_NOT_ADMITTED",
+  "cases": {
+    "mixed2-3-water-d0-b5": {
+      "models": [
+        2,
+        3
+      ],
+      "prefix": "current/water-d0-b5-i1-h0-p2-regular-r0-year-seam/inputs/",
+      "year": true
+    },
+    "mixed4-5-cde-d1-b5": {
+      "models": [
+        4,
+        5
+      ],
+      "prefix": "current-inherited-postimages/cde-b5-i1-h0-p2-dates-r1/inputs/",
+      "year": false
+    },
+    "mixed6-7-cde-d0-b8": {
+      "models": [
+        6,
+        7
+      ],
+      "prefix": "current/cde-d0-b8-i1-h2-p2-dense/inputs/",
+      "year": false
+    },
+    "mixed8-9-water-d1-b8": {
+      "models": [
+        8,
+        9
+      ],
+      "prefix": "current-inherited-postimages/water-b8-i1-h2-p1-dates-r1/inputs/",
+      "year": false
+    },
+    "mixed10-11-water-d0-b5": {
+      "models": [
+        10,
+        11
+      ],
+      "prefix": "current/water-d0-b5-i1-h0-p2-regular-r0-year-seam/inputs/",
+      "year": true
+    }
+  },
+  "optimization_profiles": [
+    "O0",
+    "O2"
+  ],
+  "primary_days_per_context": 35,
+  "ordinary_contexts_replayed": false,
+  "source_proposal": "IMPLICIT_HYDRAULIC_STATE11_SOURCE_PROPOSAL_V7.json",
+  "scientific_equivalence": "NOT_QUALIFIED",
+  "canonical_parent": "22520105f5a3ccac2bd2ae1b726f27b7b0d67b1e",
+  "calendar_identity_reconciliation": "Actual retained inherited8/9 deck starts2002-01-01; its V6 year=True test label was wrong. Original actual35days and extra15/19 cold evidence remain immutable, valid January controls, without a year-seam claim. Future controller correctly uses year=False there; actual Dec26 cases use calendar-derived4/7 windows."
+}

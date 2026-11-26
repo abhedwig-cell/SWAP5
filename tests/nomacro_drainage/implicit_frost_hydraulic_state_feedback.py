@@ -17,7 +17,7 @@ CASES={
  'mixed2-3-water-d0-b5':dict(models=[2,3],prefix='current/water-d0-b5-i1-h0-p2-regular-r0-year-seam/inputs/',year=True),
  'mixed4-5-cde-d1-b5':dict(models=[4,5],prefix='current-inherited-postimages/cde-b5-i1-h0-p2-dates-r1/inputs/',year=False),
  'mixed6-7-cde-d0-b8':dict(models=[6,7],prefix='current/cde-d0-b8-i1-h2-p2-dense/inputs/',year=False),
- 'mixed8-9-water-d1-b8':dict(models=[8,9],prefix='current-inherited-postimages/water-b8-i1-h2-p1-dates-r1/inputs/',year=True),
+ 'mixed8-9-water-d1-b8':dict(models=[8,9],prefix='current-inherited-postimages/water-b8-i1-h2-p1-dates-r1/inputs/',year=False),
  'mixed10-11-water-d0-b5':dict(models=[10,11],prefix='current/water-d0-b5-i1-h0-p2-regular-r0-year-seam/inputs/',year=True),
 }
 
