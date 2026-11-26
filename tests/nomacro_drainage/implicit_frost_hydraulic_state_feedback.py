@@ -1,6 +1,7 @@
 """Real original implicit Frost inputs with composed analytical layer models."""
 import argparse,json,math,re,subprocess,sys,time,zipfile
 from contextlib import ExitStack
+from datetime import date
 from pathlib import Path
 R=Path(__file__).resolve().parents[2]
 sys.path[:0]=[str(R/'app/hybrid_water'),str(R/'tests/nomacro_scheduled_subsurface')]
@@ -59,7 +60,11 @@ def main():
   started=time.perf_counter()
   with (a.output/'build.stdout').open('xb') as out,(a.output/'build.stderr').open('xb') as err:child=subprocess.run(command,cwd=R,stdout=out,stderr=err,timeout=240)
   q['build']=dict(command=command,returncode=child.returncode,seconds=time.perf_counter()-started);save();child.check_returncode();meta,_=m.validate_bundle(build,a.reference_work,project);q['actual_BUILD_sha256']=SHA((build/'BUILD.json').read_bytes())
-  windows=[(2,4),(7,9),(30,34)]+([(15,19)] if spec['year'] else []);cuts={35,*[day for pair in windows for day in pair]}
+  windows=[(2,4),(7,9),(30,34)];cuts={35,*[day for pair in windows for day in pair]}
+  if spec['year']:
+   first=date.fromisoformat(meta['project']['start_date']);seam=(date(first.year+1,1,1)-first).days;assert 2<seam<35
+   pair=(max(d for d in cuts if d<seam),min(d for d in cuts if d>seam));q['actual_calendar_derived_year_window']=dict(start_date=str(first),new_year_offset=seam,window=pair)
+   if pair not in windows:windows.append(pair)
   q['trajectory'],data=m.trajectory(build,a.reference_work,project,a.output/'trajectory',35,cuts,300);save();q['original_convergence']=require_convergence(a.output)
   q['native_samples']=[]
   for day in sorted(cuts):

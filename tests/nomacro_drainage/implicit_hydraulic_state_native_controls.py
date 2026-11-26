@@ -11,7 +11,7 @@ def main():
     p=argparse.ArgumentParser()
     for n in ['profile','output','reference-work']:p.add_argument('--'+n,type=Path,required=True)
     a=p.parse_args();a.output.mkdir();q=json.loads((a.profile/'RESULT.json').read_text());build=Path(q['build_root'])
-    record=json.loads((build/'BUILD.json').read_text());project=m.e.load(q['input_root'],original_output=True,time_step_policy=record['project']['time_step_policy'])
+    record=json.loads((build/'BUILD.json').read_text());project=m.e.load(q['input_root'],original_output=True,time_step_policy=record['identity']['time_step_policy'])
     meta,case=m.validate_bundle(build,a.reference_work,project);item=selected(project);values=header(item,project.nodes);size=4*len(values)
     source=a.profile/'trajectory/accepted-column-1-day-4.zip';source_hash=m.sha(source);checks=[]
     result=dict(status='RUNNING_COMPILED_IMPLICIT_HYDRAULIC_NATIVE_CONTROLS',actual_producer_source=q['actual_source'],actual_BUILD_sha256=m.sha(build/'BUILD.json'),model_period_replays=0,checks=checks)

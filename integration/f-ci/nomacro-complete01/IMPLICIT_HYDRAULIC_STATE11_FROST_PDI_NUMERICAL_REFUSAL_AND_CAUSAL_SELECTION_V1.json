@@ -1,0 +1,37 @@
+{
+  "status": "ACTUAL_O0_O2_IMPLICIT_FROST_MIXED10_11_DAY5_CLOCK_FLOOR_REFUSAL_PRESERVED_CAUSE_PENDING",
+  "classification": "NUMERICAL_DEFECT",
+  "actual_source": "91b6126b926b7e051ad9b2e0f5c4dc753f0c4cb4",
+  "records": [
+    {
+      "optimization": "O0",
+      "actual_scientific_producer": "91b6126b926b7e051ad9b2e0f5c4dc753f0c4cb4",
+      "actual_BUILD_sha256": "ed976cba0391be4269ee69b90f12076abf4867ea9990ca30cfb9b8087fed9603",
+      "accepted_prefix_days": 4,
+      "refused_next_day": 5,
+      "actual_checkpoint4_sha256": "80aab33ec6e05148ac015666af85c9697235f0686749a662af2f3f7bd16932f5",
+      "actual_stderr_sha256": "2cf863f0aaa4abfe41ac281a6c356ca5e0b70fcbc76ad556a37e9f16f0b84b94",
+      "actual_failure": "Implicit original retry reached clock resolution",
+      "retained_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\ih11f-v1\\mixed10-11-water-d0-b5-O0"
+    },
+    {
+      "optimization": "O2",
+      "actual_scientific_producer": "91b6126b926b7e051ad9b2e0f5c4dc753f0c4cb4",
+      "actual_BUILD_sha256": "a2e6cfff59ac69fc931e6d0d7de8a070d103f1e7678a6eede37156eeb4d30721",
+      "accepted_prefix_days": 4,
+      "refused_next_day": 5,
+      "actual_checkpoint4_sha256": "6f98335b1b7da9935401ea41bf3af09180f8256b5d416525d84558bf87292ae7",
+      "actual_stderr_sha256": "6baa6f0567f5a2fe15310921b5d5739d77841b5fee0c8b4b5efff5496b421998",
+      "actual_failure": "Implicit original retry reached clock resolution",
+      "retained_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\ih11f-v1\\mixed10-11-water-d0-b5-O2"
+    }
+  ],
+  "not_historically_supported": false,
+  "proven_legacy_defect": false,
+  "scientific_choice_made": false,
+  "original_inputs_limits_parameters_and_period_unchanged": true,
+  "next_bounded_diagnostic": "Reproduce only day5 from the actual day4 native checkpoint with the original source-bound binary and original binding; then a separately identified observational HeadCalc compile with literal IO additions and a verified full source inverse, identical flags and all other original objects. Use raw state bytes as explicit component input and no admission/checkpoint binding for the instrumented component. Do not rewrite the original checkpoint metadata, impersonate original source, change physics or thresholds, or replay first4days/full periods.",
+  "independent_work": "Current complete generated-source and whole-object NoFrost ordinary/Snow postimages versus retained local RAW_V2. Reuse actual18 original periods; zero repeated model days in that compiler-only check.",
+  "physics_stock_flux_tolerance_or_iteration_limit_repairs": false,
+  "scope": "The implementation is present, but this original input has a real current numerical refusal. Do not mark the valid original function historically unsupported, PASS, or functionally complete."
+}
