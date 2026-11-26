@@ -7,10 +7,11 @@ from pathlib import Path
 import daily_host as h
 import original_macro_policy as original
 from donor_sources import replace
+from macro_contact_history import render_rate as render_contact_rate,render_macro as render_contact_macro
 from macro_stock_rank2 import render_rate as render_rank2_rate,render_head as render_rank2_head
 from macro_stock_jacobian import render_rate as render_stock_rate,render_head as render_stock_head
 from macro_trial_origin import render as render_trial_origin,PHYSICAL_FIELDS
-POLICY='fresh-coupled-unreduced-field-stock-jac24-domains37-v4'
+POLICY='fresh-coupled-unreduced-field-stock-contact43-reference48-v5'
 
 def render_headcalc(source):
     source=source.replace('\r\n','\n')
@@ -74,8 +75,8 @@ def build_bundle(base,reference,target,*,owner_optimization='O2'):
     p.write_text(rendered,encoding='cp1252')
     p=target/'macropore.f90';macro=render_trial_origin(p.read_text(encoding='cp1252'),(reference/'build/swap-selected/variables.f90').read_text(encoding='cp1252'))
     macro=replace(macro,'      VlMpDm1Cp= VlMpDmCp(1,1:numnod)','      VlMpDm1Cp(1:numnod)= VlMpDmCp(1,1:numnod)')
-    p.write_text(macro,encoding='cp1252')
-    p=target/'macrorate.f90';p.write_text(render_rank2_rate(render_stock_rate(render_macrorate((reference/'build/swap-selected/macrorate.f90').read_text(encoding='cp1252')))),encoding='cp1252')
+    p.write_text(render_contact_macro(macro),encoding='cp1252')
+    p=target/'macrorate.f90';p.write_text(render_contact_rate(render_rank2_rate(render_stock_rate(render_macrorate((reference/'build/swap-selected/macrorate.f90').read_text(encoding='cp1252'))))),encoding='cp1252')
     identity['donor_generated']['macrorate.f90']=h.sha(p)
     shutil.copyfile(Path(__file__).with_name('macro_stock_rank2.f90'),target/'macro_stock_rank2.f90')
     identity['donor_generated']['macro_stock_rank2.f90']=h.sha(target/'macro_stock_rank2.f90')
@@ -92,7 +93,7 @@ def build_bundle(base,reference,target,*,owner_optimization='O2'):
         if p.returncode:raise ValueError(p.stderr)
     for n in ['headcalc.f90','macropore.f90','macrorate.f90','macro_stock_rank2.f90','swap_main.f90']:identity['donor_generated'][n]=h.sha(target/n)
     identity['original_macro_policy_parent']=identity.pop('macro_policy')
-    identity['coupled_macro']={'policy':POLICY,'generator_sha256':h.sha(Path(__file__)),'trial_origin_generator_sha256':h.sha(Path(__file__).with_name('macro_trial_origin.py')),'stock_gradient_generator_sha256':h.sha(Path(__file__).with_name('macro_stock_jacobian.py')),'rank2_generator_sha256':h.sha(Path(__file__).with_name('macro_stock_rank2.py')),'rank2_source_sha256':h.sha(Path(__file__).with_name('macro_stock_rank2.f90')),'field_contract':'CONTRACT06: remove redundant air-entry exclusion only; original Andelst scope','physical_origin_fields':list(PHYSICAL_FIELDS),'owner_flags':flags,'unmodified_original_pool_flags':identity['donor_flags'],'owner_objects_sha256':{n:h.sha(target/n) for n in ['headcalc.o','macropore.o','macrorate.o','macro_stock_rank2.o','swap_main.o']},'native_codec':'UNCHANGED_S5MAC006; new policy/build receipt refuses foreign origins'}
+    identity['coupled_macro']={'policy':POLICY,'generator_sha256':h.sha(Path(__file__)),'trial_origin_generator_sha256':h.sha(Path(__file__).with_name('macro_trial_origin.py')),'stock_gradient_generator_sha256':h.sha(Path(__file__).with_name('macro_stock_jacobian.py')),'rank2_generator_sha256':h.sha(Path(__file__).with_name('macro_stock_rank2.py')),'rank2_source_sha256':h.sha(Path(__file__).with_name('macro_stock_rank2.f90')),'contact_generator_sha256':h.sha(Path(__file__).with_name('macro_contact_history.py')),'field_contract':'CONTRACT06: remove redundant air-entry exclusion only; original Andelst scope','physical_origin_fields':list(PHYSICAL_FIELDS),'owner_flags':flags,'unmodified_original_pool_flags':identity['donor_flags'],'owner_objects_sha256':{n:h.sha(target/n) for n in ['headcalc.o','macropore.o','macrorate.o','macro_stock_rank2.o','swap_main.o']},'native_codec':'UNCHANGED_S5MAC006; new policy/build receipt refuses foreign origins'}
     identity['macro_policy']={'name':POLICY,'generator_sha256':h.sha(Path(__file__)),'native_macro_format':'S5MAC006-complete-physical-trial-origin','objects_sha256':identity['coupled_macro']['owner_objects_sha256']}
     meta['identity']=identity;meta['binding']={**meta['binding'],'build':identity,'macro_policy':POLICY}
     meta['executable_sha256']['donor']=h.sha(h.executable(target,'day_donor'))
@@ -106,6 +107,7 @@ def validate_bundle(bundle,reference):
     if policy['generator_sha256']!=h.sha(Path(__file__)) or policy['trial_origin_generator_sha256']!=h.sha(Path(__file__).with_name('macro_trial_origin.py')):raise ValueError('Coupled generator differs')
     if policy['stock_gradient_generator_sha256']!=h.sha(Path(__file__).with_name('macro_stock_jacobian.py')):raise ValueError('Stock gradient generator differs')
     if policy['rank2_generator_sha256']!=h.sha(Path(__file__).with_name('macro_stock_rank2.py')) or policy['rank2_source_sha256']!=h.sha(Path(__file__).with_name('macro_stock_rank2.f90')):raise ValueError('Rank2 source differs')
+    if policy['contact_generator_sha256']!=h.sha(Path(__file__).with_name('macro_contact_history.py')):raise ValueError('Contact source differs')
     if policy['physical_origin_fields']!=list(PHYSICAL_FIELDS):raise ValueError('Coupled physical origin differs')
     for name,digest in policy['owner_objects_sha256'].items():
         if h.sha(bundle/name)!=digest:raise ValueError('Coupled owner object differs: '+name)
