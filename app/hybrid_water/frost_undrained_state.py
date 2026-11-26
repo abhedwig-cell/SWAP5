@@ -4,7 +4,7 @@ from pathlib import Path
 
 POLICY='original-frost-undrained-boundary58-state-calendar-v1'
 FIXED=dict(SWMACRO=0,SWFROST=1,SWSNOW=1,SWHEA=1,SWCALT=2,SWSOPHY=0,
-           SWDRA=0,SWBR=0,SWBBCFILE=0,SWMETDETAIL=0,NPRINTDAY=1,SWTOPBHEA=2)
+           SWDRA=1,SWBR=0,SWBBCFILE=0,SWMETDETAIL=0,NPRINTDAY=1,SWTOPBHEA=2)
 
 
 def input_domain(selectors,boundary,original_output):
