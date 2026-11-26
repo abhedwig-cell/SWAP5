@@ -1,0 +1,32 @@
+{
+  "results": [
+    {
+      "opt": "O0",
+      "frozen_original_context_day13_complete": true,
+      "actual_target_own_restart13to14_complete": true,
+      "split_and_continuous_native14_exact": true,
+      "day13_inventory_error_cm": 4.012584266591124e-10,
+      "day14_inventory_error_cm": -5.976289881983528e-08,
+      "production_foreign_source_guard_still_refuses": true,
+      "other_physical_source_delta_refused": "Not the selected Jacobian-only source delta:['macrorate.f90', 'macro_stock_rank2.f90']",
+      "target_own_prefix1to12_not_yet_run": true
+    },
+    {
+      "opt": "O2",
+      "frozen_original_context_day13_complete": true,
+      "actual_target_own_restart13to14_complete": true,
+      "split_and_continuous_native14_exact": true,
+      "day13_inventory_error_cm": 4.012584266591124e-10,
+      "day14_inventory_error_cm": -5.976289881983528e-08,
+      "production_foreign_source_guard_still_refuses": true,
+      "other_physical_source_delta_refused": "Not the selected Jacobian-only source delta:['macrorate.f90', 'macro_stock_rank2.f90']",
+      "target_own_prefix1to12_not_yet_run": true
+    }
+  ],
+  "native14": {
+    "macro.bin": "ee9e9fe480593f48bae5fe3b47fa30a5ce33f8c6e05cf548d5caa878e5f2cafc",
+    "result.end": "8a431886f0b09a72fd25c12e8f8da1c99a7ac371e7cbc44c2cbc4bdc270f0de7"
+  },
+  "models_launched": 0,
+  "scope": "Verified compatible frozen original12 context, target freshday13 and own native14 versus continuous suffix; does not promote inheritedprefix to fixedV21 qualification"
+}

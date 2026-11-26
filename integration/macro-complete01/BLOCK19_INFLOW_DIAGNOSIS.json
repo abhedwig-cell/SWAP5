@@ -1,0 +1,27 @@
+{
+  "models_launched": 0,
+  "results": [
+    {
+      "opt": "O0",
+      "source_bound_observer_prefix12_native_exact": true,
+      "original_refusal_time": 35807.61256074782,
+      "partial_D1_inflow_Jacobian_states": 96,
+      "last_D1_FrIn": 0.0,
+      "last_D1_FrOut": 1.0,
+      "last_maximum_storage": 1.6249637875794947,
+      "last_accepted_D1_storage": 1.6249650298760394
+    },
+    {
+      "opt": "O2",
+      "source_bound_observer_prefix12_native_exact": true,
+      "original_refusal_time": 35807.61256074782,
+      "partial_D1_inflow_Jacobian_states": 96,
+      "last_D1_FrIn": 0.0,
+      "last_D1_FrOut": 1.0,
+      "last_maximum_storage": 1.6249637875794947,
+      "last_accepted_D1_storage": 1.6249650298760394
+    }
+  ],
+  "causal_scope": "Original max-storage inflow projection with omitted nonlocal gradient; no physical threshold change. Observer20s approachcensors retained honestly, own12->13 realrefusal observed.",
+  "O0_O2_operator_traces_exact": true
+}
