@@ -105,3 +105,6 @@ def validate(bundle,project):
     if not text.startswith(expected+'\n') or text.count(expected)!=1:raise ValueError('Foreign compiled analytical Frost native provider')
     for flag in ['.true.','.false.']:
         if text.count('        call frost_analytical_domain_checkpoint(unit,'+flag+')')!=1:raise ValueError('Missing actual analytical Frost native model witness')
+
+    from frost_analytical_boundary_search import validate as validate_boundary_search
+    validate_boundary_search(bundle,item)
