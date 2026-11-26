@@ -9,7 +9,7 @@ from frost_undrained_inherited_custody import inherited_evidence
 from frost_undrained_parent_admission import parent_admission
 from frost_undrained_archive_science import portable,local
 import ci_checkout_scope07_verify as previous
-SEALED='4f1b211adeb44b5e545797423944976611edbc49'
+SEALED='9d80f1e7c320967360036e62bc31fd2a69bc458f'
 
 def data_source():return GitArchiveSource(ROOT,git('rev-parse','HEAD').decode().strip())
 
