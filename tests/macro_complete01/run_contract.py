@@ -21,8 +21,12 @@ def main():
   if p.returncode:
    print(p.stderr.decode(errors='replace')[-4000:]);return
   q['exe_sha256']=sha(exe);t=time.perf_counter()
-  p=subprocess.run([str(exe)],cwd=out,capture_output=True,timeout=20);q['run_seconds']=time.perf_counter()-t;q['run_returncode']=p.returncode
-  (out/'run.stdout').write_bytes(p.stdout);(out/'run.stderr').write_bytes(p.stderr);print(p.stdout.decode(errors='replace'));print(p.stderr.decode(errors='replace')[-1800:])
+  q['runs']=[]
+  for mode in (['fresh','no-macro','dtmin-refusal'] if 'macro_complete01/test_fresh_coupled' in driver else ['fresh']):
+   t=time.perf_counter();p=subprocess.run([str(exe)]+([] if mode=='fresh' else [mode]),cwd=out,capture_output=True,timeout=20)
+   q['runs'].append(dict(mode=mode,seconds=time.perf_counter()-t,returncode=p.returncode,stdout_sha256=hashlib.sha256(p.stdout).hexdigest()))
+   (out/(mode+'.stdout')).write_bytes(p.stdout);(out/(mode+'.stderr')).write_bytes(p.stderr);print(mode,p.returncode,p.stdout.decode(errors='replace').strip());print(p.stderr.decode(errors='replace')[-300:])
+  q['run_seconds']=sum(x['seconds'] for x in q['runs']);q['run_returncode']=max(x['returncode'] for x in q['runs'])
  except subprocess.TimeoutExpired as e:
   q['censored']=True;q['timeout_seconds']=e.timeout
   (out/'timeout.stdout').write_bytes(e.stdout or b'');(out/'timeout.stderr').write_bytes(e.stderr or b'')

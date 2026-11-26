@@ -54,6 +54,8 @@ program test_macro_complete_fresh
  real(real64),target::drain(1,4),irrigation(4),qroot(4)
  logical::active
  integer::i
+ character(24)::mode
+ call get_command_argument(1,mode)
  call configure_parameters(p,cof)
  call initialize_b110_default_mvg_parameters(hp,cof)
  drain=0d0;irrigation=0d0;qroot=0d0
@@ -74,10 +76,24 @@ program test_macro_complete_fresh
  call bind_b110_default_mvg_provider(hyd,hp,step)
  call hyd%evaluate(r%base_state%pressure_head,r%base_state%water_content,kk,cc,dd)
  r%boundary%top_flux=-kk(1);h0=r%base_state%pressure_head;theta0=r%base_state%water_content
+ if(trim(mode)=='no-macro')then
+  nullify(r%evaluation%macropore);r%physical%macropore_active=.false.
+  r%boundary%top_flux=0d0
+ else if(trim(mode)=='dtmin-refusal')then
+  ! Deliberate iteration-budget fault injection, not a natural V-rejection
+  ! qualification. It tests that the failure branch cannot claim success.
+  r%numerical%max_iterations=1;r%numerical%min_step_duration=step
+ end if
  call solver%solve(r,workspace,v)
  if(any(r%base_state%pressure_head/=h0).or.any(r%base_state%water_content/=theta0))error stop 'accepted origin mutated'
+ if(trim(mode)=='dtmin-refusal')then
+  if(v%status/=SW_SOLVE_RETRY_ADVISED.or..not.v%retry_advised)error stop 'dtmin accepted nonconvergence'
+  print *, 'MACRO_COMPLETE_DTMIN_REFUSAL_PASS'
+  stop
+ end if
  if(v%status==SW_SOLVE_CONVERGED)then
   call macro%evaluate_rate(v%candidate_state%pressure_head,v%candidate_state%water_content,exc,active)
+  if(trim(mode)=='no-macro')exc=0d0
   flux(1)=v%top_flux;flux(5)=v%bottom_flux
   do i=2,4
    flux(i)=-.5d0*(kk(i-1)+kk(i))*((v%candidate_state%pressure_head(i-1)-v%candidate_state%pressure_head(i))/p%node_distance(i)+1d0)
@@ -89,6 +105,8 @@ program test_macro_complete_fresh
   write(*,*)'REJECTED',v%status
   if(.not.v%retry_advised)error stop 'failed solve missing refusal'
  end if
+ write(*,'(a,4es25.16)')'HEAD',v%candidate_state%pressure_head
+ write(*,'(a,4es25.16)')'THETA',v%candidate_state%water_content
  print *, 'MACRO_COMPLETE_FRESH_CONTRACT_PASS'
 contains
  subroutine configure_parameters(parameters, cofgen)
