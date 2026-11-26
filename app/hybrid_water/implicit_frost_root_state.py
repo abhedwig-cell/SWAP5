@@ -102,6 +102,8 @@ def restore_macro(actual, project):
 
 
 def validate_native(raw, project):
+    from implicit_hydraulic_state import parent_native
+    raw=parent_native(raw,project)
     from implicit_frost_composition import codec
     if len(raw)<104 or raw[:8]!=codec(project): raise ValueError('Foreign implicit Frost root native revision')
     header=struct.unpack('<16i',raw[-96:-32]); values=struct.unpack('<4d',raw[-32:])
@@ -138,5 +140,7 @@ def validate_source(bundle, project, reference):
     if (bundle/(STATE+'.f90')).read_text(encoding='cp1252')!=source(project.solute,hysteresis(project),boundary(project),drainage(project)):
         raise ValueError('Foreign actual implicit Frost root provider source')
     actual=(bundle/'macropore.f90').read_text(encoding='cp1252')
+    from implicit_hydraulic_state import restore_macro as restore_hydraulic_extension
+    actual=restore_hydraulic_extension(actual,project)
     if restore_macro(actual,project)!=parent_macro(reference,project):
         raise ValueError('Foreign complete actual implicit Frost native parent')

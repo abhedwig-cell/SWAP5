@@ -52,7 +52,10 @@ def selection(text, selectors, boundary, *, original_output=None):
         if len(values) != len(names) or not all(math.isfinite(v) for v in values):
             raise ValueError('Invalid implicit conductivity parameter row')
         row = dict(zip(names, values))
-        if 'KSATEXM' in row and row['KSATEXM'] > row[fitted]:
+        # Literal original dhconduc's Gardner branch returns before the
+        # examined-Ksat branch; do not reject its inactive measured Ksat.
+        gardner=(composed_models is not None and len(rows)<len(composed_models) and composed_models[len(rows)]==2)
+        if not gardner and 'KSATEXM' in row and row['KSATEXM'] > row[fitted]:
             raise ValueError('Original implicit derivative does not implement examined-Ksat interpolation')
         rows.append(row)
     if not rows:

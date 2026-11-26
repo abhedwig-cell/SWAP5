@@ -975,6 +975,7 @@ end module plant_interface""")
                     *([str(output/'snow_vapor_terminal_water_receipt.o')] if 'snow_vapor_terminal_water_receipt' in patched else []),
                     *([str(output/'hydraulic_vapor_native.o')] if 'hydraulic_vapor_native' in patched else []),
                     *([str(output/'implicit_hydraulic_state_native.o')] if 'implicit_hydraulic_state_native' in patched else []),
+                    *([str(output/'implicit_frost_hydraulic_state_native.o')] if 'implicit_frost_hydraulic_state_native' in patched else []),
                     *([str(output/'implicit_pond_event_state.o')] if 'implicit_pond_event_state' in patched else []),
                     *([str(output/'implicit_pond_availability.o')] if 'implicit_pond_availability' in patched else []),
                     *([str(output / "terminal_water_receipt.o")] if project.time_step_policy==EVENT_CLOSURE_TIME_POLICY else []),

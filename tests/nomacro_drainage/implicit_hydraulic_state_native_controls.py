@@ -4,13 +4,14 @@ from pathlib import Path
 R=Path(__file__).resolve().parents[2]
 sys.path[:0]=[str(R/'app/hybrid_water'),str(R/'tests/nomacro_scheduled_subsurface')]
 from explicit_bottom9_runtime import m
-from implicit_hydraulic_state import selected,header,TAG,validate_candidate
+from implicit_hydraulic_state import selected,header,native_tag,validate_candidate
 
 
 def main():
     p=argparse.ArgumentParser()
     for n in ['profile','output','reference-work']:p.add_argument('--'+n,type=Path,required=True)
-    a=p.parse_args();a.output.mkdir();q=json.loads((a.profile/'RESULT.json').read_text());build=Path(q['build_root']);project=m.e.load(q['input_root'],original_output=True)
+    a=p.parse_args();a.output.mkdir();q=json.loads((a.profile/'RESULT.json').read_text());build=Path(q['build_root'])
+    record=json.loads((build/'BUILD.json').read_text());project=m.e.load(q['input_root'],original_output=True,time_step_policy=record['project']['time_step_policy'])
     meta,case=m.validate_bundle(build,a.reference_work,project);item=selected(project);values=header(item,project.nodes);size=4*len(values)
     source=a.profile/'trajectory/accepted-column-1-day-4.zip';source_hash=m.sha(source);checks=[]
     result=dict(status='RUNNING_COMPILED_IMPLICIT_HYDRAULIC_NATIVE_CONTROLS',actual_producer_source=q['actual_source'],actual_BUILD_sha256=m.sha(build/'BUILD.json'),model_period_replays=0,checks=checks)
@@ -20,7 +21,7 @@ def main():
         attacks=['missing-extension','truncated-extension','foreign-tag','trailing-byte','single-witness']+['field-'+str(i) for i in range(len(values))]
         for attack in attacks:
             target=a.output/attack;target.mkdir();origin=target/'origin';receipt=m.h.verify_checkpoint(source,4,meta['binding'],origin)
-            path=origin/'macro.bin';raw=bytearray(path.read_bytes());validate_candidate(raw,project);pos=len(raw)-(8+2*size);assert raw[pos:pos+8]==TAG
+            path=origin/'macro.bin';raw=bytearray(path.read_bytes());validate_candidate(raw,project);pos=len(raw)-(8+2*size);assert raw[pos:pos+8]==native_tag(item)
             if attack=='missing-extension':raw=raw[:pos]
             elif attack=='truncated-extension':raw=raw[:-1]
             elif attack=='foreign-tag':raw[pos:pos+8]=b'S5IHX999'

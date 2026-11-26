@@ -1,7 +1,8 @@
 """Independently read actual implicit model/state artifacts without running a model."""
-import argparse,hashlib,json,math,re,struct,subprocess,zipfile
+import argparse,hashlib,io,json,math,re,struct,subprocess,zipfile
+from contextlib import ExitStack
 from decimal import Decimal,localcontext
-from pathlib import Path
+from pathlib import Path,PureWindowsPath
 R=Path(__file__).resolve().parents[2]
 SHA=lambda b:hashlib.sha256(b).hexdigest()
 CASES={'gardner-water':'-v2','model7-snow-cde-fitted':'','model3-water':'-v2',
@@ -10,16 +11,18 @@ CASES={'gardner-water':'-v2','model7-snow-cde-fitted':'','model3-water':'-v2',
 
 
 def payload(path):
-    with zipfile.ZipFile(path) as z:
+    with zipfile.ZipFile(io.BytesIO(path.read_bytes())) as z:
         assert set(z.namelist())=={'checkpoint.json','result.end','macro.bin'}
         meta=json.loads(z.read('checkpoint.json'));files={n:z.read(n) for n in ['result.end','macro.bin']}
         assert {n:SHA(raw) for n,raw in files.items()}==meta['files']
     return meta,files
 
 
-def observe(folder):
+def observe(folder,locations=None):
     q=json.loads((folder/'RESULT.json').read_text());assert q['status']=='ACTUAL_IMPLICIT_ANALYTICAL_STATE_PHYSICAL_NATIVE_COLD_AND_TRANSACTIONS_PASS_NOT_ADMITTED'
-    build=Path(q['build_root']);inputs=Path(q['input_root']);b=json.loads((build/'BUILD.json').read_text());assert SHA((build/'BUILD.json').read_bytes())==q['actual_BUILD_sha256']
+    build=Path(q['build_root']) if locations is None else locations(q['build_root'])
+    inputs=Path(q['input_root']) if locations is None else locations(q['input_root'])
+    b=json.loads((build/'BUILD.json').read_text());assert SHA((build/'BUILD.json').read_bytes())==q['actual_BUILD_sha256']
     for name,digest in b['identity']['donor_generated'].items():assert SHA((build/name).read_bytes())==digest
     for role,name in [('donor','day_donor.exe'),('kernel','day_kernel.exe')]:assert SHA((build/name).read_bytes())==b['executable_sha256'][role]
     for name,digest in q['input_inventory']:assert SHA((inputs/name).read_bytes())==digest
@@ -84,13 +87,28 @@ def observe(folder):
 
 def main():
     p=argparse.ArgumentParser()
-    for n in ['root','output']:p.add_argument('--'+n,type=Path,required=True)
+    p.add_argument('--root',type=Path);p.add_argument('--data-source');p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--archive',default='IMPLICIT_HYDRAULIC_STATE11_LOCAL_RAW_V2')
     a=p.parse_args();result=dict(status='RUNNING_INDEPENDENT_LOCAL_IMPLICIT_HYDRAULIC_STATE_SCIENCE',actual_observer_source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=R,text=True).strip(),compiler_executions=0,model_executions=0,canonical_admission=False,contexts=[])
     save=lambda:a.output.write_text(json.dumps(result,indent=2)+'\n')
     save()
     try:
-        for opt in ['O0','O2']:
-            for name,suffix in CASES.items():result['contexts'].append(observe(a.root/(name+'-'+opt+suffix)));save()
+        assert bool(a.root)!=bool(a.data_source)
+        with ExitStack() as stack:
+            root=a.root;locations=None
+            if a.data_source:
+                from frost_boundary_git_archive import GitArchiveSource
+                from analytical_hydraulic_archives import Archive
+                from explicit_bottom9_archive_science import ReadView
+                store=Archive(GitArchiveSource(R,a.data_source),a.archive,stack)
+                root=ReadView(store,'actual/ih11-analysis-v1')
+                def locations(path):
+                    actual_root=PureWindowsPath('C:/Users/Veldh012/SWAP5-work/01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600')
+                    relative=PureWindowsPath(path).relative_to(actual_root);assert '..' not in relative.parts
+                    return ReadView(store,'actual/'+relative.as_posix())
+                result['actual_immutable_data_location']=dict(git_source=a.data_source,archive=a.archive,archive_sha256=store.record['sha256'],producer_paths_and_source_identities_rewritten=False)
+            for opt in ['O0','O2']:
+                for name,suffix in CASES.items():result['contexts'].append(observe(root/(name+'-'+opt+suffix),locations));save()
         assert len(result['contexts'])==18 and set(v for q in result['contexts'] for v in q['models'])==set(range(1,12))
         result.update(status='INDEPENDENT_EIGHTEEN_ORIGINAL_IMPLICIT_MODEL_STATE_CONTEXTS_EXACT_NATIVE_COLD_TRANSACTION_AND_1E10_BUDGETS_PASS_NOT_ADMITTED',primary_days=630,native_samples=126,exact_cold_windows=54,external_transaction_contexts=18)
     except Exception as error:result.update(status='FAILED_INDEPENDENT_LOCAL_IMPLICIT_HYDRAULIC_STATE_SCIENCE',error=repr(error));raise

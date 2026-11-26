@@ -37,15 +37,20 @@ def selection(directory,original_output=True):
     models=re.findall(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[ \t]*([^\r\n]*)',active)
     rest=re.sub(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[^\r\n]*','',active)
     if re.search(r'(?i)\bIHWCKMODEL\b',rest) or len(models)>1:return None
-    analytical=None
+    analytical=None;implicit_analytical=None
     if values['SWBOTB']==6:
         from frost_analytical_composition import model_domain
         analytical=model_domain(active,values,allow_model1=True)
         if analytical is None:return None
     elif models and re.fullmatch(r'\+?0*1(?:[ \t]+\+?0*1)*[ \t]*',models[0]) is None:
-        from frost_analytical_composition import model_domain
-        analytical=model_domain(active,values)
-        if analytical is None:return None
+        if values['SWKIMPL']==1:
+            from implicit_hydraulic_state import input_models
+            implicit_analytical=input_models(text,values,values,original_output)
+            if implicit_analytical is None:return None
+        else:
+            from frost_analytical_composition import model_domain
+            analytical=model_domain(active,values)
+            if analytical is None:return None
     monthly=values['SWMONTH']
     calendar=monthly!=0 or values['SWODAT']!=0 or values['PERIOD']!=1 or values['SWRES']!=1
     result=dict(undrained_frost=True,boundary_state_calendar=True,frost_calendar=True,
@@ -61,6 +66,7 @@ def selection(directory,original_output=True):
             from frost_analytical_composition import BOUNDARY_POLICY
             analytical_policy=BOUNDARY_POLICY
         result.update(analytical_frost_models=analytical,policy=analytical_policy)
+    if implicit_analytical is not None:result['implicit_hydraulic_models']=implicit_analytical
     return result
 
 
