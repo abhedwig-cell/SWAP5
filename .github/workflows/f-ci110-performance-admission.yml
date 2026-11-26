@@ -9,58 +9,134 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/integration/f-ci/nomacro-complete01/*.zip
+            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]
       - run: bash tests/fkt/run_fkt22_fmr_runtime_gate.sh
   ppa:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/integration/f-ci/nomacro-complete01/*.zip
+            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]
       - run: bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh
   b1-poison:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/integration/f-ci/nomacro-complete01/*.zip
+            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]
       - run: bash tests/fpe/run_fpe_zero_waste01_poison_workspace.sh
   planvalid:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/integration/f-ci/nomacro-complete01/*.zip
+            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]
           fetch-depth: 0
       - run: bash tests/fpe/run_fpe_planvalid01_qualification.sh
   ahl-provider:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/integration/f-ci/nomacro-complete01/*.zip
+            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]
       - run: bash tests/fahl/run_fahl49_provider_extraction.sh
   ahl-matrix:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/integration/f-ci/nomacro-complete01/*.zip
+            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]
       - run: bash tests/fahl/run_fahl49_production_matrix.sh
   ahl-default-off:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/integration/f-ci/nomacro-complete01/*.zip
+            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]
       - run: bash tests/fahl/run_fahl49_default_off_preservation.sh
   ahl-failclosed:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/integration/f-ci/nomacro-complete01/*.zip
+            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]
       - run: bash tests/fahl/run_fahl49_failclosed.sh
   ahl-ownership:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/integration/f-ci/nomacro-complete01/*.zip
+            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]
       - run: bash tests/fahl/run_fahl49_multiapp_slot_stability.sh
   ahl-scale:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/integration/f-ci/nomacro-complete01/*.zip
+            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]
       - run: bash tests/fahl/run_fahl49_application_scale.sh
   ahl-application:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/integration/f-ci/nomacro-complete01/*.zip
+            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'

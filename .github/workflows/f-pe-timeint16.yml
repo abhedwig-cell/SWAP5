@@ -41,6 +41,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/integration/f-ci/nomacro-complete01/*.zip
+            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
@@ -53,6 +59,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/integration/f-ci/nomacro-complete01/*.zip
+            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
@@ -65,6 +77,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/integration/f-ci/nomacro-complete01/*.zip
+            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
@@ -77,6 +95,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/integration/f-ci/nomacro-complete01/*.zip
+            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version

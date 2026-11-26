@@ -1,0 +1,9 @@
+{
+  "status": "PRE_WRITE_INSTALLER_HASH_REFUSAL_PRESERVED_NOT_SCIENTIFIC_QUALIFICATION",
+  "controller": "ci-checkout-scope07-install-checkpoint-v1.py",
+  "cause": "Text helper stripped trailing LF before SHA256 comparison; initial assertion rejected before copying the first workflow.",
+  "source_modified_before_refusal": false,
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "correction": "V2 hashes original git show bytes directly without text trimming or source identity rebinding."
+}

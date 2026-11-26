@@ -8,5 +8,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/integration/f-ci/nomacro-complete01/*.zip
+            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]
       - name: Qualify source-window seam
         run: bash tests/fpm/run_f_mig431_int12_p0.sh

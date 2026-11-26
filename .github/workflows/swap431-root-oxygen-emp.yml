@@ -17,6 +17,13 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/integration/f-ci/nomacro-complete01/*.zip
+            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]
       - name: Install gfortran
         run: sudo apt-get update -qq && sudo apt-get install -y gfortran
       - name: Exact empirical oxygen component O0 O2
