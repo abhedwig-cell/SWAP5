@@ -36830,7 +36830,7 @@
       "Ubuntu": 45760435470,
       "Windows": 45760435483
     },
-    "portable_state": "IN_PROGRESS_NOT_PASS",
+    "portable_state": "ALL_FOUR_ACTUAL_RUN_PROFILES_SUCCESS_WINDOWS_INDEPENDENT_PENDING",
     "independent_reader": "tests/nomacro_drainage/frost_analytical_archive_science.py",
     "local_independent_observer": "e7ad98752d697953fd5fc93651c240c2ea082010",
     "local_independent_record": "FROST_ANALYTICAL_COMPOSITION09_LOCAL_INDEPENDENT_V3.json",
@@ -36850,6 +36850,22 @@
         "artifact": 15089652721,
         "bytes": 185505903,
         "sha256": "bd5b0dc30fc61571541360eac8bab22950ac895510c97c903e2f40a3d8f26076"
+      }
+    },
+    "ubuntu_independent_records": [
+      "FROST_ANALYTICAL_COMPOSITION09_INDEPENDENT_UBUNTU_O0_V1.json",
+      "FROST_ANALYTICAL_COMPOSITION09_INDEPENDENT_UBUNTU_O2_V1.json"
+    ],
+    "windows_artifacts": {
+      "O0": {
+        "artifact": 15090326160,
+        "bytes": 187816896,
+        "sha256": "ac8d9660f86e4e1b8e3275496953f1ac8ac2f47e7e248fa13189bfe2b8bd539e"
+      },
+      "O2": {
+        "artifact": 15090356509,
+        "bytes": 188263934,
+        "sha256": "bb5633763abfe30ce1cf4524bbc36bd8c757a031b48a63486694908976b27539"
       }
     }
   }

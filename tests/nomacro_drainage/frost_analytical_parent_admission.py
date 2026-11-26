@@ -52,7 +52,7 @@ def parent_admission():
             assert item['actual_refusal'] and item['actual_one_file_delta'] and git('show','-s','--format=%P',item['head']).decode().split()==[CANDIDATE]
             assert git('diff','--name-only',CANDIDATE,item['head']).decode().splitlines()==[item['path']]
         selection=json.loads(store.get('FROST_UNDRAINED_STATE08_MCSOL_UNCHANGED_DEPENDENCY_SELECTION_V1.json'))
-        assert selection['actual_current_head']==CANDIDATE and selection['actual_parent']==PREVIOUS and selection['unchanged_tracked_files']==1063 and not git('diff',PREVIOUS,BASE,'--',*selection['unchanged_dependency_paths'])
+        assert selection['actual_candidate']==CANDIDATE and selection['actual_parent']==PREVIOUS and selection['unchanged_tracked_files']==1063 and not git('diff',PREVIOUS,BASE,'--',*selection['unchanged_dependency_paths'])
         assert receipt['new_scientific_contexts']==64 and not receipt['scientific_producers_rebound'] and receipt['coadmission']['contexts']==712
     prior=previous_admission();assert prior['receipt']['actual_merge']==PREVIOUS and git('rev-parse','HEAD').decode().strip()==head
     return dict(status='GENUINE_CANONICAL712_UNDRAINED_FROST_SIGNED_MERGE_ACTUAL_PUBLIC_PUB_14CI45CHECKS_SIX_LOGS_REAL_NEGATIVES_AND_PRIOR_CHAIN_PASS',actual_parent=BASE,receipt=receipt,observations=observations,original_archived_signed_commit_custody=commits,prior_648_admission=prior,compiler_executions=0,model_executions=0)
