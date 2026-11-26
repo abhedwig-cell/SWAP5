@@ -12,8 +12,8 @@ else
 def selected(project):
     from frost_boundary_state_calendar import selection
     item=selection(project.input_directory,project.original_output)
-    return bool(item and item['bottom'] in (5,8) and item['kind']=='water'
-                and (item['implicit']==1 or item.get('analytical_frost_models')))
+    return bool(item and item['kind']=='water'
+                and ((item['implicit']==1 and item['bottom'] in (5,8)) or item.get('analytical_frost_models')))
 
 
 def source(text):

@@ -61,7 +61,9 @@ def metadata(project):
                'frost_calendar_terminal_water.py']
     if boundary.get('boundary_state_calendar'):providers+=['frost_boundary_state_calendar.py','frost_boundary_composition.py']
     if boundary.get('undrained_frost'):providers+=['frost_undrained_state.py','frost_undrained_terminal_water.py']
-    if boundary.get('analytical_frost_models'):providers+=['frost_analytical_composition.py','frost_analytical_native.f90']
+    if boundary.get('analytical_frost_models'):
+        from frost_analytical_composition import native_provider
+        providers+=['frost_analytical_composition.py',native_provider(boundary)+'.f90']
     from frost_implicit_plate_calendar import selected as implicit_plate_water
     if implicit_plate_water(project):providers.append('frost_implicit_plate_calendar.py')
     providers.append('cde_interval_snow_state.f90' if project.solute else SNOW_PROVIDER+'.f90')

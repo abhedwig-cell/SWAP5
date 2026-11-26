@@ -10,7 +10,8 @@ FIXED=dict(SWMACRO=0,SWFROST=1,SWSNOW=1,SWHEA=1,SWCALT=2,SWSOPHY=0,
 def input_domain(selectors,boundary,original_output):
     from frost_undrained_state import input_domain as undrained_domain
     if undrained_domain(selectors,boundary,original_output):return True
-    return bool(original_output is not False and boundary.get('SWBOTB') in (5,8)
+    return bool(original_output is not False and boundary.get('SWBOTB') in (5,6,8)
+                and (boundary.get('SWBOTB')!=6 or selectors.get('SWKIMPL')==selectors.get('SWHYST')==0)
                 and selectors.get('SWKIMPL') in (0,1)
                 and selectors.get('SWSOLU') in (0,1)
                 and selectors.get('SWHYST') in (0,1,2) and selectors.get('SWINCO') in (1,2)
@@ -27,7 +28,7 @@ def selection(directory,original_output=True):
     if not input_domain(selectors,selectors,original_output):return None
     active='\n'.join(line.split('!',1)[0] for line in text.splitlines() if not line.lstrip().startswith('*'))
     domains={key:{value} for key,value in FIXED.items()}
-    domains.update(SWBOTB={5,8},SWSOLU={0,1},SWKIMPL={0,1},SWHYST={0,1,2},SWINCO={1,2},
+    domains.update(SWBOTB={5,6,8},SWSOLU={0,1},SWKIMPL={0,1},SWHYST={0,1,2},SWINCO={1,2},
                    SWMONTH={0,1},SWODAT={0,1},SWRES={0,1},PERIOD=set(range(367)))
     values={}
     for key,domain in domains.items():
@@ -41,23 +42,36 @@ def selection(directory,original_output=True):
     if re.search(r'(?i)\bSWAP_SOILS_DB\b',active):return None
     models=re.findall(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[ \t]*([^\r\n]*)',active)
     rest=re.sub(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[^\r\n]*','',active)
-    if re.search(r'(?i)\bIHWCKMODEL\b',rest) or len(models)>1 or models and re.fullmatch(r'\+?0*1(?:[ \t]+\+?0*1)*[ \t]*',models[0]) is None:return None
+    if re.search(r'(?i)\bIHWCKMODEL\b',rest) or len(models)>1:return None
+    analytical=None
+    if models and re.fullmatch(r'\+?0*1(?:[ \t]+\+?0*1)*[ \t]*',models[0]) is None:
+        from frost_analytical_composition import model_domain
+        analytical=model_domain(active,values)
+        if analytical is None:return None
+    if values['SWBOTB']==6 and analytical is None:return None
     name=one(text,'DRFIL',r"'[^']+'").strip("'");prefix=one(text,'PATHDRAIN',r"'[^']*'").strip("'").strip();drain=folder/(prefix+name+'.dra')
     if not drain.is_file() or switches(drain.read_text(encoding='cp1252')).get('SWDIVD')!=1:return None
     calendar=values['SWMONTH']!=0 or values['SWODAT']!=0 or values['PERIOD']!=1 or values['SWRES']!=1
     if not calendar and values['SWHYST']==2 and values['SWINCO']==2:return None
     monthly=values['SWMONTH']
-    return dict(boundary_state_calendar=True,frost_calendar=True,dense_daily_requested=not calendar,policy=POLICY,
+    result=dict(boundary_state_calendar=True,frost_calendar=True,dense_daily_requested=not calendar,policy=POLICY,
         bottom=values['SWBOTB'],kind='cde' if values['SWSOLU'] else 'water',implicit=values['SWKIMPL'],
         hysteresis=values['SWHYST'],initial=values['SWINCO'],swmonth=monthly,
         swodat=0 if monthly else values['SWODAT'],swres=0 if monthly else values['SWRES'],
         requested_period=0 if monthly else values['PERIOD'],physical_equations_changed=False)
+    if analytical is not None:
+        from frost_analytical_composition import BOUNDARY_POLICY
+        result.update(analytical_frost_models=analytical,policy=BOUNDARY_POLICY,drainage=1,requires_divdra=True)
+    return result
 
 
 def codec(selected):
     if selected.get('undrained_frost'):
         from frost_undrained_state import codec as undrained_codec
         return undrained_codec(selected)
+    if selected.get('analytical_frost_models'):
+        from frost_analytical_composition import codec as analytical_codec
+        return analytical_codec(selected)
     return {('water',0):b'S5BCW001',('cde',0):b'S5BCC001',
             ('water',1):b'S5BCW002',('cde',1):b'S5BCC002'}[(selected['kind'],selected['implicit'])]
 
