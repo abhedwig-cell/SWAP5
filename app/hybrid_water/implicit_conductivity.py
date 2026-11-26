@@ -24,10 +24,12 @@ def selection(text, selectors, boundary, *, original_output=None):
                        if line.strip() and not line.lstrip().startswith('*'))
     if re.search(r'(?i)\bSWAP_SOILS_DB\b', active):
         raise ValueError('Implicit conductivity soil database requires separate parameter-domain qualification')
+    from implicit_hydraulic_state import input_models
+    composed_models=input_models(text,selectors,boundary,original_output)
     models = re.findall(r'(?mi)^IHWCKMODEL\s*=\s*(.*)$', active)
     remainder = re.sub(r'(?mi)^IHWCKMODEL\s*=\s*[^\r\n]*$', '', active)
     if (re.search(r'(?i)\bIHWCKMODEL\b', remainder) or len(models) > 1
-            or models and not re.fullmatch(r'\+?0*1(?:[ \t]+\+?0*1)*[ \t]*', models[0])):
+            or models and not re.fullmatch(r'\+?0*1(?:[ \t]+\+?0*1)*[ \t]*', models[0]) and composed_models is None):
         raise ValueError('Original implicit conductivity requires default Mualem model1')
     # Read the actual original named parameter table. Original TTUTIL remains
     # authoritative for numeric ranges; this guard excludes its unsupported
@@ -56,7 +58,8 @@ def selection(text, selectors, boundary, *, original_output=None):
     if not rows:
         raise ValueError('Missing implicit conductivity parameter rows')
     return dict(policy=POLICY, SWKIMPL=1, SWKMEAN=selectors['SWKMEAN'],
-                hydraulic_model=1, original_parameter_rows=rows,
+                **(dict(hydraulic_models=composed_models,implicit_hydraulic_state_composition=True)
+                   if composed_models is not None else dict(hydraulic_model=1)), original_parameter_rows=rows,
                 examined_ksat_interpolation=False, physical_state_owner='existing-selected-owner',
                 newton_failure_policy='original-implicit-nonconverged-trial-retry-v1',
                 dtmin_retry_policy='below-input-minimum-only-after-actual-nonconvergence',clock_ulp_floor=8,

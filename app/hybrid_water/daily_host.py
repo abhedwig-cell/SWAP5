@@ -944,6 +944,8 @@ end module plant_interface""")
     patched=ria12_water_polish_build(output,donor_build,project,patched)
     from frost_boundary_terminal_trial import apply_build as plate_terminal_build
     patched=plate_terminal_build(output,project,patched)
+    from implicit_hydraulic_state import apply_build as implicit_hydraulic_build
+    patched=implicit_hydraulic_build(output,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")
@@ -972,6 +974,7 @@ end module plant_interface""")
                     *([str(output/'model7_terminal_water_receipt.o')] if 'model7_terminal_water_receipt' in patched else []),
                     *([str(output/'snow_vapor_terminal_water_receipt.o')] if 'snow_vapor_terminal_water_receipt' in patched else []),
                     *([str(output/'hydraulic_vapor_native.o')] if 'hydraulic_vapor_native' in patched else []),
+                    *([str(output/'implicit_hydraulic_state_native.o')] if 'implicit_hydraulic_state_native' in patched else []),
                     *([str(output/'implicit_pond_event_state.o')] if 'implicit_pond_event_state' in patched else []),
                     *([str(output/'implicit_pond_availability.o')] if 'implicit_pond_availability' in patched else []),
                     *([str(output / "terminal_water_receipt.o")] if project.time_step_policy==EVENT_CLOSURE_TIME_POLICY else []),
@@ -1027,6 +1030,9 @@ end module plant_interface""")
     from model7_capacity import metadata as model7_capacity_metadata
     model7_policy=model7_capacity_metadata(project)
     if model7_policy is not None:build_identity['model7_capacity']=model7_policy
+    from implicit_hydraulic_state import metadata as implicit_hydraulic_metadata
+    implicit_hydraulic_policy=implicit_hydraulic_metadata(project)
+    if implicit_hydraulic_policy is not None:build_identity['implicit_hydraulic_state']=implicit_hydraulic_policy
     from model7_terminal_water import metadata as model7_terminal_metadata
     model7_terminal=model7_terminal_metadata(project)
     if model7_terminal is not None:build_identity['model7_terminal_water']=model7_terminal

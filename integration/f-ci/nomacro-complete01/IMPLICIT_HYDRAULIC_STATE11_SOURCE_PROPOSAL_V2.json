@@ -1,0 +1,149 @@
+{
+  "status": "IMPLEMENTED_ORDINARY_AND_SNOW_IMPLICIT_ANALYTICAL_STATE_COMPOSITION_PENDING_REAL_O0_O2_FEEDBACK_NOT_ADMITTED",
+  "actual_parent": "22520105f5a3ccac2bd2ae1b726f27b7b0d67b1e",
+  "classification": "COMPOSITION_MISSING",
+  "scope": "Implicit models2..11/mixed including Gardner; hysteresis0; DRA1 bottoms5/8; numerical heat; Snow0/1; water/CDE; original initial1/2. Frost and remaining boundaries follow within this coherent hydraulic-state batch.",
+  "architecture_affected_invariants": [
+    3,
+    4,
+    5,
+    7,
+    13,
+    23
+  ],
+  "new_physics": false,
+  "new_physical_state": false,
+  "new_native_static_extension": "S5IHX001: actual static configuration duplicated at EOF; original parent magic and physical CDE prefix remain literal. No restore assignment of any selector or parameter.",
+  "existing_process_owners": "Original nonlinear solver, existing implicit retry/pond/thermal/clock/root/output owners; original model2 derivative; qualified model7 capacity correction; no explicit model7 terminal renderer on implicit projects.",
+  "test_selection": "First actual current-head O0/O2 original-input public build/day/cold/transaction feedback: Gardner ordinary water plus model7 Snow CDE. Then original reader/compiled native refusal probes, unchanged model1 whole-object postimages without old-period replay, representative remaining layer models and independent portable evidence. Not scientific qualification or canonical admission.",
+  "scientific_admission": "NOT_QUALIFIED",
+  "solver_mass_or_iteration_tolerances_changed": false,
+  "files": {
+    "app/hybrid_water/daily_coupling.py": {
+      "new_file": false,
+      "before_lf_sha256": "35801f3363d4b098ed028d2321f883c6a3a72417929950b582d1d023314259e4",
+      "proposed_lf_sha256": "4ad3754bb3fbb73908f9ce2e44920db0fc65cc0d7f0098d2ad8bb2181225f87b",
+      "base_offset_edits": [
+        {
+          "base_start": 32089,
+          "base_end": 32089,
+          "before": "",
+          "after": "    from implicit_hydraulic_state import validate as validate_implicit_hydraulic\n    validate_implicit_hydraulic(bundle,project,identity)\n"
+        },
+        {
+          "base_start": 49317,
+          "base_end": 49317,
+          "before": "",
+          "after": "            from implicit_hydraulic_state import validate_candidate as validate_implicit_hydraulic_candidate\n            validate_implicit_hydraulic_candidate((ready/'macro.bin').read_bytes(),self.project)\n"
+        },
+        {
+          "base_start": 54058,
+          "base_end": 54058,
+          "before": "",
+          "after": "        from implicit_hydraulic_state import validate_candidate as validate_implicit_hydraulic_candidate\n        validate_implicit_hydraulic_candidate((ready/'macro.bin').read_bytes(),self.project)\n"
+        }
+      ]
+    },
+    "app/hybrid_water/daily_host.py": {
+      "new_file": false,
+      "before_lf_sha256": "4a7b4ac11874281cf6c472db1409d837498d35b443f2bb5d771e0e691aec4bbe",
+      "proposed_lf_sha256": "f6c77ab93c441d9ffec3ea41e4077f5ce19ba414df9846b2e20ab3a40d0602e8",
+      "base_offset_edits": [
+        {
+          "base_start": 60947,
+          "base_end": 60947,
+          "before": "",
+          "after": "    from implicit_hydraulic_state import apply_build as implicit_hydraulic_build\n    patched=implicit_hydraulic_build(output,project,patched)\n"
+        },
+        {
+          "base_start": 64128,
+          "base_end": 64128,
+          "before": "",
+          "after": "                    *([str(output/'implicit_hydraulic_state_native.o')] if 'implicit_hydraulic_state_native' in patched else []),\n"
+        },
+        {
+          "base_start": 67849,
+          "base_end": 67849,
+          "before": "",
+          "after": "    from implicit_hydraulic_state import metadata as implicit_hydraulic_metadata\n    implicit_hydraulic_policy=implicit_hydraulic_metadata(project)\n    if implicit_hydraulic_policy is not None:build_identity['implicit_hydraulic_state']=implicit_hydraulic_policy\n"
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_conductivity.py": {
+      "new_file": false,
+      "before_lf_sha256": "0b175c9519c35edb3b61dea66678467e5abef8f83b57e9677bd5e41d400daa21",
+      "proposed_lf_sha256": "cd31b09818ba3340e975bc95880e7a7da1a0e228167132d2d24e8a7489fde346",
+      "base_offset_edits": [
+        {
+          "base_start": 1488,
+          "base_end": 1488,
+          "before": "",
+          "after": "    from implicit_hydraulic_state import input_models\n    composed_models=input_models(text,selectors,boundary,original_output)\n"
+        },
+        {
+          "base_start": 1696,
+          "base_end": 1786,
+          "before": "            or models and not re.fullmatch(r'\\+?0*1(?:[ \\t]+\\+?0*1)*[ \\t]*', models[0])):\n",
+          "after": "            or models and not re.fullmatch(r'\\+?0*1(?:[ \\t]+\\+?0*1)*[ \\t]*', models[0]) and composed_models is None):\n"
+        },
+        {
+          "base_start": 2395,
+          "base_end": 2508,
+          "before": "    if len(set(names)) != len(names) or not {'ORES','OSAT','ALFA','ALFAW','NPAR','LEXP','H_ENPR'} <= set(names):\n",
+          "after": "    required_columns={'ORES','OSAT','ALFA','NPAR','LEXP','H_ENPR'}\n    if selectors['SWHYST']>0:required_columns.add('ALFAW')\n    if len(set(names)) != len(names) or not required_columns <= set(names):\n"
+        },
+        {
+          "base_start": 3424,
+          "base_end": 3489,
+          "before": "                hydraulic_model=1, original_parameter_rows=rows,\n",
+          "after": "                **(dict(hydraulic_models=composed_models,implicit_hydraulic_state_composition=True)\n                   if composed_models is not None else dict(hydraulic_model=1)), original_parameter_rows=rows,\n"
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_hydraulic_state.py": {
+      "new_file": true,
+      "before_lf_sha256": null,
+      "proposed_lf_sha256": "5b34337eaf39e8ca8931e93cab40381f5ca6175af65a81648c4e8adabe81c1a2",
+      "base_offset_edits": [
+        {
+          "base_start": 0,
+          "base_end": 0,
+          "before": "",
+          "after": "\"\"\"Bind implicit analytical models to existing ordinary/Snow state owners.\n\nThe EOF extension witnesses static configuration only. It never assigns physical\nselectors, hydraulic parameters or stores during restore. Parent state layouts,\nincluding the conserved CDE prefix, remain literal.\n\"\"\"\nimport hashlib\nfrom pathlib import Path\nimport re\nimport struct\n\nPOLICY='original-implicit-analytical-existing-state-composition-v1'\nNATIVE='implicit_hydraulic_state_native'\nTAG=b'S5IHX001'\n\n\ndef input_models(text,selectors,boundary,original_output=None):\n    if original_output is False:return None\n    fixed=dict(SWMACRO=0,SWKIMPL=1,SWSOPHY=0,SWHYST=0,SWFROST=0,\n               SWHEA=1,SWCALT=2,SWDRA=1,SWBR=0,SWMETDETAIL=0)\n    if any(selectors.get(k)!=v for k,v in fixed.items()):return None\n    if (selectors.get('SWSOLU') not in (0,1) or selectors.get('SWSNOW') not in (0,1)\n            or selectors.get('SWINCO') not in (1,2) or boundary.get('SWBOTB') not in (5,8)):\n        return None\n    active='\\n'.join(line.split('!',1)[0] for line in text.splitlines()\n                     if not line.lstrip().startswith('*'))\n    # Original scalar replication is validated against the actual grid. Gardner\n    # has its own literal derivative in MOD_MvG_functions.dhconduc.\n    rows=re.findall(r'(?mi)^[ \\t]*IHWCKMODEL[ \\t]*=[ \\t]*([^\\r\\n]*)',active)\n    if len(rows)!=1 or re.fullmatch(r'[+-]?[0-9]+(?:[ \\t]+[+-]?[0-9]+)*[ \\t]*',rows[0]) is None:return None\n    values=list(map(int,rows[0].split()))\n    if any(v<1 or v>11 for v in values) or all(v==1 for v in values):return None\n    return _models_from_grid(active,values)\n\n\ndef _models_from_grid(active,values):\n    import math\n    anchors=list(re.finditer(r'(?mi)^[ \\t]*ISUBLAY[ \\t]+ISOILLAY[ \\t]+HSUBLAY[ \\t]+NCOMP[ \\t]*\\n',active))\n    if len(anchors)!=1:return None\n    layers=[]\n    for line in active[anchors[0].end():].splitlines():\n        if not line.strip():break\n        fields=line.split()\n        if len(fields)!=4:break\n        try:sub,soil,nodes=int(fields[0]),int(fields[1]),int(fields[3]);depth=float(fields[2].replace('D','e').replace('d','e'))\n        except ValueError:return None\n        if sub!=len(layers)+1 or soil<1 or nodes<1 or not math.isfinite(depth) or depth<=0:return None\n        layers.append(soil)\n    if not layers or set(layers)!=set(range(1,max(layers)+1)):return None\n    count=max(layers);models=values*count if len(values)==1 else values\n    if len(models)!=count:return None\n    vapor=re.findall(r'(?mi)^[ \\t]*SWVAPOR[ \\t]*=[ \\t]*([^\\r\\n]*)',active)\n    if len(vapor)>1 or not vapor and any(v>=8 for v in models):return None\n    if vapor:\n        if re.fullmatch(r'[+-]?[0-9]+(?:[ \\t]+[+-]?[0-9]+)*[ \\t]*',vapor[0]) is None:return None\n        flags=list(map(int,vapor[0].split()))\n        if any(v!=0 for v in flags) or any(v>=8 for v in models) and len(flags)!=count:return None\n    return models\n\n\ndef selected(project):\n    if not project.input_directory or not project.original_output or project.macro or project.age:return None\n    from experimental_project import switches,one\n    folder=Path(project.input_directory);text=(folder/'swap.swp').read_text(encoding='cp1252');s=switches(text)\n    boundary=s\n    if s.get('SWBBCFILE')==1:\n        name=one(text,'BBCFIL',r\"'[^']+'\").strip(\"'\")\n        boundary=switches((folder/(name if name.lower().endswith('.bbc') else name+'.bbc')).read_text(encoding='cp1252'))\n    models=input_models(text,s,boundary,project.original_output)\n    if models is None:return None\n    name=one(text,'DRFIL',r\"'[^']+'\").strip(\"'\");prefix=one(text,'PATHDRAIN',r\"'[^']*'\").strip(\"'\").strip()\n    partition=switches((folder/(prefix+name+'.dra')).read_text(encoding='cp1252')).get('SWDIVD')\n    if partition not in (0,1) or project.solute and partition==0:raise ValueError('Invalid original implicit drainage partition')\n    return dict(models=models,solute=s['SWSOLU'],snow=s['SWSNOW'],bottom=boundary['SWBOTB'],partition=partition)\n\n\ndef header(item,nodes):\n    return [1,nodes,len(item['models']),item['solute'],1,0,item['snow'],0,1,2,1,item['bottom'],item['partition'],*item['models']]\n\n\ndef metadata(project):\n    item=selected(project)\n    if item is None:return None\n    folder=Path(__file__).parent;sha=lambda p:hashlib.sha256(p.read_bytes().replace(b'\\r\\n',b'\\n')).hexdigest()\n    return dict(policy=POLICY,**item,native_extension_tag=TAG.decode(),native_extension_version=1,\n                native_extension_bytes=8+8*len(header(item,project.nodes)),\n                providers={n:sha(folder/n) for n in ['implicit_hydraulic_state.py',NATIVE+'.f90']},\n                parent_state_layout_preserved=True,physical_equations_changed=False,new_physical_state=False)\n\n\ndef validate_candidate(raw,project):\n    item=selected(project)\n    if item is None:return\n    values=header(item,project.nodes);packed=struct.pack('<'+str(len(values))+'i',*values)\n    expected=TAG+packed+packed\n    if not raw.endswith(expected):raise ValueError('Foreign or incomplete implicit hydraulic native extension')\n\n\ndef render_macro(text):\n    begin='    subroutine hybrid_macro_checkpoint(';end='    end subroutine hybrid_macro_checkpoint'\n    if text.count(begin)!=1 or text.count(end)!=1:raise ValueError('Ambiguous actual implicit hydraulic native owner')\n    low=text.index(begin);high=text.index(end,low)+len(end);body=text[low:high]\n    anchors=re.findall(r'(?m)^      use MOD_grid, only: numnod(?:,dz)?$',body)\n    if len(anchors)!=1:raise ValueError('Foreign implicit hydraulic grid import')\n    body=body.replace(anchors[0],anchors[0]+'\\n      use '+NATIVE+',only:implicit_hydraulic_checkpoint',1)\n    for flag,anchor in [('.true.','        read(unit,iostat=ios) trailing'),('.false.','      end if\\n      close(unit)')]:\n        if body.count(anchor)!=1:raise ValueError('Foreign implicit hydraulic EOF owner')\n        body=body.replace(anchor,'        call implicit_hydraulic_checkpoint(unit,'+flag+')\\n'+anchor,1)\n    return text[:low]+body+text[high:]\n\n\ndef apply_build(output,project,patched):\n    if selected(project) is None:return patched\n    if NATIVE in patched:raise ValueError('Multiple implicit hydraulic native owners')\n    (output/(NATIVE+'.f90')).write_bytes(Path(__file__).with_name(NATIVE+'.f90').read_bytes())\n    macro=output/'macropore.f90';macro.write_text(render_macro(macro.read_text(encoding='cp1252')),encoding='cp1252')\n    patched.insert(0,NATIVE)\n    return patched\n\n\ndef validate(bundle,project,identity):\n    expected=metadata(project)\n    if identity.get('implicit_hydraulic_state')!=expected:raise ValueError('Foreign implicit hydraulic state policy')\n    if expected is None:return\n    path=Path(bundle)/(NATIVE+'.f90')\n    if path.read_bytes().replace(b'\\r\\n',b'\\n')!=Path(__file__).with_name(NATIVE+'.f90').read_bytes().replace(b'\\r\\n',b'\\n'):\n        raise ValueError('Foreign complete implicit hydraulic native provider')\n    text=(Path(bundle)/'macropore.f90').read_text(encoding='cp1252')\n    if text.count('      use '+NATIVE+',only:implicit_hydraulic_checkpoint')!=1:raise ValueError('Missing implicit hydraulic native import')\n    for flag in ['.true.','.false.']:\n        if text.count('        call implicit_hydraulic_checkpoint(unit,'+flag+')')!=1:raise ValueError('Missing implicit hydraulic native call')\n"
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_hydraulic_state_native.f90": {
+      "new_file": true,
+      "before_lf_sha256": null,
+      "proposed_lf_sha256": "b684a9f1bd665abb00e063b136a4211b42279826b4e7bb2c24864e55c2fae337",
+      "base_offset_edits": [
+        {
+          "base_start": 0,
+          "base_end": 0,
+          "before": "",
+          "after": "module implicit_hydraulic_state_native\n  use MOD_grid,only:numnod,numlay\n  use MOD_swap_base,only:swmacro,swsolu,swsnow,swfrost,swhyst,swdra,swhea,swcalt\n  use MOD_MvG,only:iHWCKmodel,swsophy\n  use MOD_drain,only:swdivd\n  use WC_K_models_04_11,only:NoVap\n  use variables,only:swkimpl,swbotb\n  implicit none\n  private\n  public::implicit_hydraulic_checkpoint\ncontains\n  subroutine implicit_hydraulic_checkpoint(unit,restoring)\n    integer,intent(in)::unit\n    logical,intent(in)::restoring\n    integer,allocatable::expected(:),header(:),witness(:)\n    integer::n,ios,i\n    character(len=8)::tag\n    if(numnod<1.or.numlay<1.or.numlay>size(iHWCKmodel).or.swmacro/=0.or.swsolu<0.or.swsolu>1.or. &\n       (swsnow/=0.and.swsnow/=1).or.swfrost/=0.or.swhyst/=0.or.swdra/=1.or.swhea/=1.or.swcalt/=2.or. &\n       swsophy/=0.or.swkimpl/=1.or.(swbotb/=5.and.swbotb/=8))error stop 'Foreign implicit hydraulic native domain'\n    if(swdivd<0.or.swdivd>1)error stop 'Foreign implicit hydraulic drainage partition'\n    if(swsolu==1.and.swdivd==0)error stop 'Invalid original solute drainage partition'\n    if(any(iHWCKmodel(1:numlay)<1).or.any(iHWCKmodel(1:numlay)>11).or.all(iHWCKmodel(1:numlay)==1)) &\n       error stop 'Foreign implicit hydraulic constitutive models'\n    do i=1,numlay\n      if(iHWCKmodel(i)>=8)then\n        if(.not.NoVap(i))error stop 'Active vapor cannot use implicit hydraulic native extension'\n      end if\n    end do\n    n=13+numlay;allocate(expected(n),header(n),witness(n))\n    expected(1:13)=[1,numnod,numlay,swsolu,swkimpl,swhyst,swsnow,swfrost,swhea,swcalt,swdra,swbotb,swdivd]\n    expected(14:n)=iHWCKmodel(1:numlay)\n    if(restoring)then\n      read(unit,iostat=ios)tag,header,witness\n      if(ios/=0)error stop 'Incomplete implicit hydraulic native extension'\n      if(tag/='S5IHX001')error stop 'Foreign implicit hydraulic native extension tag'\n      if(any(header/=expected).or.any(witness/=expected))error stop 'Foreign implicit hydraulic native witness'\n    else\n      write(unit)'S5IHX001',expected,expected\n    end if\n  end subroutine\nend module\n"
+        }
+      ]
+    },
+    "app/hybrid_water/model7_capacity.py": {
+      "new_file": false,
+      "before_lf_sha256": "0417a863d027d3dc17ecb78d11a22dcd15c57de29afcc8de042660638f6b4a7a",
+      "proposed_lf_sha256": "fcb8514b80d7e8b85e0b4051e85a843918f5a4333a5f8667ccc22b11f9363080",
+      "base_offset_edits": [
+        {
+          "base_start": 1355,
+          "base_end": 1355,
+          "before": "",
+          "after": "    if models is None:\n        from implicit_hydraulic_state import selected\n        composed=selected(project)\n        if composed is not None:models=composed['models']\n"
+        },
+        {
+          "base_start": 3021,
+          "base_end": 3135,
+          "before": "        SWKIMPL=0,IHWCKMODEL=7,physical_equations_changed=False,new_physical_state=False,tolerance_changed=False)\n",
+          "after": "        SWKIMPL=(1 if analytical_models(project) is None else 0),IHWCKMODEL=7,physical_equations_changed=False,new_physical_state=False,tolerance_changed=False)\n"
+        }
+      ]
+    }
+  }
+}

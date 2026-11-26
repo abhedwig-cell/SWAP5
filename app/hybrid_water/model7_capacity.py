@@ -27,6 +27,10 @@ def analytical_models(project):
 
 def enabled(project):
     models=analytical_models(project)
+    if models is None:
+        from implicit_hydraulic_state import selected
+        composed=selected(project)
+        if composed is not None:models=composed['models']
     return bool(models and 7 in models)
 
 
@@ -53,7 +57,7 @@ def metadata(project):
         source_sha256=hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest(),
         manifest_sha256=hashlib.sha256((folder/'manifest.json').read_bytes().replace(b'\r\n',b'\n')).hexdigest(),
         original_lf_sha256=ORIGINAL_SHA,corrected_lf_sha256=hashlib.sha256((folder/(NAME+'.f90')).read_bytes().replace(b'\r\n',b'\n')).hexdigest(),
-        SWKIMPL=0,IHWCKMODEL=7,physical_equations_changed=False,new_physical_state=False,tolerance_changed=False)
+        SWKIMPL=(1 if analytical_models(project) is None else 0),IHWCKMODEL=7,physical_equations_changed=False,new_physical_state=False,tolerance_changed=False)
 
 
 def apply_build(output,reference,project,patched):
