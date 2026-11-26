@@ -6,7 +6,8 @@ def render(source):
  source=replace(source,'\n   implicit none\n','''
    implicit none
    real(8),save::macro_lat_dh=0d0,macro_lat_q=0d0,macro_lat_h=0d0,macro_lat_t=0d0,macro_lat_dt=0d0
-   logical,save::macro_lat_ready=.false.''')
+   logical,save::macro_lat_ready=.false.
+''')
  source=replace(source,'public :: boundtop','public :: macro_top_lateral_gradient\npublic :: boundtop')
  source=replace(source,'pondm1, dt, fluseksatexm','pondm1, dt, t1900, fluseksatexm')
  source=replace(source,'real(8)              :: h0,hcomean,k1Atm,p1,p2,p2Mp,q1,RsRoMp','real(8)              :: h0,hcomean,k1Atm,p1,p2,p2Mp,q1,RsRoMp,lat_a,lat_beta,lat_den,lat_raw')

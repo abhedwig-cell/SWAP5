@@ -14,7 +14,7 @@ from macro_contact_history import render_rate as render_contact_rate,render_macr
 from macro_stock_rank2 import render_rate as render_rank2_rate,render_head as render_rank2_head
 from macro_stock_jacobian import render_rate as render_stock_rate,render_head as render_stock_head
 from macro_trial_origin import render as render_trial_origin,PHYSICAL_FIELDS
-POLICY='fresh-coupled-unreduced-field-coupled-current-all-domain-inflow-gradient-v11'
+POLICY='fresh-coupled-unreduced-field-coupled-current-all-domain-inflow-gradient-v11r2'
 
 def render_headcalc(source):
     source=source.replace('\r\n','\n')
@@ -87,7 +87,7 @@ def build_bundle(base,reference,target,*,owner_optimization='O2'):
     shutil.copyfile(Path(__file__).with_name('macro_stock_complete.f90'),target/'macro_stock_complete.f90')
     identity['donor_generated']['macro_stock_complete.f90']=h.sha(target/'macro_stock_complete.f90')
     p=target/'calcgwl.f90';p.write_text(render_perched_classification((reference/'build/swap-selected/calcgwl.f90').read_text(encoding='cp1252')),encoding='cp1252')
-    identity['donor_generated']['boundtop.f90','calcgwl.f90']=h.sha(p)
+    identity['donor_generated']['calcgwl.f90']=h.sha(p)
     p=target/'boundtop.f90';p.write_text(render_surface_gradient((reference/'build/swap-selected/boundtop.f90').read_text(encoding='cp1252')),encoding='cp1252')
     identity['donor_generated']['boundtop.f90']=h.sha(p)
     flags=[('-'+owner_optimization if f in ('-O0','-O2') else f) for f in identity['donor_flags']]
