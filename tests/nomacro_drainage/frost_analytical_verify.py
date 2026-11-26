@@ -22,7 +22,7 @@ def raw_custody():
         name=Path(path).name
         if not name.startswith('FROST_ANALYTICAL_COMPOSITION09_') or not name.endswith('.json'):continue
         record=frozen(name[:-5])
-        if not {'archive','bytes','sha256'}<=record.keys():continue
+        if not isinstance(record,dict) or not {'archive','bytes','sha256'}<=record.keys():continue
         if record.get('parts'):
             raw=[]
             for part in record['parts']:
