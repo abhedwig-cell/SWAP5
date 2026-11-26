@@ -3,7 +3,7 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "0b482de01847dd8ba5f93c63881b9aeff468d3e3",
   "branch": "codex/nomacro-frost-undrained-state08",
-  "last_commit": "30724c8e79dddaa6bcb0902fd8efbc7aeae707ec",
+  "last_commit": "c4f2ef462b4e3311c22863c804eb49a5c86278b5",
   "status": "PARTIAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -36604,7 +36604,7 @@
     "new_scientific_contexts": 0
   },
   "frost_undrained_state08": {
-    "status": "FOUR_REAL_LOCAL_O0_O2_CONTEXTS_PASS_RAW_SOURCE_NATIVE_REFUSALS_PRESERVED_PORTABLE64_PENDING",
+    "status": "BOUNDED_SOURCE_PORTABLE64_LOCAL4_AND_ACTIVE_FROST_TRANSACTIONS_INDEPENDENTLY_VERIFIED_PUBLIC_ADMISSION_PENDING",
     "branch": "codex/nomacro-frost-undrained-state08",
     "actual_parent_candidate": "082f3d4b8e027d7aa8fcfbb9e3dde603aea85a66",
     "parent_PR": 1806,
@@ -36652,10 +36652,26 @@
     "latest_observed_portable_state": {
       "Ubuntu": "BOTH_O0_O2_WORKFLOW_SUCCESS_RAW_BYTE_PRESERVATION_AND_INDEPENDENT_AUDIT_PENDING",
       "Windows": "RUNNING"
-    }
+    },
+    "actual_canonical_parent": "0b482de01847dd8ba5f93c63881b9aeff468d3e3",
+    "portable_scientific_producer": "127af752c5519e7f9d9a6894c61137f0ee7f3920",
+    "local_scientific_producer": "656cd3ed25c91dc6ab8de12f2525fd30be8e358f",
+    "portable_independent_observer": "5cdaef81cf68f034534779cdb29bcfdd74ca6103",
+    "local_independent_observer": "c4f2ef462b4e3311c22863c804eb49a5c86278b5",
+    "portable_contexts": 64,
+    "primary_days": 1872,
+    "native_samples": 400,
+    "exact_cold_windows": 176,
+    "actual_compiled_refusals": 4460,
+    "portable_transactions": 96,
+    "additional_local_active19_transactions": 2,
+    "unchanged_drained_postimages": 32,
+    "unchanged_whole_objects": 932,
+    "current_public_owner": "tests/nomacro_drainage/frost_undrained_verify.py",
+    "next_action": "Freeze genuine current public owner, read-only candidate PUBLIC/ordinary publication; real committed source/raw/inherited/publication controls; current selected CI; actual canonical merge observers"
   },
   "frost_undrained_state08_archive_recovery": {
-    "status": "FOUR_TERMINAL_SCIENTIFIC_PROFILES_ORIGINAL_BYTES_PRESERVED_INDEPENDENT_AUDIT_PENDING",
+    "status": "FOUR_TERMINAL_SCIENTIFIC_PROFILES_LOCAL4_AND_ACTIVE19_ORIGINAL_BYTES_INDEPENDENTLY_VERIFIED_PUBLIC_OWNER_PENDING",
     "actual_portable_producer": "127af752c5519e7f9d9a6894c61137f0ee7f3920",
     "actual_local_producer": "656cd3ed25c91dc6ab8de12f2525fd30be8e358f",
     "actual_canonical_parent": "0b482de01847dd8ba5f93c63881b9aeff468d3e3",
@@ -36666,7 +36682,7 @@
     "portable_contexts": 64,
     "new_admitted_contexts": 0,
     "reader": "tests/nomacro_drainage/frost_undrained_archive_science.py",
-    "next_action": "Read-only independent Ubuntu/Windows O0/O2 original archive audits, 32 unchanged drained whole-object postimages, local4 and active19; then genuine current admission owners and negative controls",
+    "next_action": "Freeze genuine current public owner, read-only candidate PUBLIC/ordinary publication; real committed source/raw/inherited/publication controls; current selected CI; actual canonical merge observers",
     "full_model_replays_for_metadata": 0
   }
 }
