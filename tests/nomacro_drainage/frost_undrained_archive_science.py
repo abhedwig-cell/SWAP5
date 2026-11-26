@@ -266,11 +266,12 @@ def local(proof):
         return dict(status='INDEPENDENT_FOUR_LOCAL_UNDRAINED_ORIGINAL_BUDGETS_COLD_NATIVE_AND_TWO_ACTUAL_ACTIVE19_TRANSACTIONS_PASS_NOT_ADMITTED',source=custody,contexts=contexts,additional_active_frost_transactions=observations,compiler_executions=0,model_executions=0,canonical_admission=False)
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--proof',type=Path,default=P);p.add_argument('--platform',choices=['Windows','Ubuntu']);p.add_argument('--optimization',choices=['O0','O2']);p.add_argument('--local',action='store_true');p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--proof',type=Path);p.add_argument('--platform',choices=['Windows','Ubuntu']);p.add_argument('--optimization',choices=['O0','O2']);p.add_argument('--local',action='store_true');p.add_argument('--output',type=Path,required=True);a=p.parse_args()
     assert (a.local and a.platform is None and a.optimization is None) or (not a.local and a.platform and a.optimization)
     observer=git('rev-parse','HEAD').decode().strip();assert not git('status','--porcelain','--untracked-files=all')
+    proof=a.proof if a.proof is not None else GitArchiveSource(R,observer)
     q=dict(status='RUNNING_INDEPENDENT_ORIGINAL_UNDRAINED_SCIENCE_NOT_ADMITTED',actual_observer=observer)
-    try:q['audit']=local(a.proof) if a.local else portable(a.proof,a.platform,a.optimization);q['status']=q['audit']['status']
+    try:q['audit']=local(proof) if a.local else portable(proof,a.platform,a.optimization);q['status']=q['audit']['status']
     except Exception as exc:q.update(status='FAILED_INDEPENDENT_ORIGINAL_UNDRAINED_SCIENCE_NOT_ADMITTED',error=repr(exc));raise
     finally:
         assert git('rev-parse','HEAD').decode().strip()==observer
