@@ -1,0 +1,7 @@
+# Original analytical Frost composition
+
+Proposed; implementation and scientific qualification pending. Actual parent is signed canonical `f3faeaa540e7fd81686802414d53ff6686f3ce7b` with712 bounded contexts. Whole historical migration remains PARTIAL, global family/gap counts UNKNOWN and fixedRC3 unchanged.
+
+Four genuine original reader/initialization probes accept analytical3,7,11 and mixed7/3 water/CDE projects with Frost1, Snow1, drainage0, lower5/8 and original initial1/2. They reach original soil water, temperature, Snow and CDE initialization with zero model days. The actual current public reader refuses all four. Their raw inputs, stdout/stderr, initial state and actual source/compiler/probe identities are preserved separately; these observations establish availability and the guard gap, not scientific equivalence.
+
+The next bounded composition reuses the unchanged existing analytical constitutive implementations, the accepted model7 capacity correction where selected, original Frost reduction, lower-boundary, original output/calendar and CDE owners. It must retain strict water/CDE1e-10, convergence/retry limits, exact native/cold and rollback, and must bind every actual per-layer analytical model in a distinct native domain. Active vapor, AGE, implicit analytical execution, unsupported hysteresis and model12 remain outside this work unit. No physical equation, inventory, flux, date or counter correction is authorized by these probes.

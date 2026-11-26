@@ -1,0 +1,741 @@
+{
+  "status": "FOUR_ORIGINAL_ANALYTICAL_FROST_INITIALIZATIONS_AND_REAL_PUBLIC_REFUSALS_PRESERVED_NOT_QUALIFIED",
+  "archive": "FROST_ANALYTICAL_COMPOSITION09_ORIGINAL_READER_RAW_V1.zip",
+  "bytes": 643975,
+  "sha256": "602ee460750ef11290026d6ab0b283064425b8210c66b1a2a5fe1e336edf815c",
+  "parts": [
+    {
+      "file": "FROST_ANALYTICAL_COMPOSITION09_ORIGINAL_READER_RAW_V1.zip",
+      "bytes": 643975,
+      "sha256": "602ee460750ef11290026d6ab0b283064425b8210c66b1a2a5fe1e336edf815c"
+    }
+  ],
+  "members": {
+    "RESULT.json": {
+      "bytes": 17565,
+      "sha256": "1872b54dd4d26fb6a3d418a85361356366e5e2ad9231908724e86e38d4d4fe38"
+    },
+    "controllers/FROST_ANALYTICAL_COMPOSITION09_ORIGINAL_READER_DISCOVERY_V1.json": {
+      "bytes": 17565,
+      "sha256": "1872b54dd4d26fb6a3d418a85361356366e5e2ad9231908724e86e38d4d4fe38"
+    },
+    "controllers/frost-analytical-composition09-original-reader-discovery-v1.py": {
+      "bytes": 6261,
+      "sha256": "5fec7afa4e1136485767158cde0ca24d2aaf96087007984467e2b67050ad1821"
+    },
+    "model11-11-water-b8-p2/PUBLIC_READER.json": {
+      "bytes": 330,
+      "sha256": "fbda66f8fa558236ea9c1538b7faac16df46ff7ff39e16c388ac89505848a1ba"
+    },
+    "model11-11-water-b8-p2/inputs/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "model11-11-water-b8-p2/inputs/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "model11-11-water-b8-p2/inputs/grass.crp": {
+      "bytes": 31370,
+      "sha256": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+    },
+    "model11-11-water-b8-p2/inputs/maize.crp": {
+      "bytes": 24670,
+      "sha256": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+    },
+    "model11-11-water-b8-p2/inputs/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "model11-11-water-b8-p2/inputs/potato.crp": {
+      "bytes": 31435,
+      "sha256": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+    },
+    "model11-11-water-b8-p2/inputs/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "model11-11-water-b8-p2/inputs/swap.dra": {
+      "bytes": 11967,
+      "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+    },
+    "model11-11-water-b8-p2/inputs/swap.swp": {
+      "bytes": 36934,
+      "sha256": "a5e0f358bef0ec6ec5de6cb615797a904406e4719935e0b83c7e548bc000accb"
+    },
+    "model11-11-water-b8-p2/inputs/swap.tss": {
+      "bytes": 491,
+      "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+    },
+    "model11-11-water-b8-p2/original-init.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "model11-11-water-b8-p2/original-init.stdout": {
+      "bytes": 500,
+      "sha256": "665cefade1acb4ad13f4ca0e107bd47ee0249154c93f4fdfb81b75b235835cbf"
+    },
+    "model11-11-water-b8-p2/original-worker/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "model11-11-water-b8-p2/original-worker/283rd$00002.tmp": {
+      "bytes": 244992,
+      "sha256": "4bd4c4973a32fe6cd880ab8b5d4d9884edc6adfd9fc06662a21de9ea9782d13f"
+    },
+    "model11-11-water-b8-p2/original-worker/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "model11-11-water-b8-p2/original-worker/grass.crp": {
+      "bytes": 31370,
+      "sha256": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+    },
+    "model11-11-water-b8-p2/original-worker/maize.crp": {
+      "bytes": 24670,
+      "sha256": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+    },
+    "model11-11-water-b8-p2/original-worker/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "model11-11-water-b8-p2/original-worker/potato.crp": {
+      "bytes": 31435,
+      "sha256": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+    },
+    "model11-11-water-b8-p2/original-worker/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "model11-11-water-b8-p2/original-worker/swap.dra": {
+      "bytes": 11967,
+      "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+    },
+    "model11-11-water-b8-p2/original-worker/swap.err": {
+      "bytes": 688,
+      "sha256": "c4e9ad70a9ff1ae873270b5053429740857a1994ebd56fef3b76f3223556de2f"
+    },
+    "model11-11-water-b8-p2/original-worker/swap.log": {
+      "bytes": 643,
+      "sha256": "6a831dfa9549d6e234e047c09e4e905fddf21e2603aa2ec45184febc6cb154e1"
+    },
+    "model11-11-water-b8-p2/original-worker/swap.swp": {
+      "bytes": 36934,
+      "sha256": "a5e0f358bef0ec6ec5de6cb615797a904406e4719935e0b83c7e548bc000accb"
+    },
+    "model11-11-water-b8-p2/original-worker/swap.tss": {
+      "bytes": 491,
+      "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+    },
+    "model11-11-water-b8-p2/original-worker/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "model11-11-water-b8-p2/original-worker/swaprd$00001.tmp": {
+      "bytes": 20724,
+      "sha256": "46f2df750b0a913ba028a387d0cec7711e8b664176ca469e6dab8555b2194a78"
+    },
+    "model11-11-water-b8-p2/original-worker/swaprd$00003.tmp": {
+      "bytes": 1452,
+      "sha256": "318d066fa3729f52ce8bf2e4a261e4ac03acfff5f5cc534f2b43205e9e9958a5"
+    },
+    "model3-3-water-b5-p2/PUBLIC_READER.json": {
+      "bytes": 330,
+      "sha256": "fbda66f8fa558236ea9c1538b7faac16df46ff7ff39e16c388ac89505848a1ba"
+    },
+    "model3-3-water-b5-p2/inputs/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "model3-3-water-b5-p2/inputs/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "model3-3-water-b5-p2/inputs/grass.crp": {
+      "bytes": 31370,
+      "sha256": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+    },
+    "model3-3-water-b5-p2/inputs/maize.crp": {
+      "bytes": 24670,
+      "sha256": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+    },
+    "model3-3-water-b5-p2/inputs/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "model3-3-water-b5-p2/inputs/potato.crp": {
+      "bytes": 31435,
+      "sha256": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+    },
+    "model3-3-water-b5-p2/inputs/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "model3-3-water-b5-p2/inputs/swap.dra": {
+      "bytes": 11967,
+      "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+    },
+    "model3-3-water-b5-p2/inputs/swap.swp": {
+      "bytes": 36914,
+      "sha256": "dced7d6fa41303cef7679b001bdcbadf2a27d63bb8e6c91b898115c89d7ac4e3"
+    },
+    "model3-3-water-b5-p2/inputs/swap.tss": {
+      "bytes": 491,
+      "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+    },
+    "model3-3-water-b5-p2/original-init.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "model3-3-water-b5-p2/original-init.stdout": {
+      "bytes": 500,
+      "sha256": "665cefade1acb4ad13f4ca0e107bd47ee0249154c93f4fdfb81b75b235835cbf"
+    },
+    "model3-3-water-b5-p2/original-worker/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "model3-3-water-b5-p2/original-worker/283rd$00002.tmp": {
+      "bytes": 244992,
+      "sha256": "4bd4c4973a32fe6cd880ab8b5d4d9884edc6adfd9fc06662a21de9ea9782d13f"
+    },
+    "model3-3-water-b5-p2/original-worker/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "model3-3-water-b5-p2/original-worker/grass.crp": {
+      "bytes": 31370,
+      "sha256": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+    },
+    "model3-3-water-b5-p2/original-worker/maize.crp": {
+      "bytes": 24670,
+      "sha256": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+    },
+    "model3-3-water-b5-p2/original-worker/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "model3-3-water-b5-p2/original-worker/potato.crp": {
+      "bytes": 31435,
+      "sha256": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+    },
+    "model3-3-water-b5-p2/original-worker/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "model3-3-water-b5-p2/original-worker/swap.dra": {
+      "bytes": 11967,
+      "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+    },
+    "model3-3-water-b5-p2/original-worker/swap.err": {
+      "bytes": 688,
+      "sha256": "f1f01783b7393f36d02978e95a11f6654d9f61fd70e725b264664d48af18aa91"
+    },
+    "model3-3-water-b5-p2/original-worker/swap.log": {
+      "bytes": 643,
+      "sha256": "741edd073e8df94f61aa3eef64f74de520ac7a225981a2badd9f860a28944eb3"
+    },
+    "model3-3-water-b5-p2/original-worker/swap.swp": {
+      "bytes": 36914,
+      "sha256": "dced7d6fa41303cef7679b001bdcbadf2a27d63bb8e6c91b898115c89d7ac4e3"
+    },
+    "model3-3-water-b5-p2/original-worker/swap.tss": {
+      "bytes": 491,
+      "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+    },
+    "model3-3-water-b5-p2/original-worker/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "model3-3-water-b5-p2/original-worker/swaprd$00001.tmp": {
+      "bytes": 20592,
+      "sha256": "ecfb172eb3720d45474340cab0b6d4a83bfb9b568309ce8d55f0e89cb42eb99c"
+    },
+    "model3-3-water-b5-p2/original-worker/swaprd$00003.tmp": {
+      "bytes": 1452,
+      "sha256": "318d066fa3729f52ce8bf2e4a261e4ac03acfff5f5cc534f2b43205e9e9958a5"
+    },
+    "model7-3-cde-b5-p1/PUBLIC_READER.json": {
+      "bytes": 350,
+      "sha256": "4f5479135c900bd92afae2ccfe0ea5b548273a64e53baf1116cb9188a0271c1a"
+    },
+    "model7-3-cde-b5-p1/inputs/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "model7-3-cde-b5-p1/inputs/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "model7-3-cde-b5-p1/inputs/grass.crp": {
+      "bytes": 31370,
+      "sha256": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+    },
+    "model7-3-cde-b5-p1/inputs/maize.crp": {
+      "bytes": 24670,
+      "sha256": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+    },
+    "model7-3-cde-b5-p1/inputs/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "model7-3-cde-b5-p1/inputs/potato.crp": {
+      "bytes": 31435,
+      "sha256": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+    },
+    "model7-3-cde-b5-p1/inputs/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "model7-3-cde-b5-p1/inputs/swap.dra": {
+      "bytes": 11967,
+      "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+    },
+    "model7-3-cde-b5-p1/inputs/swap.swp": {
+      "bytes": 36898,
+      "sha256": "aebeff8eb4ad206386556f487db3a606342069aaed60f30b71e6bdd91948c710"
+    },
+    "model7-3-cde-b5-p1/inputs/swap.tss": {
+      "bytes": 491,
+      "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+    },
+    "model7-3-cde-b5-p1/original-init.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "model7-3-cde-b5-p1/original-init.stdout": {
+      "bytes": 500,
+      "sha256": "665cefade1acb4ad13f4ca0e107bd47ee0249154c93f4fdfb81b75b235835cbf"
+    },
+    "model7-3-cde-b5-p1/original-worker/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "model7-3-cde-b5-p1/original-worker/283rd$00002.tmp": {
+      "bytes": 244992,
+      "sha256": "4bd4c4973a32fe6cd880ab8b5d4d9884edc6adfd9fc06662a21de9ea9782d13f"
+    },
+    "model7-3-cde-b5-p1/original-worker/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "model7-3-cde-b5-p1/original-worker/grass.crp": {
+      "bytes": 31370,
+      "sha256": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+    },
+    "model7-3-cde-b5-p1/original-worker/maize.crp": {
+      "bytes": 24670,
+      "sha256": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+    },
+    "model7-3-cde-b5-p1/original-worker/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "model7-3-cde-b5-p1/original-worker/potato.crp": {
+      "bytes": 31435,
+      "sha256": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+    },
+    "model7-3-cde-b5-p1/original-worker/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "model7-3-cde-b5-p1/original-worker/swap.dra": {
+      "bytes": 11967,
+      "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+    },
+    "model7-3-cde-b5-p1/original-worker/swap.err": {
+      "bytes": 735,
+      "sha256": "c67ed0062a1aeea8832f8eacceb26bbdccd8fe21146f787f635c3757a484d246"
+    },
+    "model7-3-cde-b5-p1/original-worker/swap.log": {
+      "bytes": 643,
+      "sha256": "a49c9997583bf941b62982dd7c1bce8feb69c8d0103d1d62fcbed6d734a8e319"
+    },
+    "model7-3-cde-b5-p1/original-worker/swap.swp": {
+      "bytes": 36898,
+      "sha256": "aebeff8eb4ad206386556f487db3a606342069aaed60f30b71e6bdd91948c710"
+    },
+    "model7-3-cde-b5-p1/original-worker/swap.tss": {
+      "bytes": 491,
+      "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+    },
+    "model7-3-cde-b5-p1/original-worker/swap.wrn": {
+      "bytes": 133,
+      "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+    },
+    "model7-3-cde-b5-p1/original-worker/swaprd$00001.tmp": {
+      "bytes": 20592,
+      "sha256": "b16a4611a0fce9bd2e4bf92f3bc090cd863e3c9e19c52553df92ce2038c06059"
+    },
+    "model7-3-cde-b5-p1/original-worker/swaprd$00003.tmp": {
+      "bytes": 1452,
+      "sha256": "318d066fa3729f52ce8bf2e4a261e4ac03acfff5f5cc534f2b43205e9e9958a5"
+    },
+    "model7-7-cde-b8-p1/PUBLIC_READER.json": {
+      "bytes": 350,
+      "sha256": "4f5479135c900bd92afae2ccfe0ea5b548273a64e53baf1116cb9188a0271c1a"
+    },
+    "model7-7-cde-b8-p1/inputs/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "model7-7-cde-b8-p1/inputs/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "model7-7-cde-b8-p1/inputs/grass.crp": {
+      "bytes": 31370,
+      "sha256": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+    },
+    "model7-7-cde-b8-p1/inputs/maize.crp": {
+      "bytes": 24670,
+      "sha256": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+    },
+    "model7-7-cde-b8-p1/inputs/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "model7-7-cde-b8-p1/inputs/potato.crp": {
+      "bytes": 31435,
+      "sha256": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+    },
+    "model7-7-cde-b8-p1/inputs/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "model7-7-cde-b8-p1/inputs/swap.dra": {
+      "bytes": 11967,
+      "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+    },
+    "model7-7-cde-b8-p1/inputs/swap.swp": {
+      "bytes": 36916,
+      "sha256": "acdb6a3738928cefd3dc5f40fa00f0488517fd9ab9deb4d405b4f9f49a34388f"
+    },
+    "model7-7-cde-b8-p1/inputs/swap.tss": {
+      "bytes": 491,
+      "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+    },
+    "model7-7-cde-b8-p1/original-init.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "model7-7-cde-b8-p1/original-init.stdout": {
+      "bytes": 500,
+      "sha256": "665cefade1acb4ad13f4ca0e107bd47ee0249154c93f4fdfb81b75b235835cbf"
+    },
+    "model7-7-cde-b8-p1/original-worker/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "model7-7-cde-b8-p1/original-worker/283rd$00002.tmp": {
+      "bytes": 244992,
+      "sha256": "4bd4c4973a32fe6cd880ab8b5d4d9884edc6adfd9fc06662a21de9ea9782d13f"
+    },
+    "model7-7-cde-b8-p1/original-worker/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "model7-7-cde-b8-p1/original-worker/grass.crp": {
+      "bytes": 31370,
+      "sha256": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+    },
+    "model7-7-cde-b8-p1/original-worker/maize.crp": {
+      "bytes": 24670,
+      "sha256": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+    },
+    "model7-7-cde-b8-p1/original-worker/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "model7-7-cde-b8-p1/original-worker/potato.crp": {
+      "bytes": 31435,
+      "sha256": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+    },
+    "model7-7-cde-b8-p1/original-worker/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "model7-7-cde-b8-p1/original-worker/swap.dra": {
+      "bytes": 11967,
+      "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+    },
+    "model7-7-cde-b8-p1/original-worker/swap.err": {
+      "bytes": 735,
+      "sha256": "2af3e2fd4d0a98a264cb896f55b66925d018cb261863c2de275a880adf2cf768"
+    },
+    "model7-7-cde-b8-p1/original-worker/swap.log": {
+      "bytes": 643,
+      "sha256": "bf14ed2b076a03b634ee752671b56029e5af67818a4d96b8e72b2d33b331448b"
+    },
+    "model7-7-cde-b8-p1/original-worker/swap.swp": {
+      "bytes": 36916,
+      "sha256": "acdb6a3738928cefd3dc5f40fa00f0488517fd9ab9deb4d405b4f9f49a34388f"
+    },
+    "model7-7-cde-b8-p1/original-worker/swap.tss": {
+      "bytes": 491,
+      "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+    },
+    "model7-7-cde-b8-p1/original-worker/swap.wrn": {
+      "bytes": 133,
+      "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+    },
+    "model7-7-cde-b8-p1/original-worker/swaprd$00001.tmp": {
+      "bytes": 20724,
+      "sha256": "6f22752382a62d6ee6b9baeb02ad214264a69a298ed925d9bf4ee0f7777becf7"
+    },
+    "model7-7-cde-b8-p1/original-worker/swaprd$00003.tmp": {
+      "bytes": 1452,
+      "sha256": "318d066fa3729f52ce8bf2e4a261e4ac03acfff5f5cc534f2b43205e9e9958a5"
+    }
+  },
+  "actual_observer": "f3faeaa540e7fd81686802414d53ff6686f3ce7b",
+  "contexts": [
+    {
+      "case": {
+        "kind": "water",
+        "bottom": 5,
+        "implicit": 0,
+        "hysteresis": 0,
+        "initial": 2,
+        "calendar": "dense",
+        "reset": 1,
+        "start": null,
+        "days": 35,
+        "drainage": 0
+      },
+      "actual_models": [
+        "3",
+        "3"
+      ],
+      "name": "model3-3-water-b5-p2",
+      "input_inventory": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd",
+        "maize.crp": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.dra": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3",
+        "swap.swp": "dced7d6fa41303cef7679b001bdcbadf2a27d63bb8e6c91b898115c89d7ac4e3",
+        "swap.tss": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+      },
+      "public_reader": {
+        "actual_source": "f3faeaa540e7fd81686802414d53ff6686f3ce7b",
+        "entry": "app/hybrid_water/experimental_project.py:load",
+        "model_builds": 0,
+        "model_days": 0,
+        "status": "ACTUAL_CURRENT_PUBLIC_READER_REFUSED",
+        "error": "ValueError('Bounded original frost requires numeric heat, snow, hysteresis2 and SWDIVD0')"
+      },
+      "original_returncode": 0,
+      "original_phases": [
+        "ORIGINAL_INIT_PHASE BEFORE_INITIALIZE",
+        "ORIGINAL_INIT_PHASE BEFORE_CONFIGURATION",
+        "ORIGINAL_INIT_PHASE BEFORE_READSWAP",
+        "ORIGINAL_INIT_PHASE AFTER_READSWAP",
+        "ORIGINAL_INIT_PHASE AFTER_METEO",
+        "ORIGINAL_INIT_PHASE AFTER_TIMECONTROL",
+        "ORIGINAL_INIT_PHASE AFTER_FILL_COFGEN",
+        "ORIGINAL_INIT_PHASE AFTER_SOILWATER",
+        "ORIGINAL_INIT_PHASE AFTER_CALCGWL",
+        "ORIGINAL_INIT_PHASE AFTER_SOILTEMPERATURE",
+        "ORIGINAL_INIT_PHASE AFTER_SNOW",
+        "ORIGINAL_INIT_PHASE AFTER_SOLUTE_INITIALIZATION_ZERO_MODEL_DAYS"
+      ],
+      "original_reader_and_initialization_complete": true,
+      "original_stdout_sha256": "665cefade1acb4ad13f4ca0e107bd47ee0249154c93f4fdfb81b75b235835cbf",
+      "original_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_seconds": 0.7265816000290215,
+      "model_days": 0
+    },
+    {
+      "case": {
+        "kind": "cde",
+        "bottom": 8,
+        "implicit": 0,
+        "hysteresis": 0,
+        "initial": 1,
+        "calendar": "dense",
+        "reset": 1,
+        "start": null,
+        "days": 35,
+        "drainage": 0
+      },
+      "actual_models": [
+        "7",
+        "7"
+      ],
+      "name": "model7-7-cde-b8-p1",
+      "input_inventory": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd",
+        "maize.crp": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.dra": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3",
+        "swap.swp": "acdb6a3738928cefd3dc5f40fa00f0488517fd9ab9deb4d405b4f9f49a34388f",
+        "swap.tss": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+      },
+      "public_reader": {
+        "actual_source": "f3faeaa540e7fd81686802414d53ff6686f3ce7b",
+        "entry": "app/hybrid_water/experimental_project.py:load",
+        "model_builds": 0,
+        "model_days": 0,
+        "status": "ACTUAL_CURRENT_PUBLIC_READER_REFUSED",
+        "error": "ValueError('Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer')"
+      },
+      "original_returncode": 0,
+      "original_phases": [
+        "ORIGINAL_INIT_PHASE BEFORE_INITIALIZE",
+        "ORIGINAL_INIT_PHASE BEFORE_CONFIGURATION",
+        "ORIGINAL_INIT_PHASE BEFORE_READSWAP",
+        "ORIGINAL_INIT_PHASE AFTER_READSWAP",
+        "ORIGINAL_INIT_PHASE AFTER_METEO",
+        "ORIGINAL_INIT_PHASE AFTER_TIMECONTROL",
+        "ORIGINAL_INIT_PHASE AFTER_FILL_COFGEN",
+        "ORIGINAL_INIT_PHASE AFTER_SOILWATER",
+        "ORIGINAL_INIT_PHASE AFTER_CALCGWL",
+        "ORIGINAL_INIT_PHASE AFTER_SOILTEMPERATURE",
+        "ORIGINAL_INIT_PHASE AFTER_SNOW",
+        "ORIGINAL_INIT_PHASE AFTER_SOLUTE_INITIALIZATION_ZERO_MODEL_DAYS"
+      ],
+      "original_reader_and_initialization_complete": true,
+      "original_stdout_sha256": "665cefade1acb4ad13f4ca0e107bd47ee0249154c93f4fdfb81b75b235835cbf",
+      "original_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_seconds": 0.15516840014606714,
+      "model_days": 0
+    },
+    {
+      "case": {
+        "kind": "water",
+        "bottom": 8,
+        "implicit": 0,
+        "hysteresis": 0,
+        "initial": 2,
+        "calendar": "dense",
+        "reset": 1,
+        "start": null,
+        "days": 35,
+        "drainage": 0
+      },
+      "actual_models": [
+        "11",
+        "11"
+      ],
+      "name": "model11-11-water-b8-p2",
+      "input_inventory": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd",
+        "maize.crp": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.dra": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3",
+        "swap.swp": "a5e0f358bef0ec6ec5de6cb615797a904406e4719935e0b83c7e548bc000accb",
+        "swap.tss": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+      },
+      "public_reader": {
+        "actual_source": "f3faeaa540e7fd81686802414d53ff6686f3ce7b",
+        "entry": "app/hybrid_water/experimental_project.py:load",
+        "model_builds": 0,
+        "model_days": 0,
+        "status": "ACTUAL_CURRENT_PUBLIC_READER_REFUSED",
+        "error": "ValueError('Bounded original frost requires numeric heat, snow, hysteresis2 and SWDIVD0')"
+      },
+      "original_returncode": 0,
+      "original_phases": [
+        "ORIGINAL_INIT_PHASE BEFORE_INITIALIZE",
+        "ORIGINAL_INIT_PHASE BEFORE_CONFIGURATION",
+        "ORIGINAL_INIT_PHASE BEFORE_READSWAP",
+        "ORIGINAL_INIT_PHASE AFTER_READSWAP",
+        "ORIGINAL_INIT_PHASE AFTER_METEO",
+        "ORIGINAL_INIT_PHASE AFTER_TIMECONTROL",
+        "ORIGINAL_INIT_PHASE AFTER_FILL_COFGEN",
+        "ORIGINAL_INIT_PHASE AFTER_SOILWATER",
+        "ORIGINAL_INIT_PHASE AFTER_CALCGWL",
+        "ORIGINAL_INIT_PHASE AFTER_SOILTEMPERATURE",
+        "ORIGINAL_INIT_PHASE AFTER_SNOW",
+        "ORIGINAL_INIT_PHASE AFTER_SOLUTE_INITIALIZATION_ZERO_MODEL_DAYS"
+      ],
+      "original_reader_and_initialization_complete": true,
+      "original_stdout_sha256": "665cefade1acb4ad13f4ca0e107bd47ee0249154c93f4fdfb81b75b235835cbf",
+      "original_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_seconds": 0.16381310019642115,
+      "model_days": 0
+    },
+    {
+      "case": {
+        "kind": "cde",
+        "bottom": 5,
+        "implicit": 0,
+        "hysteresis": 0,
+        "initial": 1,
+        "calendar": "dense",
+        "reset": 1,
+        "start": null,
+        "days": 35,
+        "drainage": 0
+      },
+      "actual_models": [
+        "7",
+        "3"
+      ],
+      "name": "model7-3-cde-b5-p1",
+      "input_inventory": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd",
+        "maize.crp": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.dra": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3",
+        "swap.swp": "aebeff8eb4ad206386556f487db3a606342069aaed60f30b71e6bdd91948c710",
+        "swap.tss": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+      },
+      "public_reader": {
+        "actual_source": "f3faeaa540e7fd81686802414d53ff6686f3ce7b",
+        "entry": "app/hybrid_water/experimental_project.py:load",
+        "model_builds": 0,
+        "model_days": 0,
+        "status": "ACTUAL_CURRENT_PUBLIC_READER_REFUSED",
+        "error": "ValueError('Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer')"
+      },
+      "original_returncode": 0,
+      "original_phases": [
+        "ORIGINAL_INIT_PHASE BEFORE_INITIALIZE",
+        "ORIGINAL_INIT_PHASE BEFORE_CONFIGURATION",
+        "ORIGINAL_INIT_PHASE BEFORE_READSWAP",
+        "ORIGINAL_INIT_PHASE AFTER_READSWAP",
+        "ORIGINAL_INIT_PHASE AFTER_METEO",
+        "ORIGINAL_INIT_PHASE AFTER_TIMECONTROL",
+        "ORIGINAL_INIT_PHASE AFTER_FILL_COFGEN",
+        "ORIGINAL_INIT_PHASE AFTER_SOILWATER",
+        "ORIGINAL_INIT_PHASE AFTER_CALCGWL",
+        "ORIGINAL_INIT_PHASE AFTER_SOILTEMPERATURE",
+        "ORIGINAL_INIT_PHASE AFTER_SNOW",
+        "ORIGINAL_INIT_PHASE AFTER_SOLUTE_INITIALIZATION_ZERO_MODEL_DAYS"
+      ],
+      "original_reader_and_initialization_complete": true,
+      "original_stdout_sha256": "665cefade1acb4ad13f4ca0e107bd47ee0249154c93f4fdfb81b75b235835cbf",
+      "original_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_seconds": 0.1788213001564145,
+      "model_days": 0
+    }
+  ],
+  "original_compiled_probe_source": "39d00d6b1d15dbe1132a0b6a2eb361d2459e697d",
+  "original_probe_sha256": "dee4a94a5e0e92d07c9aee2a4790fc5178f159f7e81ad316fcaa58b6a6f28b5e",
+  "original_driver_sha256": "8017c84e28be3d67a9012136a6b137f4ccce0f12bfa06ec578db4dc1a27a7ffe",
+  "accepted_original_probe_archive": "FROST_UNDRAINED_STATE08_ORIGINAL_DIAGNOSTIC_RAW_V1",
+  "accepted_original_probe_archive_sha256": "4dbbc19e93b8166ff90c8dc4a765fdc596381e5eef061cc70f4acc101f399854",
+  "accepted_data_revision": "f3faeaa540e7fd81686802414d53ff6686f3ce7b",
+  "actual_compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+  "compiler_executions": 0,
+  "model_days_executed": 0,
+  "new_scientific_qualification": false,
+  "canonical_admission": false
+}
