@@ -1,0 +1,8 @@
+{
+  "status": "IMPLEMENTATION_CACHE_LIFETIME_FAILURE_NOT_NUMERICAL_OR_SCIENTIFIC_REJECTION",
+  "O0": "Stale stock gradient task/sequence refusal",
+  "O2": "SIGSEGV",
+  "cause": "stock_task metadata was automatic local rather than SAVE; cache contract requires it persist between MACRORATE and ENTRY. Changed to explicit initialized SAVE.",
+  "evidence": "Retain STOCK_V3_COLD2 and STOCK_V3_OWN2TO3 rawdirs; neither published day3",
+  "next": "Rebuild isolated v3r1 and requalify new own origins; no guard relaxed"
+}

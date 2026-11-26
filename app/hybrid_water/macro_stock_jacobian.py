@@ -6,7 +6,8 @@ from donor_sources import replace
 
 def render_rate(source):
     source=source.replace('\r\n','\n')
-    decl='''      integer :: stock_n,stock_j,stock_l,stock_task
+    decl='''      integer :: stock_n,stock_j,stock_l
+      integer, save :: stock_task=0
       integer, save :: stock_seq=0,stock_stamp_seq=-1
       real(8) :: stock_u(*),stock_v(*),stock_meta(12)
       real(8), save :: stock_cached_u(macp),stock_cached_v(macp),stock_cached_meta(12)

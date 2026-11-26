@@ -9,7 +9,7 @@ import original_macro_policy as original
 from donor_sources import replace
 from macro_stock_jacobian import render_rate as render_stock_rate,render_head as render_stock_head
 from macro_trial_origin import render as render_trial_origin,PHYSICAL_FIELDS
-POLICY='fresh-coupled-unreduced-field-stock-jac24-v3'
+POLICY='fresh-coupled-unreduced-field-stock-jac24-v3r1'
 
 def render_headcalc(source):
     source=source.replace('\r\n','\n')
