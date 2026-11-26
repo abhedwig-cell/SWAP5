@@ -16,7 +16,25 @@ def main():
  q=dict(label=label,opt=opt,driver=driver,baseline=baseline,checkpoint=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),compiler=cc,compiler_sha256=sha(cc),version=subprocess.check_output([cc,'--version'],text=True),source_sha256={str(p):sha(p) for p in sources},command=command)
  (out/'IDENTITY.json').write_text(json.dumps(q,indent=2)+'\n');t=time.perf_counter()
  try:
-  p=subprocess.run(command,cwd=out,capture_output=True,timeout=120);q['compile_seconds']=time.perf_counter()-t;q['compile_returncode']=p.returncode
+  if '--reuse' in sys.argv:
+   prior=out.parent/sys.argv[sys.argv.index('--reuse')+1];old=json.loads((prior/'RESULT.json').read_text())
+   assert old['compiler_sha256']==q['compiler_sha256'] and old['version']==q['version'] and old['opt']==opt and old['baseline']==baseline
+   prior_sources={Path(k).name:v for k,v in old['source_sha256'].items()};objects=[];q['incremental_commands']=[];q['reused_objects_sha256']={}
+   for m in prior.glob('*.mod'):shutil.copy2(m,out/m.name)
+   for f in sources:
+    obj=prior/('probe-'+f.stem+'.o')
+    if f.name not in [Path(driver).name,'headcalc.f90','baseline_headcalc.f90']:
+     assert prior_sources[f.name]==sha(f) and obj.is_file()
+     q['reused_objects_sha256'][str(obj)]=sha(obj)
+    else:
+     obj=out/(f.stem+'.o');cmd=[cc,*flags,'-J',str(out),'-I',str(out),'-c',str(f),'-o',str(obj)];q['incremental_commands'].append(cmd)
+     cp=subprocess.run(cmd,cwd=out,capture_output=True,timeout=120)
+     if cp.returncode:raise RuntimeError(cp.stderr.decode(errors='replace'))
+    objects.append(obj)
+   link=[cc,*flags,*map(str,objects),'-o',str(exe)];q['incremental_commands'].append(link);p=subprocess.run(link,cwd=out,capture_output=True,timeout=120)
+   assert all(sha(k)==v for k,v in q['reused_objects_sha256'].items())
+  else:p=subprocess.run(command,cwd=out,capture_output=True,timeout=120)
+  q['compile_seconds']=time.perf_counter()-t;q['compile_returncode']=p.returncode
   (out/'compile.stdout').write_bytes(p.stdout);(out/'compile.stderr').write_bytes(p.stderr)
   if p.returncode:
    print(p.stderr.decode(errors='replace')[-4000:]);return
