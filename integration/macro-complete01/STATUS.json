@@ -1,0 +1,33 @@
+{
+  "work_unit": "SWAP5-MACRO-COMPLETE01",
+  "canonical_baseline": "9af88c3de6198ddec40c2674dd1542a89fa9c0d7",
+  "active_branch": "codex/macro-complete01",
+  "stage": "RECONCILED_IMPLEMENTING_ACCEPTED_COUPLED_RESIDUAL",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "MACRO_FUNCTIONAL_COMPLETE": false,
+  "MACRO_NUMERICAL_QUALIFICATION": "PARTIAL_INHERITED_NOT_REQUALIFIED",
+  "MACRO_SCIENTIFIC_EQUIVALENCE": "NOT_QUALIFIED",
+  "MACRO_RELEASE_READINESS": "NOT_READY",
+  "current_hypothesis": "Canonical HeadCalc retains frozen macro sources at provisional convergence; migrate proven B1 fresh acceptance discriminator to real typed Richards kernel without changing physical laws or no-macro results.",
+  "first_code_change": "src/legacy/b1_10_port/headcalc.f90: refactor unchanged convergence checks for reuse; refresh all macro rates at provisional convergence; reapply identical full criteria, refuse nonconverged active macros at dtmin.",
+  "interfaces_changed": [],
+  "invariants_affected": [
+    "same-state coupled residual before accepted publication",
+    "accepted/trial atomicity",
+    "independent mass remains a separate gate",
+    "production no-macro preservation"
+  ],
+  "blockers": [
+    "Full functional and scientific scope remains unqualified",
+    "48GiB free; cleanup preview has no eligible deletions; no bulk/full-run campaign selected"
+  ],
+  "dependencies": {
+    "own_historical_baseline": "C:/Users/Veldh012/swap431-state02 at 10576fcd93, protected named source/evidence dependency",
+    "parallel_nomacro": "no files or generated resources shared with its worktree"
+  },
+  "next_action": "Persist real-production regression driver and kernel fix, compile baseline/candidate O0/O2, compare independent fresh residual and affected no-macro outputs.",
+  "recovery_point": "integration/macro-complete01/STATUS.json; CONTRACT.md; RECONCILIATION.json"
+}
