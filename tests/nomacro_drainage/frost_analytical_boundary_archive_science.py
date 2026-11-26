@@ -214,8 +214,38 @@ def portable(proof,platform,opt,verbose=False):
         return dict(status='INDEPENDENT_SIXTEEN_ANALYTICAL_FROST_SCIENCE_NATIVE_COLD_REFUSALS_TRANSACTIONS_AND_MODEL1_POSTIMAGES_PASS_NOT_ADMITTED',source=custody,platform=platform,optimization=opt,contexts=contexts,inherited_postimages=inherited(store,old,opt),compiler_executions=0,model_executions=0,canonical_admission=False)
 
 
+
+def first_portable(proof,platform,opt,verbose=False):
+    with ExitStack() as stack:
+        store=Archive(proof,f'FROST_ANALYTICAL_BOUNDARY10_FIRST_{platform.upper()}_{opt}_ORIGINAL_V1',stack)
+        _,custody=captured_source(store,stack,PRODUCER,PRODUCER,f'.github/workflows/nomacro-frost-analytical-boundary10-{platform.lower()}.yml')
+        contract=json.loads(git('show',PRODUCER+':'+P+'FROST_ANALYTICAL_BOUNDARY10_INPUT_CONTRACT_PROPOSED_V1.json'))
+        assert json.loads(store.get('actual-input-contract.json'))==contract
+        q=json.loads(store.get('current/RESULT.json'))
+        assert q['status']=='FAILED_ANALYTICAL_FROST_PORTABLE_NOT_QUALIFIED' and q['source']==PRODUCER and q['platform']==platform and q['optimization']==opt
+        assert len(q['contexts'])==7 and [c['case'] for c in q['contexts']]==contract['representative_cases'][:7]
+        contexts=[]
+        for case in contract['representative_cases'][:7]:
+            contexts.append(case_audit(store,'current/'+case['name'],case,store,PRODUCER,opt))
+            if verbose:print('INDEPENDENT_FIRST_ORIGINAL_BOUNDARY_CONTEXT_PASS',platform,opt,case['name'],flush=True)
+        old=Archive(GitArchiveSource(R,BASE),f'FROST_ANALYTICAL_COMPOSITION09_{platform.upper()}_{opt}_ORIGINAL_V1',stack)
+        postimages=inherited(store,old,opt);assert len(postimages)==4 and sum(x['whole_objects'] for x in postimages)==100
+        case=contract['representative_cases'][7];assert case['effective_models']==[8,8] and case['drainage']==0 and case['bottom']==6
+        folder=ReadView(store,'current/'+case['name']);failed=read(folder/'science/RESULT.json')
+        assert failed['source']==failed['actual_controller_source']==PRODUCER and failed['status']=='FAILED_ACTUAL_ANALYTICAL_BOUNDARY_FROST_CALENDAR_NOT_QUALIFIED'
+        rows=[json.loads(line) for line in (folder/'science/trajectory/daily.jsonl').read_text().splitlines()]
+        assert len(rows)==33 and [x['day'] for x in rows]==list(range(1,34)) and all(x['committed'] for x in rows[:32]) and not rows[-1]['committed']
+        assert abs(rows[-1]['independent_residual_cm'])>1e-10 and abs(rows[-1]['kernel_residual_cm'])>1e-10 and abs(rows[-1]['integrated_guard_residual_cm'])<=1e-10
+        assert b'Rejected day 33' in (folder/'actual-public-runtime.stderr').read_bytes()
+        return dict(status='INDEPENDENT_FIRST7_SUCCESSFUL_CONTEXTS_4_OLD09_POSTIMAGES_AND_TRUE_MODEL8_DAY33_REFUSAL_VERIFIED_NOT_ADMITTED',source=custody,platform=platform,optimization=opt,contexts=contexts,inherited_postimages=postimages,failed_case=case,actual_rejected_receipt=rows[-1],failed_case_prior_accepted_days=32,whole_batch_qualified=False,compiler_executions=0,model_executions=0,canonical_admission=False)
+
+
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--platform',choices=['Windows','Ubuntu'],required=True);p.add_argument('--optimization',choices=['O0','O2'],required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
-    head=git('rev-parse','HEAD').decode().strip();audit=portable(GitArchiveSource(R,head),a.platform,a.optimization,True)
-    assert git('rev-parse','HEAD').decode().strip()==head
-    with a.output.open('x') as out:json.dump(dict(actual_observer=head,audit=audit),out,indent=2);out.write('\n')
+    p=argparse.ArgumentParser();p.add_argument('--first',action='store_true');p.add_argument('--platform',choices=['Windows','Ubuntu'],required=True);p.add_argument('--optimization',choices=['O0','O2'],required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+    head=git('rev-parse','HEAD').decode().strip();q=dict(status='RUNNING_INDEPENDENT_BOUNDARY_ARCHIVE_AUDIT',actual_observer=head)
+    try:q['audit']=(first_portable if a.first else portable)(GitArchiveSource(R,head),a.platform,a.optimization,True);q['status']=q['audit']['status']
+    except Exception as error:q.update(status='FAILED_INDEPENDENT_BOUNDARY_ARCHIVE_AUDIT',error=repr(error));raise
+    finally:
+        assert git('rev-parse','HEAD').decode().strip()==head
+        with a.output.open('x') as out:json.dump(q,out,indent=2);out.write('\n')
+    print(q['status'],flush=True)
