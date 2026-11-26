@@ -29,7 +29,8 @@ def audit():
         steps+=len(item['checkout_steps']);observations.append(dict(path=path,before_sha256=SHA(before),actual_sha256=SHA(actual),checkout_steps=len(item['checkout_steps'])))
     assert steps==43
     names_raw=git('ls-tree','-r','--name-only','-z','HEAD');names=set(names_raw.decode().rstrip('\0').split('\0'))
-    rules=Path(__file__).with_suffix('.rules');raw=rules.read_bytes();assert raw.decode()==contract['rules']
+    rules=Path(__file__).with_suffix('.rules');raw=rules.read_bytes();normal=raw.replace(b'\r\n',b'\n')
+    assert normal.decode()==contract['rules'] and normal==git('show','HEAD:'+rules.relative_to(R).as_posix())
     selected=git('sparse-checkout','check-rules','--no-cone','--rules-file',str(rules),'-z',input=names_raw)
     included=set(selected.decode().rstrip('\0').split('\0'));prefix='integration/f-ci/nomacro-complete01/'
     excluded={name for name in names if name.startswith(prefix) and '/' not in name[len(prefix):] and (fnmatch.fnmatchcase(name[len(prefix):],'*.zip') or fnmatch.fnmatchcase(name[len(prefix):],'*.zip.part[0-9][0-9][0-9]'))}
