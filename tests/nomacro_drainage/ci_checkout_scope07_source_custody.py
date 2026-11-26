@@ -38,6 +38,7 @@ def source(anchor):
     assert old_all.keys()<=current_all.keys() and current_all.keys()==frozen_all.keys()
     metadata_exceptions={PREFIX+'STATUS.json',PREFIX+'GAP_MATRIX.json'}
     assert {p for p in old_all if old_all[p]!=current_all[p]}==modified|metadata_exceptions
+    tracked=tracked_working_files()
     for p in frozen_all:
         mode,kind,digest=current_all[p]
         assert tracked[p][1:]==(mode,digest),'Changed actual repository index: '+p
@@ -56,7 +57,7 @@ def source(anchor):
         after=' import ci_checkout_scope07_verify as checkout_owner\n return checkout_owner.'+name+'('+args+')\n'
         assert actual.count(after.encode())==1;actual=actual.replace(after.encode(),before.encode(),1)
     assert actual==git('show',BASE+':'+JOINT)
-    tracked=tracked_working_files();observed=[]
+    observed=[]
     for p,meta in frozen.items():
         mode,kind,digest,size=meta.split();assert mode!='120000' and kind=='blob' and tracked[p][1]==mode
         if p!=SELF:assert current[p]==meta and tracked[p][2]==digest,'Changed frozen actual source/index: '+p
