@@ -1,5 +1,5 @@
 """Independent read-only audit of original analytical Frost scientific bytes."""
-import argparse,io,json,math,re,struct,subprocess,tarfile,zipfile
+import argparse,hashlib,io,json,math,re,struct,subprocess,tarfile,zipfile
 from contextlib import ExitStack
 from pathlib import Path
 from analytical_hydraulic_archives import Archive,SHA
