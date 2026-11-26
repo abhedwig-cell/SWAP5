@@ -37,12 +37,15 @@ def original_inputs(folder,locate,item,originals):
  origin=originals[authority['archive']];assert authority['archive_sha256']==origin.record['sha256'];prefix=authority['prefix'];before={n[len(prefix):]:origin.get(n) for n in origin.names if n.startswith(prefix)};assert before
  assert set(before)=={n for n,digest in q['input_inventory']}
  text=before['swap.swp'].decode('cp1252');named=[]
+ if frost:
+  for key,value in edits.items():text=assignment(text,key,value)
  if name!='gardner-water':
   keys=[*(['ALFA_2','NPAR_2','OMEGA_1'] if any(v in (3,6,7,10,11) for v in models) else []),*(['H0'] if any(v in (5,7,8,9,10,11) for v in models) else []),*(['HA','APAR','OMEGA_K','SWVAPOR'] if any(v>=8 for v in models) else [])]
   donor=originals['FROST_ANALYTICAL_BOUNDARY10_SEARCH_WINDOWS_O0_ORIGINAL_V1'];source=donor.get('current-unaffected-postimages/model7-cde-d1-b8-dense/inputs/swap.swp').decode('cp1252')
   for key in keys:
    rows=re.findall(r'(?mi)^[ \t]*'+key+r'[ \t]*=[^\r\n]*(?:\r?\n|$)',source);assert len(rows)==1 and not re.search(r'(?mi)^\s*'+key+r'\s*=',text);text+='\n'+rows[0];named.append(key)
- for key,value in edits.items():text=assignment(text,key,value)
+ if not frost:
+  for key,value in edits.items():text=assignment(text,key,value)
  expected={**before,'swap.swp':text.encode('cp1252')}
  if 3 in models:
   for n,raw in before.items():

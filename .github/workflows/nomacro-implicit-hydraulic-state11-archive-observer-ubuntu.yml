@@ -1,0 +1,60 @@
+name: Independently read original Ubuntu hydraulic cohort without model replay
+on:
+  push:
+    branches: [codex/nomacro-implicit-hydraulic-state11]
+    paths: ['.github/workflows/nomacro-implicit-hydraulic-state11-archive-observer-ubuntu.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: nomacro-implicit-hydraulic-state11-archive-observer-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  observe:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        optimization: [O0, O2]
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+      PYTHONPATH: app/hybrid_water:tests/nomacro_drainage:tests/nomacro_scheduled_subsurface
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /app/**
+            /src/**
+            /tools/solute/**
+            /tools/vq/**
+            /tests/nomacro_mixtures/**
+            /tests/nomacro_scheduled_subsurface/**
+            /tests/nomacro_drainage/**
+            /tests/saltfarm_newton/**
+            /.github/workflows/**
+            /reference/swap-4.3.1/projects/**
+            /reference/swap-4.3.1/source-archives/**
+            /reference/swap-4.3.1/patches/**
+            /reference/swap-4.3.1/frost-corrections/**
+            /reference/swap-4.3.1/hydraulic-corrections/**
+            /integration/f-ci/nomacro-complete01/*.json
+      - name: Read original source inputs SDK native payloads budgets and refusals
+        run: |
+          mkdir -p "$RUNNER_TEMP/proof"
+          git fetch --no-tags --depth=96 --filter=blob:none origin "$GITHUB_SHA"
+          git cat-file commit HEAD > "$RUNNER_TEMP/proof/actual-observer-commit.bin"
+          git rev-parse HEAD > "$RUNNER_TEMP/proof/actual-observer-sha.txt"
+          python3 -B -c "import subprocess; assert not subprocess.check_output(['git','diff','c40ca084d8e5eb638e0b4ac5c471463d9aad01c3','HEAD','--','app','src','tools','reference'])"
+          python3 -B tests/nomacro_drainage/implicit_hydraulic_state_portable_science.py --platform Ubuntu --optimization '${{ matrix.optimization }}' --output "$RUNNER_TEMP/proof/INDEPENDENT_SCIENCE.json" > "$RUNNER_TEMP/proof/observer.stdout" 2> "$RUNNER_TEMP/proof/observer.stderr"
+      - name: Preserve independent observation and any original refusal
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: implicit-hydraulic-state11-archive-observer-${{ matrix.optimization }}-${{ github.sha }}
+          path: ${{ runner.temp }}/proof
+          retention-days: 30
