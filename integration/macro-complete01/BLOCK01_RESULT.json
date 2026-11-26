@@ -1,0 +1,52 @@
+{
+  "work_unit": "SWAP5-MACRO-COMPLETE01",
+  "block": "01_FRESH_COUPLED_ACCEPTANCE",
+  "canonical_baseline": "9af88c3de6198ddec40c2674dd1542a89fa9c0d7",
+  "decision": "FOCUSED_KERNEL_CONTRACT_PASS_NOT_WHOLE_MIGRATION",
+  "source_changed": [
+    "src/legacy/b1_10_port/headcalc.f90"
+  ],
+  "public_interfaces_changed": [],
+  "original_worker_generator_changed": false,
+  "baseline_fresh_Fmax": 9.285960722582587e-9,
+  "baseline_fresh_sum": -1.1235977315227075e-8,
+  "existing_rate_criterion": 1e-10,
+  "candidate_fresh_Fmax": 1.3322676295501878e-13,
+  "candidate_fresh_sum": -1.8196555373606316e-13,
+  "optimizations": [
+    "O0",
+    "O2"
+  ],
+  "equations_and_criteria_unchanged": true,
+  "complete_migration": false,
+  "scientific_equivalence": false,
+  "canonical_admitted": false,
+  "tests": [
+    {
+      "opt": "O0",
+      "fresh": "PASS",
+      "no_macro_nonlinear": "BYTE_EXACT_PASS",
+      "legacy_fldtmin_validation": "UNCHANGED_EARLY_REFUSAL_PASS_NOT_NUMERICAL_DTMIN_PROOF",
+      "standard_macro_transaction_restart": "PASS_BYTE_EXACT_TO_BASELINE"
+    },
+    {
+      "opt": "O2",
+      "fresh": "PASS",
+      "no_macro_nonlinear": "BYTE_EXACT_PASS",
+      "legacy_fldtmin_validation": "UNCHANGED_EARLY_REFUSAL_PASS_NOT_NUMERICAL_DTMIN_PROOF",
+      "standard_macro_transaction_restart": "PASS_BYTE_EXACT_TO_BASELINE"
+    }
+  ],
+  "extra_no_macro_retry": {
+    "opt": "O0",
+    "disposition": "UNCHANGED_BASELINE_FAILURE",
+    "assertion": "smaller trial did not converge",
+    "positive_preservation_claim": false
+  },
+  "O2_compile": {
+    "initial_full_closure": "CENSORED_120_SECONDS_NO_MODEL",
+    "missing_unit_recovery": "PASS_62.108_SECONDS",
+    "candidate": "PASS_188.009_SECONDS_FULL_O2_CLOSURE_RECOMPILED_BY_CACHE_LAYOUT_MISS",
+    "note": "Unexpected redundant compilation retained honestly; no physics or model cap changed."
+  }
+}
