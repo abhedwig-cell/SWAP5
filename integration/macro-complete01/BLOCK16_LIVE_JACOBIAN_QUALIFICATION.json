@@ -1,0 +1,353 @@
+{
+  "decision": "CURRENT_LOCAL_DARCY_CONTACT_STOCK_SURFACE_DIFFERENTIAL_GATES_PASS",
+  "scope": "Selected smooth actual original states and current SWKIMPL0; absolute derivative comparison bound1e-8 for both perturbation scales, not a solver tolerance. Native full1e-6cm criteria unchanged. Does not qualify allregimes/SWKIMPL1/fullperiod.",
+  "cause": "Source-derived Darcy moisture-factor derivative removes original stable7.56495e-6 gap at t35797.514,column46; new actual error<=1.94e-11 there. Contact helper subtracts corrected native derivative once and obeys held conductivity policy.",
+  "negative_control": "BLOCK15 initial hydrostatic1e-8 deadband crossing remains excluded nonsmooth control; no physical smoothing or source threshold change.",
+  "results": [
+    {
+      "opt": "O0",
+      "label": "JACOBIAN16_COLD2",
+      "probe_physical25_matrix_flux_and_native_exact": true,
+      "max_compiler_trace_delta": 0.0,
+      "checks": [
+        {
+          "kind": 1,
+          "col": 57,
+          "time": 35795.21612132039,
+          "dt": 0.002,
+          "conductivity_policy": 0,
+          "Jnorm": 0.00013569063265754953,
+          "error_e": 7.597455894655172e-11,
+          "error_half_e": 6.628267886811534e-10,
+          "worst_node": 57,
+          "head": -0.022408315148663364,
+          "theta": 0.4419999886169596
+        },
+        {
+          "kind": 1,
+          "col": 58,
+          "time": 35795.21612132039,
+          "dt": 0.002,
+          "conductivity_policy": 0,
+          "Jnorm": 0.05718423012928059,
+          "error_e": 3.904168655033402e-13,
+          "error_half_e": 6.167288901792745e-13,
+          "worst_node": 58,
+          "head": 2.454439640748402,
+          "theta": 0.442
+        },
+        {
+          "kind": 1,
+          "col": 1,
+          "time": 35795.21612132039,
+          "dt": 0.002,
+          "conductivity_policy": 0,
+          "Jnorm": 0.0,
+          "error_e": 0.0,
+          "error_half_e": 0.0,
+          "worst_node": 1,
+          "head": -84.10889394847676,
+          "theta": 0.3747360566842232
+        }
+      ]
+    },
+    {
+      "opt": "O0",
+      "label": "JACOBIAN16_OWN2TO3",
+      "probe_physical25_matrix_flux_and_native_exact": true,
+      "max_compiler_trace_delta": 0.0,
+      "checks": [
+        {
+          "kind": 1,
+          "col": 50,
+          "time": 35797.0,
+          "dt": 0.002,
+          "conductivity_policy": 0,
+          "Jnorm": 0.00036132685147664974,
+          "error_e": 3.1006773808673477e-11,
+          "error_half_e": 3.12276800013174e-11,
+          "worst_node": 50,
+          "head": -0.2515504996937882,
+          "theta": 0.4439998269287607
+        },
+        {
+          "kind": 1,
+          "col": 51,
+          "time": 35797.0,
+          "dt": 0.002,
+          "conductivity_policy": 0,
+          "Jnorm": 0.08018693090760699,
+          "error_e": 2.6381674622655282e-14,
+          "error_half_e": 7.749773045517827e-13,
+          "worst_node": 51,
+          "head": 1.3903855847911273,
+          "theta": 0.444
+        },
+        {
+          "kind": 1,
+          "col": 1,
+          "time": 35797.0,
+          "dt": 0.002,
+          "conductivity_policy": 0,
+          "Jnorm": 0.0,
+          "error_e": 0.0,
+          "error_half_e": 0.0,
+          "worst_node": 1,
+          "head": -23.60409292110378,
+          "theta": 0.39685639892986113
+        },
+        {
+          "kind": 3,
+          "col": 50,
+          "time": 35797.25200000005,
+          "dt": 0.0014999999475548975,
+          "conductivity_policy": 0,
+          "Jnorm": 0.011994962891417046,
+          "error_e": 9.898223028975e-12,
+          "error_half_e": 1.068950657157064e-11,
+          "worst_node": 51,
+          "head": 0.8294827521161983,
+          "theta": 0.444
+        },
+        {
+          "kind": 3,
+          "col": 51,
+          "time": 35797.25200000005,
+          "dt": 0.0014999999475548975,
+          "conductivity_policy": 0,
+          "Jnorm": 0.09208789908159495,
+          "error_e": 1.7649189835294843e-11,
+          "error_half_e": 4.8096829904226146e-11,
+          "worst_node": 57,
+          "head": 13.725081842504528,
+          "theta": 0.442
+        },
+        {
+          "kind": 3,
+          "col": 1,
+          "time": 35797.25200000005,
+          "dt": 0.0014999999475548975,
+          "conductivity_policy": 0,
+          "Jnorm": 0.0,
+          "error_e": 0.0,
+          "error_half_e": 0.0,
+          "worst_node": 1,
+          "head": -34.447904470036235,
+          "theta": 0.39152005511512183
+        },
+        {
+          "kind": 2,
+          "col": 46,
+          "time": 35797.514,
+          "dt": 0.002,
+          "conductivity_policy": 0,
+          "Jnorm": 0.008847578412494055,
+          "error_e": 1.9415388039152083e-11,
+          "error_half_e": 1.9374917970449608e-11,
+          "worst_node": 57,
+          "head": 20.895266643873548,
+          "theta": 0.442
+        },
+        {
+          "kind": 2,
+          "col": 47,
+          "time": 35797.514,
+          "dt": 0.002,
+          "conductivity_policy": 0,
+          "Jnorm": 0.08566362840570649,
+          "error_e": 1.9725498795128416e-11,
+          "error_half_e": 1.9768866882027836e-11,
+          "worst_node": 57,
+          "head": 20.895266643873548,
+          "theta": 0.442
+        },
+        {
+          "kind": 2,
+          "col": 1,
+          "time": 35797.514,
+          "dt": 0.002,
+          "conductivity_policy": 0,
+          "Jnorm": 0.06523348244966207,
+          "error_e": 1.1962014712096902e-11,
+          "error_half_e": 6.990430803655023e-11,
+          "worst_node": 57,
+          "head": 20.895266643873548,
+          "theta": 0.442
+        }
+      ]
+    },
+    {
+      "opt": "O2",
+      "label": "JACOBIAN16_COLD2",
+      "probe_physical25_matrix_flux_and_native_exact": true,
+      "max_compiler_trace_delta": 0.0,
+      "checks": [
+        {
+          "kind": 1,
+          "col": 57,
+          "time": 35795.21612132039,
+          "dt": 0.002,
+          "conductivity_policy": 0,
+          "Jnorm": 0.00013569063265754953,
+          "error_e": 7.597455894655172e-11,
+          "error_half_e": 6.628267886811534e-10,
+          "worst_node": 57,
+          "head": -0.022408315148663364,
+          "theta": 0.4419999886169596
+        },
+        {
+          "kind": 1,
+          "col": 58,
+          "time": 35795.21612132039,
+          "dt": 0.002,
+          "conductivity_policy": 0,
+          "Jnorm": 0.05718423012928059,
+          "error_e": 3.904168655033402e-13,
+          "error_half_e": 6.167288901792745e-13,
+          "worst_node": 58,
+          "head": 2.454439640748402,
+          "theta": 0.442
+        },
+        {
+          "kind": 1,
+          "col": 1,
+          "time": 35795.21612132039,
+          "dt": 0.002,
+          "conductivity_policy": 0,
+          "Jnorm": 0.0,
+          "error_e": 0.0,
+          "error_half_e": 0.0,
+          "worst_node": 1,
+          "head": -84.10889394847676,
+          "theta": 0.3747360566842232
+        }
+      ]
+    },
+    {
+      "opt": "O2",
+      "label": "JACOBIAN16_OWN2TO3",
+      "probe_physical25_matrix_flux_and_native_exact": true,
+      "max_compiler_trace_delta": 8.673617379884035e-19,
+      "checks": [
+        {
+          "kind": 1,
+          "col": 50,
+          "time": 35797.0,
+          "dt": 0.002,
+          "conductivity_policy": 0,
+          "Jnorm": 0.00036132685147664974,
+          "error_e": 3.1006773808673477e-11,
+          "error_half_e": 3.12276800013174e-11,
+          "worst_node": 50,
+          "head": -0.2515504996937882,
+          "theta": 0.4439998269287607
+        },
+        {
+          "kind": 1,
+          "col": 51,
+          "time": 35797.0,
+          "dt": 0.002,
+          "conductivity_policy": 0,
+          "Jnorm": 0.08018693090760699,
+          "error_e": 2.6381674622655282e-14,
+          "error_half_e": 7.749773045517827e-13,
+          "worst_node": 51,
+          "head": 1.3903855847911273,
+          "theta": 0.444
+        },
+        {
+          "kind": 1,
+          "col": 1,
+          "time": 35797.0,
+          "dt": 0.002,
+          "conductivity_policy": 0,
+          "Jnorm": 0.0,
+          "error_e": 0.0,
+          "error_half_e": 0.0,
+          "worst_node": 1,
+          "head": -23.60409292110378,
+          "theta": 0.39685639892986113
+        },
+        {
+          "kind": 3,
+          "col": 50,
+          "time": 35797.25200000005,
+          "dt": 0.0014999999475548975,
+          "conductivity_policy": 0,
+          "Jnorm": 0.011994962891417046,
+          "error_e": 9.898223028975e-12,
+          "error_half_e": 1.068950657157064e-11,
+          "worst_node": 51,
+          "head": 0.8294827521161983,
+          "theta": 0.444
+        },
+        {
+          "kind": 3,
+          "col": 51,
+          "time": 35797.25200000005,
+          "dt": 0.0014999999475548975,
+          "conductivity_policy": 0,
+          "Jnorm": 0.09208789908159495,
+          "error_e": 1.7649189835294843e-11,
+          "error_half_e": 4.8096829904226146e-11,
+          "worst_node": 57,
+          "head": 13.725081842504528,
+          "theta": 0.442
+        },
+        {
+          "kind": 3,
+          "col": 1,
+          "time": 35797.25200000005,
+          "dt": 0.0014999999475548975,
+          "conductivity_policy": 0,
+          "Jnorm": 0.0,
+          "error_e": 0.0,
+          "error_half_e": 0.0,
+          "worst_node": 1,
+          "head": -34.447904470036235,
+          "theta": 0.39152005511512183
+        },
+        {
+          "kind": 2,
+          "col": 46,
+          "time": 35797.514,
+          "dt": 0.002,
+          "conductivity_policy": 0,
+          "Jnorm": 0.008847578412494055,
+          "error_e": 1.9415388039152083e-11,
+          "error_half_e": 1.9374917970449608e-11,
+          "worst_node": 57,
+          "head": 20.895266643873548,
+          "theta": 0.442
+        },
+        {
+          "kind": 2,
+          "col": 47,
+          "time": 35797.514,
+          "dt": 0.002,
+          "conductivity_policy": 0,
+          "Jnorm": 0.08566362840570649,
+          "error_e": 1.9725498795128416e-11,
+          "error_half_e": 1.9768866882027836e-11,
+          "worst_node": 57,
+          "head": 20.895266643873548,
+          "theta": 0.442
+        },
+        {
+          "kind": 2,
+          "col": 1,
+          "time": 35797.514,
+          "dt": 0.002,
+          "conductivity_policy": 0,
+          "Jnorm": 0.06523348244966207,
+          "error_e": 1.1962014712096902e-11,
+          "error_half_e": 6.990430803655023e-11,
+          "worst_node": 57,
+          "head": 20.895266643873548,
+          "theta": 0.442
+        }
+      ]
+    }
+  ],
+  "models_launched": 0
+}
