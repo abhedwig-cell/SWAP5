@@ -30,7 +30,7 @@ def model_domain(active,values):
     if vapor:
         if re.fullmatch(r'[+-]?[0-9]+(?:[ \t]+[+-]?[0-9]+)*[ \t]*',vapor[0]) is None:return None
         flags=list(map(int,vapor[0].split()))
-        if len(flags)!=count or any(x!=0 for x in flags):return None
+        if any(x!=0 for x in flags) or any(x>=8 for x in models) and len(flags)!=count:return None
     return models
 
 def selected(project):

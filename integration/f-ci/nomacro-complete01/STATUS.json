@@ -3,7 +3,7 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "f3faeaa540e7fd81686802414d53ff6686f3ce7b",
   "branch": "codex/nomacro-frost-analytical-composition09",
-  "last_commit": "dd7596685c91074789ab56e9a3ecb3d4a4ef4b4c",
+  "last_commit": "b57134372c66c10ada81e2ca580306855ef4fe46",
   "status": "PARTIAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -433,7 +433,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Compile current unchanged complete model7 postimages O0/O2 against original dd producer without replaying70days; run valid per-layer SWVAPOR model11 scalar-IHWCKMODEL real-year12 cases O0/O2; then original model3 oxygen1 and mixed integrated controls",
+  "next_action": "Run current O0/O2 valid scalar-model11/per-layer-SWVAPOR year12 with exact pending-date cold states; retain all original failures and model7 producerdd identities; qualify current model3 oxygen1/mixed native and active transactions next.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -36734,7 +36734,7 @@
     "RC3_changed": false
   },
   "frost_analytical_composition09": {
-    "status": "MODEL7_O0_O2_35DAY_NATIVE_COLD_PASS_AND_ORIGINAL_SWVAPOR_SCALAR_ZERO_DAY_REFUSALS_PRESERVED_VALID_YEAR_AND_COMPILED_POSTIMAGES_NEXT",
+    "status": "MODEL7_TWO_PERIODS_54_CURRENT_OBJECTS_PRESERVED_MODEL11_VALID24DAY_WARM_PASS_COLD_GUARD_COMPOSITION_FIXED_REQUALIFICATION_PENDING",
     "branch": "codex/nomacro-frost-analytical-composition09",
     "actual_canonical_parent": "f3faeaa540e7fd81686802414d53ff6686f3ce7b",
     "classification": "B_COMPOSITION_OF_EXISTING_UNCHANGED_PROCESSES",
@@ -36747,8 +36747,8 @@
     "new_scientific_contexts": 0,
     "new_admitted_contexts": 0,
     "canonical_admission": false,
-    "next_action": "Compile current unchanged complete model7 postimages O0/O2 against original dd producer without replaying70days; run valid per-layer SWVAPOR model11 scalar-IHWCKMODEL real-year12 cases O0/O2; then original model3 oxygen1 and mixed integrated controls",
-    "source_contract": "FROST_ANALYTICAL_COMPOSITION09_SOURCE_PROPOSAL_V2.json",
+    "next_action": "Run current O0/O2 valid scalar-model11/per-layer-SWVAPOR year12 with exact pending-date cold states; retain all original failures and model7 producerdd identities; qualify current model3 oxygen1/mixed native and active transactions next.",
+    "source_contract": "FROST_ANALYTICAL_COMPOSITION09_SOURCE_PROPOSAL_V3.json",
     "native_codecs": [
       "S5UAW001",
       "S5UAC001"
@@ -36762,6 +36762,11 @@
     "local_raw_sha256": "7cb587035b9194fcf5d550931a455781c4f6cfebeb0c884cf7bebc206967bfc5",
     "original_invalid_scalar_SWVAPOR_attempts": 2,
     "original_invalid_scalar_SWVAPOR_accepted_days": 0,
-    "original_model3_oxygen2_not_implemented_guard": "PRESERVED_NO_RELAXATION; positive model3 cases explicitly select original oxygen1"
+    "original_model3_oxygen2_not_implemented_guard": "PRESERVED_NO_RELAXATION; positive model3 cases explicitly select original oxygen1",
+    "original_valid_model11_primary_days": 24,
+    "original_valid_model11_exact_cold_windows": 0,
+    "original_valid_model11_raw_sha256": "f7abdab487b9c52acf09811be8352dc3525b5c80e249dade5d287b6984adb9c5",
+    "current_model7_whole_object_postimages": 54,
+    "model7_period_replay": 0
   }
 }
