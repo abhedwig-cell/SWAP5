@@ -64,6 +64,25 @@ def build(root,inputs,provider,opt,folder,expected_head):
     return dict(actual_compiler_source=expected_head,command=command,seconds=time.perf_counter()-started,actual_BUILD_sha256=SHA((root/'BUILD.json').read_bytes()),meta=meta)
 
 
+def original_reader_contract(a,metadata,head):
+    """Call the real original reader and stop before unrelated initialization."""
+    origin=(a.original_probe.parent/'probe.f90').read_text(encoding='cp1252')
+    anchor="call mark('AFTER_READSWAP')"
+    assert origin.count(anchor)==1 and origin.count('\ncontains\n')==1
+    source=origin[:origin.index(anchor)]+"call mark('AFTER_READSWAP_ZERO_MODEL_DAYS')\n"+'contains\n'+origin.split('\ncontains\n',1)[1]
+    result={}
+    for opt,root in [('O0',a.build_o0),('O2',a.build_o2)]:
+        folder=root/'original-reader-contract';folder.mkdir();(folder/'probe.f90').write_text(source,encoding='cp1252')
+        exe=folder/'original_readswap_contract.exe'
+        command=['C:/msys64/ucrt64/bin/gfortran.exe','-'+opt,'-g','-fbacktrace','-ffree-line-length-none','-ffp-contract=off','-I',str(a.reference_work/'build/swap-obj'),'-I',str(a.reference_work/'build/ttutil-obj'),'probe.f90',*[str(a.reference_work/'build/swap-obj'/n) for n in metadata['original_objects']],str(a.reference_work/'build/ttutil-obj/libttutil.a'),'-o',str(exe)]
+        started=time.perf_counter()
+        with (folder/'compiler.stdout').open('xb') as out,(folder/'compiler.stderr').open('xb') as err:
+            child=subprocess.run(command,cwd=folder,stdout=out,stderr=err,timeout=60)
+        child.check_returncode()
+        result[opt]=dict(actual_compiler_source=head,original_probe_source=metadata['actual_controller_source'],driver_sha256=SHA((folder/'probe.f90').read_bytes()),executable_sha256=SHA(exe.read_bytes()),compiler_sha256=metadata['compiler_sha256'],original_objects=metadata['original_objects'],original_library_sha256=metadata['original_library_sha256'],command=command,compile_link_seconds=time.perf_counter()-started,executable=str(exe),model_days=0)
+    return result
+
+
 def main():
     p=argparse.ArgumentParser()
     for name in ['output','build-o0','build-o2','reference-work','original-probe']:p.add_argument('--'+name,type=Path,required=True)
@@ -93,19 +112,25 @@ def main():
                     else:proof='ORIGINAL_IMMUTABLE_INPUT_BYTES_UNCHANGED'
                     record['contexts'].append(dict(kind=kind,variant=variant,folder=str(folder),input_root=str(inputs),input_sha256=snapshot_inputs(inputs),input_edit=proof))
         metadata=json.loads((a.original_probe.parent/'BUILD_DIAGNOSTIC.json').read_text());compiler=Path('C:/msys64/ucrt64/bin/gfortran.exe')
+        accepted_origin=json.loads(git('show',BASE+':'+P+'FROST_UNDRAINED_STATE08_ORIGINAL_DIAGNOSTIC_RAW_V1.json'))
+        accepted_hashes={i['sha256'] for i in accepted_origin['members'].values()}
+        for path in [a.original_probe,a.original_probe.parent/'probe.f90',a.original_probe.parent/'BUILD_DIAGNOSTIC.json']:assert SHA(path.read_bytes()) in accepted_hashes
         assert SHA(compiler.read_bytes())==metadata['compiler_sha256']=='d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371'
         for name,digest in metadata['original_objects'].items():assert SHA((a.reference_work/'build/swap-obj'/name).read_bytes())==digest
         assert SHA((a.reference_work/'build/ttutil-obj/libttutil.a').read_bytes())==metadata['original_library_sha256']
-        record['original_probe']=dict(actual_controller_source=metadata['actual_controller_source'],driver_sha256=SHA((a.original_probe.parent/'probe.f90').read_bytes()),executable_sha256=SHA(a.original_probe.read_bytes()),compiler_sha256=metadata['compiler_sha256'],original_diagnostic_label=metadata['mixed_compiler_diagnostic'],all_current_provider_objects_freshly_matched=True,recompiled=False,scope='ReadSwap acceptance only; the retained immutable probe later intentionally refuses SWDRA1 before any model day')
+        record['original_probe_origin']=dict(actual_controller_source=metadata['actual_controller_source'],driver_sha256=SHA((a.original_probe.parent/'probe.f90').read_bytes()),executable_sha256=SHA(a.original_probe.read_bytes()),compiler_sha256=metadata['compiler_sha256'],original_diagnostic_label=metadata['mixed_compiler_diagnostic'],all_current_provider_objects_freshly_matched=True,accepted_central_origin_sha256=accepted_origin['sha256'])
+        record['original_readswap_contracts']=original_reader_contract(a,metadata,head)
         for item in record['contexts']:
-            folder=Path(item['folder']);worker=folder/'original-reader';shutil.copytree(Path(item['input_root']),worker)
-            with (folder/'original-reader.stdout').open('xb') as out,(folder/'original-reader.stderr').open('xb') as err:
-                run=subprocess.run([str(a.original_probe)],cwd=worker,stdout=out,stderr=err,timeout=45)
-            stdout=(folder/'original-reader.stdout').read_bytes();accepted=b'ORIGINAL_INIT_PHASE AFTER_READSWAP' in stdout
-            assert accepted==(item['kind']=='hys0' or item['variant']=='with-alfaw')
-            assert not list(worker.rglob('accepted-*.zip')) and b'HYBRID_DAY_RETURN' not in stdout
-            if accepted:assert b'Unexpected drainage' in (folder/'original-reader.stderr').read_bytes()
-            item['original_readswap']=dict(accepted=accepted,returncode=run.returncode,stdout_sha256=SHA(stdout),stderr_sha256=SHA((folder/'original-reader.stderr').read_bytes()),full_initialization_PASS_claimed=False,model_days=0);save()
+            item['original_readswap']={};folder=Path(item['folder'])
+            for opt,contract in record['original_readswap_contracts'].items():
+                worker=folder/('original-reader-'+opt);shutil.copytree(Path(item['input_root']),worker)
+                with (folder/('original-reader-'+opt+'.stdout')).open('xb') as out,(folder/('original-reader-'+opt+'.stderr')).open('xb') as err:
+                    run=subprocess.run([contract['executable']],cwd=worker,stdout=out,stderr=err,timeout=45)
+                stdout=(folder/('original-reader-'+opt+'.stdout')).read_bytes();accepted=b'ORIGINAL_INIT_PHASE AFTER_READSWAP_ZERO_MODEL_DAYS' in stdout
+                assert accepted==(item['kind']=='hys0' or item['variant']=='with-alfaw')
+                assert not list(worker.rglob('accepted-*.zip')) and b'HYBRID_DAY_RETURN' not in stdout
+                if accepted:assert run.returncode==0
+                item['original_readswap'][opt]=dict(accepted=accepted,returncode=run.returncode,stdout_sha256=SHA(stdout),stderr_sha256=SHA((folder/('original-reader-'+opt+'.stderr')).read_bytes()),full_initialization_PASS_claimed=False,model_days=0);save()
         subprocess.run(['git','switch','--detach',BASE],cwd=R,check=True)
         for item in record['contexts']:
             item['original_public']=public_reader(Path(item['input_root']),BASE)
