@@ -1,0 +1,76 @@
+{
+  "status": "FINITE_NEXT_ORIGINAL_IMPLICIT_MODEL_STATE_COUPLING_FEEDBACK_SELECTED_NOT_ADMITTED",
+  "actual_parent": "22520105f5a3ccac2bd2ae1b726f27b7b0d67b1e",
+  "cases": {
+    "model3-water": {
+      "models": [
+        3
+      ],
+      "solute": 0,
+      "snow": 0,
+      "initial": 2
+    },
+    "model4-snow-water": {
+      "models": [
+        4
+      ],
+      "solute": 0,
+      "snow": 1,
+      "initial": 2
+    },
+    "model5-cde-profile": {
+      "models": [
+        5
+      ],
+      "solute": 1,
+      "snow": 0,
+      "initial": 1
+    },
+    "model6-snow-cde-profile": {
+      "models": [
+        6
+      ],
+      "solute": 1,
+      "snow": 1,
+      "initial": 1
+    },
+    "mixed8-9-water": {
+      "models": [
+        8,
+        9
+      ],
+      "solute": 0,
+      "snow": 0,
+      "initial": 2
+    },
+    "mixed10-11-snow-water": {
+      "models": [
+        10,
+        11
+      ],
+      "solute": 0,
+      "snow": 1,
+      "initial": 2
+    },
+    "mixed1-7-cde": {
+      "models": [
+        1,
+        7
+      ],
+      "solute": 1,
+      "snow": 0,
+      "initial": 2
+    }
+  },
+  "optimization_profiles": [
+    "O0",
+    "O2"
+  ],
+  "days_per_context": 35,
+  "existing_gardner_and_model7_periods": "REUSE_ACTUAL_CURRENT_APP_UNCHANGED_PERIODS_SOURCE05ab_AND3897; no repeat",
+  "physical_parameters": "Existing accepted implicit fitted parameter table is literal; only required additional model-specific named lines copied literally from accepted model7 original source input; model3 explicitly selects original supported oxygen1. No original failed examined-Ksat input is modified or admitted.",
+  "limits": "All original numerical controls, times, physical parameter table entries and strict1e-10 remain unchanged.",
+  "required_controls": "Real original workers, exact native cold windows, external discard/replay/accept/recovery, typed native extension and original convergence; later independent raw reading and portable qualification",
+  "scientific_equivalence": "NOT_QUALIFIED",
+  "remaining_frost": "Next coupling of same implicit hydraulic class to existing Frost state owners in this same batch after actual local feedback"
+}

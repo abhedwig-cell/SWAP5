@@ -12,12 +12,21 @@ from implicit_hydraulic_state import selected,validate_candidate
 from frost_boundary_convergence import require_convergence
 BASE='22520105f5a3ccac2bd2ae1b726f27b7b0d67b1e'
 SHA=lambda b:hashlib.sha256(b).hexdigest()
+CASES={
+    'model3-water':dict(models=[3],solute=0,snow=0,initial=2),
+    'model4-snow-water':dict(models=[4],solute=0,snow=1,initial=2),
+    'model5-cde-profile':dict(models=[5],solute=1,snow=0,initial=1),
+    'model6-snow-cde-profile':dict(models=[6],solute=1,snow=1,initial=1),
+    'mixed8-9-water':dict(models=[8,9],solute=0,snow=0,initial=2),
+    'mixed10-11-snow-water':dict(models=[10,11],solute=0,snow=1,initial=2),
+    'mixed1-7-cde':dict(models=[1,7],solute=1,snow=0,initial=2),
+}
 
 
 def main():
     p=argparse.ArgumentParser()
     for name in ['output','build-output','reference-work']:p.add_argument('--'+name,type=Path,required=True)
-    p.add_argument('--case',choices=['gardner-water','model7-snow-cde','model7-snow-cde-fitted'],required=True)
+    p.add_argument('--case',choices=['gardner-water','model7-snow-cde','model7-snow-cde-fitted',*CASES],required=True)
     p.add_argument('--optimization',choices=['O0','O2'],required=True)
     p.add_argument('--days',type=int,default=35)
     a=p.parse_args();assert a.days in (8,35)
@@ -27,8 +36,11 @@ def main():
     save=lambda:(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     save()
     try:
-        name=('ORDINARY_IMPLICIT_POND_UBUNTU_FOLLOWUP_O0_RAW_ARCHIVE' if a.case in ('gardner-water','model7-snow-cde-fitted') else 'FROST_ANALYTICAL_BOUNDARY10_SEARCH_WINDOWS_O0_ORIGINAL_V1')
-        prefix=('ordinary-matrix/water-plate/input/' if a.case=='gardner-water' else 'ordinary-matrix/cde-head-history1/input/' if a.case=='model7-snow-cde-fitted' else 'current-unaffected-postimages/model7-cde-d1-b8-dense/inputs/')
+        specification=CASES.get(a.case)
+        fitted=a.case=='model7-snow-cde-fitted' or specification is not None
+        solute=specification['solute'] if specification else int(a.case=='model7-snow-cde-fitted')
+        name=('ORDINARY_IMPLICIT_POND_UBUNTU_FOLLOWUP_O0_RAW_ARCHIVE' if a.case=='gardner-water' or fitted else 'FROST_ANALYTICAL_BOUNDARY10_SEARCH_WINDOWS_O0_ORIGINAL_V1')
+        prefix=('ordinary-matrix/cde-head-history1/input/' if fitted and solute else 'ordinary-matrix/water-plate/input/' if a.case=='gardner-water' or fitted else 'current-unaffected-postimages/model7-cde-d1-b8-dense/inputs/')
         with ExitStack() as stack:
             source=GitArchiveSource(R,BASE)
             descriptor=json.loads((source/(name+'.json')).read_text())
@@ -47,14 +59,20 @@ def main():
             q['input_authority']=dict(actual_git_source=BASE,archive=name,archive_sha256=descriptor['sha256'],prefix=prefix)
         path=inputs/'swap.swp';before=path.read_bytes();text=before.decode('cp1252')
         edits=({'iHWCKmodel':'2'} if a.case=='gardner-water' else dict(SWHYST=0,SWSNOW=1,iHWCKmodel=7) if a.case=='model7-snow-cde-fitted' else dict(SWFROST=0,SWKIMPL=1))
-        if a.case=='model7-snow-cde-fitted':
+        if specification:
+            edits=dict(SWHYST=0,SWSNOW=specification['snow'],SWINCO=specification['initial'],iHWCKmodel=' '.join(map(str,specification['models'])))
+        if fitted:
             import re
             with ExitStack() as stack:
                 donor_name='FROST_ANALYTICAL_BOUNDARY10_SEARCH_WINDOWS_O0_ORIGINAL_V1'
                 donor=Archive(GitArchiveSource(R,BASE),donor_name,stack)
                 member='current-unaffected-postimages/model7-cde-d1-b8-dense/inputs/swap.swp';value=donor.get(member)
                 named={}
-                for key in ['ALFA_2','NPAR_2','OMEGA_1','H0']:
+                keys=(['ALFA_2','NPAR_2','OMEGA_1','H0'] if not specification else
+                      [*(['ALFA_2','NPAR_2','OMEGA_1'] if any(v in (6,7,10,11) for v in specification['models']) else []),
+                       *(['H0'] if any(v in (5,7,8,9,10,11) for v in specification['models']) else []),
+                       *(['HA','APAR','OMEGA_K','SWVAPOR'] if any(v>=8 for v in specification['models']) else [])])
+                for key in keys:
                     rows=re.findall(r'(?mi)^[ \t]*'+key+r'[ \t]*=[^\r\n]*(?:\r?\n|$)',value.decode('cp1252'));assert len(rows)==1
                     assert not re.search(r'(?mi)^[ \t]*'+key+r'[ \t]*=',text)
                     named[key]=rows[0];text+='\n'+rows[0]
@@ -63,6 +81,11 @@ def main():
             import re
             text=assignment(text,key,value) if re.search(r'(?mi)^\s*'+key+r'\s*=',text) else text+'\n'+key+' = '+str(value)+'\n'
         path.write_bytes(text.encode('cp1252'))
+        if specification and 3 in specification['models']:
+            q['original_model3_oxygen_composition']=[]
+            for crop in inputs.glob('*.crp'):
+                old=crop.read_bytes();after=assignment(old.decode('cp1252'),'SWOXYGEN',1).encode('cp1252');crop.write_bytes(after)
+                q['original_model3_oxygen_composition'].append(dict(file=crop.name,before_sha256=SHA(old),after_sha256=SHA(after),explicit_assignment=dict(SWOXYGEN=1),original_source_rule='Original oxygenstress.f90 refuses model3 with oxygen2; original supported oxygen1 is selected explicitly, as in retained analytical model3 fixtures.'))
         q['explicit_physical_configuration_edits']=dict(assignments=edits,original_swp_sha256=SHA(before),current_swp_sha256=SHA(path.read_bytes()),all_other_files_original_bytes=True,physical_parameters_or_numerical_limits_edited=False)
         project=m.e.load(inputs,original_output=True);item=selected(project);assert item
         q['actual_selection']=item;q['input_inventory']=m.e.inventory(inputs);save()
