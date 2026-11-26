@@ -1,0 +1,7 @@
+{
+  "formula": "Partially constrained O: df=(dI-dL-f*dO)/O. FrIn remains1. dI includes current saturated matrix local derivative plus current main wet-depth geometry. Existing local flux derivatives retained once; stock normalization rank terms added once.",
+  "scope": "Current positive-head saturated cell, independentperch absent, vertical+matrix inflow, lateral/internal influx0, unsat/rapid outflow0 in D2/3, otherdomain outscales1 and all inscales1. Actual QIn*dt and sumPs must match provider potentials within machine audit envelope.",
+  "admission": "No fictitious internal inflow or D1incoming-only/seep-only restriction. Main-cell geometric term sums all current unbounded incoming matrix rates. Rate equations and threshold/reference histories unchanged.",
+  "proof": "Actual native local derivatives, primitive geometry and true systems logged. Independently check partial constrained net D2/3 column inventories against dL/dh/dt.",
+  "qualification": "Pending fresh O0checked/O2 native cold2/own2-to3 under20s"
+}
