@@ -1,0 +1,36 @@
+{
+  "opt": "O0",
+  "start": 24,
+  "end": 26,
+  "status": "COMPLETED_REQUESTED_DAYS",
+  "pid": 33116,
+  "routes": [
+    {
+      "day": 24,
+      "returncode": 0,
+      "wall_seconds": 9.28486690018326,
+      "stdout": "{\"status\": \"OWN_RESTART_WINDOW_COMPLETE\", \"elapsed_seconds\": 8.592715000268072, \"requested_day\": 24}\n",
+      "stderr": "",
+      "status": "OWN_RESTART_WINDOW_COMPLETE",
+      "model_route_seconds": 8.592715000268072
+    },
+    {
+      "day": 25,
+      "returncode": 0,
+      "wall_seconds": 8.046804399695247,
+      "stdout": "{\"status\": \"OWN_RESTART_WINDOW_COMPLETE\", \"elapsed_seconds\": 7.262536800000817, \"requested_day\": 25}\n",
+      "stderr": "",
+      "status": "OWN_RESTART_WINDOW_COMPLETE",
+      "model_route_seconds": 7.262536800000817
+    },
+    {
+      "day": 26,
+      "returncode": 0,
+      "wall_seconds": 7.653176699765027,
+      "stdout": "{\"status\": \"OWN_RESTART_WINDOW_COMPLETE\", \"elapsed_seconds\": 6.707348700147122, \"requested_day\": 26}\n",
+      "stderr": "",
+      "status": "OWN_RESTART_WINDOW_COMPLETE",
+      "model_route_seconds": 6.707348700147122
+    }
+  ]
+}

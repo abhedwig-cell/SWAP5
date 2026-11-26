@@ -1,0 +1,36 @@
+{
+  "opt": "O2",
+  "start": 21,
+  "end": 23,
+  "status": "COMPLETED_REQUESTED_DAYS",
+  "pid": 3788,
+  "routes": [
+    {
+      "day": 21,
+      "returncode": 0,
+      "wall_seconds": 6.731572599615902,
+      "stdout": "{\"status\": \"OWN_RESTART_WINDOW_COMPLETE\", \"elapsed_seconds\": 6.055864399764687, \"requested_day\": 21}\n",
+      "stderr": "",
+      "status": "OWN_RESTART_WINDOW_COMPLETE",
+      "model_route_seconds": 6.055864399764687
+    },
+    {
+      "day": 22,
+      "returncode": 0,
+      "wall_seconds": 6.917586199939251,
+      "stdout": "{\"status\": \"OWN_RESTART_WINDOW_COMPLETE\", \"elapsed_seconds\": 5.972687100060284, \"requested_day\": 22}\n",
+      "stderr": "",
+      "status": "OWN_RESTART_WINDOW_COMPLETE",
+      "model_route_seconds": 5.972687100060284
+    },
+    {
+      "day": 23,
+      "returncode": 0,
+      "wall_seconds": 5.791907899547368,
+      "stdout": "{\"status\": \"OWN_RESTART_WINDOW_COMPLETE\", \"elapsed_seconds\": 4.794719200115651, \"requested_day\": 23}\n",
+      "stderr": "",
+      "status": "OWN_RESTART_WINDOW_COMPLETE",
+      "model_route_seconds": 4.794719200115651
+    }
+  ]
+}
