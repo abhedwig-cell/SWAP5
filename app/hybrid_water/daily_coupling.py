@@ -205,11 +205,16 @@ def validate_bundle(bundle, reference, project):
         if continuous_saturation_enabled(project):expected_saturation=continuous_saturation_source(expected_saturation)
         from implicit_analytical_saturation import enabled as analytical_saturation_enabled,source as analytical_saturation_source
         if analytical_saturation_enabled(project):expected_saturation=analytical_saturation_source(expected_saturation)
+        from implicit_model5_derivative import enabled as model5_derivative_enabled,source as model5_derivative_source
+        if model5_derivative_enabled(project):expected_saturation=model5_derivative_source(expected_saturation)
         if (bundle/'MOD_MvG_functions.f90').read_text(encoding='cp1252')!=expected_saturation:
             raise ValueError('Foreign actual original implicit saturated derivative provider')
     from implicit_analytical_saturation import metadata as analytical_saturation_metadata
     if identity.get('implicit_analytical_saturation')!=analytical_saturation_metadata(project):
         raise ValueError('Foreign actual per-model implicit constant-conductivity policy')
+    from implicit_model5_derivative import metadata as model5_derivative_metadata
+    if identity.get('implicit_model5_derivative')!=model5_derivative_metadata(project):
+        raise ValueError('Foreign actual original model5 exact chain-rule derivative policy')
     from implicit_finite_newton import metadata as implicit_finite_metadata
     if identity.get('implicit_finite_newton')!=implicit_finite_metadata(project):
         raise ValueError('Foreign original implicit finite Newton rollback policy')
