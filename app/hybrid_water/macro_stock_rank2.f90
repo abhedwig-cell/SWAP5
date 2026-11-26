@@ -70,7 +70,7 @@ do k=1,NumDm-1
  fr=cm(16,d);if(k<=2)meta(2+k)=fr
  if(fr<0d0.or.fr>1d0)return
  rhoslope=0d0
- if(cm(4,d)<cm(1,d))then
+ if(cm(4,d)<=cm(1,d)+128d0*epsilon(1d0)*max(abs(cm(4,d)),abs(cm(1,d)),tiny(1d0)))then
   rhoslope=cm(18,d);if(k<=2)meta(4+k)=1d0
  end if
  if(cm(4,d)==cm(1,d).and.k<=2)meta(6+k)=1d0
@@ -126,7 +126,7 @@ if(proof_count<=64)then
   dq=0d0;qp=0d0;latvalid=0d0
   if(cm(10,d)>0d0)call macro_top_lateral_gradient(dq,qp,latvalid)
   if(qp>0d0)dq=cm(10,d)/qp*dq
-  write(proof_unit,*)cm(16,d),cm(18,d),merge(1d0,0d0,cm(4,d)<cm(1,d)),QInMtxSatDmCp(d,cell),dq,ct0(d),ct1(d)
+  write(proof_unit,*)cm(16,d),cm(18,d),merge(1d0,0d0,cm(4,d)<=cm(1,d)+128d0*epsilon(1d0)*max(abs(cm(4,d)),abs(cm(1,d)),tiny(1d0))),QInMtxSatDmCp(d,cell),dq,ct0(d),ct1(d)
   proof_base=0d0
   do i=1,n
    hm=max(0d0,cm(24,d)-z(i))
@@ -216,4 +216,48 @@ if(handled)then
   write(systems_unit,*)aa,bb,c,r,uu(1:n,1:nr),vv(1:n,1:nr),x
  end if
 end if
+end subroutine
+
+! Stop an initial Newton line at the first current minimum-stock kink.
+! Subsequent backtracking uses the original factor/3 and unchanged trial budget.
+subroutine macro_stock_step_fraction(n,hold,difh,cap,factor)
+use MOD_arrays,only:macp,madm
+use MOD_grid,only:z,numnod
+use MOD_macropore,only:NumDm,ICpTpSatZon,ICpTpPerZon,ICpBtPerZon,VlMpDyCp,SubsidCp,FrReduQ
+use MOD_swap_mp,only:swmbf,IDecMpRat
+use variables,only:t1900,dt,numbit,theta,thetas
+use,intrinsic::ieee_arithmetic,only:ieee_is_finite
+implicit none
+integer,intent(in)::n
+real(8),intent(in)::hold(n),difh(n),cap
+real(8),intent(inout)::factor
+real(8)::cm(24,madm),ps(macp,madm),pu(macp,madm),valid,zm,A,B,num,den,lambda,tie
+integer::cell,upper,lower,d
+integer,save::u=0
+if(n/=numnod.or.cap<=0d0.or.swmbf/=1.or.IDecMpRat/=0.or.FrReduQ/=1d0)return
+call macro_saturated_data(cm,ps,pu,valid)
+if(valid/=1d0)return
+cell=ICpTpSatZon;lower=cell;upper=cell-1
+if(cell<2.or.cell>=n.or.ICpTpPerZon/=cell.or.ICpBtPerZon/=-1)return
+if(hold(cell)<0d0)then
+ upper=cell;lower=cell+1
+end if
+if(hold(upper)>=0d0.or.hold(lower)<=0d0)return
+if(thetas(cell)-theta(cell)>1d-6.or.VlMpDyCp(cell)/=0d0.or.SubsidCp(cell)/=0d0)return
+do d=2,NumDm
+ if(cm(8,d)/=1d0.or.cm(22,d)/=0d0.or.cm(18,d)<=0d0.or.cm(2,d)/=min(cm(4,d),cm(1,d)))cycle
+ tie=128d0*epsilon(1d0)*max(abs(cm(4,d)),abs(cm(1,d)),tiny(1d0))
+ if(abs(cm(4,d)-cm(1,d))<=tie)cycle
+ zm=cm(24,d)
+ if(zm<=z(lower).or.zm>=z(upper))cycle
+ A=z(lower)-zm;B=zm-z(upper)
+ num=A*hold(upper)+B*hold(lower);den=cap*(A*difh(upper)+B*difh(lower))
+ if(den==0d0)cycle
+ lambda=num/den
+ if(.not.ieee_is_finite(lambda).or.lambda<=0d0.or.lambda>=factor)cycle
+ if(hold(upper)-lambda*cap*difh(upper)>=0d0.or.hold(lower)-lambda*cap*difh(lower)<=0d0)cycle
+ factor=lambda
+ if(u==0)open(newunit=u,file='macro_stock_kink_steps.txt',status='replace')
+ write(u,*)t1900,dt,numbit,d,upper,lower,z(upper),z(lower),hold(upper),hold(lower),difh(upper),difh(lower),cap,lambda,zm,cm(4,d),cm(1,d)
+end do
 end subroutine

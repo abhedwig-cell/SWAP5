@@ -55,4 +55,12 @@ def render_head(source):
     source=replace(source,'      call macro_stock_terms(NN,u,v,meta)', '''      call jac37_solve(NN,dFdhU(1:NN),dFdhM(1:NN),dFdhL(1:NN),F(1:NN),difh(1:NN),ierror,rank2_handled)
       if(rank2_handled)return
       call macro_stock_terms(NN,u,v,meta)''')
+    source=replace(source,'            factmax1 = min(1.0d0, 1.0d0 / factmax)','''            factmax1 = min(1.0d0, 1.0d0 / factmax)
+            if(itry==1.and.swmacro==1)call macro_stock_step_fraction(NN,hold(1:NN),difh(1:NN),factmax1,factor)''')
+    source=replace(source,'''         else
+            do i = 1, NN
+               h(i) = hold(i) - factor * difh(i)''','''         else
+            if(itry==1.and.swmacro==1)call macro_stock_step_fraction(NN,hold(1:NN),difh(1:NN),1d0,factor)
+            do i = 1, NN
+               h(i) = hold(i) - factor * difh(i)''')
     return source
