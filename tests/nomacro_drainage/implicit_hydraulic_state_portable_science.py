@@ -7,7 +7,7 @@ from frost_boundary_git_archive import GitArchiveSource
 from explicit_bottom9_archive_science import ReadView
 from implicit_hydraulic_state_current_science import observe
 from implicit_hydraulic_state_local_archive_science import BASE,Original,original_inputs
-from implicit_hydraulic_state_portable_source import source,sdk
+from implicit_hydraulic_state_portable_source import source as source_custody,sdk
 R=Path(__file__).resolve().parents[2]
 PRODUCER='c40ca084d8e5eb638e0b4ac5c471463d9aad01c3'
 
@@ -17,7 +17,7 @@ def audit(data,platform,opt):
  with ExitStack() as stack:
   store=Archive(data,name,stack);root=ReadView(store,'current');cohort=json.loads((root/'RESULT.json').read_text());assert cohort['status']=='FOURTEEN_PORTABLE_ORIGINAL_IMPLICIT_HYDRAULIC_STATE_CONTEXTS_PASS_NOT_ADMITTED' and cohort['actual_producer_source']==PRODUCER and cohort['platform']==platform and cohort['optimization']==opt
   source=GitArchiveSource(R,BASE);originals={n:Original(source,n,stack) for n in ['ORDINARY_IMPLICIT_POND_UBUNTU_FOLLOWUP_O0_RAW_ARCHIVE','FROST_UNDRAINED_STATE08_WINDOWS_O0_ORIGINAL_V1','FROST_ANALYTICAL_BOUNDARY10_SEARCH_WINDOWS_O0_ORIGINAL_V1']}
-  actual_source=source(store,platform)
+  actual_source=source_custody(store,platform)
   projection=json.loads(store.get('COMPILED_PROJECTION_V1.json'));contexts=[];controls=[]
   for entry in cohort['contexts']:
    assert entry['returncode']==0 and entry['actual_source']==PRODUCER
