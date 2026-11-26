@@ -3,7 +3,7 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "f3faeaa540e7fd81686802414d53ff6686f3ce7b",
   "branch": "codex/nomacro-frost-analytical-composition09",
-  "last_commit": "b57134372c66c10ada81e2ca580306855ef4fe46",
+  "last_commit": "bc4b57be42e198a100e3e2b4cce725c1fa600642",
   "status": "PARTIAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -36768,5 +36768,37 @@
     "original_valid_model11_raw_sha256": "f7abdab487b9c52acf09811be8352dc3525b5c80e249dade5d287b6984adb9c5",
     "current_model7_whole_object_postimages": 54,
     "model7_period_replay": 0
+  },
+  "frost_analytical_composition09_current_recovery": {
+    "stage": "BC4_MODEL11_YEAR_NATIVE_COLD_PASS_PRESERVED_NEXT_MODEL3_AND_MIXED_CDE_CONTROLS",
+    "actual_compiled_source": "bc4b57be42e198a100e3e2b4cce725c1fa600642",
+    "actual_canonical": "f3faeaa540e7fd81686802414d53ff6686f3ce7b",
+    "latest_raw": "FROST_ANALYTICAL_COMPOSITION09_LOCAL_WINDOWS_O0_O2_RAW_V3",
+    "sha256": "a0263ffb1311b23b6c6b76c539809eb8535ebd50864a0f85048eb0cf99781f0f",
+    "local_qualified_profiles": {
+      "model7": {
+        "source": "dd7596685c91074789ab56e9a3ecb3d4a4ef4b4c",
+        "primary_days": 70,
+        "native": 14,
+        "cold": 6
+      },
+      "model11": {
+        "source": "bc4b57be42e198a100e3e2b4cce725c1fa600642",
+        "primary_days": 24,
+        "native": 8,
+        "cold": 4
+      }
+    },
+    "new_canonically_admitted_contexts": 0,
+    "next_code_action": "Run persisted public frost_analytical_case.py cases0 and9 O0/O2 with actual compiled native attacks and external transactions; preserve failures, then portable12-case composition and independent current owner",
+    "invariants": [
+      3,
+      4,
+      7,
+      13,
+      21,
+      23
+    ],
+    "no_model7_period_replay": true
   }
 }
