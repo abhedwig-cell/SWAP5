@@ -126,7 +126,11 @@ def source_and_build(build,provider,case,opt):
         from implicit_frost_source_guard import TERMINAL_PARTS,qualified_water_headcalc
         source=restore(original_head_source((build/'headcalc.f90').read_text(encoding='cp1252'),case['bottom']))
         for part in TERMINAL_PARTS:assert source.count(part)==1;source=source.replace(part,'',1)
-        qualified_water_headcalc(source,case['bottom']);expected=receipt_source(expected)
+        qualified_water_headcalc(source,case['bottom'])
+    if case['implicit'] or case['bottom']==8:
+        from frost_boundary_terminal_trial import receipt_source,original_head_source
+        if not case['implicit']:original_head_source((build/'headcalc.f90').read_text(encoding='cp1252'),case['bottom'])
+        expected=receipt_source(expected)
     assert (build/'terminal_water_receipt.f90').read_text(encoding='cp1252')==expected
     from time_event_closure import source as event_time
     clock=event_time(provider.get('original-provider-build/swap-selected/timecontrol.f90')).decode('cp1252').replace('\r\n','\n')

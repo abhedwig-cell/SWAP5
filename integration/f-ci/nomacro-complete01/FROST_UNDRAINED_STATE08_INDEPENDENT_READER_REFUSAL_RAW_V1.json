@@ -1,0 +1,40 @@
+{
+  "status": "INDEPENDENT_READ_ONLY_EXPECTATION_REFUSED_EXPLICIT_PLATE_TRIAL_VARIANT_NO_MODELS_RUN",
+  "actual_reader": "c13eb73207c6b4b77da46f7de7c09d075063ba85",
+  "archive": "FROST_UNDRAINED_STATE08_INDEPENDENT_READER_REFUSAL_RAW_V1.zip",
+  "bytes": 8927,
+  "sha256": "9725715e7a24bdc6f4062ecc32a105643b9e53b14cdc2247d3e5a6ded6f6449e",
+  "members": {
+    "FROST_UNDRAINED_STATE08_INDEPENDENT_UBUNTU_O0_V1.json": {
+      "bytes": 178,
+      "sha256": "c6485b3af168c23367fa0f505a7e64db419282e85748a3a33908a76b0a1dd7fd"
+    },
+    "FROST_UNDRAINED_STATE08_INDEPENDENT_UBUNTU_O0_V1.stdout.txt": {
+      "bytes": 156,
+      "sha256": "a32122a9e86c55ac03f2cab23adf2dfce6e54882699c5cbfd1708d104077724e"
+    },
+    "FROST_UNDRAINED_STATE08_INDEPENDENT_UBUNTU_O0_V1.stderr.txt": {
+      "bytes": 1762,
+      "sha256": "8a073083202c479978c9292b3fb030d6de75a08ff5eb694c973a5e0e19b001d0"
+    },
+    "FROST_UNDRAINED_STATE08_INDEPENDENT_WINDOWS_O0_V1.json": {
+      "bytes": 178,
+      "sha256": "c6485b3af168c23367fa0f505a7e64db419282e85748a3a33908a76b0a1dd7fd"
+    },
+    "FROST_UNDRAINED_STATE08_INDEPENDENT_WINDOWS_O0_V1.stdout.txt": {
+      "bytes": 158,
+      "sha256": "d9f648736a95fc7e66df41a347fc196f84d203345b6a846b19147a8c160d2f4b"
+    },
+    "FROST_UNDRAINED_STATE08_INDEPENDENT_WINDOWS_O0_V1.stderr.txt": {
+      "bytes": 1762,
+      "sha256": "8a073083202c479978c9292b3fb030d6de75a08ff5eb694c973a5e0e19b001d0"
+    },
+    "actual-reader-c13eb73207.py": {
+      "bytes": 17995,
+      "sha256": "abf5c54427504ac23e58aedfaddec4fc5427c8a6abfa2e2e3eb91bee728e2cf7"
+    }
+  },
+  "physical_source_changed": false,
+  "model_executions": 0,
+  "reason": "Original explicit boundary8 also uses existing qualified plate trial receipt; reader wrongly selected it only for implicit. Whole source equality retained with exact established selector bottom8 or implicit5."
+}
