@@ -1,10 +1,12 @@
 """Independently read actual implicit model/state artifacts without running a model."""
-import argparse,hashlib,io,json,math,re,struct,subprocess,zipfile
+import argparse,hashlib,io,json,math,re,struct,subprocess,sys,zipfile
 from contextlib import ExitStack
 from decimal import Decimal,localcontext
 from pathlib import Path,PureWindowsPath
 from datetime import date
 R=Path(__file__).resolve().parents[2]
+sys.path.insert(0,str(R/'tests/nomacro_scheduled_subsurface'))
+from original_output_files import compare as compare_original_output
 SHA=lambda b:hashlib.sha256(b).hexdigest()
 CASES={'gardner-water':'-v2','model7-snow-cde-fitted':'','model3-water':'-v2',
        'model4-snow-water':'','model5-cde-profile':'-v2','model6-snow-cde-profile':'-v2',
@@ -75,7 +77,9 @@ def observe(folder,locations=None):
         if pair not in windows:windows.append(pair)
     for lo,hi in windows:
         _,full=payload(folder/'trajectory'/f'accepted-column-1-day-{hi}.zip');_,actual=payload(folder/f'own-{lo}'/f'accepted-column-1-day-{hi}.zip');assert full==actual
-        cold.append(dict(start=lo,end=hi,actual_complete_native_and_original_end_bytes_equal=True))
+        user_output=compare_original_output(folder/'trajectory/original',folder/f'own-{lo}'/'original',b['identity']['original_output'],lo,hi,b['project']['start_date'])
+        assert user_output and all(item['exact'] for item in user_output.values())
+        cold.append(dict(start=lo,end=hi,actual_complete_native_and_original_end_bytes_equal=True,exact_original_user_output=user_output))
     transaction_origin=None
     for relative,day in [('external/trial-1',5),('external/trial-2',5),('external',5),('recovered/trial-1',6)]:
         meta,actual=payload(folder/'transactions'/relative/f'accepted-column-1-day-{day}.zip')
