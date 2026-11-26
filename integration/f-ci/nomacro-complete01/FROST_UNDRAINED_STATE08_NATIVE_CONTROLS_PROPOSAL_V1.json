@@ -1,0 +1,68 @@
+{
+  "status": "TYPED_NATIVE_CONTROLS_PROPOSALS_ONLY_NOT_INSTALLED_OR_QUALIFIED",
+  "files": [
+    {
+      "parent": "tests/nomacro_drainage/frost_calendar_state_root_controls.py",
+      "path": "tests/nomacro_drainage/frost_undrained_state_root_controls.py",
+      "actual_parent_revision": "39d00d6b1d15dbe1132a0b6a2eb361d2459e697d",
+      "parent_sha256": "b008ff1c5fde5787e75bfaf3a4a22423be966d5ef1d38e0a6a54ffd7b2fe3d34",
+      "proposed_sha256": "68240c0d8b07a8fc7b634ab8432dcfe9a95f631c966695ea961efc0d84b6afd3",
+      "ordered_literal_edits": [
+        {
+          "before": "[4,project.nodes,int(project.solute),1,mode,bottom,1,0]",
+          "after": "[5,project.nodes,int(project.solute),1,mode,bottom,1,0]"
+        }
+      ]
+    },
+    {
+      "parent": "tests/nomacro_drainage/frost_calendar_state_extra_native.py",
+      "path": "tests/nomacro_drainage/frost_undrained_state_extra_native.py",
+      "actual_parent_revision": "39d00d6b1d15dbe1132a0b6a2eb361d2459e697d",
+      "parent_sha256": "a8cd215a5212ed9fd317cdd9088979a68a3fa0c514db7c4bde2d73077d0af505",
+      "proposed_sha256": "ba6c2461cf584f271da768efcd61708bb8f0b941843df152589d3e2e53dbb361",
+      "ordered_literal_edits": [
+        {
+          "before": "b'S5BCW002',b'S5BCC002')",
+          "after": "b'S5BCW002',b'S5BCC002',b'S5UDW001',b'S5UDC001',b'S5UDW002',b'S5UDC002')"
+        },
+        {
+          "before": "len(set(codecs))==16",
+          "after": "len(set(codecs))==20"
+        },
+        {
+          "before": "(39 if project.solute else 35)",
+          "after": "(43 if project.solute else 39)"
+        }
+      ]
+    },
+    {
+      "parent": "tests/nomacro_drainage/frost_calendar_state_controls.py",
+      "path": "tests/nomacro_drainage/frost_undrained_state_controls.py",
+      "actual_parent_revision": "39d00d6b1d15dbe1132a0b6a2eb361d2459e697d",
+      "parent_sha256": "f49fa5ccfe4f5a32064d615a7892806250834d63e2f1695f0db0682806b2543d",
+      "proposed_sha256": "1cce3fec0e4b2c9937ff616f0fac5df61a937ea84d7c47f2a0121cf9c384645c",
+      "ordered_literal_edits": [
+        {
+          "before": "from frost_calendar_state_extra_native import extra",
+          "after": "from frost_undrained_state_extra_native import extra"
+        },
+        {
+          "before": "frost_calendar_state_root_controls.py",
+          "after": "frost_undrained_state_root_controls.py"
+        },
+        {
+          "before": "selected=m.e.switches((Path(project.input_directory)/'swap.swp').read_text(encoding='cp1252'))",
+          "after": "selected=m.e.switches((Path(project.input_directory)/'swap.swp').read_text(encoding='cp1252'));assert selected['SWDRA']==0"
+        },
+        {
+          "before": "ACTUAL_FROST_CALENDAR_COMPILED_NATIVE_SNOW_CDE_ROOT_AND_TRANSACTIONS_PASS_NOT_ADMITTED",
+          "after": "ACTUAL_UNDRAINED_FROST_COMPILED_NATIVE_SNOW_CDE_ROOT_AND_TRANSACTIONS_PASS_NOT_ADMITTED"
+        }
+      ]
+    }
+  ],
+  "old_refusal_and_transaction_algorithms_unchanged": true,
+  "new_codec_variants_added": 4,
+  "root_header": 5,
+  "actual_compiled_refusals_executed": 0
+}

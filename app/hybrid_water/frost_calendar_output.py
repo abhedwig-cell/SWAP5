@@ -34,7 +34,7 @@ def selection(project):
         raise ValueError('Invalid original Frost calendar output format/precision')
     return dict(thermal_output=True,thermal_calendar=True,frost_calendar=True,
         cde_interval_output=bool(project.solute),kind=selected['kind'],swsnow=1,swhea=1,swcalt=2,
-        swfrost=1,swdra=1,swhyst=selected['hysteresis'],swcsv=fmt,nprintday=1,
+        swfrost=1,swdra=selected.get('drainage',1),swhyst=selected['hysteresis'],swcsv=fmt,nprintday=1,
         swmonth=selected['swmonth'],swodat=selected['swodat'],swres=selected['swres'],
         requested_period=selected['requested_period'],period=selected['requested_period'],flprintdt=False,
         groups=one('INLIST_CSV',quoted=True) if fmt else None,num_decimals=precision)
@@ -60,6 +60,7 @@ def metadata(project):
                'frost_drainage_composition.py','implicit_frost_composition.py','implicit_frost_root_state.py',
                'frost_calendar_terminal_water.py']
     if boundary.get('boundary_state_calendar'):providers+=['frost_boundary_state_calendar.py','frost_boundary_composition.py']
+    if boundary.get('undrained_frost'):providers.append('frost_undrained_state.py')
     from frost_implicit_plate_calendar import selected as implicit_plate_water
     if implicit_plate_water(project):providers.append('frost_implicit_plate_calendar.py')
     providers.append('cde_interval_snow_state.f90' if project.solute else SNOW_PROVIDER+'.f90')

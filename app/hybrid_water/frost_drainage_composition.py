@@ -6,6 +6,8 @@ POLICY = 'original-explicit-frost-divdra-overlap-daily-composition-v1'
 
 
 def enabled(project):
+    from frost_undrained_state import selected as undrained_selection
+    if undrained_selection(project) is not None:return True
     if not project.input_directory or project.macro or project.age or not project.original_output:
         return False
     from experimental_project import switches, one
@@ -33,6 +35,9 @@ def codec(project):
 
 
 def metadata(project):
+    from frost_undrained_state import metadata as undrained_metadata
+    undrained=undrained_metadata(project)
+    if undrained is not None:return undrained
     if not enabled(project): return None
     from implicit_frost_composition import enabled as implicit, metadata as implicit_metadata
     if implicit(project): return implicit_metadata(project)
@@ -56,6 +61,8 @@ def metadata(project):
 
 
 def apply_build(output, donor_build, project, patched):
+    from frost_undrained_state import selected as undrained_selection,apply_build as undrained_build
+    if undrained_selection(project) is not None:return undrained_build(output,project,patched)
     if not enabled(project): return patched
     import frost_divdra_overlap
     original = (donor_build / 'swap-selected/divdra.f90').read_bytes()
@@ -70,6 +77,8 @@ def apply_build(output, donor_build, project, patched):
 
 
 def validate(bundle, reference, project, identity):
+    from frost_undrained_state import selected as undrained_selection,validate as undrained_validate
+    if undrained_selection(project) is not None:return undrained_validate(bundle,project,identity)
     expected = metadata(project)
     if identity.get('frost_drainage_composition') != expected:
         raise ValueError('Foreign explicit Frost drainage composition policy')

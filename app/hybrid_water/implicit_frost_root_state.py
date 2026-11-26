@@ -29,7 +29,14 @@ def boundary(project):
     return selected['bottom'] if selected is not None else 6
 
 
-def source(solute,mode=2,bottom=6):
+def drainage(project):
+    from frost_undrained_state import selected
+    return 0 if selected(project) is not None else 1
+
+
+def source(solute,mode=2,bottom=6,drain=1):
+    if type(drain) is not int or drain not in (0,1):
+        raise ValueError('Invalid implicit Frost native drainage domain')
     if type(bottom) is not int or bottom not in (5,6,8):
         raise ValueError('Invalid implicit Frost lower-boundary root domain')
     if type(mode) is not int or mode not in (0,1,2):
@@ -41,8 +48,8 @@ def source(solute,mode=2,bottom=6):
              ('implicit_snow_root_checkpoint', 'implicit_frost_root_checkpoint'),
              ('use MOD_swap_base, only: swsolu,swsnow,swhyst',
               'use MOD_swap_base, only: swsolu,swsnow,swhyst,swfrost,swdra'),
-             ('(swbotb/=5.and.swbotb/=8)', '(swbotb/='+str(bottom)+'.or.swfrost/=1.or.swdra/=1.or.swhyst/='+str(mode)+')'),
-             ('expected=[1,numnod', 'expected=[4,numnod'),
+             ('(swbotb/=5.and.swbotb/=8)', '(swbotb/='+str(bottom)+'.or.swfrost/=1.or.swdra/='+str(drain)+'.or.swhyst/='+str(mode)+')'),
+             ('expected=[1,numnod', 'expected=['+str(5 if drain==0 else 4)+',numnod'),
              ('HYBRID_SNOW_ROOT_NATIVE', 'HYBRID_FROST_ROOT_NATIVE')]
     if solute: edits.append(('swsolu/=0', 'swsolu/=1'))
     for before, after in edits:
@@ -57,9 +64,9 @@ def metadata(project):
     return dict(policy='literal-original-implicit-frost-root-diagnostic-carry-v1',
         source_sha256=hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n', b'\n')).hexdigest(),
         parent_provider_sha256=PARENT_SHA,
-        provider_sha256=hashlib.sha256(source(project.solute,hysteresis(project),boundary(project)).encode('cp1252')).hexdigest(),
-        fields=['alpwetnoddrz', 'alpdrynodrtz'], bytes=96, header_version=4,
-        native_revision=2, new_physical_state=False)
+        provider_sha256=hashlib.sha256(source(project.solute,hysteresis(project),boundary(project),drainage(project)).encode('cp1252')).hexdigest(),
+        fields=['alpwetnoddrz', 'alpdrynodrtz'], bytes=96, header_version=5 if drainage(project)==0 else 4,
+        native_revision=3 if drainage(project)==0 else 2, new_physical_state=False)
 
 
 def macro(text, project):
@@ -73,18 +80,18 @@ def macro(text, project):
     for anchor, call in zip(('        read(unit,iostat=ios) trailing', '      end if\n      close(unit)'), CALLS):
         if body.count(anchor)!=1: raise ValueError('Changed implicit Frost native EOF owner')
         body=body.replace(anchor,call+anchor,1)
-    return source(project.solute,hysteresis(project),boundary(project))+'\n'+text[:low]+body+text[high:]
+    return source(project.solute,hysteresis(project),boundary(project),drainage(project))+'\n'+text[:low]+body+text[high:]
 
 
 def apply_build(output, project, patched):
-    provider=source(project.solute,hysteresis(project),boundary(project))
+    provider=source(project.solute,hysteresis(project),boundary(project),drainage(project))
     (output/(STATE+'.f90')).write_text(provider,encoding='cp1252')
     path=output/'macropore.f90';path.write_text(macro(path.read_text(encoding='cp1252'),project),encoding='cp1252')
     return patched
 
 
 def restore_macro(actual, project):
-    prefix=source(project.solute,hysteresis(project),boundary(project))+'\n'
+    prefix=source(project.solute,hysteresis(project),boundary(project),drainage(project))+'\n'
     if not actual.startswith(prefix) or actual.count(prefix)!=1:
         raise ValueError('Foreign complete implicit Frost root provider')
     actual=actual[len(prefix):]
@@ -98,7 +105,7 @@ def validate_native(raw, project):
     from implicit_frost_composition import codec
     if len(raw)<104 or raw[:8]!=codec(project): raise ValueError('Foreign implicit Frost root native revision')
     header=struct.unpack('<16i',raw[-96:-32]); values=struct.unpack('<4d',raw[-32:])
-    expected=[4,project.nodes,int(project.solute),1,hysteresis(project),boundary(project),1,0]
+    expected=[5 if drainage(project)==0 else 4,project.nodes,int(project.solute),1,hysteresis(project),boundary(project),1,0]
     if list(header[:8])!=expected or list(header[8:])!=expected:
         raise ValueError('Foreign implicit Frost root native domain/witness')
     if values[:2]!=values[2:] or not all(map(math.isfinite,values)):
@@ -128,7 +135,7 @@ def parent_macro(reference, project):
 
 
 def validate_source(bundle, project, reference):
-    if (bundle/(STATE+'.f90')).read_text(encoding='cp1252')!=source(project.solute,hysteresis(project),boundary(project)):
+    if (bundle/(STATE+'.f90')).read_text(encoding='cp1252')!=source(project.solute,hysteresis(project),boundary(project),drainage(project)):
         raise ValueError('Foreign actual implicit Frost root provider source')
     actual=(bundle/'macropore.f90').read_text(encoding='cp1252')
     if restore_macro(actual,project)!=parent_macro(reference,project):
