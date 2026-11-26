@@ -191,6 +191,40 @@ def local_source(store,stack,producer,version):
     for n,item in ctl['members'].items():check(n,t.extractfile(n).read(),item)
     return dict(actual_local_producer=producer,actual_controller_producer=producer,source_sha256=captured['sha256'],controller_sha256=ctl['sha256'],source_members=len(captured['members']),controller_members=len(ctl['members']))
 
+def current_local_postimages(proof):
+    producer='9e6506b915e150a799722eeac506babec9a4aecf'
+    with ExitStack() as stack:
+        store=Archive(proof,'FROST_ANALYTICAL_COMPOSITION09_LOCAL_WINDOWS_O0_O2_RAW_V5',stack)
+        assert store.record['actual_source']==producer and store.record['sha256']=='4107cceb993de82f2e0500ff95697c9c1b26eccbf1206348d441131a0974af38'
+        source=local_source(store,stack,producer,'V5')
+        old=Archive(proof,'FROST_ANALYTICAL_COMPOSITION09_LOCAL_WINDOWS_O0_O2_RAW_V1',stack)
+        current_projection=json.loads(store.get('COMPILED_PROJECTION_V1.json'));old_projection=json.loads(old.get('COMPILED_PROJECTION_V1.json'));observations=[]
+        for opt in ['O0','O2']:
+            q=json.loads(store.get('current/'+opt+'-model7-current-postimage/RESULT.json'))
+            assert q['status']=='CURRENT_ACTUAL_MODEL7_COMPLETE_GENERATED_SOURCES_SAME_COMPILER_AND_WHOLE_OBJECTS_PASS_NO_PERIOD_REPLAY'
+            assert q['actual_current_source']==producer and q['original_scientific_source']=='dd7596685c91074789ab56e9a3ecb3d4a4ef4b4c' and q['model_executions']==0
+            prior=json.loads(old.get('current/'+opt+'-model7-7-cde-b8-p1/science/RESULT.json'))
+            build=ReadView(store,current_projection[q['actual_build']['root']]['archive_prefix'])
+            parent=ReadView(old,old_projection[prior['build_root']]['archive_prefix']);meta=read(build/'BUILD.json');before=read(parent/'BUILD.json')
+            assert SHA((build/'BUILD.json').read_bytes())==q['actual_BUILD_sha256'] and SHA((parent/'BUILD.json').read_bytes())==q['original_BUILD_sha256']
+            assert q['original_archive_sha256']==old.record['sha256'] and meta['inputs']==before['inputs']
+            for key in ['compiler','compiler_sha256','target','donor_flags','kernel_flags','donor_generated','donor_objects','donor_modules','ttutil_modules','ttutil_library']:assert meta['identity'][key]==before['identity'][key]
+            for n,digest in meta['identity']['donor_generated'].items():assert (build/n).read_bytes()==(parent/n).read_bytes() and SHA((build/n).read_bytes())==digest
+            names={p.name for p in build.glob('*.o')};assert names=={p.name for p in parent.glob('*.o')}=={x['file'] for x in q['whole_objects']} and len(names)==27
+            for item in q['whole_objects']:
+                raw=(build/item['file']).read_bytes();assert raw==(parent/item['file']).read_bytes() and len(raw)==item['bytes'] and SHA(raw)==item['sha256']
+            observations.append(dict(optimization=opt,whole_objects=len(names),actual_compiled_source=producer,original_compiled_source=q['original_scientific_source'],model_periods_replayed=0))
+        reader=ReadView(store,'public-reader/actual');q=read(reader/'RESULT.json')
+        assert q['status']=='FOUR_ACTUAL_PUBLIC_ANALYTICAL_FROST_POSITIVES_AND40_BOUNDED_READER_REFUSALS_PASS_NO_MODEL_DAYS'
+        assert q['actual_observer']==producer and q['model_executions']==q['compiler_executions']==0 and len(q['positive'])==4 and len(q['refused'])==40
+        for item in q['positive']+q['refused']:
+            name=item['case']['name']+'-positive' if isinstance(item['case'],dict) else item['case']+'-'+item['attack']
+            folder=reader/name
+            observed={p.relative_to(folder).as_posix():SHA(p.read_bytes()) for p in folder.rglob('*') if p.is_file()}
+            assert observed==item['input_sha256']
+        return dict(status='INDEPENDENT_CURRENT54_MODEL7_WHOLE_OBJECTS_AND40_REAL_READER_REFUSALS_PASS_WITH_ZERO_MODEL_REPLAY',source=source,postimages=observations,public_reader_positives=4,public_reader_refusals=40,compiler_executions=0,model_executions=0)
+
+
 def local(proof,verbose=False):
     result=[];custody=[]
     with ExitStack() as stack:
@@ -225,7 +259,7 @@ def local(proof,verbose=False):
         assert sum(x['native_samples'] for x in result)==44 and sum(x['exact_cold_windows'] for x in result)==20
         assert sum(x['controls']['actual_compiled_refusals'] for x in result if isinstance(x['controls'],dict))==394
         assert len({x['actual_compiler_source'] for x in result})==3
-        return dict(status='INDEPENDENT_EIGHT_LOCAL_ANALYTICAL_FROST_ORIGINAL_BUDGETS_NATIVE_COLD_AND_FOUR_COMPILED_CONTROL_CONTEXTS_PASS_NOT_ADMITTED',source=custody,contexts=result,original_scientific_producers_rebound=False,compiler_executions=0,model_executions=0,canonical_admission=False)
+        return dict(status='INDEPENDENT_EIGHT_LOCAL_ANALYTICAL_FROST_ORIGINAL_BUDGETS_NATIVE_COLD_AND_FOUR_COMPILED_CONTROL_CONTEXTS_PASS_NOT_ADMITTED',source=custody,contexts=result,current_model7_and_reader_controls=current_local_postimages(proof),original_scientific_producers_rebound=False,compiler_executions=0,model_executions=0,canonical_admission=False)
 
 
 def main():
