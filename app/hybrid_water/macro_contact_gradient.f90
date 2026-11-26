@@ -1,5 +1,5 @@
 
-! Original ABSORPTION derivative: partial main-GWL contact or full-contact ordinary cell.
+! Original ABSORPTION branch derivative at the partially saturated main-GWL cell.
 subroutine macro_contact_cell_gradient(d,cell,g0,g1,pu,du0,du1,native,valid)
 use MOD_grid,only:z,dz,layer
 use MOD_macropore,only:ICpTpWaSrDm,ZWaLevDm,TimAbsCumDmCp,ThtSrpRefDmCp, &
