@@ -1,5 +1,5 @@
 """Actual original-input implicit constitutive/state feedback; no qualification claim."""
-import argparse,hashlib,json,subprocess,sys,time,zipfile
+import argparse,hashlib,io,json,subprocess,sys,time,zipfile
 from contextlib import ExitStack
 from pathlib import Path
 R=Path(__file__).resolve().parents[2]
@@ -30,11 +30,21 @@ def main():
         name=('ORDINARY_IMPLICIT_POND_UBUNTU_FOLLOWUP_O0_RAW_ARCHIVE' if a.case=='gardner-water' else 'FROST_ANALYTICAL_BOUNDARY10_SEARCH_WINDOWS_O0_ORIGINAL_V1')
         prefix=('ordinary-matrix/water-plate/input/' if a.case=='gardner-water' else 'current-unaffected-postimages/model7-cde-d1-b8-dense/inputs/')
         with ExitStack() as stack:
-            archive=Archive(GitArchiveSource(R,BASE),name,stack)
-            for n in archive.names:
+            source=GitArchiveSource(R,BASE)
+            descriptor=json.loads((source/(name+'.json')).read_text())
+            if 'parts' in descriptor:
+                archive=Archive(source,name,stack);names=archive.names;get=archive.get
+            else:
+                raw=(source/descriptor['archive']).read_bytes()
+                assert len(raw)==descriptor['bytes'] and SHA(raw)==descriptor['sha256']
+                z=stack.enter_context(zipfile.ZipFile(io.BytesIO(raw)));names=descriptor['members']
+                assert len(z.namelist())==len(set(z.namelist()))==len(names) and set(z.namelist())==set(names)
+                def get(n):
+                    value=z.read(n);assert len(value)==names[n]['bytes'] and SHA(value)==names[n]['sha256'];return value
+            for n in names:
                 if n.startswith(prefix):
-                    target=inputs/n[len(prefix):];target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(archive.get(n))
-            q['input_authority']=dict(actual_git_source=BASE,archive=name,archive_sha256=archive.record['sha256'],prefix=prefix)
+                    target=inputs/n[len(prefix):];target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(get(n))
+            q['input_authority']=dict(actual_git_source=BASE,archive=name,archive_sha256=descriptor['sha256'],prefix=prefix)
         path=inputs/'swap.swp';before=path.read_bytes();text=before.decode('cp1252')
         edits=({'iHWCKmodel':'2'} if a.case=='gardner-water' else dict(SWFROST=0,SWKIMPL=1))
         for key,value in edits.items():
