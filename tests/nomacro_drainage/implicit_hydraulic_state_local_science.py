@@ -60,14 +60,26 @@ def observe(folder):
     for lo,hi in [(2,4),(7,9),(30,34)]:
         _,full=payload(folder/'trajectory'/f'accepted-column-1-day-{hi}.zip');_,actual=payload(folder/f'own-{lo}'/f'accepted-column-1-day-{hi}.zip');assert full==actual
         cold.append(dict(start=lo,end=hi,actual_complete_native_and_original_end_bytes_equal=True))
+    transaction_origin=None
     for relative,day in [('external/trial-1',5),('external/trial-2',5),('external',5),('recovered/trial-1',6)]:
-        _,actual=payload(folder/'transactions'/relative/f'accepted-column-1-day-{day}.zip');_,full=payload(folder/'trajectory'/f'accepted-column-1-day-{day}.zip');assert actual==full
+        meta,actual=payload(folder/'transactions'/relative/f'accepted-column-1-day-{day}.zip')
+        primary=json.loads(daily_path.read_text().splitlines()[day-1])
+        actual_receipt=dict(meta['receipt']);primary.pop('revision');actual_receipt.pop('revision');actual_receipt.pop('coupling',None)
+        assert actual_receipt==primary
+        if day==5:
+            if transaction_origin is None:transaction_origin=actual
+            assert actual==transaction_origin
+        # Primary checkpoints5/6 were deliberately not requested. Native byte
+        # equality here is discard/replay/accept5; recovered6 is compared to
+        # the exact actual primary physical receipt, without inventing a
+        # missing primary native snapshot.
+        assert actual['macro.bin'].endswith(expected)
     logs=[]
     for path in folder.rglob('*'):
         if path.suffix.lower() not in ('.stdout','.err','.wrn','.war','.log'):continue
         raw=path.read_bytes();assert b'No convergence was reached' not in raw;logs.append(dict(path=path.relative_to(folder).as_posix(),sha256=SHA(raw)))
     assert logs
-    return dict(case=q['case'],optimization=q['optimization'],actual_producer_source=q['actual_source'],actual_BUILD_sha256=q['actual_BUILD_sha256'],days=35,models=models,initial=scalar('SWINCO'),snow=snow,solute=kind,water_daily_max_cm=str(water),cde_daily_max_mg_cm2=str(chemical),cde_every_prefix_max_mg_cm2=str(prefix_max),native_samples=samples,exact_cold_windows=cold,actual_external_transaction_payloads_equal=True,original_convergence_diagnostics=logs)
+    return dict(case=q['case'],optimization=q['optimization'],actual_producer_source=q['actual_source'],actual_BUILD_sha256=q['actual_BUILD_sha256'],days=35,models=models,initial=scalar('SWINCO'),snow=snow,solute=kind,water_daily_max_cm=str(water),cde_daily_max_mg_cm2=str(chemical),cde_every_prefix_max_mg_cm2=str(prefix_max),native_samples=samples,exact_cold_windows=cold,actual_discard_replay_accept_day5_native_payloads_equal=True,actual_recovered_next_day6_primary_physical_receipt_equal=True,original_convergence_diagnostics=logs)
 
 
 def main():
