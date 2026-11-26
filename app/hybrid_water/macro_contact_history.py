@@ -7,7 +7,6 @@ def render_rate(source):
     source=replace(source,'      if (ITask == 1) return','      call macro_contact_seal(ITask)\n      if (ITask == 1) return')
     a=source.index('      subroutine ABSORPTION');b=source.index('      subroutine RAPIDDRAIN',a)
     body=source[a:b]
-    body=replace(body,'SUBROUTINE MACROSTATE ()','SUBROUTINE MACROSTATE (initializing)')
     body=replace(body,'      use variables,     only: thetas, theta, thetar, dt, h, k','      use variables,     only: thetas, theta, thetar, dt, h, k,t1900\n      use MOD_swap_mp,only:GwlFlCpZo')
     decl='''      real(8)::contact,wet_top,wet_span,overlap,wet_rate
       real(8),save::ref_delta(madm,macp)=0d0,ref_heads(macp),ref_t,ref_dt
@@ -76,6 +75,7 @@ def render_macro(source):
     source=replace(source,'      ICpTpSatZon = NodGwlFlCpZo\n      call MACROSTATE ()','      ICpTpSatZon = NodGwlFlCpZo\n      call MACROSTATE (.true.)')
     a=source.index('SUBROUTINE MACROSTATE ()');b=source.index('end subroutine MacroState',a)
     body=source[a:b]
+    body=replace(body,'SUBROUTINE MACROSTATE ()','SUBROUTINE MACROSTATE (initializing)')
     body=replace(body,'      use variables,     only: dt','      use variables,     only: dt,h,t1900')
     body=replace(body,'      real(8) Time, VlHlp, MPWatbal','''      real(8) Time, VlHlp, MPWatbal
       logical,intent(in),optional::initializing
