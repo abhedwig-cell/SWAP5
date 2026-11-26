@@ -1,0 +1,35 @@
+{
+  "label": "STOCK_V4_OWN2TO3",
+  "scope": "Actual retained corrected linear systems only; no nonlinear convergence, inventory or rollback claim",
+  "checks": [
+    {
+      "opt": "O0",
+      "file": "macro_stock_systems.txt",
+      "systems": 64,
+      "max_linear_residual": 2.7755575615628914e-17,
+      "max_scaled_residual": 2.7135596263588027e-17
+    },
+    {
+      "opt": "O0",
+      "file": "macro_rank2_systems.txt",
+      "systems": 64,
+      "max_linear_residual": 1.734723475976807e-17,
+      "max_scaled_residual": 1.7254204736096098e-17
+    },
+    {
+      "opt": "O2",
+      "file": "macro_stock_systems.txt",
+      "systems": 64,
+      "max_linear_residual": 2.7755575615628914e-17,
+      "max_scaled_residual": 2.7135596263588027e-17
+    },
+    {
+      "opt": "O2",
+      "file": "macro_rank2_systems.txt",
+      "systems": 64,
+      "max_linear_residual": 1.734723475976807e-17,
+      "max_scaled_residual": 1.7254204736096098e-17
+    }
+  ],
+  "models_launched": 0
+}

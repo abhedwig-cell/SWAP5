@@ -1,0 +1,50 @@
+--- PRELIMINARY/macropore_native.f90
++++ REPAIR43/macropore_native.f90
+@@ -1311,8 +1311,9 @@
+ !     Functions called   : SHRINK
+ !     File usage         : -           
+ ! ----------------------------------------------------------------------
+-      use MOD_grid,      only: numnod, dz
+-      use variables,     only: dt
++      use MOD_grid,      only: numnod, dz,z
++      use variables,     only: dt,h
++      use DIAG19,only:repair43
+       implicit NONE
+ 
+ ! --- global
+@@ -1321,6 +1322,7 @@
+ ! --- local
+       integer ic, ICpBtUnsMtxDm, id, icgwl
+       real(8) Time, VlHlp, MPWatbal
++      real(8)::history_contact43,wet_top43,wet_span43,overlap43
+       
+ ! ----------------------------------------------------------------------
+ 
+@@ -1432,7 +1434,18 @@
+       if (swabs == 1) then
+          do id = 1, NumDm
+            ICpBtUnsMtxDm = min0(ICpBtDm(id),ICpTpSatZon-1)
++            if(repair43.and.swmbf==1.and.ICpTpSatZon<=NumNod) then
++               if(h(ICpTpSatZon)<0d0) ICpBtUnsMtxDm=min0(ICpBtDm(id),ICpTpSatZon)
++            end if
+             do ic = ICpTpWaSrDm(id), ICpBtUnsMtxDm
++               history_contact43=1d0
++               if(repair43.and.swmbf==1.and.ic==ICpTpSatZon) then
++                  wet_top43=min(z(ic)+.5d0*dz(ic),ZWaLevDm(id))
++                  wet_span43=max(0d0,wet_top43-(z(ic)-.5d0*dz(ic)))
++                  overlap43=max(0d0,wet_top43-max(z(ic)-.5d0*dz(ic),GwlFlCpZo))
++                  history_contact43=0d0
++                  if(wet_span43>0d0) history_contact43=min(1d0,max(0d0,overlap43/wet_span43))
++               end if
+                if (FlEndSrpEvt(id,ic)) then  ! End present Sorptivity event
+                   TimAbsCumDmCp(id,ic) = 0.d0
+                   SorpDmCp(id,ic)      = 0.d0
+@@ -1442,7 +1455,7 @@
+                   Time                 = TimAbsCumDmCp(id,ic)
+ !   - ThtSrpRefDmCp = Thet_sat + Delta_thet_theor. = Thet_sat + Thet_theor. - Thet_0
+ !     Delta_thet_theor. = theoretical increase of theta = term calculated here below 
+-                  ThtSrpRefDmCp(id,ic) = ThtSrpRefDmCp(id,ic) +AwlCorFac(ic)  &
++                  ThtSrpRefDmCp(id,ic) = ThtSrpRefDmCp(id,ic) +history_contact43*AwlCorFac(ic)  &
+                     * FrMpWalWet(id,ic) * PpDmCp(id,ic) * (4.d0/DiPoCp(ic))   & 
+                     * SorpDmCp(id,ic)   * (dsqrt(Time+DT)-dsqrt(Time))              
+                   TimAbsCumDmCp(id,ic) = TimAbsCumDmCp(id,ic) + DT

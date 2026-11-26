@@ -1,0 +1,14 @@
+{
+  "label": "STOCK_V3R2_OWN2TO3",
+  "scope": "Actual retained corrected linear systems only; no nonlinear convergence, inventory or rollback claim",
+  "checks": [
+    {
+      "opt": "O2",
+      "file": "macro_stock_systems.txt",
+      "systems": 64,
+      "max_linear_residual": 2.7755575615628914e-17,
+      "max_scaled_residual": 2.7135596263588027e-17
+    }
+  ],
+  "models_launched": 0
+}

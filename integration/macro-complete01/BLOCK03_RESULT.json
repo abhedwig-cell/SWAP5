@@ -1,0 +1,33 @@
+{
+  "decision": "GUARDED_STOCK_RANK1_AND_RANK2_PREFIX_PASS_NEXT_CONTACT_REFUSAL",
+  "optimization_scope": "Changed owners O0-fcheck=all and O2, kernel O0/O2; unchanged physicalpoolO2",
+  "initial_failures_retained": [
+    "v3 automatic task stamp",
+    "v3r1 active extent bug",
+    "v3r2 checked original geometry whole-array bug"
+  ],
+  "next_refusal": "35797.487493827233 dt retry proposal1.4142135623730951e-4; near original CONTRACT42 contact transition, not asserted identical oldattempt357",
+  "full_day3_pass": false,
+  "full_migration": false,
+  "results": [
+    {
+      "opt": "O0",
+      "cold_status": "FRESH_WINDOW_COMPLETE",
+      "cold_seconds": 2.5334123000502586,
+      "own_status": "FAILED",
+      "own_seconds": 1.9520183997228742,
+      "rank1_active": 222,
+      "rank2_active": 262
+    },
+    {
+      "opt": "O2",
+      "cold_status": "FRESH_WINDOW_COMPLETE",
+      "cold_seconds": 2.206385400146246,
+      "own_status": "FAILED",
+      "own_seconds": 1.7563880998641253,
+      "rank1_active": 222,
+      "rank2_active": 262
+    }
+  ],
+  "actual_linear_and_scalar_traces_O0_O2_byte_equal": true
+}
