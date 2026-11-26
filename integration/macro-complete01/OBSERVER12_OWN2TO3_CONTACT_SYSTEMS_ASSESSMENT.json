@@ -1,0 +1,43 @@
+{
+  "label": "OBSERVER12_OWN2TO3",
+  "scope": "Actual retained constrained-domain plus contact-row linear systems and inventory derivative only; no independent contact-law finite-difference or full-period claim",
+  "results": [
+    {
+      "opt": "O0",
+      "systems": 64,
+      "negative_contact_cell_systems": 46,
+      "active_contact_domain_rows": 75,
+      "partial_domain_counts": {
+        "2": 54,
+        "3": 54,
+        "4": 47
+      },
+      "branches": {
+        "W": 125,
+        "V": 30
+      },
+      "active_surface_derivatives": 109,
+      "max_linear_residual": 3.2307490016592055e-14,
+      "max_inventory_derivative_error": 1.1535911115245767e-15
+    },
+    {
+      "opt": "O2",
+      "systems": 64,
+      "negative_contact_cell_systems": 46,
+      "active_contact_domain_rows": 75,
+      "partial_domain_counts": {
+        "2": 54,
+        "3": 54,
+        "4": 47
+      },
+      "branches": {
+        "W": 125,
+        "V": 30
+      },
+      "active_surface_derivatives": 109,
+      "max_linear_residual": 3.2307490016592055e-14,
+      "max_inventory_derivative_error": 1.1535911115245767e-15
+    }
+  ],
+  "models_launched": 0
+}

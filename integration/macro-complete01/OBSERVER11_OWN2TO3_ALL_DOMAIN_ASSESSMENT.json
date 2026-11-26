@@ -1,0 +1,39 @@
+{
+  "label": "OBSERVER11_OWN2TO3",
+  "scope": "Actual retained all-domain linear and constrained exchange derivative inventory only; no full nonlinear or period claim",
+  "results": [
+    {
+      "opt": "O0",
+      "systems": 64,
+      "partial_domain_counts": {
+        "2": 64,
+        "3": 64,
+        "4": 64
+      },
+      "branches": {
+        "W": 153,
+        "V": 39
+      },
+      "active_surface_derivatives": 192,
+      "max_linear_residual": 2.2668499022326927e-15,
+      "max_inventory_derivative_error": 6.623998224930538e-14
+    },
+    {
+      "opt": "O2",
+      "systems": 64,
+      "partial_domain_counts": {
+        "2": 64,
+        "3": 64,
+        "4": 64
+      },
+      "branches": {
+        "W": 153,
+        "V": 39
+      },
+      "active_surface_derivatives": 192,
+      "max_linear_residual": 2.2668499022326927e-15,
+      "max_inventory_derivative_error": 6.623998224930538e-14
+    }
+  ],
+  "models_launched": 0
+}

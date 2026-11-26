@@ -1,0 +1,7 @@
+{
+  "optimization": "O0",
+  "status": "FAILED",
+  "models_launched": 0,
+  "error": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-macro-complete01\\tests\\macro_complete01\\build_all_inflow_worker.py\", line 14, in <module>\n    c.build_bundle(base,ref,target,owner_optimization=opt)\n    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-macro-complete01\\app\\hybrid_water\\coupled_macro_policy.py\", line 96, in build_bundle\n    replacements={Path(n).with_suffix('.o').name:target/Path(n).with_suffix('.o').name for n in identity['donor_generated']}\n                  ~~~~^^^\n  File \"C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\pathlib\\_local.py\", line 503, in __init__\n    super().__init__(*args)\n    ~~~~~~~~~~~~~~~~^^^^^^^\n  File \"C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\pathlib\\_local.py\", line 132, in __init__\n    raise TypeError(\n    ...<2 lines>...\n        f\"not {type(path).__name__!r}\")\nTypeError: argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'tuple'\n",
+  "seconds": 4.757009500171989
+}

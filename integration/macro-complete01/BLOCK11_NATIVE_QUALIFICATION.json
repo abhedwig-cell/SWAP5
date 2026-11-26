@@ -1,0 +1,29 @@
+{
+  "models_launched": 0,
+  "checks": {
+    "ALLCONTACT_V12_COLD2_O0_O2_rows_exact": true,
+    "ALLCONTACT_V12_OWN2TO3_O0_O2_rows_exact": true,
+    "ALLCONTACT_V12_OWN1TO3_O0_O2_rows_exact": true,
+    "OBSERVER12_COLD2_O0_O2_rows_exact": true,
+    "OBSERVER12_OWN2TO3_O0_O2_rows_exact": true,
+    "macro-complete01-O0_macro.bin_split_observer_exact": "e1363ef1974e9d57104b178fbec8eae5b372b31d987cbc2ccb3557ecd16d1420",
+    "macro-complete01-O0_result.end_split_observer_exact": "5512da09fdab88e81262c750662da794609b670f9bb3a5135570dec769370232",
+    "macro-complete01-O2_macro.bin_split_observer_exact": "e1363ef1974e9d57104b178fbec8eae5b372b31d987cbc2ccb3557ecd16d1420",
+    "macro-complete01-O2_result.end_split_observer_exact": "5512da09fdab88e81262c750662da794609b670f9bb3a5135570dec769370232",
+    "macro_saturated_contact_systems.txt_O0_O2_exact": "08bc7d0d4465c276d97229c96734a87f2aa32cbd141c6cc4af3c7f78d6cdd327",
+    "macro_saturated_contact_mass_base.txt_O0_O2_exact": "c156ddc257c5791519ee7bec24a7d25c0a6023ae9fe8996a862cc503489a5ac9",
+    "coupled_refusal_observer.txt_O0_O2_exact": "2cd49fa375d15a09af97ea515505b8bc03135c494060b177a5f03a1de2729215"
+  },
+  "scope": "V12 original first3days, accepted native payload, O0/O2 and split routes; original1e-6cm independent inventory gate",
+  "inventory_residuals_cm": [
+    -6.059744048582719e-07,
+    -6.787508063888989e-08,
+    1.440437353102857e-08
+  ],
+  "next_refusal": {
+    "time": 35798.64203000001,
+    "day": 4,
+    "helper_active": true,
+    "no_full_day4": true
+  }
+}
