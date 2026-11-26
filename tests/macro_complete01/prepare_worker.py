@@ -26,6 +26,7 @@ try:
   q['status']='ORIGINAL_PROVIDER_READY_NO_MODEL_EXECUTED'
  else:
   opt=phase;assert opt in ['O0','O2'];base=Path(res[opt]['path'])/'worker-base';target=Path(res[opt]['path'])/'worker-coupled'
+  base.mkdir(exist_ok=False)
   h.build(ref,base,budget_retry=True,shared_pond_transfer=True,refresh_macro_final=True,runtime_checkpoint=True,kernel_opt=opt,project=h.ANDELST)
   build_bundle(base,ref,target,owner_optimization=opt)
   meta,case=validate_bundle(target,ref);q['build']=meta;q['status']='STRICT_UNREDUCED_WORKER_BUILT_NOT_EXECUTED';q['optimization_scope']='kernel and changed macro/headcalc/main owners '+opt+'; unchanged original physical pool O2'
