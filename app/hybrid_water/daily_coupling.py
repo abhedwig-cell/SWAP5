@@ -263,6 +263,10 @@ def validate_bundle(bundle, reference, project):
         if terminal_calendar_selection(project.input_directory,project.original_output) is not None:
             from frost_calendar_terminal_water import source as terminal_day_source
             expected_terminal=terminal_day_source()
+            from frost_undrained_state import selected as undrained_selection
+            if undrained_selection(project) is not None:
+                from frost_undrained_terminal_water import source as undrained_terminal_source
+                expected_terminal=undrained_terminal_source()
         if plate_terminal_enabled(project):expected_terminal=plate_terminal_source(expected_terminal)
         if (bundle/'terminal_water_receipt.f90').read_text(encoding='cp1252')!=expected_terminal:
             raise ValueError('Foreign actual terminal water receipt source')
