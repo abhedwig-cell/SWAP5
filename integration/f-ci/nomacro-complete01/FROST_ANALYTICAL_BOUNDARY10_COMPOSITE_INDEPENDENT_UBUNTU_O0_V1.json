@@ -1,0 +1,2326 @@
+{
+  "status": "INDEPENDENT_COMPOSITE16_ORIGINAL_BUDGETS_NATIVE_COLD_REFUSALS_TRANSACTIONS_AND_CURRENT_UNAFFECTED_WHOLE_OBJECTS_PASS_NOT_ADMITTED",
+  "actual_observer": "597033a2109c8377a28e42ac5f947ca5cff78793",
+  "audit": {
+    "status": "INDEPENDENT_COMPOSITE16_ORIGINAL_BUDGETS_NATIVE_COLD_REFUSALS_TRANSACTIONS_AND_CURRENT_UNAFFECTED_WHOLE_OBJECTS_PASS_NOT_ADMITTED",
+    "current_source": {
+      "producer": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+      "source_sha256": "ea1d1a4538aaa776f4a3e52321776db92b99d6fe67b601b82455981c32c000c4",
+      "controller_sha256": "0934342a8102fd3b9694d1a9a9994c92da1ff5b17cd97586ab8dff7e000a6199",
+      "source_members": 1553,
+      "controller_members": 1162,
+      "toolchain": {
+        "gfortran": {
+          "version": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+          "sha256": "3f4cea0ce047346e79e904b35102352fd6021cfd9795458e3115480a02ba1d0e",
+          "target": "x86_64-linux-gnu"
+        },
+        "gcc": {
+          "version": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+          "sha256": "864711037b900acdb7a449cf48d912cefa935b527fb60c767ccb956779e66136",
+          "target": "x86_64-linux-gnu"
+        },
+        "ar": {
+          "version": "GNU ar (GNU Binutils for Ubuntu) 2.46",
+          "sha256": "22c9d13affd2bea0f0237533ccb1bb2682eb9d22d6a4ed953bcc38445c8c98ab"
+        }
+      },
+      "original_SWAP_ZIP_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+    },
+    "original_source_custody": {
+      "FIRST": {
+        "producer": "b4ffcc914453225562ffe0e847faa21a765432ce",
+        "source_sha256": "6a61815e83574a316ddeeee088b7c29e20b7731e6c8e3df932a6ab0a09f7024a",
+        "controller_sha256": "415b708479a7682872b9dfb7cd30407add2187a462b9416ac28cdd2273e91751",
+        "source_members": 1552,
+        "controller_members": 1158,
+        "toolchain": {
+          "gfortran": {
+            "version": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+            "sha256": "3f4cea0ce047346e79e904b35102352fd6021cfd9795458e3115480a02ba1d0e",
+            "target": "x86_64-linux-gnu"
+          },
+          "gcc": {
+            "version": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+            "sha256": "864711037b900acdb7a449cf48d912cefa935b527fb60c767ccb956779e66136",
+            "target": "x86_64-linux-gnu"
+          },
+          "ar": {
+            "version": "GNU ar (GNU Binutils for Ubuntu) 2.46",
+            "sha256": "22c9d13affd2bea0f0237533ccb1bb2682eb9d22d6a4ed953bcc38445c8c98ab"
+          }
+        },
+        "original_SWAP_ZIP_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+      },
+      "CONTINUATION": {
+        "producer": "9d53d55a0ae5aa7567ee62bfcbc60fece1629905",
+        "source_sha256": "db7746cc775c19563b0b4901dbe3299757ecb8aac65edb2042791fdb67a59a41",
+        "controller_sha256": "74651e7d5a3632f260818961d12b72457cb3dde180d2f82c83c2d8182b2c9c51",
+        "source_members": 1552,
+        "controller_members": 1161,
+        "toolchain": {
+          "gfortran": {
+            "version": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+            "sha256": "3f4cea0ce047346e79e904b35102352fd6021cfd9795458e3115480a02ba1d0e",
+            "target": "x86_64-linux-gnu"
+          },
+          "gcc": {
+            "version": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+            "sha256": "864711037b900acdb7a449cf48d912cefa935b527fb60c767ccb956779e66136",
+            "target": "x86_64-linux-gnu"
+          },
+          "ar": {
+            "version": "GNU ar (GNU Binutils for Ubuntu) 2.46",
+            "sha256": "22c9d13affd2bea0f0237533ccb1bb2682eb9d22d6a4ed953bcc38445c8c98ab"
+          }
+        },
+        "original_SWAP_ZIP_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+      }
+    },
+    "platform": "Ubuntu",
+    "optimization": "O0",
+    "contexts": [
+      {
+        "case": {
+          "name": "default-model1-water-d0-b6-dense",
+          "models": [],
+          "effective_models": [
+            1,
+            1
+          ],
+          "kind": "water",
+          "drainage": 0,
+          "bottom": 6,
+          "initial": 2,
+          "calendar": "dense",
+          "reset": 1,
+          "start": null,
+          "days": 35,
+          "implicit": 0,
+          "hysteresis": 0,
+          "explicit_oxygen": null,
+          "full_legacy_native_controls": true,
+          "active_frost_transactions": true
+        },
+        "actual_compiler_source": "b4ffcc914453225562ffe0e847faa21a765432ce",
+        "actual_controller_source": "b4ffcc914453225562ffe0e847faa21a765432ce",
+        "compiler": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+        "optimization": "O0",
+        "science": {
+          "days": 35,
+          "daily_water_max_cm": "9.9867008E-11",
+          "daily_cde_max_mg_cm2": "0",
+          "every_prefix_cde_max_mg_cm2": "0",
+          "actual_frost_output_events": 36,
+          "actual_partial_frost_output_dates": [
+            "2002-01-11",
+            "2002-01-12",
+            "2002-01-13",
+            "2002-01-14",
+            "2002-01-15",
+            "2002-01-16",
+            "2002-01-17",
+            "2002-01-18",
+            "2002-01-19",
+            "2002-01-20",
+            "2002-01-21",
+            "2002-01-22",
+            "2002-01-23",
+            "2002-01-24",
+            "2002-01-25",
+            "2002-01-26",
+            "2002-01-27",
+            "2002-01-28",
+            "2002-01-29",
+            "2002-01-30",
+            "2002-01-31",
+            "2002-02-01",
+            "2002-02-02",
+            "2002-02-03",
+            "2002-02-04"
+          ],
+          "accumulated_water_equivalence_claimed": false
+        },
+        "native_samples": 7,
+        "exact_cold_windows": 3,
+        "convergence": {
+          "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+          "files": [
+            {
+              "path": "current/default-model1-water-d0-b6-dense/science/own-19/kernel.stdout",
+              "sha256": "6e24d330d3f660bbb2d2bba430510b32716c12f253780b091a05cf96c96b1069"
+            },
+            {
+              "path": "current/default-model1-water-d0-b6-dense/science/own-19/original/donor.stdout",
+              "sha256": "439118398e0af9558404d9e25ed95379d1217a1612fa1e5254c1be42fd6040a0"
+            },
+            {
+              "path": "current/default-model1-water-d0-b6-dense/science/own-19/original/swap.log",
+              "sha256": "527f20c84158040bfe5df5c7ecdcb54af272fb83409ac4f7af93524257aa003f"
+            },
+            {
+              "path": "current/default-model1-water-d0-b6-dense/science/own-19/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            },
+            {
+              "path": "current/default-model1-water-d0-b6-dense/science/own-2/kernel.stdout",
+              "sha256": "c879f3aafedc8ffa7883a08f1d5701d27de3d146de15ab62e9c6dddeb9d31455"
+            },
+            {
+              "path": "current/default-model1-water-d0-b6-dense/science/own-2/original/donor.stdout",
+              "sha256": "48512a24a7acfa4ec40e3a36d8ffd86f60351df6e230a3a93e3548b22db90403"
+            },
+            {
+              "path": "current/default-model1-water-d0-b6-dense/science/own-2/original/swap.log",
+              "sha256": "3089f70f6cd6de47fe1212aa9c6d6bf2464eba0c7cf5b1eb440b6979e55eae8b"
+            },
+            {
+              "path": "current/default-model1-water-d0-b6-dense/science/own-2/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            },
+            {
+              "path": "current/default-model1-water-d0-b6-dense/science/own-30/kernel.stdout",
+              "sha256": "1154bca6706b463e92943584c45a2cf78bda42655cba1051b37e34d0a9870918"
+            },
+            {
+              "path": "current/default-model1-water-d0-b6-dense/science/own-30/original/donor.stdout",
+              "sha256": "336fb72123bbaf29b48d7d467271be2b16954349e10288650d4aca20b3f043ce"
+            },
+            {
+              "path": "current/default-model1-water-d0-b6-dense/science/own-30/original/swap.log",
+              "sha256": "e172f3cfb6baf3e87a37d7cc5475eea711e79863860a01c686973f233e59f3c0"
+            },
+            {
+              "path": "current/default-model1-water-d0-b6-dense/science/own-30/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            },
+            {
+              "path": "current/default-model1-water-d0-b6-dense/science/trajectory/kernel.stdout",
+              "sha256": "984402de79b0e1aebdc4ee06d5cb41ecb1c0dd63e5fb4ebe351c834b38602614"
+            },
+            {
+              "path": "current/default-model1-water-d0-b6-dense/science/trajectory/original/donor.stdout",
+              "sha256": "7bf31420767e00c6aeabce380f4e98862de887257292182d8b4e705f80f07f61"
+            },
+            {
+              "path": "current/default-model1-water-d0-b6-dense/science/trajectory/original/swap.log",
+              "sha256": "373351e4d8b2a032230679ea61d85678847d361f2d423e5ca07df81bafbaaf2e"
+            },
+            {
+              "path": "current/default-model1-water-d0-b6-dense/science/trajectory/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            }
+          ],
+          "unconverged_continuations": 0
+        },
+        "BUILD_sha256": "1b10c0d2007694d191f64e8fdaeb622b28611e8b8a173fc5572ca26480ba41b7",
+        "controls": {
+          "actual_compiled_refusals": 100,
+          "accepted_mutant_model_days": 0,
+          "transactions": [
+            {
+              "start": 2,
+              "discard_replay_accept_complete_native_exact": true,
+              "recovered_next_day_physical_exact": true
+            },
+            {
+              "start": 19,
+              "discard_replay_accept_complete_native_exact": true,
+              "recovered_next_day_physical_exact": true,
+              "actual_active_frost_start": {
+                "original_temperature_min_C": -0.46526580752160895,
+                "original_temperature_max_C": 7.268131607662692,
+                "actual_TFROSTSTA_C": 0.0,
+                "actual_original_Frost_active": true
+              }
+            }
+          ]
+        },
+        "index": 0,
+        "current_source_custody": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "current_postimage_required": true,
+        "period_replayed_by_observer": false
+      },
+      {
+        "case": {
+          "name": "scalar-model1-cde-d0-b6-periodic",
+          "models": [
+            1
+          ],
+          "effective_models": [
+            1,
+            1
+          ],
+          "kind": "cde",
+          "drainage": 0,
+          "bottom": 6,
+          "initial": 1,
+          "calendar": "regular",
+          "reset": 0,
+          "start": null,
+          "days": 35,
+          "implicit": 0,
+          "hysteresis": 0,
+          "explicit_oxygen": null,
+          "full_legacy_native_controls": false,
+          "active_frost_transactions": true
+        },
+        "actual_compiler_source": "b4ffcc914453225562ffe0e847faa21a765432ce",
+        "actual_controller_source": "b4ffcc914453225562ffe0e847faa21a765432ce",
+        "compiler": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+        "optimization": "O0",
+        "science": {
+          "days": 35,
+          "daily_water_max_cm": "9.9877608E-11",
+          "daily_cde_max_mg_cm2": "2E-14",
+          "every_prefix_cde_max_mg_cm2": "1.6E-14",
+          "actual_frost_output_events": 6,
+          "actual_partial_frost_output_dates": [
+            "2002-01-14",
+            "2002-01-21",
+            "2002-01-28",
+            "2002-02-04"
+          ],
+          "accumulated_water_equivalence_claimed": false
+        },
+        "native_samples": 7,
+        "exact_cold_windows": 3,
+        "convergence": {
+          "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+          "files": [
+            {
+              "path": "current/scalar-model1-cde-d0-b6-periodic/science/own-19/kernel.stdout",
+              "sha256": "ba64263e21df6b582e5e467eba3e159a5d85ba428c4f238bcf66538fe268b9ba"
+            },
+            {
+              "path": "current/scalar-model1-cde-d0-b6-periodic/science/own-19/original/donor.stdout",
+              "sha256": "0f9dae5ba9411add2b6ce1969759b18f6e2f13f39f1fb446ef3569d31c56deaa"
+            },
+            {
+              "path": "current/scalar-model1-cde-d0-b6-periodic/science/own-19/original/swap.log",
+              "sha256": "4b68c4422c543c73955b5f7ab28dc85705aaeb448d0698eba1a7e2176c4913b9"
+            },
+            {
+              "path": "current/scalar-model1-cde-d0-b6-periodic/science/own-19/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            },
+            {
+              "path": "current/scalar-model1-cde-d0-b6-periodic/science/own-2/kernel.stdout",
+              "sha256": "1a31882d2f2dd16486bf49ae9985942f217215e546e4bd9e90d3816ee62c252d"
+            },
+            {
+              "path": "current/scalar-model1-cde-d0-b6-periodic/science/own-2/original/donor.stdout",
+              "sha256": "68f93ab342ce334425a56a77c662a7c48f041cfc98f9333266ee6d4453fbc69a"
+            },
+            {
+              "path": "current/scalar-model1-cde-d0-b6-periodic/science/own-2/original/swap.log",
+              "sha256": "37d7682fa0aa11ef177cc6b5c27f91442e1a132bc5a539fd0f3deda3a4a79b3f"
+            },
+            {
+              "path": "current/scalar-model1-cde-d0-b6-periodic/science/own-2/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            },
+            {
+              "path": "current/scalar-model1-cde-d0-b6-periodic/science/own-30/kernel.stdout",
+              "sha256": "7cd7807ef60f1c2f7bee5063dde56d2381e24ca29ee1a618a991ac89bb5a8c37"
+            },
+            {
+              "path": "current/scalar-model1-cde-d0-b6-periodic/science/own-30/original/donor.stdout",
+              "sha256": "ca254547c6b6b7f54536a6f6ea8fd1271a975565ecbfa2c3903372b04ca4782f"
+            },
+            {
+              "path": "current/scalar-model1-cde-d0-b6-periodic/science/own-30/original/swap.log",
+              "sha256": "8a11fb3ce46c5a970ee5693fbbf0337dfd221d55ed620a3f39f7c1145e97d990"
+            },
+            {
+              "path": "current/scalar-model1-cde-d0-b6-periodic/science/own-30/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            },
+            {
+              "path": "current/scalar-model1-cde-d0-b6-periodic/science/trajectory/kernel.stdout",
+              "sha256": "ccd520aaa81c19c2ba7786a3a25ddbc4a86fb4177200e2733bf3c4e71b271d33"
+            },
+            {
+              "path": "current/scalar-model1-cde-d0-b6-periodic/science/trajectory/original/donor.stdout",
+              "sha256": "2b50e023933e8c8f5d2a9a063fca014458225357572a2dd0a2b33b6c55d5a9df"
+            },
+            {
+              "path": "current/scalar-model1-cde-d0-b6-periodic/science/trajectory/original/swap.log",
+              "sha256": "7eda57cc25eb9c1398dedcf82e5eba1a4d4c9e616fd3dc8ef773871469268f3d"
+            },
+            {
+              "path": "current/scalar-model1-cde-d0-b6-periodic/science/trajectory/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            }
+          ],
+          "unconverged_continuations": 0
+        },
+        "BUILD_sha256": "f50e40b867e987c63b3777c9d6ce567526fe7636864758e2c020dc7b78adabaf",
+        "controls": {
+          "actual_compiled_refusals": 18,
+          "accepted_mutant_model_days": 0,
+          "transactions": [
+            {
+              "start": 2,
+              "discard_replay_accept_complete_native_exact": true,
+              "recovered_next_day_physical_exact": true
+            },
+            {
+              "start": 19,
+              "discard_replay_accept_complete_native_exact": true,
+              "recovered_next_day_physical_exact": true,
+              "actual_active_frost_start": {
+                "original_temperature_min_C": -0.4651409767215743,
+                "original_temperature_max_C": 7.279196078761334,
+                "actual_TFROSTSTA_C": 0.0,
+                "actual_original_Frost_active": true
+              }
+            }
+          ]
+        },
+        "index": 1,
+        "current_source_custody": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "current_postimage_required": true,
+        "period_replayed_by_observer": false
+      },
+      {
+        "case": {
+          "name": "model3-water-d1-b5-dense",
+          "models": [
+            3,
+            3
+          ],
+          "effective_models": [
+            3,
+            3
+          ],
+          "kind": "water",
+          "drainage": 1,
+          "bottom": 5,
+          "initial": 1,
+          "calendar": "dense",
+          "reset": 1,
+          "start": null,
+          "days": 35,
+          "implicit": 0,
+          "hysteresis": 0,
+          "explicit_oxygen": 1,
+          "full_legacy_native_controls": false,
+          "active_frost_transactions": true
+        },
+        "actual_compiler_source": "b4ffcc914453225562ffe0e847faa21a765432ce",
+        "actual_controller_source": "b4ffcc914453225562ffe0e847faa21a765432ce",
+        "compiler": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+        "optimization": "O0",
+        "science": {
+          "days": 35,
+          "daily_water_max_cm": "1.0225E-14",
+          "daily_cde_max_mg_cm2": "0",
+          "every_prefix_cde_max_mg_cm2": "0",
+          "actual_frost_output_events": 36,
+          "actual_partial_frost_output_dates": [
+            "2002-01-10",
+            "2002-01-11",
+            "2002-01-12",
+            "2002-01-13",
+            "2002-01-14",
+            "2002-01-15",
+            "2002-01-16",
+            "2002-01-17",
+            "2002-01-18",
+            "2002-01-19",
+            "2002-01-20",
+            "2002-01-21",
+            "2002-01-22",
+            "2002-01-23",
+            "2002-01-24",
+            "2002-01-25",
+            "2002-01-26",
+            "2002-01-27",
+            "2002-01-28",
+            "2002-01-29",
+            "2002-01-30",
+            "2002-01-31",
+            "2002-02-01",
+            "2002-02-02",
+            "2002-02-03",
+            "2002-02-04"
+          ],
+          "accumulated_water_equivalence_claimed": false
+        },
+        "native_samples": 7,
+        "exact_cold_windows": 3,
+        "convergence": {
+          "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+          "files": [
+            {
+              "path": "current/model3-water-d1-b5-dense/science/own-19/kernel.stdout",
+              "sha256": "18743c90f77732214da5c18ab7266ee2aa621b51529dcbb2a82dee4ffda62401"
+            },
+            {
+              "path": "current/model3-water-d1-b5-dense/science/own-19/original/donor.stdout",
+              "sha256": "c9050b71ba672f73b685e13eb91fb1da2eae51299dc0b055b320afcbb67d13f6"
+            },
+            {
+              "path": "current/model3-water-d1-b5-dense/science/own-19/original/swap.log",
+              "sha256": "8fd8def01b9f352d6581bb433e280c18dac43facac4dd57307380f5cc678cf99"
+            },
+            {
+              "path": "current/model3-water-d1-b5-dense/science/own-19/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            },
+            {
+              "path": "current/model3-water-d1-b5-dense/science/own-2/kernel.stdout",
+              "sha256": "62f81a2acaf406e5a5fdbab4e5aeb225ab74f279ba3d360bc3801d1aad4fa164"
+            },
+            {
+              "path": "current/model3-water-d1-b5-dense/science/own-2/original/donor.stdout",
+              "sha256": "9528bb9acd085aa225b1f2ab3a2988c0e4ee4097af0f7bc68daa6840a9d7805f"
+            },
+            {
+              "path": "current/model3-water-d1-b5-dense/science/own-2/original/swap.log",
+              "sha256": "ac68ccd43360cf605fde41c945841ed0d2d34d02f8b8059dac21d789823e37a8"
+            },
+            {
+              "path": "current/model3-water-d1-b5-dense/science/own-2/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            },
+            {
+              "path": "current/model3-water-d1-b5-dense/science/own-30/kernel.stdout",
+              "sha256": "08bd2065900f73a1972f2253b2e3d5b2245f469d719eff918642370e08f46ff9"
+            },
+            {
+              "path": "current/model3-water-d1-b5-dense/science/own-30/original/donor.stdout",
+              "sha256": "e005395cce7c1bf56127807a413dbdbaab92ebf362d58610e8244e4f1136fae9"
+            },
+            {
+              "path": "current/model3-water-d1-b5-dense/science/own-30/original/swap.log",
+              "sha256": "efd8e292d9a2f0b8610dba2ead146d25eb482c8b96f179e73eb56732764e08e0"
+            },
+            {
+              "path": "current/model3-water-d1-b5-dense/science/own-30/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            },
+            {
+              "path": "current/model3-water-d1-b5-dense/science/trajectory/kernel.stdout",
+              "sha256": "af4300e95d45b2c69a26f521192e73f5b87c116ec205e2678b08420f8ed7780e"
+            },
+            {
+              "path": "current/model3-water-d1-b5-dense/science/trajectory/original/donor.stdout",
+              "sha256": "0e6ba5a5ec440ef5eefa1bbe01a69ff9ce1090e460fb229688363b42a8add56a"
+            },
+            {
+              "path": "current/model3-water-d1-b5-dense/science/trajectory/original/swap.log",
+              "sha256": "a81d45941634ede2fd6bb939536a0c4d1505ff0a052d99934aefbf7d0f2508c9"
+            },
+            {
+              "path": "current/model3-water-d1-b5-dense/science/trajectory/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            }
+          ],
+          "unconverged_continuations": 0
+        },
+        "BUILD_sha256": "b1dfde874eca18c9df9ae736a5bf2597cb5e49383e31028c7d7e546db1c35634",
+        "controls": {
+          "actual_compiled_refusals": 18,
+          "accepted_mutant_model_days": 0,
+          "transactions": [
+            {
+              "start": 2,
+              "discard_replay_accept_complete_native_exact": true,
+              "recovered_next_day_physical_exact": true
+            },
+            {
+              "start": 19,
+              "discard_replay_accept_complete_native_exact": true,
+              "recovered_next_day_physical_exact": true,
+              "actual_active_frost_start": {
+                "original_temperature_min_C": -0.4663987134579763,
+                "original_temperature_max_C": 7.144571439764733,
+                "actual_TFROSTSTA_C": 0.0,
+                "actual_original_Frost_active": true
+              }
+            }
+          ]
+        },
+        "index": 2,
+        "current_source_custody": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "current_postimage_required": true,
+        "period_replayed_by_observer": false
+      },
+      {
+        "case": {
+          "name": "model4-cde-d1-b6-periodic",
+          "models": [
+            4,
+            4
+          ],
+          "effective_models": [
+            4,
+            4
+          ],
+          "kind": "cde",
+          "drainage": 1,
+          "bottom": 6,
+          "initial": 2,
+          "calendar": "regular",
+          "reset": 1,
+          "start": null,
+          "days": 35,
+          "implicit": 0,
+          "hysteresis": 0,
+          "explicit_oxygen": null,
+          "full_legacy_native_controls": true,
+          "active_frost_transactions": false,
+          "require_active_drainage": true
+        },
+        "actual_compiler_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "actual_controller_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "compiler": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+        "optimization": "O0",
+        "science": {
+          "days": 35,
+          "daily_water_max_cm": "4.1453E-14",
+          "daily_cde_max_mg_cm2": "2.923E-14",
+          "every_prefix_cde_max_mg_cm2": "4.543138820E-14",
+          "actual_frost_output_events": 6,
+          "actual_partial_frost_output_dates": [
+            "2002-01-14",
+            "2002-01-21",
+            "2002-01-28",
+            "2002-02-04"
+          ],
+          "accumulated_water_equivalence_claimed": false
+        },
+        "native_samples": 7,
+        "exact_cold_windows": 3,
+        "convergence": {
+          "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+          "files": [
+            {
+              "path": "current/model4-cde-d1-b6-periodic/science/own-19/kernel.stdout",
+              "sha256": "40703aef2b45c2a5ff7df97903defafddba04c8a6c75ebe45efb221f08b28b6c"
+            },
+            {
+              "path": "current/model4-cde-d1-b6-periodic/science/own-19/original/donor.stdout",
+              "sha256": "270652a22143dcd888870b858e43c7586118494fde2e50999ebd4aff2b809211"
+            },
+            {
+              "path": "current/model4-cde-d1-b6-periodic/science/own-19/original/swap.log",
+              "sha256": "a067199a34fb30c8c0e9a36797366ffb3c6e783c5a1b3ec74e8ad06633006358"
+            },
+            {
+              "path": "current/model4-cde-d1-b6-periodic/science/own-19/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            },
+            {
+              "path": "current/model4-cde-d1-b6-periodic/science/own-2/kernel.stdout",
+              "sha256": "77014135e6a9968b70ebd030c98f26bebc01f2389c6ae6e930aab960d4bde920"
+            },
+            {
+              "path": "current/model4-cde-d1-b6-periodic/science/own-2/original/donor.stdout",
+              "sha256": "09c1f2457a482b815ab7d7d5d524e7126d713b80fc0d01d65aa65bc351352ac2"
+            },
+            {
+              "path": "current/model4-cde-d1-b6-periodic/science/own-2/original/swap.log",
+              "sha256": "1e0e0cac479a3914572720bc7e7d25770f12b908a606d7dcf4ec04fcc2b55db1"
+            },
+            {
+              "path": "current/model4-cde-d1-b6-periodic/science/own-2/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            },
+            {
+              "path": "current/model4-cde-d1-b6-periodic/science/own-30/kernel.stdout",
+              "sha256": "b076c0861462cd485e8baeb7cb56d42bc076fa59ef4fac5d3e10fa98a6a18344"
+            },
+            {
+              "path": "current/model4-cde-d1-b6-periodic/science/own-30/original/donor.stdout",
+              "sha256": "5c194bc7536704f8ab4f9c3b6c4ccadb5bd92f7c887f9129fc81c1036395ecaa"
+            },
+            {
+              "path": "current/model4-cde-d1-b6-periodic/science/own-30/original/swap.log",
+              "sha256": "22655757f809a38225a926a6d4158b139ff0bd221f8bbed03d3ce30cdfa17f31"
+            },
+            {
+              "path": "current/model4-cde-d1-b6-periodic/science/own-30/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            },
+            {
+              "path": "current/model4-cde-d1-b6-periodic/science/trajectory/kernel.stdout",
+              "sha256": "e4fb444df620ae0326efb23b9e1f2b31943ffe51d7f5d3234344bbc61baba63e"
+            },
+            {
+              "path": "current/model4-cde-d1-b6-periodic/science/trajectory/original/donor.stdout",
+              "sha256": "fff6ba66e29a3a27d468253b4e308742fc599c1a761fcd0a0431d930acf714ee"
+            },
+            {
+              "path": "current/model4-cde-d1-b6-periodic/science/trajectory/original/swap.log",
+              "sha256": "0d786216a1c18e0508a3f5b291f6e2b8092fe32309a1139fa2a1cf28e8771338"
+            },
+            {
+              "path": "current/model4-cde-d1-b6-periodic/science/trajectory/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            }
+          ],
+          "unconverged_continuations": 0
+        },
+        "BUILD_sha256": "ece4297899c2196ff513e0583b7c99c3beacd82ef9bd01c6d1fa59936ae03fff",
+        "controls": {
+          "actual_compiled_refusals": 109,
+          "accepted_mutant_model_days": 0,
+          "transactions": [
+            {
+              "start": 2,
+              "discard_replay_accept_complete_native_exact": true,
+              "recovered_next_day_physical_exact": true
+            }
+          ]
+        },
+        "index": 3,
+        "current_source_custody": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "current_postimage_required": false,
+        "period_replayed_by_observer": false
+      },
+      {
+        "case": {
+          "name": "model5-water-d1-b8-monthly",
+          "models": [
+            5,
+            5
+          ],
+          "effective_models": [
+            5,
+            5
+          ],
+          "kind": "water",
+          "drainage": 1,
+          "bottom": 8,
+          "initial": 2,
+          "calendar": "monthly",
+          "reset": 0,
+          "start": null,
+          "days": 35,
+          "implicit": 0,
+          "hysteresis": 0,
+          "explicit_oxygen": null,
+          "full_legacy_native_controls": false,
+          "active_frost_transactions": false,
+          "require_active_drainage": true
+        },
+        "actual_compiler_source": "b4ffcc914453225562ffe0e847faa21a765432ce",
+        "actual_controller_source": "b4ffcc914453225562ffe0e847faa21a765432ce",
+        "compiler": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+        "optimization": "O0",
+        "science": {
+          "days": 35,
+          "daily_water_max_cm": "9.1E-15",
+          "daily_cde_max_mg_cm2": "0",
+          "every_prefix_cde_max_mg_cm2": "0",
+          "actual_frost_output_events": 2,
+          "actual_partial_frost_output_dates": [
+            "2002-01-31"
+          ],
+          "accumulated_water_equivalence_claimed": false
+        },
+        "native_samples": 7,
+        "exact_cold_windows": 3,
+        "convergence": {
+          "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+          "files": [
+            {
+              "path": "current/model5-water-d1-b8-monthly/science/own-19/kernel.stdout",
+              "sha256": "e6163eeba0812cef75bb184e9223de990b851aed88f1621f655ca175457d642d"
+            },
+            {
+              "path": "current/model5-water-d1-b8-monthly/science/own-19/original/donor.stdout",
+              "sha256": "4c8f24a753fef30b903cd458f61fff28a71cd54da1e997065a87e68914d1a3d6"
+            },
+            {
+              "path": "current/model5-water-d1-b8-monthly/science/own-19/original/swap.log",
+              "sha256": "cd41c34155e2404616900dbb8a7cb3038d7e5f2f7015afcaecbdff79055c2d99"
+            },
+            {
+              "path": "current/model5-water-d1-b8-monthly/science/own-19/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            },
+            {
+              "path": "current/model5-water-d1-b8-monthly/science/own-2/kernel.stdout",
+              "sha256": "54733c9ad230d8b7a6cf27d49e4e51ae7e1c3848bd6469a3dbcf78f65e993036"
+            },
+            {
+              "path": "current/model5-water-d1-b8-monthly/science/own-2/original/donor.stdout",
+              "sha256": "64210f69f05a73b9e0af22cbd8e6ceaa1d850c077018f8ac9691742cbb61a2de"
+            },
+            {
+              "path": "current/model5-water-d1-b8-monthly/science/own-2/original/swap.log",
+              "sha256": "a0b1b235b358a0e0c4106925cec13aaa062d4fcec402fd4fb34ad8b51e380bfd"
+            },
+            {
+              "path": "current/model5-water-d1-b8-monthly/science/own-2/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            },
+            {
+              "path": "current/model5-water-d1-b8-monthly/science/own-30/kernel.stdout",
+              "sha256": "bd636957cf0e1d25ead4fe924ef2c47e4b29441f37eba6c02ae337160528da7b"
+            },
+            {
+              "path": "current/model5-water-d1-b8-monthly/science/own-30/original/donor.stdout",
+              "sha256": "5262027df10651750cdee8a3c9133bcc212c3642579515181384aada3344d527"
+            },
+            {
+              "path": "current/model5-water-d1-b8-monthly/science/own-30/original/swap.log",
+              "sha256": "61501ea1892f7867509a03f13a4b61df74bcc850b8ddaa00939d1969c3e3952a"
+            },
+            {
+              "path": "current/model5-water-d1-b8-monthly/science/own-30/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            },
+            {
+              "path": "current/model5-water-d1-b8-monthly/science/trajectory/kernel.stdout",
+              "sha256": "d036c5d062f9279493e78fca2b27dd4b1afee0eed9401f2c21f2f1bd634bb199"
+            },
+            {
+              "path": "current/model5-water-d1-b8-monthly/science/trajectory/original/donor.stdout",
+              "sha256": "b925ee3145accce6f044ebca08746719d1516a46fab6b019a0197627f0e9bc0f"
+            },
+            {
+              "path": "current/model5-water-d1-b8-monthly/science/trajectory/original/swap.log",
+              "sha256": "b7f7d5fea6f73aa53fac24d6beb903172533b0cfc9400bea79a43f712feb37cd"
+            },
+            {
+              "path": "current/model5-water-d1-b8-monthly/science/trajectory/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            }
+          ],
+          "unconverged_continuations": 0
+        },
+        "BUILD_sha256": "94eacbe9b472ad0a74261d68cb4ffe1b99594def7780e1e8a1716e578a146bee",
+        "controls": {
+          "actual_compiled_refusals": 18,
+          "accepted_mutant_model_days": 0,
+          "transactions": [
+            {
+              "start": 2,
+              "discard_replay_accept_complete_native_exact": true,
+              "recovered_next_day_physical_exact": true
+            }
+          ]
+        },
+        "index": 4,
+        "current_source_custody": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "current_postimage_required": true,
+        "period_replayed_by_observer": false
+      },
+      {
+        "case": {
+          "name": "model6-cde-d0-b6-dates",
+          "models": [
+            6,
+            6
+          ],
+          "effective_models": [
+            6,
+            6
+          ],
+          "kind": "cde",
+          "drainage": 0,
+          "bottom": 6,
+          "initial": 1,
+          "calendar": "dates",
+          "reset": 1,
+          "start": null,
+          "days": 35,
+          "implicit": 0,
+          "hysteresis": 0,
+          "explicit_oxygen": null,
+          "full_legacy_native_controls": false,
+          "active_frost_transactions": false
+        },
+        "actual_compiler_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "actual_controller_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "compiler": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+        "optimization": "O0",
+        "science": {
+          "days": 35,
+          "daily_water_max_cm": "3.4764E-14",
+          "daily_cde_max_mg_cm2": "2.4E-14",
+          "every_prefix_cde_max_mg_cm2": "5.00018E-14",
+          "actual_frost_output_events": 3,
+          "actual_partial_frost_output_dates": [
+            "2002-01-31",
+            "2002-02-02"
+          ],
+          "accumulated_water_equivalence_claimed": false
+        },
+        "native_samples": 7,
+        "exact_cold_windows": 3,
+        "convergence": {
+          "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+          "files": [
+            {
+              "path": "current/model6-cde-d0-b6-dates/science/own-19/kernel.stdout",
+              "sha256": "0d258c5bd5c08bf47ac1ae315867cf6d628131697b59be983e2c1ead2655631e"
+            },
+            {
+              "path": "current/model6-cde-d0-b6-dates/science/own-19/original/donor.stdout",
+              "sha256": "c8a31eacf8cd56d8e78c9d80a7d0f51128fc4ed5d21ae0082fc9603aa137a087"
+            },
+            {
+              "path": "current/model6-cde-d0-b6-dates/science/own-19/original/swap.log",
+              "sha256": "63fd3f3e92ab0a813cf5745b07cdfdf923b73734e4287f72cd577e44f921a33f"
+            },
+            {
+              "path": "current/model6-cde-d0-b6-dates/science/own-19/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            },
+            {
+              "path": "current/model6-cde-d0-b6-dates/science/own-2/kernel.stdout",
+              "sha256": "c879f3aafedc8ffa7883a08f1d5701d27de3d146de15ab62e9c6dddeb9d31455"
+            },
+            {
+              "path": "current/model6-cde-d0-b6-dates/science/own-2/original/donor.stdout",
+              "sha256": "d9c556a7dd863419caa88c14a6e6b6c4bdcd2025263c7e70dc4352ca09c9b727"
+            },
+            {
+              "path": "current/model6-cde-d0-b6-dates/science/own-2/original/swap.log",
+              "sha256": "293de3b6aeac0033dd98505c08d9eb8ba95e8b2b8026712e14e2fd42bb8b5981"
+            },
+            {
+              "path": "current/model6-cde-d0-b6-dates/science/own-2/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            },
+            {
+              "path": "current/model6-cde-d0-b6-dates/science/own-30/kernel.stdout",
+              "sha256": "5ce9fd65f95ead1cea08ce7eb73653919c2eabaf23f51c42372f4f307f6dc636"
+            },
+            {
+              "path": "current/model6-cde-d0-b6-dates/science/own-30/original/donor.stdout",
+              "sha256": "d0cb8c38fc8fbefdff1c673f26f2f8ffe3188287b5dc9e20d36bf1c33230fece"
+            },
+            {
+              "path": "current/model6-cde-d0-b6-dates/science/own-30/original/swap.log",
+              "sha256": "0cf0ff0c02de0e5d00d54aeeb451ea01036642997b4e720cc73477018f6dbeee"
+            },
+            {
+              "path": "current/model6-cde-d0-b6-dates/science/own-30/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            },
+            {
+              "path": "current/model6-cde-d0-b6-dates/science/trajectory/kernel.stdout",
+              "sha256": "557df2527992e9a2b198546cf5828b20645c662d806011cee89af9fff53c4c12"
+            },
+            {
+              "path": "current/model6-cde-d0-b6-dates/science/trajectory/original/donor.stdout",
+              "sha256": "5724d50c989cceb9725aa93218ea46742e0b61adbbe8943506f30d7736773a39"
+            },
+            {
+              "path": "current/model6-cde-d0-b6-dates/science/trajectory/original/swap.log",
+              "sha256": "ac1253343311b8c9b418e07b51064831eda7d437fc80165efd9c40d1fccbf322"
+            },
+            {
+              "path": "current/model6-cde-d0-b6-dates/science/trajectory/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            }
+          ],
+          "unconverged_continuations": 0
+        },
+        "BUILD_sha256": "45cab95cf244dc9a7405541dd81e2589f649b20d75bdc96b289c229d93134e12",
+        "controls": {
+          "actual_compiled_refusals": 18,
+          "accepted_mutant_model_days": 0,
+          "transactions": [
+            {
+              "start": 2,
+              "discard_replay_accept_complete_native_exact": true,
+              "recovered_next_day_physical_exact": true
+            }
+          ]
+        },
+        "index": 5,
+        "current_source_custody": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "current_postimage_required": false,
+        "period_replayed_by_observer": false
+      },
+      {
+        "case": {
+          "name": "model7-cde-d1-b8-dense",
+          "models": [
+            7,
+            7
+          ],
+          "effective_models": [
+            7,
+            7
+          ],
+          "kind": "cde",
+          "drainage": 1,
+          "bottom": 8,
+          "initial": 1,
+          "calendar": "dense",
+          "reset": 1,
+          "start": null,
+          "days": 35,
+          "implicit": 0,
+          "hysteresis": 0,
+          "explicit_oxygen": null,
+          "full_legacy_native_controls": false,
+          "active_frost_transactions": true
+        },
+        "actual_compiler_source": "b4ffcc914453225562ffe0e847faa21a765432ce",
+        "actual_controller_source": "b4ffcc914453225562ffe0e847faa21a765432ce",
+        "compiler": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+        "optimization": "O0",
+        "science": {
+          "days": 35,
+          "daily_water_max_cm": "8E-15",
+          "daily_cde_max_mg_cm2": "2.7912150185016558E-14",
+          "every_prefix_cde_max_mg_cm2": "2.3572611920055740124001221935028798E-14",
+          "actual_frost_output_events": 36,
+          "actual_partial_frost_output_dates": [
+            "2002-01-11",
+            "2002-01-12",
+            "2002-01-13",
+            "2002-01-14",
+            "2002-01-15",
+            "2002-01-16",
+            "2002-01-17",
+            "2002-01-18",
+            "2002-01-19",
+            "2002-01-20",
+            "2002-01-21",
+            "2002-01-22",
+            "2002-01-23",
+            "2002-01-24",
+            "2002-01-25",
+            "2002-01-26",
+            "2002-01-27",
+            "2002-01-28",
+            "2002-01-29",
+            "2002-01-30",
+            "2002-01-31",
+            "2002-02-01",
+            "2002-02-02",
+            "2002-02-03",
+            "2002-02-04"
+          ],
+          "accumulated_water_equivalence_claimed": false
+        },
+        "native_samples": 7,
+        "exact_cold_windows": 3,
+        "convergence": {
+          "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+          "files": [
+            {
+              "path": "current/model7-cde-d1-b8-dense/science/own-19/kernel.stdout",
+              "sha256": "6a20d31220d1470fd955cd81c0b7dff3fb6a8177ee400b7ca524d100bfbd3c89"
+            },
+            {
+              "path": "current/model7-cde-d1-b8-dense/science/own-19/original/donor.stdout",
+              "sha256": "44dbec4e8f5a94fd9d7fed8776f8cfeed89aef5f12d1d516347bbc5ef8f1ea4b"
+            },
+            {
+              "path": "current/model7-cde-d1-b8-dense/science/own-19/original/swap.log",
+              "sha256": "09acedfc5203dbcf9c25f437ba80b258f7c5927882b5ee5223b3ce2a992160a8"
+            },
+            {
+              "path": "current/model7-cde-d1-b8-dense/science/own-19/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            },
+            {
+              "path": "current/model7-cde-d1-b8-dense/science/own-2/kernel.stdout",
+              "sha256": "89a60d314461e8f5f05cfa79c648d6de8090c421e54e1ef86f3d5ee0c5048f92"
+            },
+            {
+              "path": "current/model7-cde-d1-b8-dense/science/own-2/original/donor.stdout",
+              "sha256": "cdfaff4d59dbbe080272211cdbf13b0ed5880931099128727836006a2494477e"
+            },
+            {
+              "path": "current/model7-cde-d1-b8-dense/science/own-2/original/swap.log",
+              "sha256": "264e1e8acde9f1597f8e9bdae610284af49be5366ac2913036b92c53d31ce43b"
+            },
+            {
+              "path": "current/model7-cde-d1-b8-dense/science/own-2/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            },
+            {
+              "path": "current/model7-cde-d1-b8-dense/science/own-30/kernel.stdout",
+              "sha256": "1ffa7441562a4574f4c85ef282856f81083801e5849396b1893bace9f585fa8a"
+            },
+            {
+              "path": "current/model7-cde-d1-b8-dense/science/own-30/original/donor.stdout",
+              "sha256": "9e3c3f343c489b4c38e09f30a353f8fbb402f1bdfedae7a562df885dbde23bf6"
+            },
+            {
+              "path": "current/model7-cde-d1-b8-dense/science/own-30/original/swap.log",
+              "sha256": "5a4c3f60a081033911cdac12558af3572defc5d43193346f0f7a8c55c1494b23"
+            },
+            {
+              "path": "current/model7-cde-d1-b8-dense/science/own-30/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            },
+            {
+              "path": "current/model7-cde-d1-b8-dense/science/trajectory/kernel.stdout",
+              "sha256": "25f10e6145863181d8d8c63d379a17071d7224dea1eaf4e5b7ace00f0fc08072"
+            },
+            {
+              "path": "current/model7-cde-d1-b8-dense/science/trajectory/original/donor.stdout",
+              "sha256": "c7549a29dfaf03944b678252f6fa3fcb1b8df62153fe595c0e3003b20df291aa"
+            },
+            {
+              "path": "current/model7-cde-d1-b8-dense/science/trajectory/original/swap.log",
+              "sha256": "983ad33fbc3c4e95c1e74159bbe47050afaf86c79f0d385427553194e6bb96f2"
+            },
+            {
+              "path": "current/model7-cde-d1-b8-dense/science/trajectory/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            }
+          ],
+          "unconverged_continuations": 0
+        },
+        "BUILD_sha256": "1d5e60319a09cca9b639bc8f8aa094100fe6d3dc5aad94d3131b9aa0f2251fcf",
+        "controls": {
+          "actual_compiled_refusals": 18,
+          "accepted_mutant_model_days": 0,
+          "transactions": [
+            {
+              "start": 2,
+              "discard_replay_accept_complete_native_exact": true,
+              "recovered_next_day_physical_exact": true
+            },
+            {
+              "start": 19,
+              "discard_replay_accept_complete_native_exact": true,
+              "recovered_next_day_physical_exact": true,
+              "actual_active_frost_start": {
+                "original_temperature_min_C": -0.4662853317494227,
+                "original_temperature_max_C": 7.182981801266887,
+                "actual_TFROSTSTA_C": 0.0,
+                "actual_original_Frost_active": true
+              }
+            }
+          ]
+        },
+        "index": 6,
+        "current_source_custody": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "current_postimage_required": true,
+        "period_replayed_by_observer": false
+      },
+      {
+        "case": {
+          "name": "model8-water-d0-b6-periodic",
+          "models": [
+            8,
+            8
+          ],
+          "effective_models": [
+            8,
+            8
+          ],
+          "kind": "water",
+          "drainage": 0,
+          "bottom": 6,
+          "initial": 2,
+          "calendar": "regular",
+          "reset": 0,
+          "start": null,
+          "days": 35,
+          "implicit": 0,
+          "hysteresis": 0,
+          "explicit_oxygen": null,
+          "full_legacy_native_controls": false,
+          "active_frost_transactions": false
+        },
+        "actual_compiler_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "actual_controller_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "compiler": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+        "optimization": "O0",
+        "science": {
+          "days": 35,
+          "daily_water_max_cm": "3.094E-14",
+          "daily_cde_max_mg_cm2": "0",
+          "every_prefix_cde_max_mg_cm2": "0",
+          "actual_frost_output_events": 6,
+          "actual_partial_frost_output_dates": [
+            "2002-01-14",
+            "2002-01-21",
+            "2002-01-28",
+            "2002-02-04"
+          ],
+          "accumulated_water_equivalence_claimed": false
+        },
+        "native_samples": 7,
+        "exact_cold_windows": 3,
+        "convergence": {
+          "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+          "files": [
+            {
+              "path": "current/model8-water-d0-b6-periodic/science/own-19/kernel.stdout",
+              "sha256": "e7f7197795d4d25fc6bf4f755d18eedf35b9ecd6bd7fd9fb134e46fa929878f6"
+            },
+            {
+              "path": "current/model8-water-d0-b6-periodic/science/own-19/original/donor.stdout",
+              "sha256": "912496a272d859e4909ec796f7f70c4ddb3cf7c7ec92602b9c4cb33adf9b75ab"
+            },
+            {
+              "path": "current/model8-water-d0-b6-periodic/science/own-19/original/swap.log",
+              "sha256": "53d7cb1adf2aa2c3c01f7b52918d1a4596a6585b58a4213eb0706a2f5a24886b"
+            },
+            {
+              "path": "current/model8-water-d0-b6-periodic/science/own-19/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            },
+            {
+              "path": "current/model8-water-d0-b6-periodic/science/own-2/kernel.stdout",
+              "sha256": "c879f3aafedc8ffa7883a08f1d5701d27de3d146de15ab62e9c6dddeb9d31455"
+            },
+            {
+              "path": "current/model8-water-d0-b6-periodic/science/own-2/original/donor.stdout",
+              "sha256": "7116dfad0f3bf5e545f1e8e9a3a7941def1b2cc7c3b5f61d55e4e304b43fa874"
+            },
+            {
+              "path": "current/model8-water-d0-b6-periodic/science/own-2/original/swap.log",
+              "sha256": "bd992b5377d0668ef78bd8e53b14a77907d503e1acf7469f15ace92c93042ebf"
+            },
+            {
+              "path": "current/model8-water-d0-b6-periodic/science/own-2/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            },
+            {
+              "path": "current/model8-water-d0-b6-periodic/science/own-30/kernel.stdout",
+              "sha256": "65acb5583a10608ac20853b1dd63ccc9501df56ee1f909a4b566ff02dd404b1f"
+            },
+            {
+              "path": "current/model8-water-d0-b6-periodic/science/own-30/original/donor.stdout",
+              "sha256": "2e47d2a6e58b9201f4436c71658499d37330cb1c41f4d24834e6a7b56fa55e15"
+            },
+            {
+              "path": "current/model8-water-d0-b6-periodic/science/own-30/original/swap.log",
+              "sha256": "e508d4d303d29592ff9fd5f8e73df6fdd0430a2c3bec790861b671dfadd6f44d"
+            },
+            {
+              "path": "current/model8-water-d0-b6-periodic/science/own-30/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            },
+            {
+              "path": "current/model8-water-d0-b6-periodic/science/trajectory/kernel.stdout",
+              "sha256": "724b600976df4f217dafb3e5d47914ca974a9cf0aa800d47be603cbc4ac2dd28"
+            },
+            {
+              "path": "current/model8-water-d0-b6-periodic/science/trajectory/original/donor.stdout",
+              "sha256": "debf18def8a82617a48157f5decfef77292f7865b16471161133a541ab8a5537"
+            },
+            {
+              "path": "current/model8-water-d0-b6-periodic/science/trajectory/original/swap.log",
+              "sha256": "c9ba7e167de7d238eb9d27e33f8c1bdd6d9731f1b1b89f5622bae188724fdd66"
+            },
+            {
+              "path": "current/model8-water-d0-b6-periodic/science/trajectory/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            }
+          ],
+          "unconverged_continuations": 0
+        },
+        "BUILD_sha256": "cce108690c540aa67a8b50e23053b167e8aa080a727f02d7c3b96071b318c4ce",
+        "controls": {
+          "actual_compiled_refusals": 18,
+          "accepted_mutant_model_days": 0,
+          "transactions": [
+            {
+              "start": 2,
+              "discard_replay_accept_complete_native_exact": true,
+              "recovered_next_day_physical_exact": true
+            }
+          ]
+        },
+        "index": 7,
+        "current_source_custody": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "current_postimage_required": false,
+        "period_replayed_by_observer": false
+      },
+      {
+        "case": {
+          "name": "model9-cde-d1-b6-monthly",
+          "models": [
+            9,
+            9
+          ],
+          "effective_models": [
+            9,
+            9
+          ],
+          "kind": "cde",
+          "drainage": 1,
+          "bottom": 6,
+          "initial": 1,
+          "calendar": "monthly",
+          "reset": 1,
+          "start": null,
+          "days": 35,
+          "implicit": 0,
+          "hysteresis": 0,
+          "explicit_oxygen": null,
+          "full_legacy_native_controls": false,
+          "active_frost_transactions": true
+        },
+        "actual_compiler_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "actual_controller_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "compiler": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+        "optimization": "O0",
+        "science": {
+          "days": 35,
+          "daily_water_max_cm": "3.7253E-14",
+          "daily_cde_max_mg_cm2": "3.279E-14",
+          "every_prefix_cde_max_mg_cm2": "2.1160980264286E-14",
+          "actual_frost_output_events": 2,
+          "actual_partial_frost_output_dates": [
+            "2002-01-31"
+          ],
+          "accumulated_water_equivalence_claimed": false
+        },
+        "native_samples": 7,
+        "exact_cold_windows": 3,
+        "convergence": {
+          "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+          "files": [
+            {
+              "path": "current/model9-cde-d1-b6-monthly/science/own-19/kernel.stdout",
+              "sha256": "2817b9f6f1203abb6fe86535575d04119b56a03bc8feaaa772cc6543f48c0f7c"
+            },
+            {
+              "path": "current/model9-cde-d1-b6-monthly/science/own-19/original/donor.stdout",
+              "sha256": "ed8544fb3b5810ce342c7998b6ecdf5c37737a1e8f29c8629c973f90b2d261f1"
+            },
+            {
+              "path": "current/model9-cde-d1-b6-monthly/science/own-19/original/swap.log",
+              "sha256": "602000e2ea1a0cb1569a7bf5e800a3dc396658be08ac2d9f7aee75368fb069eb"
+            },
+            {
+              "path": "current/model9-cde-d1-b6-monthly/science/own-19/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            },
+            {
+              "path": "current/model9-cde-d1-b6-monthly/science/own-2/kernel.stdout",
+              "sha256": "1a31882d2f2dd16486bf49ae9985942f217215e546e4bd9e90d3816ee62c252d"
+            },
+            {
+              "path": "current/model9-cde-d1-b6-monthly/science/own-2/original/donor.stdout",
+              "sha256": "bd34a78957c0c70dc79c2b467cbde7fed37752afce1a87b24236a34b5a650da9"
+            },
+            {
+              "path": "current/model9-cde-d1-b6-monthly/science/own-2/original/swap.log",
+              "sha256": "07e391c3d78dc3c218fd062073362efb2a08ddc71534368fef0f8146c48a6f49"
+            },
+            {
+              "path": "current/model9-cde-d1-b6-monthly/science/own-2/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            },
+            {
+              "path": "current/model9-cde-d1-b6-monthly/science/own-30/kernel.stdout",
+              "sha256": "cad664b85d597c68ab8d952e26bb973d7a94b4d7f8bc166a81dd801d298dc6da"
+            },
+            {
+              "path": "current/model9-cde-d1-b6-monthly/science/own-30/original/donor.stdout",
+              "sha256": "3ccefb470c5dc001ee7d5b51aac0964c212c4e238ea6625a0420d8202b3449e0"
+            },
+            {
+              "path": "current/model9-cde-d1-b6-monthly/science/own-30/original/swap.log",
+              "sha256": "8150f4f50a032e963cbbca7e27f66e53c185b531c5aba4ec3699a9ef4b62fdf7"
+            },
+            {
+              "path": "current/model9-cde-d1-b6-monthly/science/own-30/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            },
+            {
+              "path": "current/model9-cde-d1-b6-monthly/science/trajectory/kernel.stdout",
+              "sha256": "4daa5f58bd9c93150615c0521bf989f41080d8a718e9273dc58899ce52118891"
+            },
+            {
+              "path": "current/model9-cde-d1-b6-monthly/science/trajectory/original/donor.stdout",
+              "sha256": "82ad74ecc456e065c729d1cdce8a8999e8ecda37b60bab8f56a456ec7dacb4c8"
+            },
+            {
+              "path": "current/model9-cde-d1-b6-monthly/science/trajectory/original/swap.log",
+              "sha256": "c3523866d59c7f4fb1cb6ae273a4d08f22d57a6ec3088931449023d86faa9f38"
+            },
+            {
+              "path": "current/model9-cde-d1-b6-monthly/science/trajectory/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            }
+          ],
+          "unconverged_continuations": 0
+        },
+        "BUILD_sha256": "73328f4be60e00c2b05856e3760ac6c4489fae87ece594e800430951fc92d0c5",
+        "controls": {
+          "actual_compiled_refusals": 18,
+          "accepted_mutant_model_days": 0,
+          "transactions": [
+            {
+              "start": 2,
+              "discard_replay_accept_complete_native_exact": true,
+              "recovered_next_day_physical_exact": true
+            },
+            {
+              "start": 19,
+              "discard_replay_accept_complete_native_exact": true,
+              "recovered_next_day_physical_exact": true,
+              "actual_active_frost_start": {
+                "original_temperature_min_C": -0.464220631537397,
+                "original_temperature_max_C": 7.296331327315713,
+                "actual_TFROSTSTA_C": 0.0,
+                "actual_original_Frost_active": true
+              }
+            }
+          ]
+        },
+        "index": 8,
+        "current_source_custody": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "current_postimage_required": false,
+        "period_replayed_by_observer": false
+      },
+      {
+        "case": {
+          "name": "model10-water-d1-b8-dates",
+          "models": [
+            10,
+            10
+          ],
+          "effective_models": [
+            10,
+            10
+          ],
+          "kind": "water",
+          "drainage": 1,
+          "bottom": 8,
+          "initial": 2,
+          "calendar": "dates",
+          "reset": 0,
+          "start": null,
+          "days": 35,
+          "implicit": 0,
+          "hysteresis": 0,
+          "explicit_oxygen": null,
+          "full_legacy_native_controls": false,
+          "active_frost_transactions": false,
+          "require_active_drainage": true
+        },
+        "actual_compiler_source": "9d53d55a0ae5aa7567ee62bfcbc60fece1629905",
+        "actual_controller_source": "9d53d55a0ae5aa7567ee62bfcbc60fece1629905",
+        "compiler": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+        "optimization": "O0",
+        "science": {
+          "days": 35,
+          "daily_water_max_cm": "8.537E-15",
+          "daily_cde_max_mg_cm2": "0",
+          "every_prefix_cde_max_mg_cm2": "0",
+          "actual_frost_output_events": 3,
+          "actual_partial_frost_output_dates": [
+            "2002-01-31",
+            "2002-02-02"
+          ],
+          "accumulated_water_equivalence_claimed": false
+        },
+        "native_samples": 7,
+        "exact_cold_windows": 3,
+        "convergence": {
+          "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+          "files": [
+            {
+              "path": "current/model10-water-d1-b8-dates/science/own-19/kernel.stdout",
+              "sha256": "2bd02b4428070d9c0e00c0b838bc52ba54678a8b684a22a575bdaf011684f1ca"
+            },
+            {
+              "path": "current/model10-water-d1-b8-dates/science/own-19/original/donor.stdout",
+              "sha256": "cbfdab23131ad61ad91771b4580ebd283b8eb9fc9116740ea14b08e4e40c1de5"
+            },
+            {
+              "path": "current/model10-water-d1-b8-dates/science/own-19/original/swap.log",
+              "sha256": "de4592f9d743fc9d7fd3aa59109523264955d5a33ebcc6c57d6a31cdd80b232c"
+            },
+            {
+              "path": "current/model10-water-d1-b8-dates/science/own-19/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            },
+            {
+              "path": "current/model10-water-d1-b8-dates/science/own-2/kernel.stdout",
+              "sha256": "a0647c83c7b03a97dca134b928ee5d90ff4b4dae1839b2de106651fa4dd44009"
+            },
+            {
+              "path": "current/model10-water-d1-b8-dates/science/own-2/original/donor.stdout",
+              "sha256": "776d7ec6125af2f80e9093044a17865121562b47ba8ce9831d10a02a1c9beeef"
+            },
+            {
+              "path": "current/model10-water-d1-b8-dates/science/own-2/original/swap.log",
+              "sha256": "dd4bf7be4b24cfee84c9bde0cd2bfb12273923015a69c51730abb986833f7987"
+            },
+            {
+              "path": "current/model10-water-d1-b8-dates/science/own-2/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            },
+            {
+              "path": "current/model10-water-d1-b8-dates/science/own-30/kernel.stdout",
+              "sha256": "1beab87361c2ef8d26ad541952310a9093aa3b299a5c637eeb30b6d9f94d613e"
+            },
+            {
+              "path": "current/model10-water-d1-b8-dates/science/own-30/original/donor.stdout",
+              "sha256": "90522d45524e7eb8e16b245fc1d27596e67f77d13b4684d8e01e0c3371ffd6f5"
+            },
+            {
+              "path": "current/model10-water-d1-b8-dates/science/own-30/original/swap.log",
+              "sha256": "63905d394c2228ea1ca2667fb7bf3ae1a4e74b5ae322d1e369ef5cc95ba2f994"
+            },
+            {
+              "path": "current/model10-water-d1-b8-dates/science/own-30/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            },
+            {
+              "path": "current/model10-water-d1-b8-dates/science/trajectory/kernel.stdout",
+              "sha256": "93d7de56cb8b6c03bc01b58fb22fba604fb123123c5f2c14f45db3c0c157e049"
+            },
+            {
+              "path": "current/model10-water-d1-b8-dates/science/trajectory/original/donor.stdout",
+              "sha256": "f0c62c8bc761442521349aa4acf0c438fba8150d72834c2dc6b1e3c9c4761aa2"
+            },
+            {
+              "path": "current/model10-water-d1-b8-dates/science/trajectory/original/swap.log",
+              "sha256": "77d068d0474d8123dddf058bbc743c4cb36a3ea6a628c590a3693031e2dad120"
+            },
+            {
+              "path": "current/model10-water-d1-b8-dates/science/trajectory/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            }
+          ],
+          "unconverged_continuations": 0
+        },
+        "BUILD_sha256": "055950c50f7048ef0579999af547655734bf64792ad0863bde8077dc31c3692a",
+        "controls": {
+          "actual_compiled_refusals": 18,
+          "accepted_mutant_model_days": 0,
+          "transactions": [
+            {
+              "start": 2,
+              "discard_replay_accept_complete_native_exact": true,
+              "recovered_next_day_physical_exact": true
+            }
+          ]
+        },
+        "index": 9,
+        "current_source_custody": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "current_postimage_required": true,
+        "period_replayed_by_observer": false
+      },
+      {
+        "case": {
+          "name": "scalar-model11-water-d0-b6-dates-year",
+          "models": [
+            11
+          ],
+          "effective_models": [
+            11,
+            11
+          ],
+          "kind": "water",
+          "drainage": 0,
+          "bottom": 6,
+          "initial": 2,
+          "calendar": "dates",
+          "reset": 0,
+          "start": "2002-12-25",
+          "days": 12,
+          "implicit": 0,
+          "hysteresis": 0,
+          "explicit_oxygen": null,
+          "full_legacy_native_controls": false,
+          "active_frost_transactions": false
+        },
+        "actual_compiler_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "actual_controller_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "compiler": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+        "optimization": "O0",
+        "science": {
+          "days": 12,
+          "daily_water_max_cm": "3.574E-13",
+          "daily_cde_max_mg_cm2": "0",
+          "every_prefix_cde_max_mg_cm2": "0",
+          "actual_frost_output_events": 2,
+          "actual_partial_frost_output_dates": [],
+          "accumulated_water_equivalence_claimed": false
+        },
+        "native_samples": 4,
+        "exact_cold_windows": 2,
+        "convergence": {
+          "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+          "files": [
+            {
+              "path": "current/scalar-model11-water-d0-b6-dates-year/science/own-2/kernel.stdout",
+              "sha256": "cc0f9840c69d7a2c6a2798e7ab9464b1ea3aa7dc074fd768b24f77018850147a"
+            },
+            {
+              "path": "current/scalar-model11-water-d0-b6-dates-year/science/own-2/original/donor.stdout",
+              "sha256": "cb536d4e72d9c5330634262b130923fb7b22091a1a7591e84a7b7aeb8175f51c"
+            },
+            {
+              "path": "current/scalar-model11-water-d0-b6-dates-year/science/own-2/original/swap.log",
+              "sha256": "4ba8f8466f758ac0b20c1c0100246855d8ebd588b2a5632155f5053d554ef0a2"
+            },
+            {
+              "path": "current/scalar-model11-water-d0-b6-dates-year/science/own-2/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            },
+            {
+              "path": "current/scalar-model11-water-d0-b6-dates-year/science/own-5/kernel.stdout",
+              "sha256": "42a211596ae7b893f75693114a456fcb4330f5b0714495015cccba70e8de980a"
+            },
+            {
+              "path": "current/scalar-model11-water-d0-b6-dates-year/science/own-5/original/donor.stdout",
+              "sha256": "02f0619cbf03f2f4a12547a162b9de1ae1297196772d05782b8ab568aaec850e"
+            },
+            {
+              "path": "current/scalar-model11-water-d0-b6-dates-year/science/own-5/original/swap.log",
+              "sha256": "09173b5495c177a1d95753930298e9c54f370092ee407f8d6092518bf75b2b40"
+            },
+            {
+              "path": "current/scalar-model11-water-d0-b6-dates-year/science/own-5/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            },
+            {
+              "path": "current/scalar-model11-water-d0-b6-dates-year/science/trajectory/kernel.stdout",
+              "sha256": "d4f0834e07ee748b90fb8595dd0465150657a31de9d66b94b78afe90da3b6d65"
+            },
+            {
+              "path": "current/scalar-model11-water-d0-b6-dates-year/science/trajectory/original/donor.stdout",
+              "sha256": "3a384f3ad79a102914795d98ae0ff7bbf75b5dc2fde0d106987520afbf3e767d"
+            },
+            {
+              "path": "current/scalar-model11-water-d0-b6-dates-year/science/trajectory/original/swap.log",
+              "sha256": "59abc8d549c879fe92ad18a7087f3d276e64ca122ba2eadc7ce0dcd7d589eb80"
+            },
+            {
+              "path": "current/scalar-model11-water-d0-b6-dates-year/science/trajectory/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            }
+          ],
+          "unconverged_continuations": 0
+        },
+        "BUILD_sha256": "e8ba5cdfde201ed9209ccae9b3715a6939f1b4af9e131eeea171677eeef09c05",
+        "controls": {
+          "actual_compiled_refusals": 18,
+          "accepted_mutant_model_days": 0,
+          "transactions": [
+            {
+              "start": 2,
+              "discard_replay_accept_complete_native_exact": true,
+              "recovered_next_day_physical_exact": true
+            }
+          ]
+        },
+        "index": 10,
+        "current_source_custody": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "current_postimage_required": false,
+        "period_replayed_by_observer": false
+      },
+      {
+        "case": {
+          "name": "mixed7-3-cde-d1-b5-dates-year",
+          "models": [
+            7,
+            3
+          ],
+          "effective_models": [
+            7,
+            3
+          ],
+          "kind": "cde",
+          "drainage": 1,
+          "bottom": 5,
+          "initial": 1,
+          "calendar": "dates",
+          "reset": 1,
+          "start": "2002-12-25",
+          "days": 12,
+          "implicit": 0,
+          "hysteresis": 0,
+          "explicit_oxygen": 1,
+          "full_legacy_native_controls": false,
+          "active_frost_transactions": false
+        },
+        "actual_compiler_source": "9d53d55a0ae5aa7567ee62bfcbc60fece1629905",
+        "actual_controller_source": "9d53d55a0ae5aa7567ee62bfcbc60fece1629905",
+        "compiler": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+        "optimization": "O0",
+        "science": {
+          "days": 12,
+          "daily_water_max_cm": "1.23778E-14",
+          "daily_cde_max_mg_cm2": "2.5248060873761114E-14",
+          "every_prefix_cde_max_mg_cm2": "2.7760959821421114E-14",
+          "actual_frost_output_events": 2,
+          "actual_partial_frost_output_dates": [],
+          "accumulated_water_equivalence_claimed": false
+        },
+        "native_samples": 4,
+        "exact_cold_windows": 2,
+        "convergence": {
+          "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+          "files": [
+            {
+              "path": "current/mixed7-3-cde-d1-b5-dates-year/science/own-2/kernel.stdout",
+              "sha256": "c3941d085779d1abc791b1f341590411a9aed028befe09d1ecb17d3672d69866"
+            },
+            {
+              "path": "current/mixed7-3-cde-d1-b5-dates-year/science/own-2/original/donor.stdout",
+              "sha256": "edcfd6f0aba62060f778c7a1e07d86b8fc0179401f86430797a04c226e68d00e"
+            },
+            {
+              "path": "current/mixed7-3-cde-d1-b5-dates-year/science/own-2/original/swap.log",
+              "sha256": "e29b98e601a84b4ef57c97e54cde3a6ed94a46a11d34fdd659e42b3fbf74b6d3"
+            },
+            {
+              "path": "current/mixed7-3-cde-d1-b5-dates-year/science/own-2/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            },
+            {
+              "path": "current/mixed7-3-cde-d1-b5-dates-year/science/own-5/kernel.stdout",
+              "sha256": "b715ad5234acfc2fdb55e436244dbe99decb1f2f5687d06a90ae6d12c001a8b0"
+            },
+            {
+              "path": "current/mixed7-3-cde-d1-b5-dates-year/science/own-5/original/donor.stdout",
+              "sha256": "9abc9b8f4c5ea755d56e523e2d48e8ea21d16401e74b7042d13e6b68bef64209"
+            },
+            {
+              "path": "current/mixed7-3-cde-d1-b5-dates-year/science/own-5/original/swap.log",
+              "sha256": "fe4bbca3e1bf248c59f373e1adb1177ba96a039bd19ecef244c0985184c7edca"
+            },
+            {
+              "path": "current/mixed7-3-cde-d1-b5-dates-year/science/own-5/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            },
+            {
+              "path": "current/mixed7-3-cde-d1-b5-dates-year/science/trajectory/kernel.stdout",
+              "sha256": "50c1eee0d87ee0e966979c9d5b8e9fb00d0c8ffcfafde8a5da787487cfe0422e"
+            },
+            {
+              "path": "current/mixed7-3-cde-d1-b5-dates-year/science/trajectory/original/donor.stdout",
+              "sha256": "eb4faeab28659aabec8aa64c579e8032c880dee63efe5edb029f1fb0cc2ef0ca"
+            },
+            {
+              "path": "current/mixed7-3-cde-d1-b5-dates-year/science/trajectory/original/swap.log",
+              "sha256": "3e7ad2b825efde31d7cb937b80283184543656fb841b53564823443519a307a0"
+            },
+            {
+              "path": "current/mixed7-3-cde-d1-b5-dates-year/science/trajectory/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            }
+          ],
+          "unconverged_continuations": 0
+        },
+        "BUILD_sha256": "e0077dde98923c87cc2ea04e949f63bc0aab445e03d56e39b5259f1fb2f54dcb",
+        "controls": {
+          "actual_compiled_refusals": 18,
+          "accepted_mutant_model_days": 0,
+          "transactions": [
+            {
+              "start": 2,
+              "discard_replay_accept_complete_native_exact": true,
+              "recovered_next_day_physical_exact": true
+            }
+          ]
+        },
+        "index": 11,
+        "current_source_custody": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "current_postimage_required": true,
+        "period_replayed_by_observer": false
+      },
+      {
+        "case": {
+          "name": "mixed1-7-water-d0-b6-monthly-year",
+          "models": [
+            1,
+            7
+          ],
+          "effective_models": [
+            1,
+            7
+          ],
+          "kind": "water",
+          "drainage": 0,
+          "bottom": 6,
+          "initial": 2,
+          "calendar": "monthly",
+          "reset": 1,
+          "start": "2002-12-25",
+          "days": 12,
+          "implicit": 0,
+          "hysteresis": 0,
+          "explicit_oxygen": null,
+          "full_legacy_native_controls": false,
+          "active_frost_transactions": false
+        },
+        "actual_compiler_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "actual_controller_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "compiler": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+        "optimization": "O0",
+        "science": {
+          "days": 12,
+          "daily_water_max_cm": "2.23208E-13",
+          "daily_cde_max_mg_cm2": "0",
+          "every_prefix_cde_max_mg_cm2": "0",
+          "actual_frost_output_events": 2,
+          "actual_partial_frost_output_dates": [],
+          "accumulated_water_equivalence_claimed": false
+        },
+        "native_samples": 4,
+        "exact_cold_windows": 2,
+        "convergence": {
+          "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+          "files": [
+            {
+              "path": "current/mixed1-7-water-d0-b6-monthly-year/science/own-2/kernel.stdout",
+              "sha256": "185bd68a1c35ef40ca10e79f0e6e1b04bb42f13e57b8314d78bd879271cd6abc"
+            },
+            {
+              "path": "current/mixed1-7-water-d0-b6-monthly-year/science/own-2/original/donor.stdout",
+              "sha256": "ffa2ba2e4e631bc92183f49a02f28555623e4e2aacae6173fe30c712b7da429b"
+            },
+            {
+              "path": "current/mixed1-7-water-d0-b6-monthly-year/science/own-2/original/swap.log",
+              "sha256": "7c930b2348e3f7ae87e89c4920f735901b85e24839c7ba219ab4aa3287c4d0cb"
+            },
+            {
+              "path": "current/mixed1-7-water-d0-b6-monthly-year/science/own-2/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            },
+            {
+              "path": "current/mixed1-7-water-d0-b6-monthly-year/science/own-5/kernel.stdout",
+              "sha256": "cae77955a0258409a4091940d5e9fdfa2d9deb3533855a43ec0c1ecd299a6c01"
+            },
+            {
+              "path": "current/mixed1-7-water-d0-b6-monthly-year/science/own-5/original/donor.stdout",
+              "sha256": "28724daaa4a653172b687e8b806ff7e1cc8698912d047608a5a3921717d487b5"
+            },
+            {
+              "path": "current/mixed1-7-water-d0-b6-monthly-year/science/own-5/original/swap.log",
+              "sha256": "a68f15f03739bf1e4ffe5f2f7137128fbf7a47945174ab98c02291d681e7629d"
+            },
+            {
+              "path": "current/mixed1-7-water-d0-b6-monthly-year/science/own-5/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            },
+            {
+              "path": "current/mixed1-7-water-d0-b6-monthly-year/science/trajectory/kernel.stdout",
+              "sha256": "9ddd0054f27733dcb6f57aea180ed70108127ea480f7ae94b6153dd8d2612193"
+            },
+            {
+              "path": "current/mixed1-7-water-d0-b6-monthly-year/science/trajectory/original/donor.stdout",
+              "sha256": "eb6debcad777176348aa97cd08391cbd37f27eb7849bebce2087126e4d6b617c"
+            },
+            {
+              "path": "current/mixed1-7-water-d0-b6-monthly-year/science/trajectory/original/swap.log",
+              "sha256": "22aa94d6a4fd4171cc95bbca2f28ca9011bc4c8ec00e6cb6664e6614aa036a3c"
+            },
+            {
+              "path": "current/mixed1-7-water-d0-b6-monthly-year/science/trajectory/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            }
+          ],
+          "unconverged_continuations": 0
+        },
+        "BUILD_sha256": "d4368b09225c57b86eb37a438f49e9bccd98bcc479109a9a31ffc3b5321fc618",
+        "controls": {
+          "actual_compiled_refusals": 18,
+          "accepted_mutant_model_days": 0,
+          "transactions": [
+            {
+              "start": 2,
+              "discard_replay_accept_complete_native_exact": true,
+              "recovered_next_day_physical_exact": true
+            }
+          ]
+        },
+        "index": 12,
+        "current_source_custody": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "current_postimage_required": false,
+        "period_replayed_by_observer": false
+      },
+      {
+        "case": {
+          "name": "mixed11-8-cde-d1-b8-periodic-year",
+          "models": [
+            11,
+            8
+          ],
+          "effective_models": [
+            11,
+            8
+          ],
+          "kind": "cde",
+          "drainage": 1,
+          "bottom": 8,
+          "initial": 1,
+          "calendar": "regular",
+          "reset": 0,
+          "start": "2002-12-25",
+          "days": 12,
+          "implicit": 0,
+          "hysteresis": 0,
+          "explicit_oxygen": null,
+          "full_legacy_native_controls": false,
+          "active_frost_transactions": false
+        },
+        "actual_compiler_source": "9d53d55a0ae5aa7567ee62bfcbc60fece1629905",
+        "actual_controller_source": "9d53d55a0ae5aa7567ee62bfcbc60fece1629905",
+        "compiler": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+        "optimization": "O0",
+        "science": {
+          "days": 12,
+          "daily_water_max_cm": "7.2698E-15",
+          "daily_cde_max_mg_cm2": "2.315348E-14",
+          "every_prefix_cde_max_mg_cm2": "2.1915868314950942E-14",
+          "actual_frost_output_events": 2,
+          "actual_partial_frost_output_dates": [],
+          "accumulated_water_equivalence_claimed": false
+        },
+        "native_samples": 4,
+        "exact_cold_windows": 2,
+        "convergence": {
+          "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+          "files": [
+            {
+              "path": "current/mixed11-8-cde-d1-b8-periodic-year/science/own-2/kernel.stdout",
+              "sha256": "fd950968ded1cd7883b94ae739acb4b6208d40ca9ebfc069c5aadb867cc2a593"
+            },
+            {
+              "path": "current/mixed11-8-cde-d1-b8-periodic-year/science/own-2/original/donor.stdout",
+              "sha256": "bc16b69a1cbeda1a31a726caa4e50b1acab5ef754b9747630fdd2e3104dd0346"
+            },
+            {
+              "path": "current/mixed11-8-cde-d1-b8-periodic-year/science/own-2/original/swap.log",
+              "sha256": "8cbcfcdf1e83ba4b8434c7ad8e75dede00ee5875b1806e5e2b72c431c3ef7e72"
+            },
+            {
+              "path": "current/mixed11-8-cde-d1-b8-periodic-year/science/own-2/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            },
+            {
+              "path": "current/mixed11-8-cde-d1-b8-periodic-year/science/own-5/kernel.stdout",
+              "sha256": "3ac50eed21b9b25314f339b2b9754d1019fd13d9b84aba8b52c9b6e90204412c"
+            },
+            {
+              "path": "current/mixed11-8-cde-d1-b8-periodic-year/science/own-5/original/donor.stdout",
+              "sha256": "a53daa53506facf9e355116d17601ba0e5755b81731691af0596d6d5de3ed7ea"
+            },
+            {
+              "path": "current/mixed11-8-cde-d1-b8-periodic-year/science/own-5/original/swap.log",
+              "sha256": "d761e2051b9ee66bbed51b080b0f343401a402da5ff33656363dc83f1e0f1060"
+            },
+            {
+              "path": "current/mixed11-8-cde-d1-b8-periodic-year/science/own-5/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            },
+            {
+              "path": "current/mixed11-8-cde-d1-b8-periodic-year/science/trajectory/kernel.stdout",
+              "sha256": "c32f0b597301d7bca3f1c2444c597eeb826b7d70f9e6df93c426ea15d09d2e80"
+            },
+            {
+              "path": "current/mixed11-8-cde-d1-b8-periodic-year/science/trajectory/original/donor.stdout",
+              "sha256": "bb144c8f9bbd844747469b54f1b488901c84f2cead48434c168453d7d6d5878d"
+            },
+            {
+              "path": "current/mixed11-8-cde-d1-b8-periodic-year/science/trajectory/original/swap.log",
+              "sha256": "5a15f30b9342b8dc1d9cc3bf2f594580045cdb0b79f835156268a609d76d3938"
+            },
+            {
+              "path": "current/mixed11-8-cde-d1-b8-periodic-year/science/trajectory/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            }
+          ],
+          "unconverged_continuations": 0
+        },
+        "BUILD_sha256": "1e5a364e64a0f0cdbd5497437e29cc82f77fbf2e64a1fbc761396bec0826ab5e",
+        "controls": {
+          "actual_compiled_refusals": 18,
+          "accepted_mutant_model_days": 0,
+          "transactions": [
+            {
+              "start": 2,
+              "discard_replay_accept_complete_native_exact": true,
+              "recovered_next_day_physical_exact": true
+            }
+          ]
+        },
+        "index": 13,
+        "current_source_custody": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "current_postimage_required": true,
+        "period_replayed_by_observer": false
+      },
+      {
+        "case": {
+          "name": "model3-water-d0-b6-monthly",
+          "models": [
+            3,
+            3
+          ],
+          "effective_models": [
+            3,
+            3
+          ],
+          "kind": "water",
+          "drainage": 0,
+          "bottom": 6,
+          "initial": 1,
+          "calendar": "monthly",
+          "reset": 1,
+          "start": null,
+          "days": 35,
+          "implicit": 0,
+          "hysteresis": 0,
+          "explicit_oxygen": 1,
+          "full_legacy_native_controls": false,
+          "active_frost_transactions": false
+        },
+        "actual_compiler_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "actual_controller_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "compiler": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+        "optimization": "O0",
+        "science": {
+          "days": 35,
+          "daily_water_max_cm": "3.4764E-14",
+          "daily_cde_max_mg_cm2": "0",
+          "every_prefix_cde_max_mg_cm2": "0",
+          "actual_frost_output_events": 2,
+          "actual_partial_frost_output_dates": [
+            "2002-01-31"
+          ],
+          "accumulated_water_equivalence_claimed": false
+        },
+        "native_samples": 7,
+        "exact_cold_windows": 3,
+        "convergence": {
+          "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+          "files": [
+            {
+              "path": "current/model3-water-d0-b6-monthly/science/own-19/kernel.stdout",
+              "sha256": "0d258c5bd5c08bf47ac1ae315867cf6d628131697b59be983e2c1ead2655631e"
+            },
+            {
+              "path": "current/model3-water-d0-b6-monthly/science/own-19/original/donor.stdout",
+              "sha256": "aea57ddc11c0aec0def1643a7d83b587ac5cf132821bcdad38bfa2ab993e347b"
+            },
+            {
+              "path": "current/model3-water-d0-b6-monthly/science/own-19/original/swap.log",
+              "sha256": "499ea1694001114aba13e79e01d5d0d35148c4b6317f940472518b55e8f2010f"
+            },
+            {
+              "path": "current/model3-water-d0-b6-monthly/science/own-19/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            },
+            {
+              "path": "current/model3-water-d0-b6-monthly/science/own-2/kernel.stdout",
+              "sha256": "c879f3aafedc8ffa7883a08f1d5701d27de3d146de15ab62e9c6dddeb9d31455"
+            },
+            {
+              "path": "current/model3-water-d0-b6-monthly/science/own-2/original/donor.stdout",
+              "sha256": "847438390409f024610ba90004310ccfce33077c7014f6f20eee3a8a7717df5e"
+            },
+            {
+              "path": "current/model3-water-d0-b6-monthly/science/own-2/original/swap.log",
+              "sha256": "757073a2d8e20c6993400e80e59be39417fbaef70da265c43ff1b6dd9c1d1c0d"
+            },
+            {
+              "path": "current/model3-water-d0-b6-monthly/science/own-2/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            },
+            {
+              "path": "current/model3-water-d0-b6-monthly/science/own-30/kernel.stdout",
+              "sha256": "5ce9fd65f95ead1cea08ce7eb73653919c2eabaf23f51c42372f4f307f6dc636"
+            },
+            {
+              "path": "current/model3-water-d0-b6-monthly/science/own-30/original/donor.stdout",
+              "sha256": "e3cf25cc0941f4f4aaee1597d4a8fccd5c76a4b2077557e572f8a8841061876a"
+            },
+            {
+              "path": "current/model3-water-d0-b6-monthly/science/own-30/original/swap.log",
+              "sha256": "89b2740271681426202cbcb6f783bc8951c64cdb687cf50365d89acf1f0ccf26"
+            },
+            {
+              "path": "current/model3-water-d0-b6-monthly/science/own-30/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            },
+            {
+              "path": "current/model3-water-d0-b6-monthly/science/trajectory/kernel.stdout",
+              "sha256": "eedbc1f771b1ee3c43803ac8716f6e3c8012891975699511fb6e9bde65ba1200"
+            },
+            {
+              "path": "current/model3-water-d0-b6-monthly/science/trajectory/original/donor.stdout",
+              "sha256": "d5d206aec1169ab41b7a61ebb85a11bc76e5d61b43ba3dad5918cee2e6ade3e6"
+            },
+            {
+              "path": "current/model3-water-d0-b6-monthly/science/trajectory/original/swap.log",
+              "sha256": "8b8d6fc4984f92ccc6fb0e83c5e849b9b47b47c8c52ff79f893accc0d4c09fd2"
+            },
+            {
+              "path": "current/model3-water-d0-b6-monthly/science/trajectory/original/swap.wrn",
+              "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+            }
+          ],
+          "unconverged_continuations": 0
+        },
+        "BUILD_sha256": "097f0f266771a9a4b44065fa65db060d71214d360ce75ebe754cb76c27dcfbe7",
+        "controls": {
+          "actual_compiled_refusals": 18,
+          "accepted_mutant_model_days": 0,
+          "transactions": [
+            {
+              "start": 2,
+              "discard_replay_accept_complete_native_exact": true,
+              "recovered_next_day_physical_exact": true
+            }
+          ]
+        },
+        "index": 14,
+        "current_source_custody": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "current_postimage_required": false,
+        "period_replayed_by_observer": false
+      },
+      {
+        "case": {
+          "name": "mixed7-3-cde-d0-b6-dense",
+          "models": [
+            7,
+            3
+          ],
+          "effective_models": [
+            7,
+            3
+          ],
+          "kind": "cde",
+          "drainage": 0,
+          "bottom": 6,
+          "initial": 1,
+          "calendar": "dense",
+          "reset": 1,
+          "start": null,
+          "days": 35,
+          "implicit": 0,
+          "hysteresis": 0,
+          "explicit_oxygen": 1,
+          "full_legacy_native_controls": false,
+          "active_frost_transactions": true
+        },
+        "actual_compiler_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "actual_controller_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "compiler": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+        "optimization": "O0",
+        "science": {
+          "days": 35,
+          "daily_water_max_cm": "3.111E-14",
+          "daily_cde_max_mg_cm2": "2E-14",
+          "every_prefix_cde_max_mg_cm2": "3E-14",
+          "actual_frost_output_events": 36,
+          "actual_partial_frost_output_dates": [
+            "2002-01-11",
+            "2002-01-12",
+            "2002-01-13",
+            "2002-01-14",
+            "2002-01-15",
+            "2002-01-16",
+            "2002-01-17",
+            "2002-01-18",
+            "2002-01-19",
+            "2002-01-20",
+            "2002-01-21",
+            "2002-01-22",
+            "2002-01-23",
+            "2002-01-24",
+            "2002-01-25",
+            "2002-01-26",
+            "2002-01-27",
+            "2002-01-28",
+            "2002-01-29",
+            "2002-01-30",
+            "2002-01-31",
+            "2002-02-01",
+            "2002-02-02",
+            "2002-02-03",
+            "2002-02-04"
+          ],
+          "accumulated_water_equivalence_claimed": false
+        },
+        "native_samples": 7,
+        "exact_cold_windows": 3,
+        "convergence": {
+          "status": "ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK",
+          "files": [
+            {
+              "path": "current/mixed7-3-cde-d0-b6-dense/science/own-19/kernel.stdout",
+              "sha256": "9a03ef2d7d0425ccfd91abfc9be705307cc5ec24fb8fc8aeb9e4c808b7c62f95"
+            },
+            {
+              "path": "current/mixed7-3-cde-d0-b6-dense/science/own-19/original/donor.stdout",
+              "sha256": "2e20065ad6a380749c3a4ec12f16dc38b8201ba4a2d7e33a6a541024fb5b6d7f"
+            },
+            {
+              "path": "current/mixed7-3-cde-d0-b6-dense/science/own-19/original/swap.log",
+              "sha256": "1b6dff4e532774c1523b417bb45b63e6572ada5877b6d783ace9a2e4d033b88e"
+            },
+            {
+              "path": "current/mixed7-3-cde-d0-b6-dense/science/own-19/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            },
+            {
+              "path": "current/mixed7-3-cde-d0-b6-dense/science/own-2/kernel.stdout",
+              "sha256": "4593420e8d0befc510cee2b24b3fc4d5bebf6d990444c89988331db17ee2912c"
+            },
+            {
+              "path": "current/mixed7-3-cde-d0-b6-dense/science/own-2/original/donor.stdout",
+              "sha256": "78226a41f90983aae1b990317189822116e08bd2969c9449995c3a67dfbf0a52"
+            },
+            {
+              "path": "current/mixed7-3-cde-d0-b6-dense/science/own-2/original/swap.log",
+              "sha256": "d60b3a1700d243d64f8de75b0489b25fb346d54e7af623f062163628a14b372c"
+            },
+            {
+              "path": "current/mixed7-3-cde-d0-b6-dense/science/own-2/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            },
+            {
+              "path": "current/mixed7-3-cde-d0-b6-dense/science/own-30/kernel.stdout",
+              "sha256": "af7a1748f97b066e7bcc1bcfa5af33a7129f5d9252240fdeb72951cde3489930"
+            },
+            {
+              "path": "current/mixed7-3-cde-d0-b6-dense/science/own-30/original/donor.stdout",
+              "sha256": "b1a3eeaf6fc1f68ce064a3d98bfb7ca2e72ef3c1c626d12297c7af4587a28613"
+            },
+            {
+              "path": "current/mixed7-3-cde-d0-b6-dense/science/own-30/original/swap.log",
+              "sha256": "7a400c3e51aeac30da8c4a0aa3fb5bb3ea4ed67333486754b355eb16b8281a64"
+            },
+            {
+              "path": "current/mixed7-3-cde-d0-b6-dense/science/own-30/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            },
+            {
+              "path": "current/mixed7-3-cde-d0-b6-dense/science/trajectory/kernel.stdout",
+              "sha256": "a5bd787d5f4cbe88d4afc9793172f95111a97ce67729aab92400c9ab3bb80d12"
+            },
+            {
+              "path": "current/mixed7-3-cde-d0-b6-dense/science/trajectory/original/donor.stdout",
+              "sha256": "b02e70a0790e02085a522691e282bc897c0b4e2e84161fb736c436b621bb940b"
+            },
+            {
+              "path": "current/mixed7-3-cde-d0-b6-dense/science/trajectory/original/swap.log",
+              "sha256": "0b42e22e148b9162f68148d27f01074df96b90b1c5708b98d7a9d38e6c72ab91"
+            },
+            {
+              "path": "current/mixed7-3-cde-d0-b6-dense/science/trajectory/original/swap.wrn",
+              "sha256": "678f155eb46427000f060121bab4b22122a163160665a673f5b7afc901c65567"
+            }
+          ],
+          "unconverged_continuations": 0
+        },
+        "BUILD_sha256": "fc9c38b958525c5b171d4da00b262217daea074fe86b5b61679951962c5e9f39",
+        "controls": {
+          "actual_compiled_refusals": 18,
+          "accepted_mutant_model_days": 0,
+          "transactions": [
+            {
+              "start": 2,
+              "discard_replay_accept_complete_native_exact": true,
+              "recovered_next_day_physical_exact": true
+            },
+            {
+              "start": 19,
+              "discard_replay_accept_complete_native_exact": true,
+              "recovered_next_day_physical_exact": true,
+              "actual_active_frost_start": {
+                "original_temperature_min_C": -0.4651758753121133,
+                "original_temperature_max_C": 7.2732487756372945,
+                "actual_TFROSTSTA_C": 0.0,
+                "actual_original_Frost_active": true
+              }
+            }
+          ]
+        },
+        "index": 15,
+        "current_source_custody": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "current_postimage_required": false,
+        "period_replayed_by_observer": false
+      }
+    ],
+    "unaffected_postimages": [
+      {
+        "index": 0,
+        "case": "default-model1-water-d0-b6-dense",
+        "original_scientific_source": "b4ffcc914453225562ffe0e847faa21a765432ce",
+        "current_compiler_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "whole_objects": 22,
+        "model_replays": 0
+      },
+      {
+        "index": 1,
+        "case": "scalar-model1-cde-d0-b6-periodic",
+        "original_scientific_source": "b4ffcc914453225562ffe0e847faa21a765432ce",
+        "current_compiler_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "whole_objects": 26,
+        "model_replays": 0
+      },
+      {
+        "index": 2,
+        "case": "model3-water-d1-b5-dense",
+        "original_scientific_source": "b4ffcc914453225562ffe0e847faa21a765432ce",
+        "current_compiler_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "whole_objects": 24,
+        "model_replays": 0
+      },
+      {
+        "index": 4,
+        "case": "model5-water-d1-b8-monthly",
+        "original_scientific_source": "b4ffcc914453225562ffe0e847faa21a765432ce",
+        "current_compiler_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "whole_objects": 23,
+        "model_replays": 0
+      },
+      {
+        "index": 6,
+        "case": "model7-cde-d1-b8-dense",
+        "original_scientific_source": "b4ffcc914453225562ffe0e847faa21a765432ce",
+        "current_compiler_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "whole_objects": 28,
+        "model_replays": 0
+      },
+      {
+        "index": 9,
+        "case": "model10-water-d1-b8-dates",
+        "original_scientific_source": "9d53d55a0ae5aa7567ee62bfcbc60fece1629905",
+        "current_compiler_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "whole_objects": 23,
+        "model_replays": 0
+      },
+      {
+        "index": 11,
+        "case": "mixed7-3-cde-d1-b5-dates-year",
+        "original_scientific_source": "9d53d55a0ae5aa7567ee62bfcbc60fece1629905",
+        "current_compiler_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "whole_objects": 29,
+        "model_replays": 0
+      },
+      {
+        "index": 13,
+        "case": "mixed11-8-cde-d1-b8-periodic-year",
+        "original_scientific_source": "9d53d55a0ae5aa7567ee62bfcbc60fece1629905",
+        "current_compiler_source": "45bb6146f5800f4050e95feb5d1912ddfdd23d4d",
+        "whole_objects": 27,
+        "model_replays": 0
+      }
+    ],
+    "totals": {
+      "contexts": 16,
+      "primary_days": 468,
+      "native_samples": 100,
+      "exact_cold_windows": 44,
+      "compiled_refusals": 461,
+      "transactions": 22
+    },
+    "compiler_executions": 0,
+    "model_executions": 0,
+    "canonical_admission": false
+  }
+}
