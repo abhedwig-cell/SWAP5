@@ -2,8 +2,8 @@
   "work_unit": "SWAP5-MACRO-COMPLETE01",
   "canonical_baseline": "9af88c3de6198ddec40c2674dd1542a89fa9c0d7",
   "active_branch": "codex/macro-complete01",
-  "stage": "RECONCILED_IMPLEMENTING_ACCEPTED_COUPLED_RESIDUAL",
-  "implemented": false,
+  "stage": "FRESH_ACCEPTANCE_IMPLEMENTED_PREREQUISITE_TESTING",
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -28,6 +28,14 @@
     "own_historical_baseline": "C:/Users/Veldh012/swap431-state02 at 10576fcd93, protected named source/evidence dependency",
     "parallel_nomacro": "no files or generated resources shared with its worktree"
   },
-  "next_action": "Persist real-production regression driver and kernel fix, compile baseline/candidate O0/O2, compare independent fresh residual and affected no-macro outputs.",
-  "recovery_point": "integration/macro-complete01/STATUS.json; CONTRACT.md; RECONCILIATION.json"
+  "next_action": "O0/O2 baseline/candidate discriminator; immutable-origin retry and unchanged no-macro kernel seams.",
+  "recovery_point": "integration/macro-complete01/STATUS.json; CONTRACT.md; RECONCILIATION.json",
+  "baseline_discriminator": {
+    "optimization": "O0",
+    "result": "TRUE_STALE_ACCEPTANCE_REPRODUCED",
+    "reported_balance": 1.1823875212257917e-14,
+    "independent_fresh_Fmax": 9.285960722582587e-09,
+    "criterion": 1e-10,
+    "source": "O0_BASELINE_FRESH.json"
+  }
 }

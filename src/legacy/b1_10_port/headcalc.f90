@@ -767,75 +767,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !     check on convergence of solution
 
-!     initialize flags
-!     main flag for testing the convergence
-      flnonconv = .FALSE.
-
-!     flags introduced for debugging/macropore iteration policy
-      if (macropore_iteration_policy_active()) then
-         fsi_ws%nonconverged_balance(1:numnod) = .FALSE.
-         fsi_ws%nonconverged_head(1:numnod) = .FALSE.
-      end if
-      flnonconv3 = .FALSE.
-
-!     apply performance criteria per compartment
-      do i = 1, NN
-
-!        test for water balance deviation of soil compartments
-         if (dabs(fsi_ws%residual(i)) >  CritDevBalCp) then
-            if (macropore_iteration_policy_active()) fsi_ws%nonconverged_balance(i) = .TRUE.
-            flnonconv     = .TRUE.
-         end if
-
-!        test for change of pressure head
-         if (dabs(fsi_ws%old_head(i)) < 1.0d0) then
-            if (abs(state%h(i)-fsi_ws%old_head(i) ) > CritDevh2Cp) then
-               if (macropore_iteration_policy_active()) fsi_ws%nonconverged_head(i) = .TRUE.
-               flnonconv     = .TRUE.
-            end if
-         else
-            if (abs(state%h(i)-fsi_ws%old_head(i) )/abs(fsi_ws%old_head(i)) > CritDevh1Cp) then
-               if (macropore_iteration_policy_active()) fsi_ws%nonconverged_head(i) = .TRUE.
-               flnonconv     = .TRUE.
-            end if
-         end if
-    
-      end do
-
-!     test for waterbalance of ponding layer
-      if (provider_dynamic_top_active) then
-         if (state%ftoph) state%qtop = -state%kmean(1)*((state%hsurf - state%h(1))/grid_disnod(1) + 1.0d0)
-         if (.NOT.flnonconv .AND. pond_balance_option_allows()) then
-            deviat = state%pond - state%pondm1 - provider_dynamic_top_result%net_potential_surface_flux*dt + &
-                     state%runots - state%qtop * dt
-            if (abs(deviat) > CritDevPondDt) then
-               flnonconv3 = .TRUE.
-               flnonconv  = .TRUE.
-            end if
-         end if
-      else if (state%ftoph) then
-         state%qtop = -state%kmean(1)*((state%hsurf - state%h(1))/grid_disnod(1) + 1.0d0)
-         if (.NOT.flnonconv .AND. pond_balance_option_allows()) then
-            deviat = state%pond - state%pondm1 + epd*dt + reva*dt - (nraidt+nird+Melt)*dt - runon*dt + state%runots - state%qtop * dt
-            if (abs(deviat) > CritDevPondDt) then
-               flnonconv3 = .TRUE.
-               flnonconv  = .TRUE.
-            end if
-         end if
-      end if
-
-!     in case of macropores
-      if (swmacro == 1) then
-         if (IcTopMp == 1) then
-            deviat = state%pond - state%pondm1 + epd*dt + reva*dt - (nraidt+nird+Melt)*dt - runon*dt + state%runots - state%qtop * dt + macropore_surface_fraction() * (nraidt+nird+Melt)*dt + QMpLatSs
-            if (abs(deviat) > CritDevPondDt) then
-               flnonconv3 = .TRUE.
-               flnonconv  = .TRUE.
-            end if
-         end if
-         if (fldecMPmbf) flnonconv = .TRUE.
-      end if
-      
+      call check_candidate_convergence()
 
 !     implemented to improve iteration performance in case of macropores
       if (dt < 0.01d0 .AND. macropore_iteration_policy_active() .AND. .NOT.flnonconv3) then
@@ -857,6 +789,23 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
             end if
          else
             fsi_ws%unsaturated_flags(1:3) = .FALSE.
+         end if
+      end if
+
+      ! The frozen-source solve is only a provisional candidate. Reevaluate
+      ! the complete coupling at exactly these heads before any success return.
+      ! The original conductivity policy, criteria and iteration budget remain
+      ! unchanged. A failed fresh check resumes Newton with current rates.
+      if (swmacro == 1 .or. provider_macropore_active) then
+         if (.not.ieee_is_finite(sum1)) flnonconv = .true.
+         if (.not.flnonconv .and. dabs(sum1) <= CritDevBalTot) then
+            fsi_ws%unsaturated_flags(1:3) = .false.
+            call vector_F(1)
+            sump = 0.5d0*dot_product(fsi_ws%residual(1:NN),fsi_ws%residual(1:NN))
+            sum1 = sum(fsi_ws%residual(1:NN))
+            Fmax = maxval(abs(fsi_ws%residual(1:NN)))
+            call check_candidate_convergence()
+            if (any(.not.ieee_is_finite(fsi_ws%residual(1:NN))) .or. typed_bottom_invalid) flnonconv = .true.
          end if
       end if
 
@@ -1014,6 +963,13 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       if (legacy_state_binding) call publish_legacy_state(state)
 
       return
+   else if (swmacro == 1 .or. provider_macropore_active) then
+      ! Minimum dt and exhausted legacy source reduction never certify a
+      ! nonconverged coupled candidate. The transaction owner retains origin.
+      state%fldecdt = .true.
+      ctx%control%request_dt_reduction = .true.
+      if (legacy_state_binding) call publish_legacy_state(state)
+      return
    else
 !     write warning to screen and log file
       if (hist%flwarn) then
@@ -1031,6 +987,79 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    end if
 
 contains
+
+subroutine check_candidate_convergence()
+!     initialize flags
+!     main flag for testing the convergence
+      flnonconv = .FALSE.
+
+!     flags introduced for debugging/macropore iteration policy
+      if (macropore_iteration_policy_active()) then
+         fsi_ws%nonconverged_balance(1:numnod) = .FALSE.
+         fsi_ws%nonconverged_head(1:numnod) = .FALSE.
+      end if
+      flnonconv3 = .FALSE.
+
+!     apply performance criteria per compartment
+      do i = 1, NN
+
+!        test for water balance deviation of soil compartments
+         if (dabs(fsi_ws%residual(i)) >  CritDevBalCp) then
+            if (macropore_iteration_policy_active()) fsi_ws%nonconverged_balance(i) = .TRUE.
+            flnonconv     = .TRUE.
+         end if
+
+!        test for change of pressure head
+         if (dabs(fsi_ws%old_head(i)) < 1.0d0) then
+            if (abs(state%h(i)-fsi_ws%old_head(i) ) > CritDevh2Cp) then
+               if (macropore_iteration_policy_active()) fsi_ws%nonconverged_head(i) = .TRUE.
+               flnonconv     = .TRUE.
+            end if
+         else
+            if (abs(state%h(i)-fsi_ws%old_head(i) )/abs(fsi_ws%old_head(i)) > CritDevh1Cp) then
+               if (macropore_iteration_policy_active()) fsi_ws%nonconverged_head(i) = .TRUE.
+               flnonconv     = .TRUE.
+            end if
+         end if
+    
+      end do
+
+!     test for waterbalance of ponding layer
+      if (provider_dynamic_top_active) then
+         if (state%ftoph) state%qtop = -state%kmean(1)*((state%hsurf - state%h(1))/grid_disnod(1) + 1.0d0)
+         if (.NOT.flnonconv .AND. pond_balance_option_allows()) then
+            deviat = state%pond - state%pondm1 - provider_dynamic_top_result%net_potential_surface_flux*dt + &
+                     state%runots - state%qtop * dt
+            if (abs(deviat) > CritDevPondDt) then
+               flnonconv3 = .TRUE.
+               flnonconv  = .TRUE.
+            end if
+         end if
+      else if (state%ftoph) then
+         state%qtop = -state%kmean(1)*((state%hsurf - state%h(1))/grid_disnod(1) + 1.0d0)
+         if (.NOT.flnonconv .AND. pond_balance_option_allows()) then
+            deviat = state%pond - state%pondm1 + epd*dt + reva*dt - (nraidt+nird+Melt)*dt - runon*dt + state%runots - state%qtop * dt
+            if (abs(deviat) > CritDevPondDt) then
+               flnonconv3 = .TRUE.
+               flnonconv  = .TRUE.
+            end if
+         end if
+      end if
+
+!     in case of macropores
+      if (swmacro == 1) then
+         if (IcTopMp == 1) then
+            deviat = state%pond - state%pondm1 + epd*dt + reva*dt - (nraidt+nird+Melt)*dt - runon*dt + state%runots - state%qtop * dt + macropore_surface_fraction() * (nraidt+nird+Melt)*dt + QMpLatSs
+            if (abs(deviat) > CritDevPondDt) then
+               flnonconv3 = .TRUE.
+               flnonconv  = .TRUE.
+            end if
+         end if
+         if (fldecMPmbf) flnonconv = .TRUE.
+      end if
+      
+
+end subroutine check_candidate_convergence
 
 logical function picard_corner_restart_admitted() result(ok)
    ok = .false.
