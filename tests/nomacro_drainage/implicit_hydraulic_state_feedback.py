@@ -17,7 +17,7 @@ SHA=lambda b:hashlib.sha256(b).hexdigest()
 def main():
     p=argparse.ArgumentParser()
     for name in ['output','build-output','reference-work']:p.add_argument('--'+name,type=Path,required=True)
-    p.add_argument('--case',choices=['gardner-water','model7-snow-cde'],required=True)
+    p.add_argument('--case',choices=['gardner-water','model7-snow-cde','model7-snow-cde-fitted'],required=True)
     p.add_argument('--optimization',choices=['O0','O2'],required=True)
     p.add_argument('--days',type=int,default=35)
     a=p.parse_args();assert a.days in (8,35)
@@ -27,8 +27,8 @@ def main():
     save=lambda:(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     save()
     try:
-        name=('ORDINARY_IMPLICIT_POND_UBUNTU_FOLLOWUP_O0_RAW_ARCHIVE' if a.case=='gardner-water' else 'FROST_ANALYTICAL_BOUNDARY10_SEARCH_WINDOWS_O0_ORIGINAL_V1')
-        prefix=('ordinary-matrix/water-plate/input/' if a.case=='gardner-water' else 'current-unaffected-postimages/model7-cde-d1-b8-dense/inputs/')
+        name=('ORDINARY_IMPLICIT_POND_UBUNTU_FOLLOWUP_O0_RAW_ARCHIVE' if a.case in ('gardner-water','model7-snow-cde-fitted') else 'FROST_ANALYTICAL_BOUNDARY10_SEARCH_WINDOWS_O0_ORIGINAL_V1')
+        prefix=('ordinary-matrix/water-plate/input/' if a.case=='gardner-water' else 'ordinary-matrix/cde-head-history1/input/' if a.case=='model7-snow-cde-fitted' else 'current-unaffected-postimages/model7-cde-d1-b8-dense/inputs/')
         with ExitStack() as stack:
             source=GitArchiveSource(R,BASE)
             descriptor=json.loads((source/(name+'.json')).read_text())
@@ -46,7 +46,19 @@ def main():
                     target=inputs/n[len(prefix):];target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(get(n))
             q['input_authority']=dict(actual_git_source=BASE,archive=name,archive_sha256=descriptor['sha256'],prefix=prefix)
         path=inputs/'swap.swp';before=path.read_bytes();text=before.decode('cp1252')
-        edits=({'iHWCKmodel':'2'} if a.case=='gardner-water' else dict(SWFROST=0,SWKIMPL=1))
+        edits=({'iHWCKmodel':'2'} if a.case=='gardner-water' else dict(SWHYST=0,SWSNOW=1,iHWCKmodel=7) if a.case=='model7-snow-cde-fitted' else dict(SWFROST=0,SWKIMPL=1))
+        if a.case=='model7-snow-cde-fitted':
+            import re
+            with ExitStack() as stack:
+                donor_name='FROST_ANALYTICAL_BOUNDARY10_SEARCH_WINDOWS_O0_ORIGINAL_V1'
+                donor=Archive(GitArchiveSource(R,BASE),donor_name,stack)
+                member='current-unaffected-postimages/model7-cde-d1-b8-dense/inputs/swap.swp';value=donor.get(member)
+                named={}
+                for key in ['ALFA_2','NPAR_2','OMEGA_1','H0']:
+                    rows=re.findall(r'(?mi)^[ \t]*'+key+r'[ \t]*=[^\r\n]*(?:\r?\n|$)',value.decode('cp1252'));assert len(rows)==1
+                    assert not re.search(r'(?mi)^[ \t]*'+key+r'[ \t]*=',text)
+                    named[key]=rows[0];text+='\n'+rows[0]
+                q['additional_original_parameter_authority']=dict(actual_git_source=BASE,archive=donor_name,archive_sha256=donor.record['sha256'],member=member,member_sha256=SHA(value),literal_original_named_lines=named,existing_parameter_table_unchanged=True,numerical_controls_unchanged=True)
         for key,value in edits.items():
             import re
             text=assignment(text,key,value) if re.search(r'(?mi)^\s*'+key+r'\s*=',text) else text+'\n'+key+' = '+str(value)+'\n'
