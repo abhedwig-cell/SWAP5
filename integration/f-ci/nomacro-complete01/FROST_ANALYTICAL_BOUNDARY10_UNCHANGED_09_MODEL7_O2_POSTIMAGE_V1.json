@@ -1,0 +1,179 @@
+{
+  "status": "CURRENT_ACTUAL_MODEL7_COMPLETE_GENERATED_SOURCES_SAME_COMPILER_AND_WHOLE_OBJECTS_PASS_NO_PERIOD_REPLAY",
+  "actual_current_source": "628104dfbfdce0a374484b8721bb95b4530c6aa9",
+  "original_scientific_source": "dd7596685c91074789ab56e9a3ecb3d4a4ef4b4c",
+  "optimization": "O2",
+  "model_executions": 0,
+  "object_normalization": false,
+  "actual_build": {
+    "command": [
+      "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "tools/solute/run_water.py",
+      "--model",
+      "HYBRID_NOMACRO_WATER",
+      "--experimental-project",
+      "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\b10post-v1\\O2-model7-current-postimage\\inputs",
+      "--original-output",
+      "--experimental-time-step-policy",
+      "original-adaptive-event-closure-v1",
+      "--reference-work",
+      "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+      "--build-only",
+      "--donor-opt",
+      "O2",
+      "--kernel-opt",
+      "O2",
+      "--output",
+      "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\b10post-O2-v1\\model7-7-cde-b8-p1\\bundle"
+    ],
+    "returncode": 0,
+    "seconds": 30.617786100134254,
+    "root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\b10post-O2-v1\\model7-7-cde-b8-p1\\bundle"
+  },
+  "actual_BUILD_sha256": "9c097c135bb7d5064e1488233cf97202589ca204fbc212daeac944c4504f5465",
+  "original_BUILD_sha256": "954e254a014c7ebe09f9a4019bd36883873c52aa87e432f43bbe9719dc960f1b",
+  "original_archive_sha256": "7cb587035b9194fcf5d550931a455781c4f6cfebeb0c884cf7bebc206967bfc5",
+  "whole_objects": [
+    {
+      "file": "MOD_cropdevelopment.o",
+      "bytes": 102229,
+      "sha256": "3dd5503c0e402b580da15834037bf0809226a2e61b72e5ab2801e5e2a6464455"
+    },
+    {
+      "file": "RWU_micro.o",
+      "bytes": 52979,
+      "sha256": "490bb79b7841c4e78c2cbedb1cf1b6dd9a26f3df44113dd8257d50dd57597f17"
+    },
+    {
+      "file": "WC_K_models_04_11.o",
+      "bytes": 29534,
+      "sha256": "85e265e5c9ae9594a7097788c458926ffca6162b91a85c14716f404687ebd12a"
+    },
+    {
+      "file": "age_output_calendar_probe.o",
+      "bytes": 12316,
+      "sha256": "3e7beafe7f3db28f39335ca3e1a757105ddce2a3f17e5a17ae3d193e146f7407"
+    },
+    {
+      "file": "boundtop.o",
+      "bytes": 22546,
+      "sha256": "3c3861b62c274b40b9c47953e5472cf884d8a5b59e31231c67f4d06ee26aa96b"
+    },
+    {
+      "file": "cde_interval_receipt.o",
+      "bytes": 4302,
+      "sha256": "12cb944a9407851bab6999857a66d0539abe3b8f93f32ae6d31c23777b6777f8"
+    },
+    {
+      "file": "frozencond.o",
+      "bytes": 11662,
+      "sha256": "dd03ee5280e9f5261ce1064af9b2d50969002bf2102f21ce8fdb7d3de1b5f9f6"
+    },
+    {
+      "file": "headcalc.o",
+      "bytes": 47750,
+      "sha256": "dbef82ecded2ad8ca714ff1857f7ce3fbf88ca93d3d4f8754f73ee96dbd65c07"
+    },
+    {
+      "file": "hybrid_age_output_state.o",
+      "bytes": 1667,
+      "sha256": "9f9787d212928c6e5453602a3b38c7e9249b2251ca73e1176c09142272277bee"
+    },
+    {
+      "file": "hybrid_step_budget.o",
+      "bytes": 12422,
+      "sha256": "e7c3c6e1b2716f1c2c1a8769d4cb6bd6e48efcb697bcca63d2f222760bf0e50a"
+    },
+    {
+      "file": "integral.o",
+      "bytes": 63775,
+      "sha256": "9f1f5d34014f5e75c743b087e1d6557face8463e97f7743384c2bb43137d3e48"
+    },
+    {
+      "file": "irrigation.o",
+      "bytes": 79148,
+      "sha256": "26bf6a21e73e37e7240e8e390cbf68d8473f76507ebdb9be3b265dcbba3906bd"
+    },
+    {
+      "file": "macropore.o",
+      "bytes": 496846,
+      "sha256": "cdb0c8cac9d5df297d0ca6413f29677adb7ba737790695adb057136f562588fb"
+    },
+    {
+      "file": "mod_original_output_receipt.o",
+      "bytes": 2751,
+      "sha256": "b48cc53e9d54c88993ec103f52f70deebb42be0162bb0da63d7f5a26156ce629"
+    },
+    {
+      "file": "mod_subsurface_solute_source.o",
+      "bytes": 2398,
+      "sha256": "eda9c98efb6b92a08716392bfa82bd53682fb97c4fa35abfa0e13908680d2cc4"
+    },
+    {
+      "file": "original_cde_output_state.o",
+      "bytes": 13678,
+      "sha256": "0b8a48636c95c44126cae81ba43fe0e789a31dd36fbf2965893f64acabbfd701"
+    },
+    {
+      "file": "original_output_thermal_domain.o",
+      "bytes": 5397,
+      "sha256": "f9470b4d8117b57d1728ed3edcf0787ca62cf14608868c7876d3f6b50ccc74c8"
+    },
+    {
+      "file": "oxygenstress.o",
+      "bytes": 37663,
+      "sha256": "b50a7ef49681094bcf80aed316d4c9119e1ad4df7cedcf8b9e148b0c642fbd66"
+    },
+    {
+      "file": "solute.o",
+      "bytes": 74609,
+      "sha256": "48ae707cf3d5fa4df06fa0c504e3e1229b2d84de65fbc8f231e9045efe39e7d0"
+    },
+    {
+      "file": "swap.o",
+      "bytes": 46149,
+      "sha256": "143ea4194805177950615751bf73edbcebf997437bd85ed2e6228910d7e0f872"
+    },
+    {
+      "file": "swap_csv_output.o",
+      "bytes": 254077,
+      "sha256": "5e729e92e9f6c476425d3531a24bf84030acffd77655e9516aa50ae0320698b6"
+    },
+    {
+      "file": "swap_main.o",
+      "bytes": 12048,
+      "sha256": "f1a539566609f9ef1da310f5d93bc7a810b2f90c51451abd01dd090247e162c5"
+    },
+    {
+      "file": "swapoutput.o",
+      "bytes": 100326,
+      "sha256": "12c63bdce0287354b1e46a994720b3b81986a9d671b7743b6014f5a70a7c92aa"
+    },
+    {
+      "file": "terminal_water_receipt.o",
+      "bytes": 11993,
+      "sha256": "c5296f27905f3fa92b4c8423023c50b29a275e51577222ef88e07df0efc844f5"
+    },
+    {
+      "file": "thermal_output_snow_calendar_state.o",
+      "bytes": 8441,
+      "sha256": "4f7607fb5802e10f63ce8c33a5c0b2d450edfe4df194b195e770611734083653"
+    },
+    {
+      "file": "timecontrol.o",
+      "bytes": 36522,
+      "sha256": "c93f9df67a5e2255c0ef340c4d23eebbf3c432bfee7c534801a7bef3dc381e33"
+    },
+    {
+      "file": "wofost.o",
+      "bytes": 85637,
+      "sha256": "3321c466eeec63a5cd420c5d4310416428cf0483c25d1254d94cc16431887525"
+    }
+  ],
+  "actual_compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+  "actual_compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+  "original_primary_days_inherited": 35,
+  "original_native_samples_inherited": 7,
+  "original_exact_cold_windows_inherited": 3
+}

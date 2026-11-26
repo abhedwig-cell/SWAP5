@@ -92,7 +92,8 @@
       "hysteresis": 0,
       "explicit_oxygen": null,
       "full_legacy_native_controls": true,
-      "active_frost_transactions": false
+      "active_frost_transactions": false,
+      "require_active_drainage": true
     },
     {
       "name": "model5-water-d1-b8-monthly",
@@ -116,7 +117,8 @@
       "hysteresis": 0,
       "explicit_oxygen": null,
       "full_legacy_native_controls": false,
-      "active_frost_transactions": false
+      "active_frost_transactions": false,
+      "require_active_drainage": true
     },
     {
       "name": "model6-cde-d0-b6-dates",
@@ -236,7 +238,8 @@
       "hysteresis": 0,
       "explicit_oxygen": null,
       "full_legacy_native_controls": false,
-      "active_frost_transactions": false
+      "active_frost_transactions": false,
+      "require_active_drainage": true
     },
     {
       "name": "scalar-model11-water-d0-b6-dates-year",
@@ -399,5 +402,6 @@
     "authority": "ACCELERATE02 sections6..9; AGENTS independent local testability; workstream execution protocol proportional existing-process composition and strict source/native/mass/cold preservation"
   },
   "canonical_admission": false,
-  "model_periods_executed": 0
+  "model_periods_executed": 0,
+  "active_drainage_selection": "Representative original initial2 GWLI -75cm versus actual drain ZBOTDR -80cm; require measured positive drainage in cases3,4,9, never infer from switch alone. Prior directed M7initial1 has actual zero drain flux and is not active-flow evidence."
 }

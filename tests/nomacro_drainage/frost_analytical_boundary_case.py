@@ -41,6 +41,10 @@ def main():
         run(command,'actual-public-runtime',900)
         q['science']=json.loads((a.output/'science/RESULT.json').read_text());save()
         q['original_convergence']=require_convergence(a.output/'science');save()
+        if case.get('require_active_drainage'):
+            rows=[json.loads(line) for line in (a.output/'science/trajectory/daily.jsonl').read_text().splitlines()]
+            q['actual_drainage_outward_cm']=sum(row['drainage_outward_cm'] for row in rows);assert q['actual_drainage_outward_cm']>0
+            q['actual_nonzero_drainage_days']=sum(row['drainage_outward_cm']>0 for row in rows);save()
         command=[sys.executable,'-B','tests/nomacro_drainage/frost_analytical_boundary_controls.py',
             '--profile',str(a.output/'science'),'--reference-work',str(a.reference_work),'--output',str(a.output/'controls')]
         if case['full_legacy_native_controls']:command.append('--full-legacy-native-controls')
