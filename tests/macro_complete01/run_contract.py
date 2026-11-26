@@ -12,7 +12,7 @@ def main():
  order,_=dep.strict_closure(ROOT,[driver],[stub,driver]);sources=order[:-1]+[ROOT/'src/legacy/b1_10_port/headcalc.f90',order[-1]]
  if baseline:
   p=out/'baseline_headcalc.f90';p.write_bytes(subprocess.check_output(['git','show','9af88c3de6198ddec40c2674dd1542a89fa9c0d7:src/legacy/b1_10_port/headcalc.f90'],cwd=ROOT));sources=[p if s.name=='headcalc.f90' else s for s in sources]
- flags=['-'+opt,'-ffree-line-length-none','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow'];exe=out/'probe.exe';cc=shutil.which('gfortran');command=[cc,*flags,'-J',str(out),'-I',str(out),*[str(p) for p in sources],'-o',str(exe)]
+ flags=['-'+opt,'-save-temps=obj','-ffree-line-length-none','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow'];exe=out/'probe.exe';cc=shutil.which('gfortran');command=[cc,*flags,'-J',str(out),'-I',str(out),*[str(p) for p in sources],'-o',str(exe)]
  q=dict(label=label,opt=opt,driver=driver,baseline=baseline,checkpoint=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),compiler=cc,compiler_sha256=sha(cc),version=subprocess.check_output([cc,'--version'],text=True),source_sha256={str(p):sha(p) for p in sources},command=command)
  (out/'IDENTITY.json').write_text(json.dumps(q,indent=2)+'\n');t=time.perf_counter()
  try:

@@ -30,6 +30,7 @@ end module
 program test_macro_complete_fresh
  use iso_fortran_env,only:real64,int64
  use MOD_grid,only:numnod,z,dz,disnod
+ use variables,only:fldtmin
  use mod_soil_water_solver_contract
  use mod_b110_default_mvg_provider
  use mod_b110_source_sink_provider
@@ -83,10 +84,12 @@ program test_macro_complete_fresh
   ! Deliberate iteration-budget fault injection, not a natural V-rejection
   ! qualification. It tests that the failure branch cannot claim success.
   r%numerical%max_iterations=1;r%numerical%min_step_duration=step
+  fldtmin=.true. ! Explicitly exercise the legacy minimum-step branch.
  end if
  call solver%solve(r,workspace,v)
  if(any(r%base_state%pressure_head/=h0).or.any(r%base_state%water_content/=theta0))error stop 'accepted origin mutated'
  if(trim(mode)=='dtmin-refusal')then
+  write(*,*)'DTMIN_RESULT',v%status,v%retry_advised
   if(v%status/=SW_SOLVE_RETRY_ADVISED.or..not.v%retry_advised)error stop 'dtmin accepted nonconvergence'
   print *, 'MACRO_COMPLETE_DTMIN_REFUSAL_PASS'
   stop
