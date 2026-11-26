@@ -7,7 +7,7 @@ use MOD_macropore,only:ICpTpWaSrDm,ZWaLevDm,TimAbsCumDmCp,ThtSrpRefDmCp, &
 use MOD_swap_mp,only:GwlFlCpZo,FrArMtrx
 use MOD_MvG,only:moiscap,dhconduc
 use MOD_frost,only:rfcp
-use variables,only:h,theta,thetas,thetar,k,dt
+use variables,only:h,theta,thetas,thetar,k,dt,swkimpl
 implicit none
 integer,intent(in)::d,cell
 real(8),intent(in)::g0,g1,pu
@@ -50,7 +50,8 @@ if(SwDarcy>0.and.cell>ICpTpWaSrDm(d))then
   dsfac=0d0
   if(deficit>0d0)dsfac=(1d0-SorpFacParl(lay))*power*ratio**(power-1d0)*C/(thetas(cell)-thetar(cell))
   amp=ShapeFacMp*8d0*PpDmCp(d,cell)*dz(cell)/DiPoCp(cell)**2*k(cell)*delta*dt
-  dk=FrArMtrx(cell)*dhconduc(cell,h(cell),theta(cell),C,rfcp(cell))
+  dk=0d0
+  if(SwKimpl==1)dk=FrArMtrx(cell)*dhconduc(cell,h(cell),theta(cell),C,rfcp(cell))
   rawD=sfac*amp;dd=amp*(dsfac+sfac*(dk/k(cell)-1d0/delta))
  end if
 end if
@@ -60,7 +61,7 @@ if(rawS>rawD)then
  if(QOutMtxUnsDmCp(d,cell)>1d-7)native=QOutMtxUnsDmCp(d,cell)*power*C/active
 else
  raw=rawD;der=dd
- if(QOutMtxUnsDmCp(d,cell)>1d-7)native=QOutMtxUnsDmCp(d,cell)/delta
+ if(QOutMtxUnsDmCp(d,cell)>1d-7)native=QOutMtxUnsDmCp(d,cell)*(1d0/delta-dsfac/sfac-dk/k(cell))
 end if
 if(abs(pu-raw*overlap/span)>256d0*epsilon(1d0)*max(abs(pu),abs(raw*overlap/span),tiny(1d0)))return
 du0=der*overlap/span-raw/span*g0;du1=-raw/span*g1;valid=1d0

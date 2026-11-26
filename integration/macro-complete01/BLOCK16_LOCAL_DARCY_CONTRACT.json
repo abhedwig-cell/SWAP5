@@ -1,0 +1,5 @@
+{
+  "source_fault": "Original ABSORPTION TASK2 Darcy derivative includes -Q/DeltaH but omits d(SorpFac)/dH from unchanged TASK1 law. Actual live FD demonstrates stable local gap7.56495e-6 at originaltime35797.514,node46. Near-saturated MPgeometry fixed; SWKIMPL0 conductivity held.",
+  "implementation": "Add Q*SorpFacPrime/SorpFac; add Q*Kprime/K only for SWKIMPL1. Reuse original constitutive derivative. Update contact helper subtraction to actual corrected native contribution and honour SWKIMPL0 heldK. No RATE/clock/history/stock/residual criterion/budget changes.",
+  "status": "IMPLEMENTED_BUILT_O0_O2_QUALIFICATION_PENDING"
+}
