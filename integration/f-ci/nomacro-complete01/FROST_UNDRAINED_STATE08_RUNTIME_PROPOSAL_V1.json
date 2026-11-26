@@ -1,0 +1,42 @@
+{
+  "status": "RUNTIME_PROPOSAL_SYNTAX_ONLY_NOT_INSTALLED_OR_QUALIFIED",
+  "actual_base": "39d00d6b1d15dbe1132a0b6a2eb361d2459e697d",
+  "parent_path": "tests/nomacro_drainage/frost_calendar_state_runtime.py",
+  "parent_source_sha256": "a54d0882235caa8092d110a5e8c2b18c5c6c4d5147d68f173c9deafdf856e9f3",
+  "path": "tests/nomacro_drainage/frost_undrained_state_runtime.py",
+  "proposed_sha256": "3fc610c3def3622c8a60f7faa1da1303df9dc470757fcbacb535d6d2d27db640",
+  "ordered_literal_edits": [
+    {
+      "before": "thermal=struct.pack('<10i',1,nodes,0,solute,hys,1,1,1,1,2)",
+      "after": "thermal=struct.pack('<10i',1,nodes,0,solute,hys,1,1,0,1,2)"
+    },
+    {
+      "before": "header=(4,nodes,solute,1,hys,selected.get('bottom',6),1,0)",
+      "after": "header=(5,nodes,solute,1,hys,selected['bottom'],1,0)"
+    },
+    {
+      "before": "selected=input_selection(project.input_directory,True);assert selected",
+      "after": "selected=input_selection(project.input_directory,True);assert selected and selected.get('undrained_frost') and selected['drainage']==0"
+    },
+    {
+      "before": "if a.year_seam and a.days==35:windows.append((15,19))",
+      "after": "if a.year_seam:\n        if a.days==35:windows.append((15,19))\n        else:windows.append((5,9))"
+    },
+    {
+      "before": "RUNNING_ACTUAL_FROST_CALENDAR_NOT_QUALIFIED",
+      "after": "RUNNING_ACTUAL_UNDRAINED_FROST_CALENDAR_NOT_QUALIFIED"
+    },
+    {
+      "before": "FAILED_ACTUAL_FROST_CALENDAR_NOT_QUALIFIED",
+      "after": "FAILED_ACTUAL_UNDRAINED_FROST_CALENDAR_NOT_QUALIFIED"
+    },
+    {
+      "before": "ACTUAL_FROST_CALENDAR_ORIGINAL_BUDGETS_NATIVE_HISTORY_COLD_AND_USER_OUTPUT_PASS_NOT_ADMITTED",
+      "after": "ACTUAL_UNDRAINED_FROST_CALENDAR_ORIGINAL_BUDGETS_NATIVE_HISTORY_COLD_AND_USER_OUTPUT_PASS_NOT_ADMITTED"
+    }
+  ],
+  "scientific_budget_algorithm_unchanged": true,
+  "exact_native_restart_unchanged": true,
+  "actual_new_domain_witness": "SWDRA0_ROOT_HEADER5",
+  "model_runs": 0
+}

@@ -1,0 +1,247 @@
+{
+  "status": "BOUNDED_UNDRAINED_COMPOSITION_AND_DISTINCT_TERMINAL_DOMAIN_SOURCE_PROPOSAL",
+  "actual_parent_candidate": "082f3d4b8e027d7aa8fcfbb9e3dde603aea85a66",
+  "files": {
+    "app/hybrid_water/experimental_project.py": {
+      "before_lf_sha256": "381069f8d1fd6203fabf74942224ca96a58f655e077056dd8505dcba72b8efe1",
+      "proposed_lf_sha256": "6cb5c8dee988c8a575751cd0b859ba5401d1ec1ed32042978cc04ebefd460264",
+      "ordered_literal_edits": [
+        {
+          "base_start": 26542,
+          "base_end": 26542,
+          "before": "",
+          "after": "from frost_undrained_state import selection as undrained_frost_selection\n    undrained_frost=undrained_frost_selection(directory,original_output)\n    if undrained_frost is not None and policy!=EVENT_POLICY:\n        raise ValueError('Bounded undrained Frost state/calendar requires qualified original event closure')\n    "
+        },
+        {
+          "base_start": 26589,
+          "base_end": 26589,
+          "before": "",
+          "after": " and undrained_frost is None"
+        }
+      ]
+    },
+    "app/hybrid_water/frost_boundary_state_calendar.py": {
+      "before_lf_sha256": "bd03ee78d851125a6fe7f5d7b924a41f4a5aec23109aec795dc37b70b19c7bef",
+      "proposed_lf_sha256": "474771fa842f36dce80877a326de2af471f9ffe7e0bfad4a46e3b7b73e9a65ed",
+      "ordered_literal_edits": [
+        {
+          "base_start": 406,
+          "base_end": 406,
+          "before": "",
+          "after": "\n    from frost_undrained_state import input_domain as undrained_domain\n    if undrained_domain(selectors,boundary,original_output):return True"
+        },
+        {
+          "base_start": 838,
+          "base_end": 838,
+          "before": "",
+          "after": "\n    from frost_undrained_state import selection as undrained_selection\n    undrained=undrained_selection(directory,original_output)\n    if undrained is not None:return undrained"
+        },
+        {
+          "base_start": 3297,
+          "base_end": 3297,
+          "before": "",
+          "after": "if selected.get('undrained_frost'):\n        from frost_undrained_state import codec as undrained_codec\n        return undrained_codec(selected)\n    "
+        }
+      ]
+    },
+    "app/hybrid_water/frost_calendar_output.py": {
+      "before_lf_sha256": "9a10f598e9eb55b149cd86d19e83cb9cb32e15d966d22f26de35aa38cc75a545",
+      "proposed_lf_sha256": "f17d83e938843e4614eecba0ef7e2ee3d76d3a435ca688ed9b7c1efa14d887e5",
+      "ordered_literal_edits": [
+        {
+          "base_start": 2095,
+          "base_end": 2095,
+          "before": "",
+          "after": "selected.get('drainage',"
+        },
+        {
+          "base_start": 2096,
+          "base_end": 2096,
+          "before": "",
+          "after": ")"
+        },
+        {
+          "base_start": 3669,
+          "base_end": 3669,
+          "before": "",
+          "after": ".py']\n    if boundary.get('undrained_frost'):providers+=['frost_undrained_state.py','frost_undrained_terminal_water"
+        },
+        {
+          "base_start": 6700,
+          "base_end": 6700,
+          "before": "",
+          "after": "    if selected['swdra']==0:\n        from frost_undrained_terminal_water import install as terminal_day_install\n    else:\n    "
+        }
+      ]
+    },
+    "app/hybrid_water/frost_drainage_composition.py": {
+      "before_lf_sha256": "93cf4274f876364aa28189b53bdbd2cf14ef909a4eda3bffdeacfccfd7caefd8",
+      "proposed_lf_sha256": "c517e92f725db81ca192a72b4752deaa7411b23833d7e66fa1db8ff71cfd2ace",
+      "ordered_literal_edits": [
+        {
+          "base_start": 211,
+          "base_end": 211,
+          "before": "",
+          "after": "\n    from frost_undrained_state import selected as undrained_selection\n    if undrained_selection(project) is not None:return True"
+        },
+        {
+          "base_start": 1582,
+          "base_end": 1582,
+          "before": "",
+          "after": "\n    from frost_undrained_state import metadata as undrained_metadata\n    undrained=undrained_metadata(project)\n    if undrained is not None:return undrained"
+        },
+        {
+          "base_start": 2967,
+          "base_end": 2967,
+          "before": "",
+          "after": "from frost_undrained_state import selected as undrained_selection,apply_build as undrained_build\n    if undrained_selection(project) is not None:return undrained_build(output,project,patched)\n    "
+        },
+        {
+          "base_start": 3597,
+          "base_end": 3597,
+          "before": "",
+          "after": "\n    from frost_undrained_state import selected as undrained_selection,validate as undrained_validate\n    if undrained_selection(project) is not None:return undrained_validate(bundle,project,identity)"
+        }
+      ]
+    },
+    "app/hybrid_water/frost_undrained_state.py": {
+      "added": true,
+      "proposed_lf_sha256": "f6726e7bb8687e643e541412c9f456597e2389377032241a61e5cc978b1b3739"
+    },
+    "app/hybrid_water/frost_undrained_terminal_water.py": {
+      "added": true,
+      "proposed_lf_sha256": "5328bea8498c4b717bc2f48f940653475f74a5ec2032e9ad9fd6229f954055eb"
+    },
+    "app/hybrid_water/implicit_frost_composition.py": {
+      "before_lf_sha256": "c2425ae3ab8378c13b90ab86842c808decfe7484aa687f89a0a4cfff5d59b261",
+      "proposed_lf_sha256": "4826afd1bf7a3eb3b9f7c6a253aa01bb71426b2e1cdb06df257e9d6f2ba7bb16",
+      "ordered_literal_edits": [
+        {
+          "base_start": 2254,
+          "base_end": 2254,
+          "before": "",
+          "after": "\n    from frost_undrained_state import selected as undrained_selection,metadata as undrained_metadata\n    undrained=undrained_selection(project)\n    if undrained is not None:return undrained_metadata(project) if undrained['implicit'] else None"
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_frost_root_state.py": {
+      "before_lf_sha256": "8c11c7b22b9d9189481db4d36297ed063cc1c3ea97ccddbe4edafb60d88344ed",
+      "proposed_lf_sha256": "674aa9389c606aa8eedd36e724f8ffe7bf21ac40d58a138ddf870fcfe47dad20",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1205,
+          "base_end": 1205,
+          "before": "",
+          "after": "drainage(project):\n    from frost_undrained_state import selected\n    return 0 if selected(project) is not None else 1\n\n\ndef "
+        },
+        {
+          "base_start": 1234,
+          "base_end": 1234,
+          "before": "",
+          "after": ",drain=1"
+        },
+        {
+          "base_start": 1236,
+          "base_end": 1236,
+          "before": "",
+          "after": "\n    if type(drain) is not int or drain not in (0,1):\n        raise ValueError('Invalid implicit Frost native drainage domain')"
+        },
+        {
+          "base_start": 2148,
+          "base_end": 2149,
+          "before": "1",
+          "after": "'+str(drain)+'"
+        },
+        {
+          "base_start": 2226,
+          "base_end": 2226,
+          "before": "",
+          "after": "'+str(5 if drain==0 else "
+        },
+        {
+          "base_start": 2227,
+          "base_end": 2227,
+          "before": "",
+          "after": ")+'"
+        },
+        {
+          "base_start": 2986,
+          "base_end": 2986,
+          "before": "",
+          "after": ",drainage(project)"
+        },
+        {
+          "base_start": 3093,
+          "base_end": 3093,
+          "before": "",
+          "after": "5 if drainage(project)==0 else "
+        },
+        {
+          "base_start": 3120,
+          "base_end": 3120,
+          "before": "",
+          "after": "3 if drainage(project)==0 else "
+        },
+        {
+          "base_start": 3994,
+          "base_end": 3994,
+          "before": "",
+          "after": ",drainage(project)"
+        },
+        {
+          "base_start": 4137,
+          "base_end": 4137,
+          "before": "",
+          "after": "(project),drainage"
+        },
+        {
+          "base_start": 4449,
+          "base_end": 4449,
+          "before": "",
+          "after": "(project),drainage"
+        },
+        {
+          "base_start": 5119,
+          "base_end": 5119,
+          "before": "",
+          "after": "5 if drainage(project)==0 else "
+        },
+        {
+          "base_start": 7031,
+          "base_end": 7031,
+          "before": "",
+          "after": ",drainage(project)"
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_frost_source_guard.py": {
+      "before_lf_sha256": "a49eb975f8f5067407e06897ee267b611ad15d80a896c8254b230f5392cf859c",
+      "proposed_lf_sha256": "bba121005038a4eaae136389800a84dbd591e0a5ed7ab2397699611f68cb24fe",
+      "ordered_literal_edits": [
+        {
+          "base_start": 4664,
+          "base_end": 4664,
+          "before": "",
+          "after": "    from frost_undrained_state import selected as undrained_selection\n                if undrained_selection(project) is not None:\n                    from frost_undrained_terminal_water import source as undrained_terminal_source\n                    expected=undrained_terminal_source().encode('cp1252')\n            "
+        }
+      ]
+    },
+    "app/hybrid_water/snow_undrained.py": {
+      "before_lf_sha256": "8c19d0f2ca6a7df8db0ba1ac29ef5c8d997057a476f7da80e1379404b25a3741",
+      "proposed_lf_sha256": "25283120b0600ae12e0155ea5c12e20b45067ba54c287a64d6632462543e05c5",
+      "ordered_literal_edits": [
+        {
+          "base_start": 215,
+          "base_end": 215,
+          "before": "",
+          "after": "\n    from frost_undrained_state import selected as undrained_frost_selection\n    if undrained_frost_selection(project) is not None:return None"
+        }
+      ]
+    }
+  },
+  "terminal_parent_complete_source_sha256": "18a216a3d94ab4f85240283474fe57e441f8148d85f9c32978546788f00b5fd5",
+  "undrained_terminal_complete_source_sha256": "6d2a61e844753f8f0afaa03b414e33a57c972e3cb89dfbf03f2b706b2b3328e5",
+  "terminal28_terms_complete_inverse_pass": true,
+  "absolute_receipt_criterion_changed": false,
+  "new_scientific_qualification": false
+}

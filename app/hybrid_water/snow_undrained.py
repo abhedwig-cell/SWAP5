@@ -7,6 +7,8 @@ POLICY='existing-ordinary-snow-drainage-off-composition-v1'
 
 
 def selection(project):
+    from frost_undrained_state import selected as undrained_frost_selection
+    if undrained_frost_selection(project) is not None:return None
     if not project.original_output or not project.input_directory or project.macro or project.age:return None
     from experimental_project import inspect
     report=inspect(project.input_directory,original_output=True);s=report['selectors']

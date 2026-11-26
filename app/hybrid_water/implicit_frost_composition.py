@@ -45,6 +45,9 @@ def codec(project):
 
 
 def metadata(project):
+    from frost_undrained_state import selected as undrained_selection,metadata as undrained_metadata
+    undrained=undrained_selection(project)
+    if undrained is not None:return undrained_metadata(project) if undrained['implicit'] else None
     if not enabled(project): return None
     folder = Path(__file__).parent
     providers = ['implicit_frost_composition.py', 'implicit_frost_surface_conductivity.py',

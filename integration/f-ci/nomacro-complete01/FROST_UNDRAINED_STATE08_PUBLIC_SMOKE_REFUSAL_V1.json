@@ -1,0 +1,42 @@
+{
+  "status": "ORIGINAL_ACTUAL_PUBLIC_UNDRAINED_BUILD_PASS_FIRST_DAY_TYPED_RECEIPT_REFUSAL_RETAINED",
+  "actual_source": "1239cce09a233e43b334a6873a1c5d89f1ed3aef",
+  "actual_build_result": {
+    "command": [
+      "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "tools/solute/run_water.py",
+      "--model",
+      "HYBRID_NOMACRO_WATER",
+      "--experimental-project",
+      "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-undrained-state08-local-smoke-v1\\O0-cde-d0-b5-i1-h2-p2-dense\\inputs",
+      "--original-output",
+      "--experimental-time-step-policy",
+      "original-adaptive-event-closure-v1",
+      "--reference-work",
+      "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+      "--build-only",
+      "--donor-opt",
+      "O0",
+      "--kernel-opt",
+      "O0",
+      "--output",
+      "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-undrained-state08-local-O0-v1\\cde-d0-b5-i1-h2-p2-dense\\bundle"
+    ],
+    "returncode": 0,
+    "seconds": 33.38485289970413
+  },
+  "kind": "cde",
+  "bottom": 5,
+  "implicit": 1,
+  "drainage": 0,
+  "accepted_primary_days": 0,
+  "accepted_kernel_days": 0,
+  "original_stdout_sha256": "6d32622bb70cfec358c7e427bf713bc3e0c1bcfbb5e4b0aea063a4f82aaf2341",
+  "original_stderr_sha256": "796d37c101ada34b749cafb0cbd6fef72769acc35eae6aa31c6d8010da25c0f8",
+  "raw_build_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-undrained-state08-local-O0-v1\\cde-d0-b5-i1-h2-p2-dense\\bundle",
+  "raw_input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-undrained-state08-local-smoke-v1\\O0-cde-d0-b5-i1-h2-p2-dense\\inputs",
+  "actual_BUILD_sha256": "c0033aba8be5554094be82fcde518550270e61669c4708fc11325efdb10bdc13",
+  "correction": "Distinct SWDRA0/SWFROST1 terminal day receipt; unchanged28 ledger terms, actual drainage rate, absolute1e-10 criterion and numerical process",
+  "physical_or_mass_terms_changed": false
+}

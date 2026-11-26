@@ -376,7 +376,11 @@ def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_tabl
     drained_frost = report['selectors']['SWFROST']==1 and report['selectors']['SWDRA']==1
     if drained_frost and policy != EVENT_POLICY:
         raise ValueError('Integrated frost drainage requires explicit corrected TimeControl event closure')
-    if policy == EVENT_POLICY and not drained_frost:
+    from frost_undrained_state import selection as undrained_frost_selection
+    undrained_frost=undrained_frost_selection(directory,original_output)
+    if undrained_frost is not None and policy!=EVENT_POLICY:
+        raise ValueError('Bounded undrained Frost state/calendar requires qualified original event closure')
+    if policy == EVENT_POLICY and not drained_frost and undrained_frost is None:
         raise ValueError('Corrected event closure is bounded to original water frost drainage')
     from daily_host import ORIGINAL_SOIL_TABLE_POLICY, SOIL_TABLE_POLICIES
     soil=ORIGINAL_SOIL_TABLE_POLICY if soil_table_policy is None else soil_table_policy

@@ -1,0 +1,38 @@
+{
+  "status": "ACTUAL_COMPLETE_BUNDLE_READER_REFUSED_NEW_TYPED_RECEIPT_BEFORE_MODEL_LAUNCH_ORIGINAL_RETAINED",
+  "actual_source": "76b0c773e172979cd183f836e83017ab8f6fd14f",
+  "actual_build": {
+    "command": [
+      "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "tools/solute/run_water.py",
+      "--model",
+      "HYBRID_NOMACRO_WATER",
+      "--experimental-project",
+      "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-undrained-state08-local-smoke-v2\\O0-cde-d0-b5-i1-h2-p2-dense\\inputs",
+      "--original-output",
+      "--experimental-time-step-policy",
+      "original-adaptive-event-closure-v1",
+      "--reference-work",
+      "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+      "--build-only",
+      "--donor-opt",
+      "O0",
+      "--kernel-opt",
+      "O0",
+      "--output",
+      "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-undrained-state08-local-O0-v2\\cde-d0-b5-i1-h2-p2-dense\\bundle"
+    ],
+    "returncode": 0,
+    "seconds": 16.686124400235713
+  },
+  "actual_BUILD_sha256": "352f8669213bb2e7aa8e676f145573eccd2f85ef99ed2c58eb5e435358ad0399",
+  "original_reader_stderr_sha256": "0e9390d60e3f233616aa04003ff6b8615e96acaa831768dc57d4f49574d2ffde",
+  "original_reader_stderr_path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-undrained-state08-local-smoke-v2\\O0-cde-d0-b5-i1-h2-p2-dense\\science.stderr.txt",
+  "accepted_model_days": 0,
+  "model_day_requests": 0,
+  "correction": "Select exact same new SWDRA0 receipt renderer in the complete public bundle reader as already selected in public generation and private source closure",
+  "all_source_comparisons_and_1e_10_bounds_retained": true,
+  "original_B2_source_bytes": "FROST_UNDRAINED_STATE08_SOURCE_BYTES_V2/RESULT.json",
+  "original_B2_controller_bytes": "FROST_UNDRAINED_STATE08_CONTROLLER_SOURCE_V2.json"
+}

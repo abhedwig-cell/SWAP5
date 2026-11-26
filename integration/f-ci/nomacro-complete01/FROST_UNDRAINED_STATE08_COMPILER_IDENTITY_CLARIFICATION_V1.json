@@ -1,0 +1,24 @@
+{
+  "status": "ORIGINAL_PROBE_COMPILER_IDENTITY_CLARIFICATION_NO_EVIDENCE_REWRITE",
+  "actual_compiler": "C:\\msys64\\ucrt64\\bin\\gfortran.exe",
+  "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+  "sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+  "identical_to_original_J_PREPARED_compiler": true,
+  "original_records": [
+    {
+      "file": "FROST_UNDRAINED_STATE08_ORIGINAL_INITIALIZATION_PHASES_V2.json",
+      "sha256": "2e7a4630e8b23fe7ead14656573db4118a54a39bffade05b9fc4ef0bd4bb665a",
+      "actual_compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+      "original_conservative_mixed_flag": true
+    },
+    {
+      "file": "FROST_UNDRAINED_STATE08_ORIGINAL_INITIALIZATION_PHASES_V3.json",
+      "sha256": "7348633f09152ce31cacb2d7bab21fdb0102f324d96fc524cefcf57a9ae5a34e",
+      "actual_compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+      "original_conservative_mixed_flag": true
+    }
+  ],
+  "clarification": "The original scripts conservatively hard-coded mixed_compiler_diagnostic=true. Actual recorded compiler version and binary SHA256 exactly equal the original J Rev4 compiler. The driver is a new diagnostic main linked to unchanged original J objects, but the compiler binary is not mixed. Preserve original labels and bytes; do not promote diagnostic outcomes to scientific qualification.",
+  "new_scientific_qualification": false,
+  "model_runs_repeated": 0
+}

@@ -8,6 +8,8 @@ FIXED=dict(SWMACRO=0,SWFROST=1,SWSNOW=1,SWHEA=1,SWCALT=2,SWSOPHY=0,
 
 
 def input_domain(selectors,boundary,original_output):
+    from frost_undrained_state import input_domain as undrained_domain
+    if undrained_domain(selectors,boundary,original_output):return True
     return bool(original_output is not False and boundary.get('SWBOTB') in (5,8)
                 and selectors.get('SWKIMPL') in (0,1)
                 and selectors.get('SWSOLU') in (0,1)
@@ -16,6 +18,9 @@ def input_domain(selectors,boundary,original_output):
 
 
 def selection(directory,original_output=True):
+    from frost_undrained_state import selection as undrained_selection
+    undrained=undrained_selection(directory,original_output)
+    if undrained is not None:return undrained
     if not directory or original_output is False:return None
     from experimental_project import switches,one
     folder=Path(directory);text=(folder/'swap.swp').read_text(encoding='cp1252');selectors=switches(text)
@@ -50,6 +55,9 @@ def selection(directory,original_output=True):
 
 
 def codec(selected):
+    if selected.get('undrained_frost'):
+        from frost_undrained_state import codec as undrained_codec
+        return undrained_codec(selected)
     return {('water',0):b'S5BCW001',('cde',0):b'S5BCC001',
             ('water',1):b'S5BCW002',('cde',1):b'S5BCC002'}[(selected['kind'],selected['implicit'])]
 

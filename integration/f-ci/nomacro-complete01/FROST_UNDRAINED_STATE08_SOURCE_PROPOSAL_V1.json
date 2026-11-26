@@ -1,0 +1,148 @@
+{
+  "status": "SOURCE_PROPOSAL_SYNTAX_AND_LITERAL_OLD_SOURCE_INVERSES_ONLY_NOT_INSTALLED_OR_QUALIFIED",
+  "actual_base": "39d00d6b1d15dbe1132a0b6a2eb361d2459e697d",
+  "change_class": "B_EXISTING_PROCESS_COMPOSITION",
+  "files": {
+    "app/hybrid_water/frost_boundary_state_calendar.py": {
+      "before_sha256": "bd03ee78d851125a6fe7f5d7b924a41f4a5aec23109aec795dc37b70b19c7bef",
+      "proposed_sha256": "474771fa842f36dce80877a326de2af471f9ffe7e0bfad4a46e3b7b73e9a65ed",
+      "ordered_literal_replacements": [
+        {
+          "before": "def input_domain(selectors,boundary,original_output):\n",
+          "after": "def input_domain(selectors,boundary,original_output):\n    from frost_undrained_state import input_domain as undrained_domain\n    if undrained_domain(selectors,boundary,original_output):return True\n",
+          "count": 1
+        },
+        {
+          "before": "def selection(directory,original_output=True):\n",
+          "after": "def selection(directory,original_output=True):\n    from frost_undrained_state import selection as undrained_selection\n    undrained=undrained_selection(directory,original_output)\n    if undrained is not None:return undrained\n",
+          "count": 1
+        },
+        {
+          "before": "def codec(selected):\n",
+          "after": "def codec(selected):\n    if selected.get('undrained_frost'):\n        from frost_undrained_state import codec as undrained_codec\n        return undrained_codec(selected)\n",
+          "count": 1
+        }
+      ]
+    },
+    "app/hybrid_water/frost_drainage_composition.py": {
+      "before_sha256": "93cf4274f876364aa28189b53bdbd2cf14ef909a4eda3bffdeacfccfd7caefd8",
+      "proposed_sha256": "c517e92f725db81ca192a72b4752deaa7411b23833d7e66fa1db8ff71cfd2ace",
+      "ordered_literal_replacements": [
+        {
+          "before": "def enabled(project):\n",
+          "after": "def enabled(project):\n    from frost_undrained_state import selected as undrained_selection\n    if undrained_selection(project) is not None:return True\n",
+          "count": 1
+        },
+        {
+          "before": "def metadata(project):\n",
+          "after": "def metadata(project):\n    from frost_undrained_state import metadata as undrained_metadata\n    undrained=undrained_metadata(project)\n    if undrained is not None:return undrained\n",
+          "count": 1
+        },
+        {
+          "before": "def apply_build(output, donor_build, project, patched):\n",
+          "after": "def apply_build(output, donor_build, project, patched):\n    from frost_undrained_state import selected as undrained_selection,apply_build as undrained_build\n    if undrained_selection(project) is not None:return undrained_build(output,project,patched)\n",
+          "count": 1
+        },
+        {
+          "before": "def validate(bundle, reference, project, identity):\n",
+          "after": "def validate(bundle, reference, project, identity):\n    from frost_undrained_state import selected as undrained_selection,validate as undrained_validate\n    if undrained_selection(project) is not None:return undrained_validate(bundle,project,identity)\n",
+          "count": 1
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_frost_composition.py": {
+      "before_sha256": "c2425ae3ab8378c13b90ab86842c808decfe7484aa687f89a0a4cfff5d59b261",
+      "proposed_sha256": "4826afd1bf7a3eb3b9f7c6a253aa01bb71426b2e1cdb06df257e9d6f2ba7bb16",
+      "ordered_literal_replacements": [
+        {
+          "before": "def metadata(project):\n",
+          "after": "def metadata(project):\n    from frost_undrained_state import selected as undrained_selection,metadata as undrained_metadata\n    undrained=undrained_selection(project)\n    if undrained is not None:return undrained_metadata(project) if undrained['implicit'] else None\n",
+          "count": 1
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_frost_root_state.py": {
+      "before_sha256": "8c11c7b22b9d9189481db4d36297ed063cc1c3ea97ccddbe4edafb60d88344ed",
+      "proposed_sha256": "674aa9389c606aa8eedd36e724f8ffe7bf21ac40d58a138ddf870fcfe47dad20",
+      "ordered_literal_replacements": [
+        {
+          "before": "def source(solute,mode=2,bottom=6):\n",
+          "after": "def drainage(project):\n    from frost_undrained_state import selected\n    return 0 if selected(project) is not None else 1\n\n\ndef source(solute,mode=2,bottom=6,drain=1):\n    if type(drain) is not int or drain not in (0,1):\n        raise ValueError('Invalid implicit Frost native drainage domain')\n",
+          "count": 1
+        },
+        {
+          "before": "'.or.swfrost/=1.or.swdra/=1.or.swhyst/='+str(mode)",
+          "after": "'.or.swfrost/=1.or.swdra/='+str(drain)+'.or.swhyst/='+str(mode)",
+          "count": 1
+        },
+        {
+          "before": "('expected=[1,numnod', 'expected=[4,numnod'),",
+          "after": "('expected=[1,numnod', 'expected=['+str(5 if drain==0 else 4)+',numnod'),",
+          "count": 1
+        },
+        {
+          "before": "source(project.solute,hysteresis(project),boundary(project))",
+          "after": "source(project.solute,hysteresis(project),boundary(project),drainage(project))",
+          "count": 5
+        },
+        {
+          "before": "bytes=96, header_version=4,\n        native_revision=2",
+          "after": "bytes=96, header_version=5 if drainage(project)==0 else 4,\n        native_revision=3 if drainage(project)==0 else 2",
+          "count": 1
+        },
+        {
+          "before": "expected=[4,project.nodes,int(project.solute),1,hysteresis(project),boundary(project),1,0]",
+          "after": "expected=[5 if drainage(project)==0 else 4,project.nodes,int(project.solute),1,hysteresis(project),boundary(project),1,0]",
+          "count": 1
+        }
+      ]
+    },
+    "app/hybrid_water/frost_calendar_output.py": {
+      "before_sha256": "9a10f598e9eb55b149cd86d19e83cb9cb32e15d966d22f26de35aa38cc75a545",
+      "proposed_sha256": "0aa783d661d33a67cf75b26f07f57e4aac587d694b0f31747bef6b01e891a21a",
+      "ordered_literal_replacements": [
+        {
+          "before": "swfrost=1,swdra=1,swhyst=selected['hysteresis']",
+          "after": "swfrost=1,swdra=selected.get('drainage',1),swhyst=selected['hysteresis']",
+          "count": 1
+        },
+        {
+          "before": "    if boundary.get('boundary_state_calendar'):providers+=['frost_boundary_state_calendar.py','frost_boundary_composition.py']",
+          "after": "    if boundary.get('boundary_state_calendar'):providers+=['frost_boundary_state_calendar.py','frost_boundary_composition.py']\n    if boundary.get('undrained_frost'):providers.append('frost_undrained_state.py')",
+          "count": 1
+        }
+      ]
+    },
+    "app/hybrid_water/experimental_project.py": {
+      "before_sha256": "381069f8d1fd6203fabf74942224ca96a58f655e077056dd8505dcba72b8efe1",
+      "proposed_sha256": "6cb5c8dee988c8a575751cd0b859ba5401d1ec1ed32042978cc04ebefd460264",
+      "ordered_literal_replacements": [
+        {
+          "before": "    if policy == EVENT_POLICY and not drained_frost:\n",
+          "after": "    from frost_undrained_state import selection as undrained_frost_selection\n    undrained_frost=undrained_frost_selection(directory,original_output)\n    if undrained_frost is not None and policy!=EVENT_POLICY:\n        raise ValueError('Bounded undrained Frost state/calendar requires qualified original event closure')\n    if policy == EVENT_POLICY and not drained_frost and undrained_frost is None:\n",
+          "count": 1
+        }
+      ]
+    },
+    "app/hybrid_water/snow_undrained.py": {
+      "before_sha256": "8c19d0f2ca6a7df8db0ba1ac29ef5c8d997057a476f7da80e1379404b25a3741",
+      "proposed_sha256": "25283120b0600ae12e0155ea5c12e20b45067ba54c287a64d6632462543e05c5",
+      "ordered_literal_replacements": [
+        {
+          "before": "def selection(project):\n",
+          "after": "def selection(project):\n    from frost_undrained_state import selected as undrained_frost_selection\n    if undrained_frost_selection(project) is not None:return None\n",
+          "count": 1
+        }
+      ]
+    },
+    "app/hybrid_water/frost_undrained_state.py": {
+      "added": true,
+      "proposed_sha256": "c1eec43c7459d0b6d0d304f0e4e5c797e9da7414e4010c16b105708bc2413ceb"
+    }
+  },
+  "existing_engine_or_Fortran_criterion_source_changed": false,
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "public_admission": false,
+  "next_action": "Install only after actual07 canonical observation and receipt; use real source commit for public builds and targeted original-budget/native/cold qualification. Preserve all old648 source dependencies explicitly, never project source identities."
+}

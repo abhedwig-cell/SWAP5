@@ -1,0 +1,56 @@
+{
+  "status": "ACTUAL_READ_ONLY_SOURCE_QUERY_CENSORED_BEFORE_SCIENCE_AUDIT_NO_MODEL_EXECUTIONS",
+  "archive": "FROST_UNDRAINED_STATE08_READ_ONLY_OBSERVER_CENSOR_RAW_V1.zip",
+  "bytes": 24225,
+  "sha256": "ffc3587b7deef5b3c58217b4c03194df99efcc95ca08ec930b21b802e6185e14",
+  "members": {
+    "FROST_UNDRAINED_STATE08_READ_ONLY_EOL_QUERY_CENSOR_V1.json": {
+      "bytes": 701,
+      "sha256": "221b1f2aeb6797b8f323acc389692399ea63167a3ac1894ada09a142f9dc69f5"
+    },
+    "frost-undrained-state08-actual-candidate-observer-v1.py": {
+      "bytes": 3036,
+      "sha256": "4507bec8c7bd85d7b048690fc30bdec2a697f26fe993d337bb2eddb20671de44"
+    },
+    "FROST_UNDRAINED_STATE08_CANDIDATE_PUBLIC_V1.json": {
+      "bytes": 18228,
+      "sha256": "b807f208f8eb59048a8b6c678f2721dbe44ef12f38c4b869b4bc584866988ab3"
+    },
+    "FROST_UNDRAINED_STATE08_CANDIDATE_PUBLIC_V1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_UNDRAINED_STATE08_CANDIDATE_PUBLIC_V1.stderr.txt": {
+      "bytes": 13466,
+      "sha256": "45aed98ef27a221f18270ffcd10fad20213caec30e54f9f7431bab963735975c"
+    },
+    "FROST_UNDRAINED_STATE08_CANDIDATE_PUBLICATION_V1.json": {
+      "bytes": 18398,
+      "sha256": "3106ec734f7451dfbdcd98ec7dea295c13a4802c5cad980d466999eac5755f44"
+    },
+    "FROST_UNDRAINED_STATE08_CANDIDATE_PUBLICATION_V1.stdout.txt": {
+      "bytes": 136,
+      "sha256": "5be384d65bc7a8d450baa5c97d1e18ccc82bfbc8bd68e842cf4718e187d771b5"
+    },
+    "FROST_UNDRAINED_STATE08_CANDIDATE_PUBLICATION_V1.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual-candidate-source/frost_undrained_source_custody.py": {
+      "bytes": 4709,
+      "sha256": "f42850aefe13b6d71ca1000a7a21b0dac03b66332d0171c40af758d6464ad982"
+    },
+    "actual-candidate-source/frost_undrained_archive_science.py": {
+      "bytes": 24134,
+      "sha256": "d3cd2cc7cd1cc215dc72cf6db8b28175689e724b64bb8f30309f111bbeb042c9"
+    },
+    "actual-candidate-source/frost_undrained_verify.py": {
+      "bytes": 6519,
+      "sha256": "f36b9ca286fe99937cc76a68ce800295620358e3ba3041b3cc3374437fe3aa72"
+    }
+  },
+  "actual_candidate": "e4f4f3f15b897f1012d5940efcf5ce5911d13786",
+  "reason": "Two own verified Git --eol queries censored while scanning binary evidence; narrowed text inventory and retained complete binary source/index/working hash checks. Library audit progress made optional to retain public JSON stdout. Original results and censors retained.",
+  "compiler_executions": 0,
+  "model_executions": 0
+}

@@ -1,0 +1,832 @@
+{
+  "status": "ORIGINAL_FOUR_TERMINAL_SCIENTIFIC_JOBS_SUCCESS",
+  "actual_producer": "127af752c5519e7f9d9a6894c61137f0ee7f3920",
+  "runs": [
+    {
+      "run": {
+        "id": 45741205913,
+        "name": "Original undrained Frost boundary state/calendar Ubuntu full35 and native state",
+        "node_id": "WFR_kwLOUOUgWc8AAAAKpmNpmQ",
+        "head_branch": "codex/nomacro-frost-undrained-state08",
+        "head_sha": "127af752c5519e7f9d9a6894c61137f0ee7f3920",
+        "path": ".github/workflows/nomacro-frost-undrained-state08-ubuntu.yml",
+        "display_title": "Preserve four real undrained Frost probes and qualify coherent portab…",
+        "run_number": 1,
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "workflow_id": 431094417,
+        "check_suite_id": 123758221696,
+        "check_suite_node_id": "CS_kwDOUOUgWc8AAAAc0JCZgA",
+        "url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/45741205913",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/45741205913",
+        "pull_requests": [],
+        "created_at": "2026-11-26T02:15:32Z",
+        "updated_at": "2026-11-26T02:26:58Z",
+        "actor": {
+          "login": "abhedwig-cell",
+          "id": 324926644,
+          "node_id": "U_kgDOE138tA",
+          "avatar_url": "https://avatars.githubusercontent.com/u/324926644?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/abhedwig-cell",
+          "html_url": "https://github.com/abhedwig-cell",
+          "followers_url": "https://api.github.com/users/abhedwig-cell/followers",
+          "following_url": "https://api.github.com/users/abhedwig-cell/following{/other_user}",
+          "gists_url": "https://api.github.com/users/abhedwig-cell/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/abhedwig-cell/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/abhedwig-cell/subscriptions",
+          "organizations_url": "https://api.github.com/users/abhedwig-cell/orgs",
+          "repos_url": "https://api.github.com/users/abhedwig-cell/repos",
+          "events_url": "https://api.github.com/users/abhedwig-cell/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/abhedwig-cell/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "run_attempt": 1,
+        "referenced_workflows": [],
+        "run_started_at": "2026-11-26T02:15:32Z",
+        "triggering_actor": {
+          "login": "abhedwig-cell",
+          "id": 324926644,
+          "node_id": "U_kgDOE138tA",
+          "avatar_url": "https://avatars.githubusercontent.com/u/324926644?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/abhedwig-cell",
+          "html_url": "https://github.com/abhedwig-cell",
+          "followers_url": "https://api.github.com/users/abhedwig-cell/followers",
+          "following_url": "https://api.github.com/users/abhedwig-cell/following{/other_user}",
+          "gists_url": "https://api.github.com/users/abhedwig-cell/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/abhedwig-cell/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/abhedwig-cell/subscriptions",
+          "organizations_url": "https://api.github.com/users/abhedwig-cell/orgs",
+          "repos_url": "https://api.github.com/users/abhedwig-cell/repos",
+          "events_url": "https://api.github.com/users/abhedwig-cell/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/abhedwig-cell/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/45741205913/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/45741205913/logs",
+        "check_suite_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/check-suites/123758221696",
+        "artifacts_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/45741205913/artifacts",
+        "cancel_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/45741205913/cancel",
+        "rerun_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/45741205913/rerun",
+        "previous_attempt_url": null,
+        "workflow_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/workflows/431094417",
+        "head_commit": {
+          "id": "127af752c5519e7f9d9a6894c61137f0ee7f3920",
+          "tree_id": "bd384b450f02e49d9a2f769f547887938412e3f4",
+          "message": "Preserve four real undrained Frost probes and qualify coherent portable state scope",
+          "timestamp": "2026-11-26T02:14:34Z",
+          "author": {
+            "name": "Veldhuizen",
+            "email": "ab.veldhuizen@wur.nl"
+          },
+          "committer": {
+            "name": "Veldhuizen",
+            "email": "ab.veldhuizen@wur.nl"
+          }
+        },
+        "repository": {
+          "id": 1357193305,
+          "node_id": "R_kgDOUOUgWQ",
+          "name": "SWAP5",
+          "full_name": "abhedwig-cell/SWAP5",
+          "private": false,
+          "owner": {
+            "login": "abhedwig-cell",
+            "id": 324926644,
+            "node_id": "U_kgDOE138tA",
+            "avatar_url": "https://avatars.githubusercontent.com/u/324926644?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/abhedwig-cell",
+            "html_url": "https://github.com/abhedwig-cell",
+            "followers_url": "https://api.github.com/users/abhedwig-cell/followers",
+            "following_url": "https://api.github.com/users/abhedwig-cell/following{/other_user}",
+            "gists_url": "https://api.github.com/users/abhedwig-cell/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/abhedwig-cell/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/abhedwig-cell/subscriptions",
+            "organizations_url": "https://api.github.com/users/abhedwig-cell/orgs",
+            "repos_url": "https://api.github.com/users/abhedwig-cell/repos",
+            "events_url": "https://api.github.com/users/abhedwig-cell/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/abhedwig-cell/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
+          },
+          "html_url": "https://github.com/abhedwig-cell/SWAP5",
+          "description": "SWAP 5 code and documtation",
+          "fork": false,
+          "url": "https://api.github.com/repos/abhedwig-cell/SWAP5",
+          "forks_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/forks",
+          "keys_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/keys{/key_id}",
+          "collaborators_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/collaborators{/collaborator}",
+          "teams_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/teams",
+          "hooks_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/hooks",
+          "issue_events_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/issues/events{/number}",
+          "events_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/events",
+          "assignees_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/assignees{/user}",
+          "branches_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/branches{/branch}",
+          "tags_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/tags",
+          "blobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/git/blobs{/sha}",
+          "git_tags_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/git/tags{/sha}",
+          "git_refs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/git/refs{/sha}",
+          "trees_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/git/trees{/sha}",
+          "statuses_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/statuses/{sha}",
+          "languages_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/languages",
+          "stargazers_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/stargazers",
+          "contributors_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/contributors",
+          "subscribers_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/subscribers",
+          "subscription_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/subscription",
+          "commits_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/commits{/sha}",
+          "git_commits_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/git/commits{/sha}",
+          "comments_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/comments{/number}",
+          "issue_comment_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/issues/comments{/number}",
+          "contents_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/contents/{+path}",
+          "compare_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/compare/{base}...{head}",
+          "merges_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/merges",
+          "archive_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/{archive_format}{/ref}",
+          "downloads_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/downloads",
+          "issues_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/issues{/number}",
+          "pulls_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/pulls{/number}",
+          "milestones_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/milestones{/number}",
+          "notifications_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/notifications{?since,all,participating}",
+          "labels_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/labels{/name}",
+          "releases_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/releases{/id}",
+          "deployments_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/deployments"
+        },
+        "head_repository": {
+          "id": 1357193305,
+          "node_id": "R_kgDOUOUgWQ",
+          "name": "SWAP5",
+          "full_name": "abhedwig-cell/SWAP5",
+          "private": false,
+          "owner": {
+            "login": "abhedwig-cell",
+            "id": 324926644,
+            "node_id": "U_kgDOE138tA",
+            "avatar_url": "https://avatars.githubusercontent.com/u/324926644?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/abhedwig-cell",
+            "html_url": "https://github.com/abhedwig-cell",
+            "followers_url": "https://api.github.com/users/abhedwig-cell/followers",
+            "following_url": "https://api.github.com/users/abhedwig-cell/following{/other_user}",
+            "gists_url": "https://api.github.com/users/abhedwig-cell/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/abhedwig-cell/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/abhedwig-cell/subscriptions",
+            "organizations_url": "https://api.github.com/users/abhedwig-cell/orgs",
+            "repos_url": "https://api.github.com/users/abhedwig-cell/repos",
+            "events_url": "https://api.github.com/users/abhedwig-cell/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/abhedwig-cell/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
+          },
+          "html_url": "https://github.com/abhedwig-cell/SWAP5",
+          "description": "SWAP 5 code and documtation",
+          "fork": false,
+          "url": "https://api.github.com/repos/abhedwig-cell/SWAP5",
+          "forks_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/forks",
+          "keys_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/keys{/key_id}",
+          "collaborators_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/collaborators{/collaborator}",
+          "teams_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/teams",
+          "hooks_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/hooks",
+          "issue_events_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/issues/events{/number}",
+          "events_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/events",
+          "assignees_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/assignees{/user}",
+          "branches_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/branches{/branch}",
+          "tags_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/tags",
+          "blobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/git/blobs{/sha}",
+          "git_tags_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/git/tags{/sha}",
+          "git_refs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/git/refs{/sha}",
+          "trees_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/git/trees{/sha}",
+          "statuses_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/statuses/{sha}",
+          "languages_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/languages",
+          "stargazers_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/stargazers",
+          "contributors_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/contributors",
+          "subscribers_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/subscribers",
+          "subscription_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/subscription",
+          "commits_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/commits{/sha}",
+          "git_commits_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/git/commits{/sha}",
+          "comments_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/comments{/number}",
+          "issue_comment_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/issues/comments{/number}",
+          "contents_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/contents/{+path}",
+          "compare_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/compare/{base}...{head}",
+          "merges_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/merges",
+          "archive_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/{archive_format}{/ref}",
+          "downloads_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/downloads",
+          "issues_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/issues{/number}",
+          "pulls_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/pulls{/number}",
+          "milestones_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/milestones{/number}",
+          "notifications_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/notifications{?since,all,participating}",
+          "labels_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/labels{/name}",
+          "releases_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/releases{/id}",
+          "deployments_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/deployments"
+        }
+      },
+      "jobs": [
+        {
+          "id": 139646373752,
+          "name": "qualify (O2)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 45741205913,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Preserve real source and prepare original provider",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run selected original boundary state/calendar periods and actual compiled controls",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Preserve every original generated compiled and provider byte",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Preserve raw inputs native source controls and failures",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13
+            }
+          ]
+        },
+        {
+          "id": 139646374139,
+          "name": "qualify (O0)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 45741205913,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Preserve real source and prepare original provider",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run selected original boundary state/calendar periods and actual compiled controls",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Preserve every original generated compiled and provider byte",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Preserve raw inputs native source controls and failures",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run": {
+        "id": 45741205916,
+        "name": "Original undrained Frost boundary state/calendar Windows full35 and native state",
+        "node_id": "WFR_kwLOUOUgWc8AAAAKpmNpnA",
+        "head_branch": "codex/nomacro-frost-undrained-state08",
+        "head_sha": "127af752c5519e7f9d9a6894c61137f0ee7f3920",
+        "path": ".github/workflows/nomacro-frost-undrained-state08-windows.yml",
+        "display_title": "Preserve four real undrained Frost probes and qualify coherent portab…",
+        "run_number": 1,
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "workflow_id": 431094419,
+        "check_suite_id": 123758221758,
+        "check_suite_node_id": "CS_kwDOUOUgWc8AAAAc0JCZvg",
+        "url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/45741205916",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/45741205916",
+        "pull_requests": [],
+        "created_at": "2026-11-26T02:15:32Z",
+        "updated_at": "2026-11-26T02:33:49Z",
+        "actor": {
+          "login": "abhedwig-cell",
+          "id": 324926644,
+          "node_id": "U_kgDOE138tA",
+          "avatar_url": "https://avatars.githubusercontent.com/u/324926644?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/abhedwig-cell",
+          "html_url": "https://github.com/abhedwig-cell",
+          "followers_url": "https://api.github.com/users/abhedwig-cell/followers",
+          "following_url": "https://api.github.com/users/abhedwig-cell/following{/other_user}",
+          "gists_url": "https://api.github.com/users/abhedwig-cell/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/abhedwig-cell/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/abhedwig-cell/subscriptions",
+          "organizations_url": "https://api.github.com/users/abhedwig-cell/orgs",
+          "repos_url": "https://api.github.com/users/abhedwig-cell/repos",
+          "events_url": "https://api.github.com/users/abhedwig-cell/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/abhedwig-cell/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "run_attempt": 1,
+        "referenced_workflows": [],
+        "run_started_at": "2026-11-26T02:15:32Z",
+        "triggering_actor": {
+          "login": "abhedwig-cell",
+          "id": 324926644,
+          "node_id": "U_kgDOE138tA",
+          "avatar_url": "https://avatars.githubusercontent.com/u/324926644?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/abhedwig-cell",
+          "html_url": "https://github.com/abhedwig-cell",
+          "followers_url": "https://api.github.com/users/abhedwig-cell/followers",
+          "following_url": "https://api.github.com/users/abhedwig-cell/following{/other_user}",
+          "gists_url": "https://api.github.com/users/abhedwig-cell/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/abhedwig-cell/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/abhedwig-cell/subscriptions",
+          "organizations_url": "https://api.github.com/users/abhedwig-cell/orgs",
+          "repos_url": "https://api.github.com/users/abhedwig-cell/repos",
+          "events_url": "https://api.github.com/users/abhedwig-cell/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/abhedwig-cell/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/45741205916/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/45741205916/logs",
+        "check_suite_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/check-suites/123758221758",
+        "artifacts_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/45741205916/artifacts",
+        "cancel_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/45741205916/cancel",
+        "rerun_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/45741205916/rerun",
+        "previous_attempt_url": null,
+        "workflow_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/workflows/431094419",
+        "head_commit": {
+          "id": "127af752c5519e7f9d9a6894c61137f0ee7f3920",
+          "tree_id": "bd384b450f02e49d9a2f769f547887938412e3f4",
+          "message": "Preserve four real undrained Frost probes and qualify coherent portable state scope",
+          "timestamp": "2026-11-26T02:14:34Z",
+          "author": {
+            "name": "Veldhuizen",
+            "email": "ab.veldhuizen@wur.nl"
+          },
+          "committer": {
+            "name": "Veldhuizen",
+            "email": "ab.veldhuizen@wur.nl"
+          }
+        },
+        "repository": {
+          "id": 1357193305,
+          "node_id": "R_kgDOUOUgWQ",
+          "name": "SWAP5",
+          "full_name": "abhedwig-cell/SWAP5",
+          "private": false,
+          "owner": {
+            "login": "abhedwig-cell",
+            "id": 324926644,
+            "node_id": "U_kgDOE138tA",
+            "avatar_url": "https://avatars.githubusercontent.com/u/324926644?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/abhedwig-cell",
+            "html_url": "https://github.com/abhedwig-cell",
+            "followers_url": "https://api.github.com/users/abhedwig-cell/followers",
+            "following_url": "https://api.github.com/users/abhedwig-cell/following{/other_user}",
+            "gists_url": "https://api.github.com/users/abhedwig-cell/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/abhedwig-cell/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/abhedwig-cell/subscriptions",
+            "organizations_url": "https://api.github.com/users/abhedwig-cell/orgs",
+            "repos_url": "https://api.github.com/users/abhedwig-cell/repos",
+            "events_url": "https://api.github.com/users/abhedwig-cell/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/abhedwig-cell/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
+          },
+          "html_url": "https://github.com/abhedwig-cell/SWAP5",
+          "description": "SWAP 5 code and documtation",
+          "fork": false,
+          "url": "https://api.github.com/repos/abhedwig-cell/SWAP5",
+          "forks_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/forks",
+          "keys_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/keys{/key_id}",
+          "collaborators_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/collaborators{/collaborator}",
+          "teams_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/teams",
+          "hooks_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/hooks",
+          "issue_events_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/issues/events{/number}",
+          "events_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/events",
+          "assignees_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/assignees{/user}",
+          "branches_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/branches{/branch}",
+          "tags_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/tags",
+          "blobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/git/blobs{/sha}",
+          "git_tags_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/git/tags{/sha}",
+          "git_refs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/git/refs{/sha}",
+          "trees_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/git/trees{/sha}",
+          "statuses_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/statuses/{sha}",
+          "languages_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/languages",
+          "stargazers_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/stargazers",
+          "contributors_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/contributors",
+          "subscribers_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/subscribers",
+          "subscription_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/subscription",
+          "commits_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/commits{/sha}",
+          "git_commits_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/git/commits{/sha}",
+          "comments_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/comments{/number}",
+          "issue_comment_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/issues/comments{/number}",
+          "contents_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/contents/{+path}",
+          "compare_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/compare/{base}...{head}",
+          "merges_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/merges",
+          "archive_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/{archive_format}{/ref}",
+          "downloads_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/downloads",
+          "issues_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/issues{/number}",
+          "pulls_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/pulls{/number}",
+          "milestones_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/milestones{/number}",
+          "notifications_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/notifications{?since,all,participating}",
+          "labels_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/labels{/name}",
+          "releases_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/releases{/id}",
+          "deployments_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/deployments"
+        },
+        "head_repository": {
+          "id": 1357193305,
+          "node_id": "R_kgDOUOUgWQ",
+          "name": "SWAP5",
+          "full_name": "abhedwig-cell/SWAP5",
+          "private": false,
+          "owner": {
+            "login": "abhedwig-cell",
+            "id": 324926644,
+            "node_id": "U_kgDOE138tA",
+            "avatar_url": "https://avatars.githubusercontent.com/u/324926644?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/abhedwig-cell",
+            "html_url": "https://github.com/abhedwig-cell",
+            "followers_url": "https://api.github.com/users/abhedwig-cell/followers",
+            "following_url": "https://api.github.com/users/abhedwig-cell/following{/other_user}",
+            "gists_url": "https://api.github.com/users/abhedwig-cell/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/abhedwig-cell/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/abhedwig-cell/subscriptions",
+            "organizations_url": "https://api.github.com/users/abhedwig-cell/orgs",
+            "repos_url": "https://api.github.com/users/abhedwig-cell/repos",
+            "events_url": "https://api.github.com/users/abhedwig-cell/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/abhedwig-cell/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
+          },
+          "html_url": "https://github.com/abhedwig-cell/SWAP5",
+          "description": "SWAP 5 code and documtation",
+          "fork": false,
+          "url": "https://api.github.com/repos/abhedwig-cell/SWAP5",
+          "forks_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/forks",
+          "keys_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/keys{/key_id}",
+          "collaborators_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/collaborators{/collaborator}",
+          "teams_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/teams",
+          "hooks_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/hooks",
+          "issue_events_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/issues/events{/number}",
+          "events_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/events",
+          "assignees_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/assignees{/user}",
+          "branches_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/branches{/branch}",
+          "tags_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/tags",
+          "blobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/git/blobs{/sha}",
+          "git_tags_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/git/tags{/sha}",
+          "git_refs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/git/refs{/sha}",
+          "trees_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/git/trees{/sha}",
+          "statuses_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/statuses/{sha}",
+          "languages_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/languages",
+          "stargazers_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/stargazers",
+          "contributors_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/contributors",
+          "subscribers_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/subscribers",
+          "subscription_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/subscription",
+          "commits_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/commits{/sha}",
+          "git_commits_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/git/commits{/sha}",
+          "comments_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/comments{/number}",
+          "issue_comment_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/issues/comments{/number}",
+          "contents_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/contents/{+path}",
+          "compare_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/compare/{base}...{head}",
+          "merges_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/merges",
+          "archive_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/{archive_format}{/ref}",
+          "downloads_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/downloads",
+          "issues_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/issues{/number}",
+          "pulls_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/pulls{/number}",
+          "milestones_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/milestones{/number}",
+          "notifications_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/notifications{?since,all,participating}",
+          "labels_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/labels{/name}",
+          "releases_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/releases{/id}",
+          "deployments_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/deployments"
+        }
+      },
+      "jobs": [
+        {
+          "id": 139646373879,
+          "name": "qualify (O0)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 45741205916,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Keep actual source text spelling",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run msys2/setup-msys2@v2",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Expose actual UCRT compiler and runtime",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Preserve real source and prepare original provider",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Run selected original boundary state/calendar periods and actual compiled controls",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Preserve every original generated compiled and provider byte",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            },
+            {
+              "name": "Preserve raw inputs native source controls and failures",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 19
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 20
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 21
+            }
+          ]
+        },
+        {
+          "id": 139646374084,
+          "name": "qualify (O2)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 45741205916,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Keep actual source text spelling",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run msys2/setup-msys2@v2",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Expose actual UCRT compiler and runtime",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Preserve real source and prepare original provider",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Run selected original boundary state/calendar periods and actual compiled controls",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Preserve every original generated compiled and provider byte",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            },
+            {
+              "name": "Preserve raw inputs native source controls and failures",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 19
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 20
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 21
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "official_artifacts": [
+    {
+      "id": 15081318316,
+      "name": "frost-implicit-hys2-year06-O0-127af752c5519e7f9d9a6894c61137f0ee7f3920",
+      "size_in_bytes": 193391164,
+      "url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/15081318316",
+      "archive_download_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/15081318316/zip",
+      "expired": false,
+      "created_at": "2026-11-26T02:26:47Z",
+      "expires_at": "2026-12-26T02:25:42Z",
+      "updated_at": "2026-11-26T02:26:47Z",
+      "digest": "sha256:d3556ed32a8aefb2500eb2ebbc426f243842bc788277179324850876c6aef5c7",
+      "workflow_run": {
+        "id": 45741205913,
+        "repository_id": 1357193305,
+        "head_repository_id": 1357193305,
+        "head_branch": "codex/nomacro-frost-undrained-state08",
+        "head_sha": "127af752c5519e7f9d9a6894c61137f0ee7f3920"
+      }
+    },
+    {
+      "id": 15081188078,
+      "name": "frost-implicit-hys2-year06-O2-127af752c5519e7f9d9a6894c61137f0ee7f3920",
+      "size_in_bytes": 193743692,
+      "url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/15081188078",
+      "archive_download_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/15081188078/zip",
+      "expired": false,
+      "created_at": "2026-11-26T02:26:53Z",
+      "expires_at": "2026-12-26T02:26:05Z",
+      "updated_at": "2026-11-26T02:26:53Z",
+      "digest": "sha256:8a2ced32d0d747ddcf3dc940715a01cfeb49a2620d7ca10dadc7aa8b37179286",
+      "workflow_run": {
+        "id": 45741205913,
+        "repository_id": 1357193305,
+        "head_repository_id": 1357193305,
+        "head_branch": "codex/nomacro-frost-undrained-state08",
+        "head_sha": "127af752c5519e7f9d9a6894c61137f0ee7f3920"
+      }
+    },
+    {
+      "id": 15082460157,
+      "name": "frost-implicit-hys2-year06-windows-O0-127af752c5519e7f9d9a6894c61137f0ee7f3920",
+      "size_in_bytes": 196609277,
+      "url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/15082460157",
+      "archive_download_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/15082460157/zip",
+      "expired": false,
+      "created_at": "2026-11-26T02:33:40Z",
+      "expires_at": "2026-12-26T02:32:30Z",
+      "updated_at": "2026-11-26T02:33:40Z",
+      "digest": "sha256:6a80b3ffb4ee443f68b6c4b2fec69cd1b7537c7c54feb28b1909babdaec3b034",
+      "workflow_run": {
+        "id": 45741205916,
+        "repository_id": 1357193305,
+        "head_repository_id": 1357193305,
+        "head_branch": "codex/nomacro-frost-undrained-state08",
+        "head_sha": "127af752c5519e7f9d9a6894c61137f0ee7f3920"
+      }
+    },
+    {
+      "id": 15081483258,
+      "name": "frost-implicit-hys2-year06-windows-O2-127af752c5519e7f9d9a6894c61137f0ee7f3920",
+      "size_in_bytes": 197052527,
+      "url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/15081483258",
+      "archive_download_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/15081483258/zip",
+      "expired": false,
+      "created_at": "2026-11-26T02:29:31Z",
+      "expires_at": "2026-12-26T02:28:51Z",
+      "updated_at": "2026-11-26T02:29:31Z",
+      "digest": "sha256:94397ddf2a57a1f23c7f3ff7d93d4071600791c28cda3588b6753f2bf5e59228",
+      "workflow_run": {
+        "id": 45741205916,
+        "repository_id": 1357193305,
+        "head_repository_id": 1357193305,
+        "head_branch": "codex/nomacro-frost-undrained-state08",
+        "head_sha": "127af752c5519e7f9d9a6894c61137f0ee7f3920"
+      }
+    }
+  ]
+}
