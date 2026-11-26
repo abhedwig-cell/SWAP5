@@ -1,0 +1,49 @@
+{
+  "models_launched": 0,
+  "scope": "Original first4days, independent1e-6cm day guards, own native split routes and exact kink geometry; no wholeperiod/rollback claim",
+  "results": [
+    {
+      "opt": "O0",
+      "kink_steps": 130,
+      "domain_counts": {
+        "2": 68,
+        "3": 57,
+        "4": 5
+      },
+      "max_kink_gwl_error_cm": 0.0,
+      "day_residuals_cm": [
+        -6.059744036890683e-07,
+        -6.786952483133976e-08,
+        4.9542013146020806e-08,
+        -1.2283287245630145e-08
+      ]
+    },
+    {
+      "opt": "O2",
+      "kink_steps": 130,
+      "domain_counts": {
+        "2": 68,
+        "3": 57,
+        "4": 5
+      },
+      "max_kink_gwl_error_cm": 0.0,
+      "day_residuals_cm": [
+        -6.059744036890683e-07,
+        -6.786952483133976e-08,
+        4.9542013146020806e-08,
+        -1.2283287245630145e-08
+      ]
+    }
+  ],
+  "identities": {
+    "O0_result.end": "4265648c2e1b3efd72ff82354e207404aa162c6f350920c88853d20a7293460f",
+    "O0_macro.bin": "d4841ce8aed3bac152f0d166042c21e0df08918cd67ae42f47f861511302e19a",
+    "O2_result.end": "4265648c2e1b3efd72ff82354e207404aa162c6f350920c88853d20a7293460f",
+    "O2_macro.bin": "d4841ce8aed3bac152f0d166042c21e0df08918cd67ae42f47f861511302e19a"
+  },
+  "long_route_status": {
+    "O0": "MODEL_CAP_REACHED",
+    "O2": "OWN_RESTART_WINDOW_COMPLETE"
+  },
+  "whole_period_pass": false
+}
