@@ -1,12 +1,19 @@
 {
-  "status": "ACTUAL_LOCAL_LITERAL43_AND_REAL_GIT_SOURCE_SELECTION_PASS_CURRENT_CI_AND_CANONICAL_PENDING",
+  "status": "EVIDENCE_AWARE_CHECKOUT_PROFILES_IMPLEMENTED_ACTUAL_PARENT648_LOCAL_V2_AUDIT_PENDING",
   "workstream": "SWAP5-NOMACRO-COMPLETE01 / ACCELERATE02",
   "classification": "D_READ_ONLY_BUILD_AND_EVIDENCE_TRANSPORT",
   "qualified_dependency_candidate": "cb712974e37e41256877d9770a0af071afe241dd",
+  "actual_canonical_dependency": "df00f9393ac552b0a6cab8ee84f8b8d8c06ac26c",
   "dependency_PR": 1805,
-  "dependency_canonical_admission_pending": true,
+  "dependency_canonical_admission_pending": false,
   "actual_canonical_at_start": "47124f4de18a752fc466d50e2752e843548e5fea",
   "rules": "/*\n!/integration/f-ci/nomacro-complete01/*.zip\n!/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]\n",
+  "profiles": {
+    "source_and_metadata": "/*\n!/integration/f-ci/nomacro-complete01/*.zip\n!/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]\n",
+    "complete_evidence": "/*\n"
+  },
+  "fci_canonical_retains_complete_versioned_evidence": true,
+  "real_Git_complete_evidence_selection_sha256": "5f0ecd14ea4c9928503768dea69b070bebca2fe69cb6d788c2b9df95ebe512c5",
   "workflows": 13,
   "checkout_steps": 43,
   "files": {
@@ -31,12 +38,14 @@
         {
           "job": "build",
           "step_index": 0,
-          "action": "actions/checkout@v7"
+          "action": "actions/checkout@v7",
+          "profile": "source_and_metadata"
         },
         {
           "job": "verify",
           "step_index": 0,
-          "action": "actions/checkout@v7"
+          "action": "actions/checkout@v7",
+          "profile": "source_and_metadata"
         }
       ],
       "all_non_checkout_yaml_values_identical": true
@@ -116,57 +125,68 @@
         {
           "job": "fkt22",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         },
         {
           "job": "ppa",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         },
         {
           "job": "b1-poison",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         },
         {
           "job": "planvalid",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         },
         {
           "job": "ahl-provider",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         },
         {
           "job": "ahl-matrix",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         },
         {
           "job": "ahl-default-off",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         },
         {
           "job": "ahl-failclosed",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         },
         {
           "job": "ahl-ownership",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         },
         {
           "job": "ahl-scale",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         },
         {
           "job": "ahl-application",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         }
       ],
       "all_non_checkout_yaml_values_identical": true
@@ -186,7 +206,8 @@
         {
           "job": "qualify",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         }
       ],
       "all_non_checkout_yaml_values_identical": true
@@ -206,7 +227,8 @@
         {
           "job": "qualify",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         }
       ],
       "all_non_checkout_yaml_values_identical": true
@@ -226,7 +248,8 @@
         {
           "job": "qualify",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         }
       ],
       "all_non_checkout_yaml_values_identical": true
@@ -246,7 +269,8 @@
         {
           "job": "qualify",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         }
       ],
       "all_non_checkout_yaml_values_identical": true
@@ -266,7 +290,8 @@
         {
           "job": "qualify",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         }
       ],
       "all_non_checkout_yaml_values_identical": true
@@ -304,22 +329,26 @@
         {
           "job": "inverse-qualification",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         },
         {
           "job": "smooth-mechanism",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         },
         {
           "job": "startup-attribution",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         },
         {
           "job": "provider-consistent-stage",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         }
       ],
       "all_non_checkout_yaml_values_identical": true
@@ -339,203 +368,221 @@
         {
           "job": "poison-workspace",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         }
       ],
       "all_non_checkout_yaml_values_identical": true
     },
     ".github/workflows/fci-canonical.yml": {
       "before_lf_sha256": "033624c9e7f1f94794cf13096b6f049b075601d48e9ba60849ca4700a345e00c",
-      "proposed_lf_sha256": "8d24f3238d31a198ab8ec6c0e211221dd332fe4223e3e7bfea4adfeff4648365",
+      "proposed_lf_sha256": "44f14c20273706cfb91fe8a949d8e9db881d48b5e4fc9e10e764d9ed68a85cef",
       "ordered_literal_edits": [
         {
           "base_start": 1354,
           "base_end": 1354,
           "before": "",
-          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n            !/integration/f-ci/nomacro-complete01/*.zip\n            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]\n"
+          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n"
         },
         {
           "base_start": 2748,
           "base_end": 2748,
           "before": "",
-          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n            !/integration/f-ci/nomacro-complete01/*.zip\n            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]\n"
+          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n"
         },
         {
           "base_start": 11081,
           "base_end": 11081,
           "before": "",
-          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n            !/integration/f-ci/nomacro-complete01/*.zip\n            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]\n"
+          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n"
         },
         {
           "base_start": 12364,
           "base_end": 12364,
           "before": "",
-          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n            !/integration/f-ci/nomacro-complete01/*.zip\n            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]\n"
+          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n"
         },
         {
           "base_start": 12880,
           "base_end": 12880,
           "before": "",
-          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n            !/integration/f-ci/nomacro-complete01/*.zip\n            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]\n"
+          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n"
         },
         {
           "base_start": 13335,
           "base_end": 13335,
           "before": "",
-          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n            !/integration/f-ci/nomacro-complete01/*.zip\n            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]\n"
+          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n"
         },
         {
           "base_start": 14334,
           "base_end": 14334,
           "before": "",
-          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n            !/integration/f-ci/nomacro-complete01/*.zip\n            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]\n"
+          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n"
         },
         {
           "base_start": 15318,
           "base_end": 15318,
           "before": "",
-          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n            !/integration/f-ci/nomacro-complete01/*.zip\n            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]\n"
+          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n"
         },
         {
           "base_start": 16150,
           "base_end": 16150,
           "before": "",
-          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n            !/integration/f-ci/nomacro-complete01/*.zip\n            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]\n"
+          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n"
         },
         {
           "base_start": 16980,
           "base_end": 16980,
           "before": "",
-          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n            !/integration/f-ci/nomacro-complete01/*.zip\n            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]\n"
+          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n"
         },
         {
           "base_start": 18170,
           "base_end": 18170,
           "before": "",
-          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n            !/integration/f-ci/nomacro-complete01/*.zip\n            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]\n"
+          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n"
         },
         {
           "base_start": 19055,
           "base_end": 19055,
           "before": "",
-          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n            !/integration/f-ci/nomacro-complete01/*.zip\n            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]\n"
+          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n"
         },
         {
           "base_start": 20082,
           "base_end": 20082,
           "before": "",
-          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n            !/integration/f-ci/nomacro-complete01/*.zip\n            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]\n"
+          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n"
         },
         {
           "base_start": 21281,
           "base_end": 21281,
           "before": "",
-          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n            !/integration/f-ci/nomacro-complete01/*.zip\n            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]\n"
+          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n"
         },
         {
           "base_start": 22476,
           "base_end": 22476,
           "before": "",
-          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n            !/integration/f-ci/nomacro-complete01/*.zip\n            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]\n"
+          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n"
         },
         {
           "base_start": 23699,
           "base_end": 23699,
           "before": "",
-          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n            !/integration/f-ci/nomacro-complete01/*.zip\n            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]\n"
+          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n"
         },
         {
           "base_start": 25102,
           "base_end": 25102,
           "before": "",
-          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n            !/integration/f-ci/nomacro-complete01/*.zip\n            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]\n"
+          "after": "          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n"
         }
       ],
       "checkout_steps": [
         {
           "job": "selection-preflight",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "complete_evidence"
         },
         {
           "job": "modular-feedback",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "complete_evidence"
         },
         {
           "job": "historical-fci03-through-fci18",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "complete_evidence"
         },
         {
           "job": "frozen-fci19-candidate-preservation",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "complete_evidence"
         },
         {
           "job": "frozen-fci19-source-lineage",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "complete_evidence"
         },
         {
           "job": "frozen-fci24-reference-et-authority",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "complete_evidence"
         },
         {
           "job": "frozen-fci27-reference-et-runtime-authority",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "complete_evidence"
         },
         {
           "job": "frozen-fci28-restart-authority",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "complete_evidence"
         },
         {
           "job": "frozen-fci29-ptra-ownership-authority",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "complete_evidence"
         },
         {
           "job": "frozen-fci30-restricted-parallel-v1-authority",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "complete_evidence"
         },
         {
           "job": "frozen-fci31-reference-et-root-uptake-authority",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "complete_evidence"
         },
         {
           "job": "frozen-fci34-root-attribution-authority",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "complete_evidence"
         },
         {
           "job": "frozen-fci36-divdra-active-runtime-authority",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "complete_evidence"
         },
         {
           "job": "frozen-fci37-parallel-root-uptake-authority",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "complete_evidence"
         },
         {
           "job": "frozen-fci39-surface-evaporation-capacity-source-authority",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "complete_evidence"
         },
         {
           "job": "frozen-fci40-effective-forcing-executor-source-authority",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "complete_evidence"
         },
         {
           "job": "current-restricted-canonical-preservation",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "complete_evidence"
         }
       ],
       "all_non_checkout_yaml_values_identical": true
@@ -555,7 +602,8 @@
         {
           "job": "qualify",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         }
       ],
       "all_non_checkout_yaml_values_identical": true
@@ -575,7 +623,8 @@
         {
           "job": "qualify",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         }
       ],
       "all_non_checkout_yaml_values_identical": true
@@ -595,7 +644,8 @@
         {
           "job": "qualify",
           "step_index": 0,
-          "action": "actions/checkout@v4"
+          "action": "actions/checkout@v4",
+          "profile": "source_and_metadata"
         }
       ],
       "all_non_checkout_yaml_values_identical": true
@@ -1352,11 +1402,77 @@
   "compiler_executions": 0,
   "model_executions": 0,
   "performance_speedup_claimed": false,
-  "scientific_qualification": false,
+  "scientific_qualification": "INHERITED_ONLY_AFTER_CURRENT_EXACT_ENGINE_AND_PROGRAM_DEPENDENCY_CUSTODY",
   "canonical_admission": false,
   "next_action": "Persist coherent checkout protocol branch. Reconcile genuine canonical648 after PR1805 completes. Preserve complete literal workflow inverses and unchanged source dependencies; qualify actual current CI without replaying unchanged scientific model periods.",
-  "actual_local_auditor_source": "95286aedd9c37e36e6adf65be209afbfd5d2b26e",
-  "actual_local_audit": "CI_CHECKOUT_SCOPE07_ACTUAL_LOCAL_AUDIT_V1.json",
-  "local_auditor_LF_sha256": "c605e261dc4da45a2755d8f856a5b5654089d79158c9a52be4cc16a225be25eb",
-  "rules_source": "tests/nomacro_drainage/ci_checkout_scope07.rules"
+  "parent_admission_receipt": "FROST_IMPLICIT_HYS2_YEAR06_MERGE_RECEIPT_V1.json",
+  "parent_admission_archive_sha256": "686d02451f9e5f3b5f624a10fea5c464000d91abc94d46243a0c5ef3526d1b7f",
+  "parent_canonical_contexts": 648,
+  "actual_original_scientific_model_producer": "a4f24f74f3b5b82b2673f2695d15fe7ba3990fd6",
+  "prior_local_audit": "CI_CHECKOUT_SCOPE07_ACTUAL_LOCAL_AUDIT_V1.json",
+  "prior_local_auditor_source": "95286aedd9",
+  "actual_current_CI_qualified": false,
+  "read_only_runtime_witnesses": {
+    "docs/science/NOMACRO_FROST_IMPLICIT_HYS2_YEAR06.md": {
+      "before_lf_sha256": "c9b9aeddcb36b255ae5429856dd25a9adbd08b681d04d894ec9770a02c095275",
+      "proposed_lf_sha256": "636fad5a45657a3ce7dfa154d76371cd8afae2441d6efd5561d7af7c44acb11c",
+      "ordered_literal_edits": [
+        {
+          "base_start": 75,
+          "base_end": 75,
+          "before": "",
+          "after": "c"
+        },
+        {
+          "base_start": 76,
+          "base_end": 79,
+          "before": "urc",
+          "after": "p"
+        },
+        {
+          "base_start": 80,
+          "base_end": 110,
+          "before": "/science qualified; public and",
+          "after": ""
+        },
+        {
+          "base_start": 120,
+          "base_end": 120,
+          "before": "",
+          "after": "ly"
+        },
+        {
+          "base_start": 125,
+          "base_end": 128,
+          "before": "ssi",
+          "after": "tted by PR1805 "
+        },
+        {
+          "base_start": 130,
+          "base_end": 132,
+          "before": " p",
+          "after": "\n`df00f9393ac552b0a6cab8"
+        },
+        {
+          "base_start": 133,
+          "base_end": 134,
+          "before": "n",
+          "after": "e84f8b8"
+        },
+        {
+          "base_start": 135,
+          "base_end": 138,
+          "before": "ing",
+          "after": "8c06ac26c`"
+        },
+        {
+          "base_start": 4740,
+          "base_end": 4740,
+          "before": "",
+          "after": "\nThe actual canonical PUBLIC observation passes in875.0141058seconds and ordinary\npublication in486.0042507seconds, with unchanged real HEAD/tree/working status\nand14sparse patterns/56original fixtures. The137-member original admission\narchive is9301298bytes, SHA256\n`686d02451f9e5f3b5f624a10fea5c464000d91abc94d46243a0c5ef3526d1b7f`.\nIts merge receipt owns bounded648 admission; whole historical closure remains\nPARTIAL and scientific equivalence NOT_QUALIFIED.\n"
+        }
+      ],
+      "scope": "ADMISSION_METADATA_ONLY_ORIGINAL_SCIENTIFIC_BODY_RETAINED"
+    }
+  }
 }

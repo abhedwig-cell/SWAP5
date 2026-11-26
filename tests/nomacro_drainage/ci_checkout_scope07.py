@@ -26,6 +26,8 @@ def audit():
             parts.extend((text[cursor:edit['base_start']],addition));cursor=edit['base_end']
         parts.append(text[cursor:]);assert ''.join(parts).encode()==actual
         assert item['all_non_checkout_yaml_values_identical'] and len(item['ordered_literal_edits'])==len(item['checkout_steps'])
+        expected_profile='complete_evidence' if path=='.github/workflows/fci-canonical.yml' else 'source_and_metadata'
+        assert all(x['profile']==expected_profile for x in item['checkout_steps'])
         steps+=len(item['checkout_steps']);observations.append(dict(path=path,before_sha256=SHA(before),actual_sha256=SHA(actual),checkout_steps=len(item['checkout_steps'])))
     assert steps==43
     names_raw=git('ls-tree','-r','--name-only','-z','HEAD');names=set(names_raw.decode().rstrip('\0').split('\0'))
@@ -37,6 +39,11 @@ def audit():
     assert excluded and included==names-excluded
     assert all(name in included for name in names if name.startswith(('app/','src/','tools/','tests/','reference/','docs/')))
     assert all(name in included for name in names if name.startswith(prefix) and name.endswith('.json'))
+    full_rules=Path(__file__).with_name('ci_checkout_scope07_evidence.rules');full_raw=full_rules.read_bytes().replace(b'\r\n',b'\n')
+    assert full_raw.decode()==contract['profiles']['complete_evidence']=='/*\n'
+    assert full_raw==git('show','HEAD:'+full_rules.relative_to(R).as_posix())
+    full_selected=git('sparse-checkout','check-rules','--no-cone','--rules-file',str(full_rules),'-z',input=names_raw)
+    assert set(full_selected.decode().rstrip('\0').split('\0'))==names
     # These are genuine immutable Git objects, not fabricated files in a projected
     # working directory. Actual qualification readers use that explicit interface.
     references={}
@@ -45,7 +52,7 @@ def audit():
         meta,name=row.split(b'\t',1);mode,kind,digest=meta.decode().split();references[name.decode()]=(kind,digest)
     assert all(references[name][0]=='blob' and len(references[name][1])==40 for name in excluded)
     assert git('rev-parse','HEAD').decode().strip()==head
-    return dict(status='ACTUAL_LITERAL43_CHECKOUT_ONLY_INVERSES_AND_REAL_GIT_COMPLETE_SOURCE_SELECTION_PASS_NOT_CANONICALLY_ADMITTED',actual_head=head,actual_base=base,workflow_files=observations,checkout_steps=43,tracked_paths=len(names),included_paths=len(included),excluded_archive_paths=sorted(excluded),real_Git_rules_input_sha256=SHA(names_raw),real_Git_rules_output_sha256=SHA(selected),engine_source_changed=False,scientific_model_periods_replayed=0,compiler_executions=0,model_executions=0,performance_speedup_claimed=False,canonical_admission=False)
+    return dict(status='ACTUAL_LITERAL43_CHECKOUT_ONLY_INVERSES_AND_REAL_GIT_COMPLETE_SOURCE_SELECTION_PASS_NOT_CANONICALLY_ADMITTED',actual_head=head,actual_base=base,workflow_files=observations,checkout_steps=43,complete_evidence_checkout_steps=sum(x['profile']=='complete_evidence' for v in contract['files'].values() for x in v['checkout_steps']),fci_canonical_keeps_complete_versioned_evidence=True,real_Git_complete_evidence_selection_sha256=SHA(full_selected),tracked_paths=len(names),included_paths=len(included),excluded_archive_paths=sorted(excluded),real_Git_rules_input_sha256=SHA(names_raw),real_Git_rules_output_sha256=SHA(selected),engine_source_changed=False,scientific_model_periods_replayed=0,compiler_executions=0,model_executions=0,performance_speedup_claimed=False,canonical_admission=False)
 
 
 def main():
