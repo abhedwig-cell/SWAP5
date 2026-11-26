@@ -24,5 +24,21 @@
     "unrelated heat/nutrient stress suites"
   ],
   "qualification_limit": "Focused feedback and actual touched coupling only; canonical admission, original full applications and whole science remain open",
-  "source_guard": "Compare pinned baseline and candidate; preserve all owning assertions."
+  "source_guard": "Compare pinned baseline and candidate; preserve all owning assertions.",
+  "O2_compile_recovery": {
+    "original": "PROCESS_BASELINE capped at120s during full173-module compile; no model executed",
+    "completed_objects": 172,
+    "missing_units": [
+      "mod_fmr_serialized_reference_backend.f90",
+      "mod_fmr_restart_state_contract.f90",
+      "baseline_headcalc.f90",
+      "test_ppa_wu05_perch20_transaction_continuation.f90"
+    ],
+    "decision": "Reuse only source/compiler/hash-verified completed objects in same active work unit; compile missing units only. No repeat of successful model periods.",
+    "missing_unit_cap_seconds": 180,
+    "native_cap_seconds": 20,
+    "resource_scope": "same isolated registered O2 root; no broad job",
+    "justification": "Actual macro state transaction/restart owner is essential affected coupling; expensive closure belongs to unchanged backend. Preserve censored full invocation and measure the four missing units; no cap change to numerical model.",
+    "owned_process_tree_quiescent_verified": true
+  }
 }
