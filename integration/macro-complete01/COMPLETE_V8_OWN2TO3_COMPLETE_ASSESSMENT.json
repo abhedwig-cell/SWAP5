@@ -1,0 +1,31 @@
+{
+  "label": "COMPLETE_V8_OWN2TO3",
+  "scope": "Actual corrected linear systems and independent D3 derivative inventory; does not alone qualify nonlinear convergence or a native period",
+  "results": [
+    {
+      "opt": "O0",
+      "active": 13,
+      "retained_systems": 13,
+      "branch_counts": {
+        "1": 6,
+        "2": 7
+      },
+      "active_existing_U_diagonal": 5,
+      "max_independent_linear_residual": 7.888926057547652e-17,
+      "max_D3_column_sum_derivative_error": 1.4210854715202004e-14
+    },
+    {
+      "opt": "O2",
+      "active": 13,
+      "retained_systems": 13,
+      "branch_counts": {
+        "1": 6,
+        "2": 7
+      },
+      "active_existing_U_diagonal": 5,
+      "max_independent_linear_residual": 7.888926057547652e-17,
+      "max_D3_column_sum_derivative_error": 1.4210854715202004e-14
+    }
+  ],
+  "models_launched": 0
+}

@@ -13,7 +13,7 @@ from macro_contact_history import render_rate as render_contact_rate,render_macr
 from macro_stock_rank2 import render_rate as render_rank2_rate,render_head as render_rank2_head
 from macro_stock_jacobian import render_rate as render_stock_rate,render_head as render_stock_head
 from macro_trial_origin import render as render_trial_origin,PHYSICAL_FIELDS
-POLICY='fresh-coupled-unreduced-field-coupled-perched-complete-d3-contract-v8'
+POLICY='fresh-coupled-unreduced-field-coupled-perched-complete-d3-continuing-v8r1'
 
 def render_headcalc(source):
     source=source.replace('\r\n','\n')
