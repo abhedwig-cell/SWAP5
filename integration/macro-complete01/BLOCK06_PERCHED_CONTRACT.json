@@ -1,0 +1,9 @@
+{
+  "authority": "Original WER2780 printedpp101-102 physicalPDF103-104, locally read and SHAverified1cf1c350...2a82e; originalCALCGWL purpose and originalWATERTABLE whole-cell air-volume test; originalCRITUNDSATVOL0.1",
+  "actual_bug": "Search starts from containing volume-cell nodgwl, which can have a positive main-groundwater centre. That centre is treated as perched bottom. Its WATERTABLE search bridges the subcritical dry gap and reports zone24..47, instead of zone24..28 on the other side of centreh47=0. Same real air gap0.0302cm<0.1 in both.",
+  "minimal_contract": "A separate perched block must be above continuous main positive-head block AND separated by original whole-cell air criterion. Scan negative-head gap, merge subcritical blocks only for recognition, then reuse unchanged old perched-top logic. No strictmainGWL change, no effective-main reinterpretation, no CRITUNDSATVOL change.",
+  "field_effect": "At these two frozen original contexts there is no distinct perched zone by the documented0.1cm rule. Removing spurious interflow/exclusion changes physical reference trajectory; cannot inherit old flux or stock-Jacobian claims.",
+  "nonselected_preservation": "Literal original search branch retained for swmacro0 and absentmainGWL. Public interface unchanged.",
+  "qualification": "Pending actual original CALCGWL component O0/O2 on retained contexts and no-macro control, then native current full window if pass",
+  "not_admitted": true
+}
