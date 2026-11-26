@@ -195,7 +195,7 @@ def inherited(store,old,producer,opt):
         result.append(dict(case=name,whole_objects=len(objects),actual_compiled_source=producer,original_compiled_source=prior['source'],model_replays=0))
     return result
 
-def portable(proof,platform,opt):
+def portable(proof,platform,opt,verbose=False):
     with ExitStack() as stack:
         store=Archive(proof,f'FROST_UNDRAINED_STATE08_{platform.upper()}_{opt}_ORIGINAL_V1',stack)
         _,custody=captured_source(store,stack,PRODUCER,PRODUCER,f'.github/workflows/nomacro-frost-undrained-state08-{platform.lower()}.yml')
@@ -206,7 +206,7 @@ def portable(proof,platform,opt):
         observations=[]
         for case in cases:
             observations.append(case_audit(store,'current/'+case['name'],case,store,PRODUCER,opt))
-            print('ORIGINAL_UNDRAINED_ARCHIVE_SCIENCE_PASS',platform,opt,case['name'],flush=True)
+            if verbose:print('ORIGINAL_UNDRAINED_ARCHIVE_SCIENCE_PASS',platform,opt,case['name'],flush=True)
         old=Archive(GitArchiveSource(R,BASE),f'FROST_IMPLICIT_HYS2_YEAR06_{platform.upper()}_{opt}_ORIGINAL_V1',stack)
         postimages=inherited(store,old,PRODUCER,opt)
         return dict(status='INDEPENDENT_ORIGINAL_UNDRAINED_SCIENCE_NATIVE_COLD_REFUSALS_ACTIVE_TRANSACTIONS_AND_DRAINED_POSTIMAGES_PASS_NOT_ADMITTED',source=custody,platform=platform,optimization=opt,contexts=observations,inherited_postimages=postimages,compiler_executions=0,model_executions=0,canonical_admission=False)
@@ -232,7 +232,7 @@ def local_source(store,stack):
     for n,item in ctl['members'].items():check(n,t.extractfile(n).read(),item)
     return dict(actual_local_producer=LOCAL,actual_controller_producer=LOCAL,source_sha256=captured['sha256'],controller_sha256=ctl['sha256'],source_members=len(captured['members']),controller_members=len(ctl['members']))
 
-def local(proof):
+def local(proof,verbose=False):
     with ExitStack() as stack:
         store=Archive(proof,'FROST_UNDRAINED_STATE08_LOCAL_WINDOWS_O0_O2_RAW_V1',stack);custody=local_source(store,stack)
         dependency=json.loads(store.get('LOCAL_PROVIDER_DEPENDENCY_V1.json'))
@@ -244,7 +244,7 @@ def local(proof):
             case=item['case'];opt=item['optimization'];prefix='current/'+opt+'-'+case['name']
             contexts.append(case_audit(store,prefix,case,provider,LOCAL,opt,True))
             if case['days']==35:by_opt[opt]=(case,ReadView(store,prefix))
-            print('ORIGINAL_LOCAL_UNDRAINED_ARCHIVE_SCIENCE_PASS',opt,case['name'],flush=True)
+            if verbose:print('ORIGINAL_LOCAL_UNDRAINED_ARCHIVE_SCIENCE_PASS',opt,case['name'],flush=True)
         assert len(contexts)==4 and sum(c['case']['days'] for c in contexts)==94
         active=Archive(proof,'FROST_UNDRAINED_STATE08_ACTIVE_FROST_TRANSACTIONS_RAW_V1',stack)
         q=json.loads(active.get('RESULT.json'));assert q['actual_observer']==PRODUCER and q['actual_compiled_producer']==LOCAL and q['new_compiler_executions']==q['full_model_periods_replayed']==0
@@ -271,7 +271,7 @@ def main():
     observer=git('rev-parse','HEAD').decode().strip();assert not git('status','--porcelain','--untracked-files=all')
     proof=a.proof if a.proof is not None else GitArchiveSource(R,observer)
     q=dict(status='RUNNING_INDEPENDENT_ORIGINAL_UNDRAINED_SCIENCE_NOT_ADMITTED',actual_observer=observer)
-    try:q['audit']=local(proof) if a.local else portable(proof,a.platform,a.optimization);q['status']=q['audit']['status']
+    try:q['audit']=local(proof,True) if a.local else portable(proof,a.platform,a.optimization,True);q['status']=q['audit']['status']
     except Exception as exc:q.update(status='FAILED_INDEPENDENT_ORIGINAL_UNDRAINED_SCIENCE_NOT_ADMITTED',error=repr(exc));raise
     finally:
         assert git('rev-parse','HEAD').decode().strip()==observer

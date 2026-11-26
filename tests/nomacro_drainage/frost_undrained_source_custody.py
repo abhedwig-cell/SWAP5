@@ -49,7 +49,8 @@ def source(anchor):
         assert actual.count(after.encode())==1;actual=actual.replace(after.encode(),before.encode(),1)
     assert actual==git('show',BASE+':'+JOINT)
     tracked=tracked_working_files();eols={}
-    for row in git('ls-files','--eol','-z').split(b'\0'):
+    text_patterns=[':(glob)**/*.'+ext for ext in ['py','json','md','yml','yaml','f90','F90','f','F','txt','toml','ini','cfg','cmake','xml','sh','ps1','cpp','c','h']]
+    for row in git('ls-files','--eol','-z','--',*text_patterns).split(b'\0'):
         if row:
             meta,path=row.split(b'\t',1);eols[path.decode()]=meta.decode().split()
     observed=[]
