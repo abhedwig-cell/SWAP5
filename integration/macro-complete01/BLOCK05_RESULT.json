@@ -1,0 +1,24 @@
+{
+  "decision": "DTMIN58_PRODUCT_ACTUALLY_CORRECT_BUT_NOT_SUFFICIENT",
+  "results": [
+    {
+      "opt": "O0",
+      "total_actual_line_trials": 558,
+      "extended_dtmin_line_trials": 70,
+      "max_update_formula_error_cm": 0.0,
+      "remaining_refusal": "35797.505000000005",
+      "native_seconds": 2.478319900110364
+    },
+    {
+      "opt": "O2",
+      "total_actual_line_trials": 558,
+      "extended_dtmin_line_trials": 70,
+      "max_update_formula_error_cm": 0.0,
+      "remaining_refusal": "35797.505000000005",
+      "native_seconds": 2.207602799870074
+    }
+  ],
+  "next_cause": "Native CALCGWL includes a positive MAIN groundwater centre as a perched bottom; old recognition jumps24..28 to24..47 acrossh47=0 while real gapair~0.0302cm remains below original0.1 criterion. Primary manual requires independent gap>=critical.",
+  "scientific_next": "Qualify corrected classification with real CALCGWL frozen contexts before any full-window postimage; main GWL and CRIT unchanged",
+  "full_day3_pass": false
+}

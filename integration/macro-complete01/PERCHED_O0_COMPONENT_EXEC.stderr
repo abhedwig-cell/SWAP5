@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\Users\Veldh012\swap5-macro-complete01\tests\macro_complete01\run_perched_component.py", line 18, in <module>
+    swbot=int(re.search(r'(?mi)^\s*SWBOTB\s*=\s*(\d+)',text).group(1));crit=float(re.search(r'(?mi)^\s*CRITUNDSATVOL\s*=\s*([\d.]+)',text).group(1))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'group'

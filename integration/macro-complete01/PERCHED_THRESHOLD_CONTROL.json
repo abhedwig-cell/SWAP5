@@ -1,0 +1,26 @@
+{
+  "status": "PASS_THRESHOLD_POSITIVE_CONTROL",
+  "results": [
+    {
+      "opt": "O0",
+      "status": "REAL_PERCHED_RECOGNIZED_ON_BOTH_SIDES_WHEN_GAP_EXCEEDS_CRITERION",
+      "critical_air_cm": 0.01,
+      "seconds": 0.09721550019457936,
+      "returncode": 0,
+      "stdout": "           0           1  -59.000291055862462               47   999.00000000000000              113  -23.281738103972462               24          28  -27.240560193789680     \n           0           2  -58.999975254585259               47   999.00000000000000              113  -58.999975254585259               47          47  -59.999979870590984     \n           1           1  -59.000291055862462               47  -59.000291055862462               47  -23.281738103972462               24          28  -27.240560193789680     \n           1           2  -58.999975254585259               47  -58.999975254585259               47  -23.281738103971712               24          28  -27.240560193789960     \n",
+      "stderr": "",
+      "scope": "Same frozen original heads/theta/grid; criterion-only analytic positive control; no full original model or trajectory claim"
+    },
+    {
+      "opt": "O2",
+      "status": "REAL_PERCHED_RECOGNIZED_ON_BOTH_SIDES_WHEN_GAP_EXCEEDS_CRITERION",
+      "critical_air_cm": 0.01,
+      "seconds": 0.10559700010344386,
+      "returncode": 0,
+      "stdout": "           0           1  -59.000291055862462               47   999.00000000000000              113  -23.281738103972462               24          28  -27.240560193789680     \n           0           2  -58.999975254585259               47   999.00000000000000              113  -58.999975254585259               47          47  -59.999979870590984     \n           1           1  -59.000291055862462               47  -59.000291055862462               47  -23.281738103972462               24          28  -27.240560193789680     \n           1           2  -58.999975254585259               47  -58.999975254585259               47  -23.281738103971712               24          28  -27.240560193789960     \n",
+      "stderr": "",
+      "scope": "Same frozen original heads/theta/grid; criterion-only analytic positive control; no full original model or trajectory claim"
+    }
+  ],
+  "models_launched": "2 standalone CALCGWL executables; no SWAP model periods"
+}
