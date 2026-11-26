@@ -1,0 +1,7 @@
+{
+  "opt": "O2",
+  "status": "FAILED",
+  "models_launched": 0,
+  "error": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-macro-complete01\\tests\\macro_complete01\\build_native_rejection.py\", line 16, in <module>\n    s=replace(s,'      fldtreduce = .TRUE.','      call macro_replay_event(0)\\n      fldtreduce = .TRUE.')\n  File \"C:\\Users\\Veldh012\\swap5-macro-complete01\\app\\hybrid_water\\donor_sources.py\", line 9, in replace\n    raise ValueError(f\"Expected a unique donor anchor: {anchor!r}\")\nValueError: Expected a unique donor anchor: '      fldtreduce = .TRUE.'\n",
+  "seconds": 3.633231000043452
+}

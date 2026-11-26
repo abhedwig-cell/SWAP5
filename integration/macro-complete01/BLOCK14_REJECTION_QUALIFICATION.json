@@ -1,0 +1,55 @@
+{
+  "scope": "Actual selected original V13 rejection; no forced rejection/changed criterion. Direct route skips large solve and uses unchanged native TimeControl5 reduction before Drain2; same existing forcing setup as normal native retry.",
+  "results": [
+    {
+      "opt": "O0",
+      "original_time": 35797.862000000016,
+      "rejected_dt": 0.002,
+      "retry_dt": 0.0006666666666666666,
+      "real_rejection": true,
+      "active_V_iterations": 1,
+      "iterations_large": 30,
+      "iterations_smaller": 4,
+      "physical25_and_matrix_rollback_exact": true,
+      "trial_was_mutated": true,
+      "direct_smaller_trial_flux_commit_and_day3_native_exact": true,
+      "snapshots_compared": 12,
+      "FrReduQ": 1,
+      "IDecMpRat": 0
+    },
+    {
+      "opt": "O2",
+      "original_time": 35797.862000000016,
+      "rejected_dt": 0.002,
+      "retry_dt": 0.0006666666666666666,
+      "real_rejection": true,
+      "active_V_iterations": 1,
+      "iterations_large": 30,
+      "iterations_smaller": 4,
+      "physical25_and_matrix_rollback_exact": true,
+      "trial_was_mutated": true,
+      "direct_smaller_trial_flux_commit_and_day3_native_exact": true,
+      "snapshots_compared": 12,
+      "FrReduQ": 1,
+      "IDecMpRat": 0
+    }
+  ],
+  "hashes": {
+    "replay_begin_matrix.bin": "6a91dfefb458df28085f6ea801246a9d97a64dbc4096c7fa5b2a378dfd58c10c",
+    "replay_begin_physical.bin": "35debd2df69a38443ec948c594f1c0d9a1cfd22dbedadbfceb801899ed3d7664",
+    "replay_committed_flux.bin": "72c2ddf402609b597dd906848a96b6a78214a61d1cc905648555044803de047d",
+    "replay_committed_matrix.bin": "1e61340c65a86200aca0f510f03d308e5f2c442b2d9ca0106adb06d1291141b6",
+    "replay_committed_physical.bin": "02bf4e29a5b192a832773941c55d105ae59192d73506c40a33f7bcbcd462bdc6",
+    "replay_restored_matrix.bin": "6a91dfefb458df28085f6ea801246a9d97a64dbc4096c7fa5b2a378dfd58c10c",
+    "replay_restored_physical.bin": "35debd2df69a38443ec948c594f1c0d9a1cfd22dbedadbfceb801899ed3d7664",
+    "replay_small_begin_matrix.bin": "6a91dfefb458df28085f6ea801246a9d97a64dbc4096c7fa5b2a378dfd58c10c",
+    "replay_small_begin_physical.bin": "35debd2df69a38443ec948c594f1c0d9a1cfd22dbedadbfceb801899ed3d7664",
+    "replay_small_return_flux.bin": "67e88a8ef22aa2a4311180ec603dae242bca87c89e3ea2986595b7340938705b",
+    "replay_small_return_matrix.bin": "1e61340c65a86200aca0f510f03d308e5f2c442b2d9ca0106adb06d1291141b6",
+    "replay_small_return_physical.bin": "d0f38f06b134ff8c2a8709ed0b4790ec32881823becda6eb7c8f7735978ad3b9",
+    "macro.bin": "1ec2491be3a7092ec1111c6b218f9f771716bae08d722989bab0bd677311553b",
+    "result.end": "5560192281f8b500941ef4e9f41448bc738723dd62994a6850bb5883021bf61e"
+  },
+  "models_launched": 0,
+  "does_not_qualify_all_regimes_or_fullperiod": true
+}

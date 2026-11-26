@@ -1,0 +1,7 @@
+{
+  "opt": "O0",
+  "status": "FAILED",
+  "models_launched": 0,
+  "error": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-macro-complete01\\tests\\macro_complete01\\build_native_rejection.py\", line 39, in <module>\n    p=subprocess.run(cmd,cwd=out,capture_output=True,text=True,timeout=45);logs.append(dict(command=cmd,code=p.returncode,stdout=p.stdout,stderr=p.stderr));(out/'REPLAY_BUILD.json').write_text(json.dumps(logs,indent=2)+'\\n');assert p.returncode==0,p.stderr\n                                                                                                                                                                                                                                        ^^^^^^^^^^^^^^^\nAssertionError: native_rejection_probe.f90:7:36:\n\n    7 | use variables,only:h,theta,gwl,pond,qv,qrot,volact\n      |                                    1\nError: Symbol 'qv' referenced at (1) not found in module 'variables'\nnative_rejection_probe.f90:47:26:\n\n   47 |  QExcMpMtx(1:numnod),qv(1:numnod+1),qrot(1:numnod),volact\n      |                          1\nError: Syntax error in argument list at (1)\n\n",
+  "seconds": 1.640147099737078
+}
