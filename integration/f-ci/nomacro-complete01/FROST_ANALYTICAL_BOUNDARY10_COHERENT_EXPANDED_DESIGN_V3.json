@@ -1,0 +1,100 @@
+{
+  "status": "EXPANDED_COHERENT_BOUNDARY10_SEVEN_SOURCE_FILES16_CASES_PREPARED_NOT_INSTALLED_OR_QUALIFIED",
+  "actual_current_source": "9af88c3de6198ddec40c2674dd1542a89fa9c0d7",
+  "original_discovery_source": "38196200968a7f640ab2b5b06861691f09f922d5",
+  "original_discovery_raw_sha256": "82c83ddca359a46fa127f82c2a62942528bc529dff072e05f68a2daaeead60af",
+  "classification": "B_COMPOSE_EXISTING_UNCHANGED_ORIGINAL_ANALYTICAL_FROST_BASIC_DRAINAGE_DIVDRA_OWNERS",
+  "native_codecs": [
+    "S5FAW001",
+    "S5FAC001"
+  ],
+  "native_header": "3,nodes,numlay,solute,bottom,actual_SWDRA,partition_active_tag,*effective_per_layer_models; duplicated",
+  "unchanged_native09": "S5UAW001/S5UAC001 and original version2 model header stay byte-exact for SWDRA0",
+  "selection": "Extend only existing boundary_state_calendar SWDRA1 explicit/hys0 path through actual analytical model_domain and existing SWDIVD1 input. Retain all nonselected branches literally.",
+  "physical_processes": "Existing Frost/Darcy/Divdra overlap correction/terminal-water/CDE-positive-mass implementation and model7 capacity; no new equations or tolerance/state normalization.",
+  "original_initialization": "Actual original Drain1 initializes all6 model3/7/11/mixed water/CDE decks; current public route refuses all6. This is0modeldays and not qualification.",
+  "dependency_actions": {
+    "frost_boundary_state_calendar.py": "Add explicit/hys0 analytical non1 drainage1 bottom6 plus existing5/8. Existing model1 drainage1 bottom6 returnsNone to keep its old owner/codec.",
+    "frost_analytical_composition.py": "Select real parent domain; native3+new boundary provider only newly added scopes, native2 unchanged for old09 drainage0 bottom5/8. Default1 is an input-domain interpretation of original ReadSwap, not physical-state assignment.",
+    "frost_calendar_output.py": "Hash chosen new native provider for drainage1; reuse real original thermal/Snow/CDE renderers and current terminal-water drainage1 owner",
+    "frost_drainage_composition.py": "Expose existing required Divdra correction and actual analytical typed-domain metadata; preserve all prior none/model1 paths literally",
+    "model7_capacity.py": "Existing analytical selector can use new composed domain without changing its accepted capacity equation",
+    "daily_coupling.py": "Existing analytical_frost_models guard invokes exact candidate validation before prepare/accept publication; no new host semantics",
+    "frost_implicit_plate_calendar.py": "Only extend selected tagged analytical water to bottom6; existing GUARD validation string remains byte-exact with no date/index/state assignments.",
+    "frost_undrained_state.py": "Only add explicit/hys0 bottom6. Default/all-model1 uses original ReadSwap default1 via explicit model_domain allow flag; old drainage0 bottom5/8 return values and generated native2 stay literal."
+  },
+  "expected_native_refusals": "Compile actual model/drainage/SWDIVD/header/codec mutants before readiness; retain current original thermal/Snow/CDE controls and real active-Frost transactions",
+  "invariants": [
+    3,
+    4,
+    7,
+    13,
+    21,
+    23
+  ],
+  "mass_limits_changed": false,
+  "physical_equations_changed": false,
+  "model_periods_executed": 0,
+  "canonical_admission": false,
+  "precondition": "Do not install while09 source is frozen for PUBLIC/PUB/negatives/CI. First observe actual09canonical admission and derive new10branch from real merge; pin the actual new parent then preserve09 through current generated/whole-object postimages, not old period replays.",
+  "actual_current_app_files": {
+    "frost_analytical_composition.py": {
+      "git_blob": "2a9bb223e940c5e0db87478c792710445f9f56aa",
+      "lf_sha256": "c5469e1b700c5db958e25f292b1819a5792c6f40259b2df74874ba96f4411af9"
+    },
+    "frost_analytical_native.f90": {
+      "git_blob": "cb4f307d9430ed7723914c7cec89143d95ebf5a7",
+      "lf_sha256": "9cfb1223e0e09c41fc4039d914843aebcab3d2ef06bc4a5cac7fd752a8f8a97d"
+    },
+    "frost_boundary_state_calendar.py": {
+      "git_blob": "4fb2a32c16f1358b91672a0f4b0bd0b3fc5514ec",
+      "lf_sha256": "474771fa842f36dce80877a326de2af471f9ffe7e0bfad4a46e3b7b73e9a65ed"
+    },
+    "frost_drainage_composition.py": {
+      "git_blob": "40776c99368ccd410a429a83d6439bac04140ee3",
+      "lf_sha256": "c517e92f725db81ca192a72b4752deaa7411b23833d7e66fa1db8ff71cfd2ace"
+    },
+    "frost_calendar_output.py": {
+      "git_blob": "b1a07220f19f4e500b6ab323b4394f604557b9c9",
+      "lf_sha256": "53925746b73017f6d6c9a32b174c83f83a087f20ffd1e5308be6a7b25df2ece7"
+    },
+    "model7_capacity.py": {
+      "git_blob": "c5c1a8eb50c1f71c14d9dd24df47854b15b02bbc",
+      "lf_sha256": "0417a863d027d3dc17ecb78d11a22dcd15c57de29afcc8de042660638f6b4a7a"
+    },
+    "daily_coupling.py": {
+      "git_blob": "3bd02f3d456db39bbf1d10aa1e12d88c14ff60eb",
+      "lf_sha256": "35801f3363d4b098ed028d2321f883c6a3a72417929950b582d1d023314259e4"
+    },
+    "frost_implicit_plate_calendar.py": {
+      "git_blob": "b8d1c74f74d55ebfdfac6c106b2163614035ed43",
+      "lf_sha256": "909c71b11669a5002e3f08b3831ad5f16c34022425a9855d3971d2ed434ef4ae"
+    }
+  },
+  "supersedes_subset_proposal": "FROST_ANALYTICAL_DRAINAGE10_SOURCE_PROPOSAL_V1.json (retain original, do not install as final narrower batch)",
+  "new_original_free6_discovery": "FROST_ANALYTICAL_BOUNDARY10_FREE6_ORIGINAL_DISCOVERY_V2.json",
+  "original_free6_initializations": 10,
+  "actual_free6_public_refusals": 9,
+  "existing_free6_model1_drainage1_public_control_accepted": true,
+  "scope": "Existing original Frost/Snow numeric heat2; explicit/hys0; NoVap; original model1..11 excluding2,12. New SWDRA0 bottom6 (including normal default model1); SWDRA1 analytical non1 bottoms5,6,8. Old09 SWDRA0 bottom5/8 remains exactly selected/compiled as before; existing model1 SWDRA1 bottom6 route stays literal.",
+  "native_policy": "Use distinct new boundary/drainage header3 codec for all newly added scopes; old09 drainage0 bottom5/8 native2 stays byte-exact. Header includes actual drainage and an explicit inactive zero SWDIVD policy tag for drainage0; only read/check original SWDIVD when drainage1 selects it. No physical value is altered.",
+  "next_code_actions": [
+    "Extend current undrained selector only explicit/hys0 bottom6; call existing model_domain with an explicit allow-default-model1 argument only for this new scope. Keep other domains literal.",
+    "Extend actual boundary_state_calendar drainage1 selector to bottom6 for analytical non1 only; return None for model1 bottom6 to retain its previous owner/codec.",
+    "Reuse current helper selected/render/validate for both new scopes; use a new boundary native provider with exact drainage/model tags and original NoVap guards. Model7 capacity/host prepare+accept/pending-date validation reuse their existing real implementations.",
+    "Qualify as one16-case coherent batch on Windows/Ubuntu O0/O2 after local directed integration. New native domain controls everycase; old thermal/Snow/calendar corruption suites selected only on representative water/CDE seams where framing changes, backed by exact unchanged provider/whole-object custody; all full/own budgets and native/output cold seams remain strict.",
+    "Preserve old09 with actual complete generated and same-compiler whole-object postimages, never old period replay for code ownership metadata."
+  ],
+  "new_physical_state": false,
+  "new_tolerances": false,
+  "qualification_status": "PROPOSED_NOT_INSTALLED_OR_COMPILED",
+  "actual_before_source": "9af88c3de6198ddec40c2674dd1542a89fa9c0d7",
+  "actual_source_proposal": "FROST_ANALYTICAL_BOUNDARY10_SOURCE_PROPOSAL_V2.json",
+  "source_files_directory": "FROST_ANALYTICAL_BOUNDARY10_SOURCE_PROPOSED_V2",
+  "input_contract": "FROST_ANALYTICAL_BOUNDARY10_INPUT_CONTRACT_PROPOSED_V1.json",
+  "input_factory": "frost_analytical_boundary_inputs.PROPOSED_V2.py",
+  "native_source": "frost_analytical_boundary_native.PROPOSED_V2.f90",
+  "partition_active_tag": "1 only actual original SWDRA1/SWDIVD1 owner;0 is explicit no-active-partition-owner metadata for SWDRA0, never read or overwrite inactive physical SWDIVD",
+  "new_physical_equations": false,
+  "model_or_compiler_executions": 0
+}

@@ -1,6 +1,6 @@
 # Bounded original analytical Frost composition
 
-Qualified source science; canonical admission pending. Canonical parent is
+Current / canonically admitted on signed canonical 9af88c3de6198ddec40c2674dd1542a89fa9c0d7 through PR1808. Previous canonical parent is
 `f3faeaa540e7fd81686802414d53ff6686f3ce7b` (PR1807). Historical functional
 completion remains PARTIAL, whole scientific equivalence NOT_QUALIFIED, global
 family and gap counts UNKNOWN, and fixed RC3 unchanged.
@@ -59,9 +59,7 @@ custody, literal inverses to the real parent, fresh inherited evidence custody,
 the genuine signed parent712 admission chain, clean14-rule/56-fixture public and
 ordinary-publication observations, four actual committed negative controls and
 all selected owning CI. Git/index mutations are refused before large working
-archive reads. A real canonical merge receipt, not these source observations,
-will establish admission. The prospective bounded coadmission is760 contexts.
+archive reads. The actual merge receipt establishes bounded canonical admission of760 contexts. Candidate PUBLIC921.703s/ordinaryPUB698.407s and actual canonical PUBLIC890.399s/ordinaryPUB747.131s pass with equal clean14-rule/56-fixture snapshots. All14 selected PR workflows and45 checks (28success17policy skips), four actual committed negative controls, six original CI logs, signed Git objects and all4 automatic canonical push workflows pass and are preserved in admission raw SHAa81b0a9575b958f7729c16e3aff7d26fdbe63cb0d285af5f02e6c955fecf4f73.
 
-The next functional investigation is original drainage-on analytical Frost
-composition. Active-vapor paired head/flux, missing original SWKMEAN7 data and
+The next functional batch composes original free-bottom6 drainage0, including original default model1, and analytical non1 drainage1/SWDIVD1 bottoms5/6/8. Active-vapor paired head/flux, missing original SWKMEAN7 data and
 AGE dry-surface moments retain their separate unresolved scientific blockers.

@@ -61,12 +61,18 @@ def metadata(project):
                'frost_calendar_terminal_water.py']
     if boundary.get('boundary_state_calendar'):providers+=['frost_boundary_state_calendar.py','frost_boundary_composition.py']
     if boundary.get('undrained_frost'):providers+=['frost_undrained_state.py','frost_undrained_terminal_water.py']
-    if boundary.get('analytical_frost_models'):providers+=['frost_analytical_composition.py','frost_analytical_native.f90']
+    if boundary.get('analytical_frost_models'):
+        from frost_analytical_composition import native_provider
+        providers+=['frost_analytical_composition.py',native_provider(boundary)+'.f90']
     from frost_implicit_plate_calendar import selected as implicit_plate_water
     if implicit_plate_water(project):providers.append('frost_implicit_plate_calendar.py')
+    from frost_analytical_boundary_search import metadata as boundary_search_metadata
+    boundary_search=boundary_search_metadata(boundary)
+    if boundary_search is not None:providers.append('frost_analytical_boundary_search.py')
     providers.append('cde_interval_snow_state.f90' if project.solute else SNOW_PROVIDER+'.f90')
     if project.solute:providers+=['cde_interval_output.py','cde_interval_source.py','cde_interval_receipt.f90','cde_interval_output_state.f90']
     return dict(policy=policy,native_codec=codec(project).decode(),**selected,
+        **({'analytical_boundary_search':boundary_search} if boundary_search is not None else {}),
         providers={name:sha(folder/name) for name in providers},
         original_integral_sha256=regular.INTEGRAL_SHA,original_hysteresis_sha256=thermal.HYSTERESIS_SHA,
         original_output_epoch=project.start_clock,receipt_provider_sha256=sha(ROOT/'src/process/mod_original_output_receipt.f90'),
@@ -154,4 +160,6 @@ def apply_build(output,donor_build,project,patched):
         for before,after in ordinary.output_patch('vector').edits(original):
             assert text.count(before)==1;text=text.replace(before,after,1)
         path.write_text(text,encoding='cp1252')
+    from frost_analytical_boundary_search import apply_build as boundary_search_build
+    boundary_search_build(output,input_selection(project.input_directory,project.original_output))
     patched=[*extra,*patched];patched.insert(patched.index('swap'),'age_output_calendar_probe');return patched

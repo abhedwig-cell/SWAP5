@@ -1,0 +1,411 @@
+{
+  "status": "CURRENT_EIGHT_ACTUAL_SOURCE_FILES_COMPOSE_EXISTING_CLOSED_BOTTOM_NEWTON_OPERATORS_NOT_YET_QUALIFIED",
+  "actual_before_source": "9af88c3de6198ddec40c2674dd1542a89fa9c0d7",
+  "files": {
+    "app/hybrid_water/frost_analytical_composition.py": {
+      "proposed_lf_sha256": "0ba3172e7998cfa7f0fdb3761b953091431810b76d39f1583c6fb927d6efa06f",
+      "before_lf_sha256": "c5469e1b700c5db958e25f292b1819a5792c6f40259b2df74874ba96f4411af9",
+      "ordered_literal_edits": [
+        {
+          "base_start": 252,
+          "base_end": 252,
+          "before": "",
+          "after": "BOUNDARY_NATIVE='frost_analytical_boundary_native'\nBOUNDARY_POLICY='existing-explicit-analytical-frost-boundary568-drainage01-state-calendar-v1'\n\ndef boundary_domain(item):return item.get('drainage')==1 or item['bottom']==6\n\ndef native_provider(item):return BOUNDARY_NATIVE if boundary_domain(item) else NATIVE\n"
+        },
+        {
+          "base_start": 283,
+          "base_end": 283,
+          "before": "",
+          "after": ",allow_model1=False"
+        },
+        {
+          "base_start": 433,
+          "base_end": 433,
+          "before": "",
+          "after": "not rows and allow_model1:\n        models=[1]  # Original ReadSwap default, never assigned to physical state here.\n    else:\n        if "
+        },
+        {
+          "base_start": 538,
+          "base_end": 538,
+          "before": "",
+          "after": "    "
+        },
+        {
+          "base_start": 597,
+          "base_end": 597,
+          "before": "",
+          "after": "("
+        },
+        {
+          "base_start": 621,
+          "base_end": 621,
+          "before": "",
+          "after": ") and not allow_model1"
+        },
+        {
+          "base_start": 1921,
+          "base_end": 1921,
+          "before": "",
+          "after": "if not project.input_directory or not project.original_output or project.macro or project.age:return None\n    "
+        },
+        {
+          "base_start": 1932,
+          "base_end": 1932,
+          "before": "",
+          "after": "bo"
+        },
+        {
+          "base_start": 1935,
+          "base_end": 1935,
+          "before": "",
+          "after": "a"
+        },
+        {
+          "base_start": 1936,
+          "base_end": 1941,
+          "before": "ained",
+          "after": "y"
+        },
+        {
+          "base_start": 1947,
+          "base_end": 1947,
+          "before": "",
+          "after": "_calendar"
+        },
+        {
+          "base_start": 1961,
+          "base_end": 1963,
+          "before": "ed",
+          "after": "ion"
+        },
+        {
+          "base_start": 1996,
+          "base_end": 1996,
+          "before": "",
+          "after": "t.input_directory,project.original_outpu"
+        },
+        {
+          "base_start": 2257,
+          "base_end": 2257,
+          "before": "",
+          "after": "if item.get('drainage') not in (0,1):raise ValueError('Foreign analytical Frost drainage domain')\n    if boundary_domain(item):return b'S5FAC001' if item['kind']=='cde' else b'S5FAW001'\n    "
+        },
+        {
+          "base_start": 2374,
+          "base_end": 2374,
+          "before": "",
+          "after": "6,"
+        },
+        {
+          "base_start": 2375,
+          "base_end": 2375,
+          "before": "",
+          "after": ") or item.get('drainage') not in (0,1"
+        },
+        {
+          "base_start": 2525,
+          "base_end": 2531,
+          "before": "NATIVE",
+          "after": "native_provider(item)"
+        },
+        {
+          "base_start": 2915,
+          "base_end": 2915,
+          "before": "",
+          "after": "([3,nodes,len(models),int(item['kind']=='cde'),item['bottom'],item['drainage'],int(item['drainage']==1),*models] if boundary_domain(item) else "
+        },
+        {
+          "base_start": 2984,
+          "base_end": 2984,
+          "before": "",
+          "after": ")"
+        },
+        {
+          "base_start": 3473,
+          "base_end": 3479,
+          "before": "POLICY",
+          "after": "item['policy']"
+        },
+        {
+          "base_start": 3541,
+          "base_end": 3541,
+          "before": "",
+          "after": "3 if boundary_domain(item) else "
+        },
+        {
+          "base_start": 3566,
+          "base_end": 3566,
+          "before": "",
+          "after": "(7 if boundary_domain(item) else "
+        },
+        {
+          "base_start": 3567,
+          "base_end": 3567,
+          "before": "",
+          "after": ")"
+        },
+        {
+          "base_start": 3945,
+          "base_end": 3951,
+          "before": "NATIVE",
+          "after": "native_provider(item)"
+        },
+        {
+          "base_start": 4531,
+          "base_end": 4531,
+          "before": "",
+          "after": "module='hybrid_frost_analytical_boundary_native' if boundary_domain(item) else 'hybrid_frost_analytical_native'\n    "
+        },
+        {
+          "base_start": 4584,
+          "base_end": 4589,
+          "before": "hybri",
+          "after": "'+mo"
+        },
+        {
+          "base_start": 4590,
+          "base_end": 4600,
+          "before": "_frost_ana",
+          "after": "u"
+        },
+        {
+          "base_start": 4601,
+          "base_end": 4613,
+          "before": "ytical_nativ",
+          "after": ""
+        },
+        {
+          "base_start": 4614,
+          "base_end": 4614,
+          "before": "",
+          "after": "+'"
+        },
+        {
+          "base_start": 5157,
+          "base_end": 5163,
+          "before": "NATIVE",
+          "after": "native_provider(item)"
+        },
+        {
+          "base_start": 5377,
+          "base_end": 5383,
+          "before": "NATIVE",
+          "after": "native_provider(item)"
+        },
+        {
+          "base_start": 5906,
+          "base_end": 5906,
+          "before": "",
+          "after": "\n    from frost_analytical_boundary_search import validate as validate_boundary_search\n    validate_boundary_search(bundle,item)\n"
+        }
+      ]
+    },
+    "app/hybrid_water/frost_undrained_state.py": {
+      "proposed_lf_sha256": "66b0c2f55b56e7a27da9fd0e74360cfd4dc57ef828822c9b110b062e5b5ab48a",
+      "before_lf_sha256": "c912be4c44f7f7a0316b912e921d653b56873fab1bbece0e953a37d9d27cb563",
+      "ordered_literal_edits": [
+        {
+          "base_start": 460,
+          "base_end": 460,
+          "before": "",
+          "after": "6,"
+        },
+        {
+          "base_start": 461,
+          "base_end": 461,
+          "before": "",
+          "after": ")\n                and (boundary.get('SWBOTB')!=6 or selectors.get('SWKIMPL')==selectors.get('SWHYST')==0"
+        },
+        {
+          "base_start": 1253,
+          "base_end": 1253,
+          "before": "",
+          "after": ",6"
+        },
+        {
+          "base_start": 2204,
+          "base_end": 2204,
+          "before": "",
+          "after": "if values['SWBOTB']==6:\n        from frost_analytical_composition import model_domain\n        analytical=model_domain(active,values,allow_model1=True)\n        if analytical is None:return None\n    el"
+        },
+        {
+          "base_start": 3266,
+          "base_end": 3266,
+          "before": "",
+          "after": "\n        if values['SWBOTB']==6:\n            from frost_analytical_composition import BOUNDARY_POLICY\n            analytical_policy=BOUNDARY_POLICY"
+        }
+      ]
+    },
+    "app/hybrid_water/frost_boundary_state_calendar.py": {
+      "proposed_lf_sha256": "b5d346fe9c664b6a630cd220efac5af394482619f5d3f8eb24f91d5e1740017d",
+      "before_lf_sha256": "474771fa842f36dce80877a326de2af471f9ffe7e0bfad4a46e3b7b73e9a65ed",
+      "ordered_literal_edits": [
+        {
+          "base_start": 628,
+          "base_end": 628,
+          "before": "",
+          "after": "6,"
+        },
+        {
+          "base_start": 629,
+          "base_end": 629,
+          "before": "",
+          "after": ")\n                and (boundary.get('SWBOTB')!=6 or selectors.get('SWKIMPL')==selectors.get('SWHYST')==0"
+        },
+        {
+          "base_start": 1646,
+          "base_end": 1646,
+          "before": "",
+          "after": "6,"
+        },
+        {
+          "base_start": 2559,
+          "base_end": 2559,
+          "before": "",
+          "after": ":return"
+        },
+        {
+          "base_start": 2560,
+          "base_end": 2560,
+          "before": "",
+          "after": "N"
+        },
+        {
+          "base_start": 2561,
+          "base_end": 2562,
+          "before": "r",
+          "after": "ne\n    analytical=None\n    if"
+        },
+        {
+          "base_start": 2630,
+          "base_end": 2630,
+          "before": "",
+          "after": " is None:\n        from frost_analytical_composition import model_domain\n        analytical=model_domain(active,values)\n        if analytical is None:return None\n    if values['SWBOTB']==6 and analytical"
+        },
+        {
+          "base_start": 3115,
+          "base_end": 3115,
+          "before": "",
+          "after": "sul"
+        },
+        {
+          "base_start": 3116,
+          "base_end": 3120,
+          "before": "urn ",
+          "after": "="
+        },
+        {
+          "base_start": 3591,
+          "base_end": 3591,
+          "before": "",
+          "after": "    if analytical is not None:\n        from frost_analytical_composition import BOUNDARY_POLICY\n        result.update(analytical_frost_models=analytical,policy=BOUNDARY_POLICY,drainage=1,requires_divdra=True)\n    return result\n"
+        },
+        {
+          "base_start": 3745,
+          "base_end": 3745,
+          "before": "",
+          "after": "_codec(selected)\n    if selected.get('analytical_frost_models'):\n        from frost_analytical_composition import codec as analytical_codec\n        return analytical"
+        }
+      ]
+    },
+    "app/hybrid_water/frost_calendar_output.py": {
+      "proposed_lf_sha256": "351f6023c17d4b1739ef24ee99fc51565b6073892cbf9f3df38d9f0ee7cf1811",
+      "before_lf_sha256": "53925746b73017f6d6c9a32b174c83f83a087f20ffd1e5308be6a7b25df2ece7",
+      "ordered_literal_edits": [
+        {
+          "base_start": 3981,
+          "base_end": 3981,
+          "before": "",
+          "after": "\n        from frost_analytical_composition import native_provider\n        "
+        },
+        {
+          "base_start": 4027,
+          "base_end": 4045,
+          "before": "'frost_analytical_",
+          "after": ""
+        },
+        {
+          "base_start": 4051,
+          "base_end": 4051,
+          "before": "",
+          "after": "_provider(boundary)+'"
+        },
+        {
+          "base_start": 4221,
+          "base_end": 4221,
+          "before": "",
+          "after": ".py')\n    from frost_analytical_boundary_search import metadata as boundary_search_metadata\n    boundary_search=boundary_search_metadata(boundary)\n    if boundary_search is not None:providers.append('frost_analytical_boundary_search"
+        },
+        {
+          "base_start": 4544,
+          "base_end": 4544,
+          "before": "",
+          "after": ",\n        **({'analytical_boundary_search':boundary_search} if boundary_search is not None else {})"
+        },
+        {
+          "base_start": 11497,
+          "base_end": 11497,
+          "before": "",
+          "after": "from frost_analytical_boundary_search import apply_build as boundary_search_build\n    boundary_search_build(output,input_selection(project.input_directory,project.original_output))\n    "
+        }
+      ]
+    },
+    "app/hybrid_water/frost_drainage_composition.py": {
+      "proposed_lf_sha256": "85d41dc639f2ae7e564edd823eb55d481c1f3f1dbd220aa4624704f16ffa6d87",
+      "before_lf_sha256": "c517e92f725db81ca192a72b4752deaa7411b23833d7e66fa1db8ff71cfd2ace",
+      "ordered_literal_edits": [
+        {
+          "base_start": 3178,
+          "base_end": 3178,
+          "before": "",
+          "after": "    if boundary.get('analytical_frost_models'):\n            from frost_analytical_composition import metadata as analytical_metadata\n            domain=analytical_metadata(boundary)\n            result.update(policy=boundary['policy'],analytical_frost_models=boundary['analytical_frost_models'],analytical_frost_native=domain)\n            result['providers'].update(domain['providers'])\n    "
+        }
+      ]
+    },
+    "app/hybrid_water/frost_implicit_plate_calendar.py": {
+      "proposed_lf_sha256": "4857b64b6d468b58af682baaaa1e449d9854db896eb3a22cb1147302fdf4172f",
+      "before_lf_sha256": "909c71b11669a5002e3f08b3831ad5f16c34022425a9855d3971d2ed434ef4ae",
+      "ordered_literal_edits": [
+        {
+          "base_start": 812,
+          "base_end": 840,
+          "before": "bottom'] in (5,8) and item['",
+          "after": ""
+        },
+        {
+          "base_start": 877,
+          "base_end": 877,
+          "before": "",
+          "after": "("
+        },
+        {
+          "base_start": 896,
+          "base_end": 896,
+          "before": "",
+          "after": " and item['bottom'] in (5,8))"
+        }
+      ]
+    },
+    "app/hybrid_water/frost_analytical_boundary_native.f90": {
+      "proposed_lf_sha256": "16b299a23f6e87d541239e9bd2dffce8137a5ef3356abe6ab26dc8b67ffd2c21",
+      "added": true
+    },
+    "app/hybrid_water/frost_analytical_boundary_search.py": {
+      "proposed_lf_sha256": "1eceafd5ad2189990a8e469682ea4227b3558c4a5e432f2d4550d743b3b95a99",
+      "added": true
+    }
+  },
+  "native_codecs": [
+    "S5FAW001",
+    "S5FAC001"
+  ],
+  "scope": "Original free6 SWDRA0 including default model1; original analytical non1 SWDRA1/SWDIVD1 bottom5/6/8. Explicit/hys0/NoVap/initial1,2/water,CDE/calendars. Keep old09 undrained bottom5,8 and existing model1 drainage1 free6 owners literal.",
+  "new_physical_equations": false,
+  "new_physical_state": false,
+  "physical_or_date_or_counter_assignment_added": false,
+  "model_or_compiler_executions": 0,
+  "canonical_admission": false,
+  "precondition": "Do not install until both actualM9observations pass. New genuine10branch must start at actualM9. Preserve09 through actual generated/whole-object postimages, not old scientific period replay; all new integration/cold/native/transaction qualification remains required.",
+  "actual_previous_source": "211faea04c2c2dd172ecbbb619e81bfce241fe68",
+  "search_proposal": "FROST_ANALYTICAL_BOUNDARY10_SEARCH_COMPOSITION_DESIGN_V1.json"
+}

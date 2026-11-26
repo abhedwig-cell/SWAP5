@@ -57,6 +57,11 @@ def metadata(project):
     if boundary is not None:
         result['boundary_composition']=boundary
         result['providers']['frost_boundary_composition.py']=sha(folder/'frost_boundary_composition.py')
+        if boundary.get('analytical_frost_models'):
+            from frost_analytical_composition import metadata as analytical_metadata
+            domain=analytical_metadata(boundary)
+            result.update(policy=boundary['policy'],analytical_frost_models=boundary['analytical_frost_models'],analytical_frost_native=domain)
+            result['providers'].update(domain['providers'])
     return result
 
 
