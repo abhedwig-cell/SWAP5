@@ -1,0 +1,295 @@
+{
+  "status": "SIX_ACTUAL_CHANGED_SEARCH_LOCAL_CONTEXTS_PASS_ORIGINAL_BUDGETS_CONVERGENCE_NATIVE_COLD_AND_TRANSACTIONS_NOT_ADMITTED",
+  "actual_scientific_source": "b24cebc3993b0f350c7aef7fb773a177d00425ce",
+  "contexts": [
+    {
+      "case": {
+        "name": "model8-water-d0-b6-periodic",
+        "models": [
+          8,
+          8
+        ],
+        "effective_models": [
+          8,
+          8
+        ],
+        "kind": "water",
+        "drainage": 0,
+        "bottom": 6,
+        "initial": 2,
+        "calendar": "regular",
+        "reset": 0,
+        "start": null,
+        "days": 35,
+        "implicit": 0,
+        "hysteresis": 0,
+        "explicit_oxygen": null,
+        "full_legacy_native_controls": false,
+        "active_frost_transactions": false
+      },
+      "actual_source": "b24cebc3993b0f350c7aef7fb773a177d00425ce",
+      "actual_result_path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\b10s-v1\\O0\\RESULT.json",
+      "optimization": "O0",
+      "primary_days": 35,
+      "native_samples": 7,
+      "exact_cold_windows": 3,
+      "compiled_refusals": 18,
+      "transactions": 1,
+      "original_budgets": {
+        "days": 35,
+        "daily_water_max_cm": "3.094E-14",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 6,
+        "actual_partial_frost_output_dates": [
+          "2002-01-14",
+          "2002-01-21",
+          "2002-01-28",
+          "2002-02-04"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "original_unconverged_continuations": 0,
+      "actual_drainage_outward_cm": 0.0
+    },
+    {
+      "case": {
+        "name": "scalar-model11-water-d0-b6-dates-year",
+        "models": [
+          11
+        ],
+        "effective_models": [
+          11,
+          11
+        ],
+        "kind": "water",
+        "drainage": 0,
+        "bottom": 6,
+        "initial": 2,
+        "calendar": "dates",
+        "reset": 0,
+        "start": "2002-12-25",
+        "days": 12,
+        "implicit": 0,
+        "hysteresis": 0,
+        "explicit_oxygen": null,
+        "full_legacy_native_controls": false,
+        "active_frost_transactions": false
+      },
+      "actual_source": "b24cebc3993b0f350c7aef7fb773a177d00425ce",
+      "actual_result_path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\b10edge-v1\\O0-c10\\RESULT.json",
+      "optimization": "O0",
+      "primary_days": 12,
+      "native_samples": 4,
+      "exact_cold_windows": 2,
+      "compiled_refusals": 18,
+      "transactions": 1,
+      "original_budgets": {
+        "days": 12,
+        "daily_water_max_cm": "2.596E-13",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 2,
+        "actual_partial_frost_output_dates": [],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "original_unconverged_continuations": 0,
+      "actual_drainage_outward_cm": 0.0
+    },
+    {
+      "case": {
+        "name": "model9-cde-d1-b6-monthly",
+        "models": [
+          9,
+          9
+        ],
+        "effective_models": [
+          9,
+          9
+        ],
+        "kind": "cde",
+        "drainage": 1,
+        "bottom": 6,
+        "initial": 1,
+        "calendar": "monthly",
+        "reset": 1,
+        "start": null,
+        "days": 35,
+        "implicit": 0,
+        "hysteresis": 0,
+        "explicit_oxygen": null,
+        "full_legacy_native_controls": false,
+        "active_frost_transactions": true
+      },
+      "actual_source": "b24cebc3993b0f350c7aef7fb773a177d00425ce",
+      "actual_result_path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\b10edge-v1\\O0-c8\\RESULT.json",
+      "optimization": "O0",
+      "primary_days": 35,
+      "native_samples": 7,
+      "exact_cold_windows": 3,
+      "compiled_refusals": 18,
+      "transactions": 2,
+      "original_budgets": {
+        "days": 35,
+        "daily_water_max_cm": "2.3353E-14",
+        "daily_cde_max_mg_cm2": "3.4579499494E-14",
+        "every_prefix_cde_max_mg_cm2": "2.9689322958826E-14",
+        "actual_frost_output_events": 2,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "original_unconverged_continuations": 0,
+      "actual_drainage_outward_cm": 20.14161375220388
+    },
+    {
+      "case": {
+        "name": "model8-water-d0-b6-periodic",
+        "models": [
+          8,
+          8
+        ],
+        "effective_models": [
+          8,
+          8
+        ],
+        "kind": "water",
+        "drainage": 0,
+        "bottom": 6,
+        "initial": 2,
+        "calendar": "regular",
+        "reset": 0,
+        "start": null,
+        "days": 35,
+        "implicit": 0,
+        "hysteresis": 0,
+        "explicit_oxygen": null,
+        "full_legacy_native_controls": false,
+        "active_frost_transactions": false
+      },
+      "actual_source": "b24cebc3993b0f350c7aef7fb773a177d00425ce",
+      "actual_result_path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\b10s-v1\\O2\\RESULT.json",
+      "optimization": "O2",
+      "primary_days": 35,
+      "native_samples": 7,
+      "exact_cold_windows": 3,
+      "compiled_refusals": 18,
+      "transactions": 1,
+      "original_budgets": {
+        "days": 35,
+        "daily_water_max_cm": "3.094E-14",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 6,
+        "actual_partial_frost_output_dates": [
+          "2002-01-14",
+          "2002-01-21",
+          "2002-01-28",
+          "2002-02-04"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "original_unconverged_continuations": 0,
+      "actual_drainage_outward_cm": 0.0
+    },
+    {
+      "case": {
+        "name": "scalar-model11-water-d0-b6-dates-year",
+        "models": [
+          11
+        ],
+        "effective_models": [
+          11,
+          11
+        ],
+        "kind": "water",
+        "drainage": 0,
+        "bottom": 6,
+        "initial": 2,
+        "calendar": "dates",
+        "reset": 0,
+        "start": "2002-12-25",
+        "days": 12,
+        "implicit": 0,
+        "hysteresis": 0,
+        "explicit_oxygen": null,
+        "full_legacy_native_controls": false,
+        "active_frost_transactions": false
+      },
+      "actual_source": "b24cebc3993b0f350c7aef7fb773a177d00425ce",
+      "actual_result_path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\b10edge-v1\\O2-c10\\RESULT.json",
+      "optimization": "O2",
+      "primary_days": 12,
+      "native_samples": 4,
+      "exact_cold_windows": 2,
+      "compiled_refusals": 18,
+      "transactions": 1,
+      "original_budgets": {
+        "days": 12,
+        "daily_water_max_cm": "2.596E-13",
+        "daily_cde_max_mg_cm2": "0",
+        "every_prefix_cde_max_mg_cm2": "0",
+        "actual_frost_output_events": 2,
+        "actual_partial_frost_output_dates": [],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "original_unconverged_continuations": 0,
+      "actual_drainage_outward_cm": 0.0
+    },
+    {
+      "case": {
+        "name": "model9-cde-d1-b6-monthly",
+        "models": [
+          9,
+          9
+        ],
+        "effective_models": [
+          9,
+          9
+        ],
+        "kind": "cde",
+        "drainage": 1,
+        "bottom": 6,
+        "initial": 1,
+        "calendar": "monthly",
+        "reset": 1,
+        "start": null,
+        "days": 35,
+        "implicit": 0,
+        "hysteresis": 0,
+        "explicit_oxygen": null,
+        "full_legacy_native_controls": false,
+        "active_frost_transactions": true
+      },
+      "actual_source": "b24cebc3993b0f350c7aef7fb773a177d00425ce",
+      "actual_result_path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\b10edge-v1\\O2-c8\\RESULT.json",
+      "optimization": "O2",
+      "primary_days": 35,
+      "native_samples": 7,
+      "exact_cold_windows": 3,
+      "compiled_refusals": 18,
+      "transactions": 2,
+      "original_budgets": {
+        "days": 35,
+        "daily_water_max_cm": "2.3353E-14",
+        "daily_cde_max_mg_cm2": "3.4579499494E-14",
+        "every_prefix_cde_max_mg_cm2": "2.9689322958826E-14",
+        "actual_frost_output_events": 2,
+        "actual_partial_frost_output_dates": [
+          "2002-01-31"
+        ],
+        "accumulated_water_equivalence_claimed": false
+      },
+      "original_unconverged_continuations": 0,
+      "actual_drainage_outward_cm": 20.14161375220388
+    }
+  ],
+  "primary_days": 164,
+  "native_samples": 36,
+  "exact_cold_windows": 16,
+  "compiled_refusals": 108,
+  "transactions": 8,
+  "new_admitted_contexts": 0,
+  "canonical_admission": false
+}
