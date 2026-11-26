@@ -1,0 +1,7 @@
+{
+  "observed_failure": "V9 complete-D3 guard did not admit the actual soil because an unnecessary rigid-soil-input predicate excluded it; actual MPVOLUME source sets VlMpDyCp/SubsidCp0 in near-saturated band thetaS-theta<1e-4.",
+  "correct_guard": "Retain stricter existing physical moisture bound1e-6 and require actual fresh VlMpDyCp(cell)==0 and SubsidCp(cell)==0. This admits all soil-input types only when actual local geometry is constant by original source.",
+  "saturated_geometry_completion": "Sum current unbounded main-cell incoming rates over all domains before dividing by wet depth. Existing all-FrIn1 and no-redistribution guards ensure the same source derivative for each incoming term; no extra fictitious internal flow.",
+  "preserved": "No physical field, source rate, clock, criteria, dt or budget changed; numeric eligibility and missing derivative coverage corrected.",
+  "next": "Fresh source-bound v9r1 O0checked/O2 cold2 and own2-to3 plus independent dynamic-cell linear/mass checks"
+}

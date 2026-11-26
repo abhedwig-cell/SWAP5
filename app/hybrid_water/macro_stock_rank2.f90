@@ -38,7 +38,7 @@ hm=cm(24,1)-z(cell)
 if(hm>=1d-8)return
 depth=g-(z(cell)-.5d0*dz(cell))
 if(depth<=0d0.or.depth>=dz(cell))return
-cg=QInMtxSatDmCp(1,cell)/depth
+cg=sum(QInMtxSatDmCp(1:NumDm,cell))/depth
 bl=cg*g0;bd=cg*g1
 meta(11)=cg;meta(12)=0d0;meta(1)=-6
 ! Two existing stock normalizations, with no duplicate internal inflow.

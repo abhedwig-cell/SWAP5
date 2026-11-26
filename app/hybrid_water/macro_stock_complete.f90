@@ -4,7 +4,7 @@ use MOD_arrays,only:macp,madm
 use MOD_grid,only:numnod,z,dz,layer
 use MOD_macropore,only:NumDm,ICpTpSatZon,ICpTpPerZon,ICpBtPerZon,ICpBtDm,ICpTpWaSrDm, &
  QInMtxSatDmCp,QInIntSatDmCp,QOutMtxUnsDmCp,FrReduQ,CDarcy,TimAbsCumDmCp,SorpMax,SorpAlfa, &
- AwlCorFac,PpDmCp,DiPoCp,FrMpWalWet,swabs,SwDarcy,ThtSrpRefDmCp,SwSoilShr,QOutMtxSatDmCp
+ AwlCorFac,PpDmCp,DiPoCp,FrMpWalWet,swabs,SwDarcy,ThtSrpRefDmCp,VlMpDyCp,SubsidCp,QOutMtxSatDmCp
 use MOD_swap_mp,only:swmbf,IcTopMp,IDecMpRat,GwlFlCpZo
 use MOD_MvG,only:moiscap
 use variables,only:h,theta,thetas,thetar,t1900,dt
@@ -50,7 +50,9 @@ if(zm<=z(cell)-.5d0*dz(cell).or.zm>=z(cell)+.5d0*dz(cell).or.gval==zm) return
 if((V<W).neqv.(gval<zm)) return
 if(any(zm-z(cell+1:bottom)-h(cell+1:bottom)<=1d-8)) return
 lay=layer(cell)
-if(SwSoilShr(lay)/=0)return
+! MPVOLUME(1) fixes these geometry fields to0 when thetaS-theta<1e-4.
+! The existing stricter1e-6 physical-moisture guard remains unchanged.
+if(VlMpDyCp(cell)/=0d0.or.SubsidCp(cell)/=0d0)return
 deficit=thetas(cell)-theta(cell);power=SorpAlfa(lay);meta(1)=-8
 if(deficit<=1d-8.or.thetas(cell)<=thetar(cell).or.DiPoCp(cell)<=0d0.or.power<=0d0) return
 active_deficit=ThtSrpRefDmCp(3,cell)-theta(cell)
