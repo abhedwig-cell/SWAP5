@@ -4,6 +4,8 @@ from donor_sources import replace
 def render_rate(source):
     decl='''      real(8),save::rank2_cm(24,madm)=0d0,rank2_pot(macp,2)=0d0
       real(8),save::rankall_pot(macp,madm)=0d0,rankall_uns(macp,madm)=0d0
+      real(8),save::upper1_in(macp)=0d0
+      real(8)::upper1_get_in(macp)
       real(8)::rankall_get_pot(macp,madm),rankall_get_uns(macp,madm)
       real(8),save::rank2_head(macp),rank2_t,rank2_dt
       integer,save::rank2_seq=-1,rank2_task=-1
@@ -15,6 +17,7 @@ def render_rate(source):
       stock_seq=stock_seq+1''')
     needle='            if (WaSrMpDmTmp < WaSrMpDmMin) FlwOutDmExces(id) = WaSrMpDmMin - WaSrMpDmTmp'
     source=replace(source,needle,needle+'''
+            if(id==1)upper1_in=FlwInMtxSatCpPot
             rank2_cm(1:15,id)=[WaSrMpDm(id),WaSrMpDmMin,WaSrMpDmMax,VlMpUndrGwL,FlwInDmTot,FlwOutDmTot(id), &
                WaSrMpDmTmp,FrFlwIn,FlwInTopVrtDmPot(id),FlwInTopLatDmPot(id),FlwInIntSatDmPot(id),FlwInMtxSatDmPot(id), &
                FlwOutMtxSatDmPot(id),FlwOutMtxUnsDmPot(id),merge(FlwOutDrRapPot,0d0,id==1)]
@@ -35,7 +38,13 @@ def render_rate(source):
          rank2_seq=stock_seq;rank2_task=ITask;rank2_ready=.true.
       end if
       call capture_stock_gradient()''')
-    source=replace(source,'      entry macro_stock_terms(','''      entry macro_saturated_data(rank2_get_cm,rankall_get_pot,rankall_get_uns,rank2_valid)
+    source=replace(source,'      entry macro_stock_terms(','''      entry macro_upper1_data(upper1_get_in,rank2_valid)
+      upper1_get_in=upper1_in;rank2_valid=0d0
+      if(rank2_ready.and.rank2_task==2.and.rank2_seq==stock_seq)then
+         if(rank2_t==t1900.and.rank2_dt==dt.and.all(rank2_head(1:numnod)==h(1:numnod)))rank2_valid=1d0
+      end if
+      return
+      entry macro_saturated_data(rank2_get_cm,rankall_get_pot,rankall_get_uns,rank2_valid)
       rank2_get_cm=rank2_cm;rankall_get_pot=rankall_pot;rankall_get_uns=rankall_uns;rank2_valid=0d0
       if(rank2_ready.and.rank2_task==2.and.rank2_seq==stock_seq)then
          if(rank2_t==t1900.and.rank2_dt==dt.and.all(rank2_head(1:numnod)==h(1:numnod)))rank2_valid=1d0

@@ -11,9 +11,9 @@ implicit none
 integer,intent(in)::n
 real(8),intent(out)::uu(macp,madm),vv(macp,madm),bl,bd,meta(16)
 logical,intent(out)::eligible
-real(8)::cm(24,madm),pot(macp,madm),pu(macp,madm),valid,den,g,g0,g1,depth,hm,delta,doo,rhoslope,cg,fr,dq,qp,latvalid,dI(macp),proof_base(macp),proof_meta(10),ct0(madm),ct1(madm),nativeU(madm),du0,du1,contact_valid,contactD1(2)
+real(8)::cm(24,madm),pot(macp,madm),pu(macp,madm),valid,den,g,g0,g1,depth,hm,delta,doo,rhoslope,cg,fr,dq,qp,latvalid,dI(macp),proof_base(macp),proof_meta(10),ct0(madm),ct1(madm),nativeU(madm),du0,du1,contact_valid,contactD1(2),upperIn(macp),dUpperIn(macp),upperValid,frIn1,upperG0,upperG1,upperBase(macp)
 integer::d,k,i,cell,upper,lower
-integer,save::proof_count=0,proof_unit
+integer,save::proof_count=0,proof_unit,upper_count=0,upper_unit
 uu=0d0;vv=0d0;bl=0d0;bd=0d0;meta=0d0;eligible=.false.;meta(1)=-1
 if(n/=numnod.or.n<2.or.NumDm<3.or.swmbf/=1.or.IcTopMp/=1.or.IDecMpRat/=0.or.FrReduQ/=1d0)return
 call macro_saturated_data(cm,pot,pu,valid);meta(15)=valid;meta(1)=-2
@@ -33,7 +33,10 @@ if(abs(g-GwlFlCpZo)>1d-9)return
 g0=(z(upper)-z(lower))*h(lower)/den**2;g1=-(z(upper)-z(lower))*h(upper)/den**2
 meta(13)=g;meta(14)=dble(cell);meta(16)=theta(upper)-thetas(upper)
 meta(1)=-4
-if(any(cm(8,1:NumDm)/=1d0).or.any(cm(22,1:NumDm)/=0d0))return
+if(any(cm(8,2:NumDm)/=1d0).or.any(cm(22,1:NumDm)/=0d0))return
+frIn1=cm(8,1);meta(9)=frIn1
+if(frIn1<0d0.or.frIn1>1d0)return
+if(frIn1/=1d0.and.any(cm(16,2:NumDm)/=1d0))return
 if(cm(16,1)/=1d0)return
 meta(1)=-5
 if(any(QInIntSatDmCp(1:NumDm,1:n)/=0d0))return
@@ -114,6 +117,46 @@ do k=1,NumDm-1
  vv(upper,k)=vv(upper,k)-rhoslope*g0/cm(6,d);vv(lower,k)=vv(lower,k)-rhoslope*g1/cm(6,d)
  meta(2)=meta(2)+1d0
 end do
+! D1 upper inventory projector, current pure main-matrix inflow only.
+! This uses slot1 only when all D2..N out factors are1 (guard above).
+if(frIn1>0d0.and.frIn1<1d0)then
+ if(cm(5,1)<=0d0.or.cm(3,1)/=cm(4,1).or.any(cm(9:11,1)/=0d0))return
+ if(cm(13,1)/=0d0.or.cm(14,1)/=0d0.or.cm(6,1)/=cm(15,1))return
+ if(cm(5,1)/=cm(12,1).or.cm(5,1)/dt<=1d-7)return
+ if(cm(7,1)<=cm(3,1)+1d-7)return
+ if(abs(frIn1-(cm(3,1)-cm(1,1)+cm(6,1))/cm(5,1))>256d0*epsilon(1d0)* &
+  max(1d0,abs(cm(3,1)/cm(5,1))))return
+ if(thetas(cell)-theta(cell)>1d-6)return
+ call macro_upper1_data(upperIn,upperValid)
+ if(upperValid/=1d0)return
+ if(abs(sum(upperIn(1:n))-cm(5,1))>128d0*epsilon(1d0)*max(cm(5,1),tiny(1d0)))return
+ dUpperIn=0d0;upperBase=0d0
+ do i=lower,n
+  if(upperIn(i)>0d0)then
+   hm=max(0d0,cm(24,1)-z(i))
+   if(hm<1d-8)hm=0d0
+   delta=h(i)-hm
+   if(delta<=0d0)return
+   dUpperIn(i)=upperIn(i)/delta
+   upperBase(i)=QInMtxSatDmCp(1,i)/delta
+  end if
+ end do
+ if(h(cell)>=0d0)then
+  dUpperIn(upper)=dUpperIn(upper)+upperIn(cell)/depth*g0
+  dUpperIn(lower)=dUpperIn(lower)+upperIn(cell)/depth*g1
+ end if
+ uu(1:n,1)=upperIn(1:n)/dt
+ vv(1:n,1)=-frIn1*dUpperIn(1:n)/cm(5,1)
+ vv(upper,1)=vv(upper,1)+cm(18,1)*g0/cm(5,1)
+ vv(lower,1)=vv(lower,1)+cm(18,1)*g1/cm(5,1)
+ meta(2)=meta(2)+1d0
+ upper_count=upper_count+1
+ if(upper_count<=64)then
+  if(upper_count==1)open(newunit=upper_unit,file='macro_upper1_inventory_terms.txt',status='replace')
+  write(upper_unit,*)n,t1900,dt,numbit,cell,upper,lower,frIn1,cm(5,1),cm(6,1),cm(1,1),cm(3,1),cm(18,1),g0,g1,depth
+  write(upper_unit,*)upperIn(1:n),upperBase(1:n),uu(1:n,1),vv(1:n,1),QInMtxSatDmCp(1,1:n)
+ end if
+end if
 meta(1)=1d0;eligible=.true.
 ! Primitive state and actual local derivatives for independent all-domain inventory.
 proof_count=proof_count+1
