@@ -1,0 +1,6 @@
+{
+  "status": "V3R1_NONFINITE_CORRECTION_REFUSED_BOTH_OPTIMIZATIONS_NO_DAY3_PUBLISHED",
+  "cause": "Contained rank solve used full parent macp work arrays with NN-sized vectors; dot_product and array operations lacked1:NN slices. Corrected all operations and dumps to explicit active extent.",
+  "validation": "O0 changed owners now compile with-fcheck=all and-fbacktrace; O2 remains production optimization. No finite/singularity guards removed.",
+  "previous_task_stamp": "SAVE repair removed task/sequence failure and O2 segfault; next independent shape bug surfaced."
+}

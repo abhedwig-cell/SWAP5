@@ -9,7 +9,7 @@ import original_macro_policy as original
 from donor_sources import replace
 from macro_stock_jacobian import render_rate as render_stock_rate,render_head as render_stock_head
 from macro_trial_origin import render as render_trial_origin,PHYSICAL_FIELDS
-POLICY='fresh-coupled-unreduced-field-stock-jac24-v3r1'
+POLICY='fresh-coupled-unreduced-field-stock-jac24-v3r2'
 
 def render_headcalc(source):
     source=source.replace('\r\n','\n')
@@ -75,6 +75,7 @@ def build_bundle(base,reference,target,*,owner_optimization='O2'):
     p=target/'macrorate.f90';p.write_text(render_stock_rate(render_macrorate((reference/'build/swap-selected/macrorate.f90').read_text(encoding='cp1252'))),encoding='cp1252')
     identity['donor_generated']['macrorate.f90']=h.sha(p)
     flags=[('-'+owner_optimization if f in ('-O0','-O2') else f) for f in identity['donor_flags']]
+    if owner_optimization=='O0':flags=flags+['-fcheck=all','-fbacktrace']
     commands=[['gfortran',*flags,'-I',str(objects),'-I',str(ttutil),'-c',n] for n in ['macropore.f90','macrorate.f90','headcalc.f90','swap_main.f90']]
     replacements={Path(n).with_suffix('.o').name:target/Path(n).with_suffix('.o').name for n in identity['donor_generated']}
     commands.append(['gfortran','-o',str(h.executable(target,'day_donor')),*(str(replacements.get(p.name,p)) for p in sorted(objects.glob('*.o'))),str(target/'hybrid_step_budget.o'),str(ttutil/'libttutil.a')])

@@ -103,23 +103,23 @@ def render_head(source):
       if(e/=0)error stop 'Stock correction solve failed'
       den=1d0+dot_product(v,work)
       if(.not.ieee_is_finite(den).or.abs(den)<1d-12)error stop 'Stock rank correction singular'
-      alpha=dot_product(v,difh)/den;difh=difh-alpha*work
-      if(any(.not.ieee_is_finite(difh)))error stop 'Nonfinite stock correction'
-      lin=dFdhM*difh-F
+      alpha=dot_product(v,difh(1:NN))/den;difh(1:NN)=difh(1:NN)-alpha*work
+      if(any(.not.ieee_is_finite(difh(1:NN))))error stop 'Nonfinite stock correction'
+      lin=dFdhM(1:NN)*difh(1:NN)-F(1:NN)
       do j=2,NN
          lin(j)=lin(j)+dFdhU(j)*difh(j-1)
       end do
       do j=1,NN-1
          lin(j)=lin(j)+dFdhL(j)*difh(j+1)
       end do
-      lin=lin+u*dot_product(v,difh)
+      lin=lin+u*dot_product(v,difh(1:NN))
       if(trace_unit==0)open(newunit=trace_unit,file='macro_stock_trace.txt',status='replace')
       write(trace_unit,*)t1900,dt,numbit,meta,den,maxval(abs(lin))
       active_count=active_count+1
       if(active_count<=64)then
          if(systems_unit==0)open(newunit=systems_unit,file='macro_stock_systems.txt',status='replace')
          write(systems_unit,*)NN,t1900,dt,numbit
-         write(systems_unit,*)dFdhU,dFdhM,dFdhL,F,u,v,difh
+         write(systems_unit,*)dFdhU(1:NN),dFdhM(1:NN),dFdhL(1:NN),F(1:NN),u,v,difh(1:NN)
       end if
    end subroutine solve_stock_gradient
 '''
