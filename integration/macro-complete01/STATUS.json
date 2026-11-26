@@ -2,7 +2,7 @@
   "work_unit": "SWAP5-MACRO-COMPLETE01",
   "canonical_baseline": "9af88c3de6198ddec40c2674dd1542a89fa9c0d7",
   "active_branch": "codex/macro-complete01",
-  "stage": "BLOCK28_FIXED_V27_ORIGINAL26DAYS_QUALIFIED",
+  "stage": "BLOCK29_FIXED_V27_DAY27_EXECUTION_BOUNDARY",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -11,7 +11,7 @@
   "MACRO_NUMERICAL_QUALIFICATION": "PARTIAL_INHERITED_NOT_REQUALIFIED",
   "MACRO_SCIENTIFIC_EQUIVALENCE": "NOT_QUALIFIED",
   "MACRO_RELEASE_READINESS": "NOT_READY",
-  "current_hypothesis": "ActualfixedV27 original0->26 executed under same sourcebinding in O0checked/O2; everyacceptednative payload exactacrossopts. Maxdayerror7.53139412391e-7cm; full26dayerror-2.28517926519e-6cm under unchangeddayguard. Allroutes<20s. Prior V21/V25/context native22..26 differ, so noinheritanceclaim; literalnewprefix isqualifiedseparately. SourcephysicalRATE unchanged; Jacobianfullycouplednormalization changesiterativepath.",
+  "current_hypothesis": "V27 actualfixed26daysqualified, allnativeO0/O2exact, maxdayerror7.53139412391e-7cm, fullprefixerror-2.28517926519e-6cm. Day27 both20scapped: O0 .686858277913day/976observedJacrows, O2 .996858277977day/1288rows. Common976rows exact; allJaceligible; maxiteration10, mindt7.57308e-5>dtmin1e-5. No demonstrateddtmin nonlinearstagnation, noacceptedday27receipt. This is actualexecutionlimit, not basisfor speculativephysicschange.",
   "first_code_change": "src/legacy/b1_10_port/headcalc.f90: reuse unchanged criteria; refresh macro rates/residual at provisional convergence. Existing typed legacy-fldtmin validation stays unchanged.",
   "interfaces_changed": [],
   "invariants_affected": [
@@ -21,15 +21,14 @@
     "production no-macro preservation"
   ],
   "blockers": [
-    "Full original481days and currentcandidate literalprefix not complete",
-    "Independent scenario, feature matrix and production integration/canonical admission remainopen",
-    "No scaling, relaxedcriteria or dtminautoacceptance allowed"
+    "Originalday27 O0andO2 actual20srouteexecutionlimit preventsfullperiodqualification; noacceptedday27checkpoint",
+    "Independent scenario, feature matrix andproduction integration/canonicaladmission remainopen"
   ],
   "dependencies": {
     "own_historical_baseline": "Immutable central Git10576fcd935cfaa7457351a42144f447c4351f8d and verified SELECT66 archive; old worktree/reject64 build copies released; old phase/audit input protections removed because new canonical original source/input provider replaces them.",
     "parallel_nomacro": "no files or generated resources shared with its worktree"
   },
-  "next_action": "Continue one originalfixedV27 prefix fromactualown26 with advance_fixed_v27.py O0/O2 27..29 then <=3daybatches,20sperroute,stopfirstfailure/cap; do notrepeatcompletedroutes. Assess actual currentactive rollback, independentfeature/scenario tests andcurrentarchitecture integration beforefunctionalcompletion.",
+  "next_action": "Do not rerun unchanged day27 or extend20sroutecap. Targeted runtimeprofiling/codepath review from retainedBLOCK29raw, especially actualD1lower/contactassembly, originalphysicalcost and diagnosticformatting; implementonly source-derived performancechange preservingphysics/budgets, then distinguishwithsameoriginalown26checkpoint. Currentprefix sourcefullidentityinBLOCK28archive. Full481/independentfeatures/currentarchitectureintegration/admission remainopen.",
   "recovery_point": "integration/macro-complete01/STATUS.json; CONTRACT.md; RECONCILIATION.json",
   "baseline_discriminator": {
     "optimization": "O0",
@@ -42,7 +41,7 @@
   "minimum_step_disposition": "The existing binding refuses fldtmin at validation (SW_SOLVE_FAILED), so new legacy fallback edit was removed rather than claim unsupported-path qualification. First control expected wrong refusal kind and remains retained. No guard relaxed.",
   "completed_block": "Fresh kernel residual gate; scoped Darcy first2days/own native; guarded stock rank1+rank2 actual linear systems O0checked/O2 exact, next contact refusal",
   "operational_note": "PowerShell exec sessions stalled; direct Node filesystem and native executable route remains available. No blanket process kill or cleanup bypass.",
-  "last_source_checkpoint": "76122c555d14883db9d7dbe9c3747ad61663d46c",
+  "last_source_checkpoint": "f163a0ae61",
   "completed_blocks": [
     "BLOCK01 actual typed Richards fresh residual gate, actual macro process/native and no-macro preservation bounds",
     "BLOCK02 scoped Darcy physical contract and exact own native2days",
@@ -60,7 +59,8 @@
     "BLOCK19 actualD1max-stockinflowprojection13refusal O0/O2operatortracesexact/observer12nativeexact. BLOCK20 pureinupperJac64inventorycolumns1.42e-14; day13both20scensored, notPASS. BLOCK21 fulloutpotentialupperJac, source-compatibleimmutableoriginal12context->13+actualown14, inventory<=2.85e-14 andnative14split/O0O2exact; fixedV21prefixpending.",
     "BLOCK22 fixedV21 actualown0->12 and literalown12->14; native12+receipt exacttooriginalcontext, native13/14matchescontext+split; all14nativeO0/O2exact; fullorigin14inventory -5.195777478366965e-7cm.",
     "BLOCK23 fixedV21 original22days mass -1.47343305196e-6cm, day23 bothcensored. BLOCK24 D1lower omittednormalization diagnosed. BLOCK25 minimalD1lower correction resolvescontextday23. BLOCK26 ordinarynode58 absorption above maincell59 diagnosed. BLOCK27 minimalordinaryJacobian plus existingdiagonal subtraction resolvescontext24 andown25/26; actuallinear andD1lowerinventory <=4.52e-15. FixedV27prefixstarted.",
-    "BLOCK28 actualfixedV27 original26days: sourcebindingconstant, allnative O0/O2exact, completebalance -2.28517926519e-6cm; priorcontexttrajectorydifferentexplicitlyretained. BLOCK27 and28rawarchivessealedwithallmemberhashesverified."
+    "BLOCK28 actualfixedV27 original26days: sourcebindingconstant, allnative O0/O2exact, completebalance -2.28517926519e-6cm; priorcontexttrajectorydifferentexplicitlyretained. BLOCK27 and28rawarchivessealedwithallmemberhashesverified.",
+    "BLOCK29 genuineexecutionlimit of day27bothopts; common976trace rowsexact, maxiteration10, eligibleall, noacceptedday27. Rawsealedandfullyhashverified; days28/29notstarted."
   ],
   "resources": {
     "current_worktree": "C:/Users/Veldh012/swap5-macro-complete01",
@@ -79,7 +79,7 @@
     "primary_manual": "Exact protected manual_0.pdf at oldcontract06-work; hash bound BLOCK06_PRIMARY_AUTHORITY.json; no old B1 worktree/build input dependency"
   },
   "qualifications": {
-    "current_native": "ActualfixedV27 original26days withnormalownnative starts; allacceptednativeO0/O2exact; fulldayguard unchanged, maxroute13.6215s; nofull481claim.",
+    "current_native": "ActualfixedV27 original26days qualified, O0checked/O2native exact. Bothday27routescensored, noPASSorfull481claim.",
     "modern_kernel": "BLOCK01 focused existingtyped1e-10 tests; not wholeoriginalfieldqualification",
     "MACRO_FUNCTIONAL_COMPLETE": false,
     "MACRO_NUMERICAL_QUALIFICATION": "PARTIAL_BOUNDED_CURRENT_POINT_AND_SHORT_WINDOWS",

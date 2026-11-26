@@ -1,0 +1,18 @@
+{
+  "opt": "O2",
+  "start": 27,
+  "end": 29,
+  "status": "STOPPED_AT_MODEL_REFUSAL_OR_CAP",
+  "pid": 23128,
+  "routes": [
+    {
+      "day": 27,
+      "returncode": 2,
+      "wall_seconds": 24.162494299933314,
+      "stdout": "{\"status\": \"MODEL_CAP_REACHED\", \"elapsed_seconds\": 20.095638799946755, \"requested_day\": 27}\n",
+      "stderr": "",
+      "status": "MODEL_CAP_REACHED",
+      "model_route_seconds": 20.095638799946755
+    }
+  ]
+}

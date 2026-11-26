@@ -1,0 +1,12 @@
+{
+  "scope": "Read-only state comparison, not scientific equivalence or fixedprefix inheritance",
+  "first_changed_pressure": {
+    "day": 3,
+    "max_pressure_difference_cm": 0.020364092758498487
+  },
+  "max_pressure_difference_through_day22_cm": 0.09287623015157465,
+  "old_policy": "fixed V21",
+  "current_policy": "fixed V27",
+  "finding": "FixedV27 native state differs already on day3; own26day qualification is independent, priorcontexttrajectory is not its ownprefix",
+  "models_launched": 0
+}

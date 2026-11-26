@@ -1,0 +1,48 @@
+{
+  "scope": "Existing two capped day27routes only. Smooth progressing .002day iterations; execution boundary, not demonstrated dtmin nonlinear rejection. No rerun, tolerance extension or false daily acceptance.",
+  "results": [
+    {
+      "opt": "O0",
+      "status": "MODEL_CAP_REACHED",
+      "elapsed_seconds": 20.100141500122845,
+      "observed_solver_rows": 976,
+      "partial_tail_lines": 0,
+      "observed_step_contexts": 352,
+      "first_time": 35821.0,
+      "last_time": 35821.68685827791,
+      "fraction_day_observed": 0.6868582779134158,
+      "observed_dt_min": 7.573082984890789e-05,
+      "observed_dt_max": 0.002,
+      "max_observed_iteration": 10.0,
+      "helper_status_counts": {
+        "1": 976
+      },
+      "max_handled_linear_residual": 2.6645352591003757e-15,
+      "no_day27_accepted_receipt": true,
+      "source_sha256": "5ea6fb5d5d79381f7c84a4f0ccd5cbc489e7af3aa4f2dbb14bfd0d1388d55613"
+    },
+    {
+      "opt": "O2",
+      "status": "MODEL_CAP_REACHED",
+      "elapsed_seconds": 20.095638799946755,
+      "observed_solver_rows": 1288,
+      "partial_tail_lines": 0,
+      "observed_step_contexts": 507,
+      "first_time": 35821.0,
+      "last_time": 35821.99685827798,
+      "fraction_day_observed": 0.9968582779765711,
+      "observed_dt_min": 7.573082984890789e-05,
+      "observed_dt_max": 0.002,
+      "max_observed_iteration": 10.0,
+      "helper_status_counts": {
+        "1": 1288
+      },
+      "max_handled_linear_residual": 2.6645352591003757e-15,
+      "no_day27_accepted_receipt": true,
+      "source_sha256": "823d0ad87c8407a9f3749712eb31bd59ba6b65f2c4d13a8ecc7e6d3ea9ccacfb"
+    }
+  ],
+  "common_observed_trace_rows_exact": 976,
+  "models_launched": 0,
+  "next_boundary": "Original20sperroute remains. Fullperiod blocked atday27. Profile nativecost/diagnosticoutput with existing evidence before any revised route; no speculation-driven physicschange."
+}
