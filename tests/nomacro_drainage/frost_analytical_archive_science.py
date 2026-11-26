@@ -212,7 +212,11 @@ def local(proof,verbose=False):
                 entries=[]
                 for opt in ['O0','O2']:
                     prefix='current/'+opt+'-'+stem
-                    case=dict(read(ReadView(store,prefix)/'RESULT.json')['case'],models=models,name=stem)
+                    original=read(ReadView(store,prefix)/'RESULT.json')['case']
+                    if version=='V1' and opt=='O0':
+                        assert original==stem
+                        original=dict(kind='cde',bottom=8,implicit=0,hysteresis=0,initial=1,calendar='dense',reset=1,start=None,days=35,drainage=0)
+                    case=dict(original,models=models,name=stem)
                     entries.append((opt,prefix,case))
             for opt,prefix,case in entries:
                 result.append(case_audit(store,prefix,case,provider,producer,opt,version=='V4'))
