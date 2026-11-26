@@ -3,7 +3,7 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "0b482de01847dd8ba5f93c63881b9aeff468d3e3",
   "branch": "codex/nomacro-frost-undrained-state08",
-  "last_commit": "09b5df8d9b2064d2e5850fe36d2a042bb0863efe",
+  "last_commit": "30724c8e79dddaa6bcb0902fd8efbc7aeae707ec",
   "status": "PARTIAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -36653,5 +36653,20 @@
       "Ubuntu": "BOTH_O0_O2_WORKFLOW_SUCCESS_RAW_BYTE_PRESERVATION_AND_INDEPENDENT_AUDIT_PENDING",
       "Windows": "RUNNING"
     }
+  },
+  "frost_undrained_state08_archive_recovery": {
+    "status": "FOUR_TERMINAL_SCIENTIFIC_PROFILES_ORIGINAL_BYTES_PRESERVED_INDEPENDENT_AUDIT_PENDING",
+    "actual_portable_producer": "127af752c5519e7f9d9a6894c61137f0ee7f3920",
+    "actual_local_producer": "656cd3ed25c91dc6ab8de12f2525fd30be8e358f",
+    "actual_canonical_parent": "0b482de01847dd8ba5f93c63881b9aeff468d3e3",
+    "run_ids": [
+      45741205913,
+      45741205916
+    ],
+    "portable_contexts": 64,
+    "new_admitted_contexts": 0,
+    "reader": "tests/nomacro_drainage/frost_undrained_archive_science.py",
+    "next_action": "Read-only independent Ubuntu/Windows O0/O2 original archive audits, 32 unchanged drained whole-object postimages, local4 and active19; then genuine current admission owners and negative controls",
+    "full_model_replays_for_metadata": 0
   }
 }
