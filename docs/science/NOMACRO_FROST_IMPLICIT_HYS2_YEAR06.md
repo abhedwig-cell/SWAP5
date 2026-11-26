@@ -1,6 +1,7 @@
 # Original implicit Frost hysteresis2 boundary calendars
 
-Status: bounded source/science qualified; public and canonical admission pending. Historical closure remains PARTIAL, whole scientific
+Status: bounded scope canonically admitted by PR1805 on
+`df00f9393ac552b0a6cab8ee84f8b8d8c06ac26c`. Historical closure remains PARTIAL, whole scientific
 equivalence NOT_QUALIFIED, family/gap counts UNKNOWN and fixed RC3 unchanged.
 The admitted dependency is canonical `47124f4de18a752fc466d50e2752e843548e5fea`
 (PR1804, bounded coadmission600). Its actual clean public and ordinary publication
@@ -73,3 +74,11 @@ or report an unperformed scientific PASS.
 The existing `STATUS.json` remains the recovery point. The independent central
 reader, actual source/index/working custody and canonical parent admission chain
 own separate gates. A scientific PASS alone does not admit this new scope.
+
+The actual canonical PUBLIC observation passes in875.0141058seconds and ordinary
+publication in486.0042507seconds, with unchanged real HEAD/tree/working status
+and14sparse patterns/56original fixtures. The137-member original admission
+archive is9301298bytes, SHA256
+`686d02451f9e5f3b5f624a10fea5c464000d91abc94d46243a0c5ef3526d1b7f`.
+Its merge receipt owns bounded648 admission; whole historical closure remains
+PARTIAL and scientific equivalence NOT_QUALIFIED.

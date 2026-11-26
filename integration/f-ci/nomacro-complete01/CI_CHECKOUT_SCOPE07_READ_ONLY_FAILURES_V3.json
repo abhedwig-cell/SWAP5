@@ -1,0 +1,29 @@
+{
+  "status": "ORIGINAL_ACTUAL_CI_REFUSAL_PRESERVED_CHECKOUT_TEST_WITNESS_REPAIRED_NO_MODEL_REPLAY",
+  "actual_failed_candidate": "39d00d6b1d15dbe1132a0b6a2eb361d2459e697d",
+  "actual_failed_synthetic": "02f5614a81957103919f29de511fb893b55bf7f8",
+  "PR": 1806,
+  "failed_run": 45732727272,
+  "failed_job": 139623172434,
+  "log": {
+    "role": "FCI_MODULAR",
+    "job_id": 139623172434,
+    "run_id": 45732727272,
+    "actual_source": "39d00d6b1d15dbe1132a0b6a2eb361d2459e697d",
+    "actual_source_semantics": "WORKFLOW_RUN_HEAD_SHA",
+    "actual_job_checkout": "02f5614a81957103919f29de511fb893b55bf7f8",
+    "file": "CI_CHECKOUT_SCOPE07_PR1806_FCI_MODULAR_FAILED_CI_V1.log",
+    "bytes": 573965,
+    "sha256": "7859fa76b94b5d32ae37bfc73df64b33a35bcfc87d24c24d0368d9ab63b42580",
+    "status": "ORIGINAL_FAILED_CURRENT_CI_LOG_PRESERVED",
+    "storage": "CONNECTOR_DECODED_UTF8_TEXT_BOM_PRESERVED_NOT_ORIGINAL_HTTP_BYTE_CLAIM"
+  },
+  "original_API": "CI_CHECKOUT_SCOPE07_PR1806_FAILED_CI_API_V1.json",
+  "corrected_local_test_command": "python -B tests/hupsel51/test_successor.py",
+  "corrected_local_tests": 11,
+  "corrected_local_tests_seconds": 6.711,
+  "actual_uncommitted_test_sha256": "c43ca1cedde9dc2661312e942ac45c13aa815f267da0f44cfe867235f67c98ba",
+  "test_commands_and_original_workflow_validator_unchanged": true,
+  "scientific_model_runs_repeated": 0,
+  "current_positive_and_four_real_negative_controls_require_fresh_actual_candidate_observation": true
+}

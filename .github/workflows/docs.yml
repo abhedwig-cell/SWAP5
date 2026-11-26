@@ -34,6 +34,13 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/integration/f-ci/nomacro-complete01/*.zip
+            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]
 
       - name: Set up Python
         uses: actions/setup-python@v7
@@ -88,6 +95,13 @@ jobs:
     steps:
       - name: Check out publication revision
         uses: actions/checkout@v7
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/integration/f-ci/nomacro-complete01/*.zip
+            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]
 
       - name: Verify live frozen review documentation
         run: python tools/docs/verify_publication.py "${{ needs.deploy.outputs.page_url }}"

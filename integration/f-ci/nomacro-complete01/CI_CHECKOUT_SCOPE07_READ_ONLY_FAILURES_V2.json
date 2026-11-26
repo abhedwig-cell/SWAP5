@@ -1,0 +1,46 @@
+{
+  "actual_candidate": "b77ab493c57c6eb384f5ec3088623368c263d6d3",
+  "observations": [
+    {
+      "mode": "PUBLIC",
+      "returncode": 1,
+      "seconds": 20.379796099849045,
+      "files": [
+        {
+          "name": "CI_CHECKOUT_SCOPE07_CANDIDATE_PUBLIC_V1.json",
+          "sha256": "35c8cc8f43642a7b3bf0a92618b4586590a9e4d33d2e5fe264b7512df20351f6"
+        },
+        {
+          "name": "CI_CHECKOUT_SCOPE07_CANDIDATE_PUBLIC_V1.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "CI_CHECKOUT_SCOPE07_CANDIDATE_PUBLIC_V1.stderr.txt",
+          "sha256": "9f5734e57b01053dd629f1661636c5f1f2ede7c7ced9ecc8652480f0c090e13e"
+        }
+      ]
+    },
+    {
+      "mode": "PUBLICATION",
+      "returncode": 0,
+      "seconds": 20.22245719982311,
+      "files": [
+        {
+          "name": "CI_CHECKOUT_SCOPE07_CANDIDATE_PUBLICATION_V1.json",
+          "sha256": "762b068da817b61def94ddc049efe508adf718cd96ac46de8b2ed388348892a7"
+        },
+        {
+          "name": "CI_CHECKOUT_SCOPE07_CANDIDATE_PUBLICATION_V1.stdout.txt",
+          "sha256": "7c14464167258a4ccbb167d23c6104ac4b491f090377259e889a75f0aa5843e1"
+        },
+        {
+          "name": "CI_CHECKOUT_SCOPE07_CANDIDATE_PUBLICATION_V1.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    }
+  ],
+  "status": "PUBLIC_SOURCE_CUSTODY_UNBOUND_TRACKED_VARIABLE_REFUSAL_ORIGINALS_PRESERVED",
+  "scientific_model_runs": 0,
+  "correction": "Initialize genuine tracked_working_files before first index custody access"
+}

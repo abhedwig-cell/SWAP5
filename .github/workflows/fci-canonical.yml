@@ -52,6 +52,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
           fetch-depth: 0
       - name: Inspect impact or validate stable-candidate qualification decision
         env:
@@ -82,6 +86,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
           fetch-depth: 0
       - name: Small production contracts or explicit owner-selection block
         env:
@@ -206,6 +214,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
           ref: 1eceed967b12396b8bbc832f897376378463adce
           fetch-depth: 0
       - name: Compiler identity
@@ -239,6 +251,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
           ref: 5d5ece58b2b8e053a270992ded52377dd524f9c4
           fetch-depth: 0
       - name: Compiler identity
@@ -253,6 +269,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
           ref: e06e3af07efd72a893e860b5d90ccd85efc3c643
           fetch-depth: 0
       - name: Replay frozen F-CI19 source lineage and reachability
@@ -265,6 +285,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
           ref: f49e17c6627717d5dea181808a122f2e35960739
           fetch-depth: 0
       - name: Compiler identity
@@ -287,6 +311,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
           ref: 0aa4f7ca88a1cd2f3cf7333a35946c4415d9258d
           fetch-depth: 0
       - name: Compiler identity
@@ -309,6 +337,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
           ref: 06658d0b83206008dcaefba3b8d7e5c7f0c77538
           fetch-depth: 0
       - name: Replay exact admitted F-CI28 restart postimage
@@ -328,6 +360,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
           ref: b982d4d0c8686e5c5fcb965633d34a4e0ba46fcf
           fetch-depth: 0
       - name: Compiler identity
@@ -348,6 +384,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
           ref: 8c16ea58946092024e4b394db87acf91f3fd4abf
           fetch-depth: 0
       - name: Compiler identity
@@ -376,6 +416,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
           ref: e3964ec0ef312f974461aeac70fb9bc5720803e3
           fetch-depth: 0
       - name: Compiler identity
@@ -397,6 +441,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
           ref: e900e6115a6bf8b65af8460eb3e336257be4d1bf
           fetch-depth: 0
       - name: Compiler identity
@@ -419,6 +467,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
           ref: 8fa79a70a9faccaf8b63826df607a685eb75b046
           fetch-depth: 0
       - name: Compiler identity
@@ -443,6 +495,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
           ref: 85e17bb7ca26d2df070f99b2bf16ecf0abebec19
           fetch-depth: 0
       - name: Compiler identity
@@ -468,6 +524,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
           ref: c9a73f2f37c9306e7a6fbf60b713b66d82c4a372
           fetch-depth: 0
       - name: Freeze F-CI39 production source authority
@@ -489,6 +549,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
           ref: d81ef430ebaa601469a165dfc5b9866b813b71aa
           fetch-depth: 0
       - name: Freeze F-CI40 production source authority
@@ -517,6 +581,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
