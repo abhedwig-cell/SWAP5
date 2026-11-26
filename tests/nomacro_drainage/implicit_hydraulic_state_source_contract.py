@@ -11,8 +11,8 @@ def source():
  assert not git('for-each-ref','--format=%(refname)','refs/replace')
  assert not git('status','--porcelain=v1','--untracked-files=all','--','app','src','tools','tests','reference','.github')
  assert not git('diff',BASE,'HEAD','--','src','tools','reference')
- raw=git('show','HEAD:'+P+'IMPLICIT_HYDRAULIC_STATE11_SOURCE_PROPOSAL_V8.json');contract=json.loads(raw)
- assert (R/P/'IMPLICIT_HYDRAULIC_STATE11_SOURCE_PROPOSAL_V8.json').read_bytes().replace(b'\r\n',b'\n')==raw
+ raw=git('show','HEAD:'+P+'IMPLICIT_HYDRAULIC_STATE11_SOURCE_PROPOSAL_V9.json');contract=json.loads(raw)
+ assert (R/P/'IMPLICIT_HYDRAULIC_STATE11_SOURCE_PROPOSAL_V9.json').read_bytes().replace(b'\r\n',b'\n')==raw
  assert contract['actual_parent']==BASE
  assert set(git('diff','--name-only',BASE,'HEAD','--','app').decode().splitlines())==set(contract['files']) and len(contract['files'])==14
  for path,item in contract['files'].items():

@@ -38,7 +38,7 @@ def source(anchor):
     right,b=re.subn(pattern,b"SEALED='SOURCE_ANCHOR'",git('show',anchor+':'+SELF))
     assert a==b==1 and left==right
     complete_inverse()
-    contract=json.loads(git('show','HEAD:'+PREFIX+'IMPLICIT_HYDRAULIC_STATE11_SOURCE_PROPOSAL_V8.json'))
+    contract=json.loads(git('show','HEAD:'+PREFIX+'IMPLICIT_HYDRAULIC_STATE11_SOURCE_PROPOSAL_V9.json'))
     expected={p for p,item in contract['files'].items() if not item['new_file']}|{JOINT}|metadata
     assert {p for p in old if old[p]!=current[p]}==expected
     actual=(ROOT/JOINT).read_bytes().replace(b'\r\n',b'\n')
