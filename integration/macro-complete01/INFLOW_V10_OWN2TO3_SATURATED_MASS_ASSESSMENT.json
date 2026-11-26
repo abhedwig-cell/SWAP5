@@ -1,0 +1,27 @@
+{
+  "label": "INFLOW_V10_OWN2TO3",
+  "scope": "Actual retained partial D2/D3 saturated exchange derivative inventory; no nonlinear or full-period qualification",
+  "results": [
+    {
+      "opt": "O0",
+      "systems": 64,
+      "partial_domain_constraints": 113,
+      "branches": {
+        "W": 89,
+        "V": 24
+      },
+      "max_column_inventory_derivative_error": 1.5404344466674047e-15
+    },
+    {
+      "opt": "O2",
+      "systems": 64,
+      "partial_domain_constraints": 113,
+      "branches": {
+        "W": 89,
+        "V": 24
+      },
+      "max_column_inventory_derivative_error": 1.5404344466674047e-15
+    }
+  ],
+  "models_launched": 0
+}

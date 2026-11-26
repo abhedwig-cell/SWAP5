@@ -1,0 +1,21 @@
+{
+  "label": "INFLOW_V10_OWN2TO3",
+  "scope": "Actual retained corrected linear systems only; no nonlinear convergence, inventory or rollback claim",
+  "checks": [
+    {
+      "opt": "O0",
+      "file": "macro_rank2_systems.txt",
+      "systems": 64,
+      "max_linear_residual": 4.163336342344337e-17,
+      "max_scaled_residual": 4.0744617797933675e-17
+    },
+    {
+      "opt": "O2",
+      "file": "macro_rank2_systems.txt",
+      "systems": 64,
+      "max_linear_residual": 4.163336342344337e-17,
+      "max_scaled_residual": 4.0744617797933675e-17
+    }
+  ],
+  "models_launched": 0
+}
