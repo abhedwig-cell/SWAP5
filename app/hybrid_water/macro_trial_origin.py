@@ -11,6 +11,7 @@ PHYSICAL_FIELDS=('ICpBtDm','VlMpDmCp','WaUnMpDmCp','FlEndSrpEvt','ThtSrpRefDmCp'
 
 
 def render(source,variables):
+    source=source.replace('\r\n','\n');variables=variables.replace('\r\n','\n')
     definitions={}
     for line in (source.split('contains',1)[0]+'\n'+variables.split('module MOD_swap_mp\n',1)[1].split('end module',1)[0]).splitlines():
         m=re.match(r'\s*(real\(8\)|integer|logical)\s*,(.*?)save\s*::\s*(\w+)\s*=',line,re.I)

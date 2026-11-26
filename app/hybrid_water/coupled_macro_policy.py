@@ -11,6 +11,7 @@ from macro_trial_origin import render as render_trial_origin,PHYSICAL_FIELDS
 POLICY='fresh-coupled-unreduced-macro-complete-trial-origin-v1'
 
 def render_headcalc(source):
+    source=source.replace('\r\n','\n')
     if 'fresh_coupled_candidate_checks' in source:raise ValueError('Already patched coupled worker')
     a=source.index('!     initialize flags',source.index('!     check on convergence'))
     b=source.index('!     implemented to improve iteration performance',a)
