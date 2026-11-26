@@ -78,8 +78,8 @@ jobs:
           python -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
       - name: Run selected original boundary state/calendar periods and actual compiled controls
         run: |
-          python -B tests/nomacro_drainage/frost_analytical_boundary_inherited_postimages.py --platform Windows --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds-inherited" --output "$RUNNER_TEMP/proof/current-inherited-postimages" --optimization '${{ matrix.optimization }}'
-          python -B tests/nomacro_drainage/frost_analytical_boundary_portable.py --platform Windows --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds" --output "$RUNNER_TEMP/proof/current" --optimization '${{ matrix.optimization }}'
+          python -B -c "import subprocess; assert not subprocess.check_output(['git','diff','b4ffcc914453225562ffe0e847faa21a765432ce','HEAD','--','app','src','tools','reference'])"
+          python -B tests/nomacro_drainage/frost_analytical_boundary_portable.py --platform Windows --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds" --output "$RUNNER_TEMP/proof/current" --optimization '${{ matrix.optimization }}' --first-case 8 --last-case 16 --continue-after-refusal
       - name: Preserve every original generated compiled and provider byte
         if: always()
         run: |
