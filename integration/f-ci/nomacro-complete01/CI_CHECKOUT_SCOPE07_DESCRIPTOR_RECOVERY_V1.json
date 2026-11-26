@@ -1,0 +1,16 @@
+{
+  "status": "EXISTING_IMMUTABLE_RAW_ARCHIVE_VERIFIED_DESCRIPTOR_RECOVERED_WITHOUT_REBUILD_OR_REPLAY",
+  "actual_merge": "0b482de01847dd8ba5f93c63881b9aeff468d3e3",
+  "original_archive_sha256": "1b166d8ef25ca8934339d841f45ed7bc05c8405cc0e0176bd2c7b913b41857da",
+  "original_archive_bytes_rewritten": false,
+  "original_partial_descriptor": "CI_CHECKOUT_SCOPE07_ADMISSION_DESCRIPTOR_PARTIAL_V1.json.txt",
+  "original_partial_descriptor_sha256": "d9118310f2f5c3c687b127ac80e34f0e509b360905b4c096aa85c9fa98179243",
+  "original_partial_descriptor_bytes": 40086,
+  "original_controller": "ci-checkout-scope07-admission-seal-v3.py",
+  "cause": "The appended Hupsel guard loop reused the coadmission variable name expected and left a bytes token there; original archive generation and all actual scientific/admission guards had already passed. Only JSON descriptor serialization failed.",
+  "correct_coadmission_type": "dict",
+  "recovery_controller": "ci-checkout-scope07-resume-existing-admission-descriptor-v1.py",
+  "recovery_controller_sha256": "c3f586c36ddfea921f5d2e17853497a57d07244fdb59b6cec7dd5c7cbb87605f",
+  "full_model_periods_replayed": 0,
+  "actual_positive_observers_replayed": 0
+}

@@ -1,6 +1,6 @@
 # No-macro CI checkout transport
 
-Status: implemented; actual current CI and canonical admission pending.
+Status: admitted at actual signed canonical `0b482de01847dd8ba5f93c63881b9aeff468d3e3`.
 This is an ACCELERATE02 build/evidence transport change. It adds no model scope,
 physical equations, numerical policy, compiler flags, tolerances or state.
 
@@ -40,3 +40,5 @@ Current public/admission and actual CI qualification are still pending.
 The original PR1806 modular-feedback attempt refused the checkout additions in its historical workflow unit assertion. The corrected read-only witness validates the entire current workflow SHA256, reconstructs every pinned literal checkout insertion against actual canonical648, and passes that exact parent text to the unchanged original command-mutation test. All original failure logs are retained. No model period is replayed for this assertion repair.
 
 A fourteenth workflow now receives one separate read-only dependency-selection checkout. The original Hupsel full-model job body and every command/criterion are retained byte-for-byte. Its current model periods run only when the real base-versus-current scientific source, input/build surface or original scientific job body changes. A test-only checkout witness therefore reuses prior scientific evidence; it does not claim a new Hupsel model PASS. The initially triggered old run was cancelled during checkout, before provider preparation, compilation or any model period. Existing43 checkout insertions remain26source/component and17complete-evidence; the additional private selector makes44 changed/added checkout steps in total.
+
+Actual PR1806 canonical admission is sealed: candidate082f3d4b8e, signed synthetice2ad1538, exact treeca63abf1, ordereddf00/082parents and real merge0b482de0. Candidate PUBLIC241.397s/ordinaryPUB236.920s and actualM PUBLIC341.389s/ordinaryPUB337.058s pass on unchanged clean14-rule/56-fixture snapshots. All16 current workflows and48terminalchecks (30success18policy skips), four genuine child controls and original raw CI logs are retained. Admission ZIP SHA2561b166d8ef25ca8934339d841f45ed7bc05c8405cc0e0176bd2c7b913b41857da. Descriptor serialization recovery retains the original partial and immutable raw archive; no model or observer replay. Original scientific producers and bounded648 remain unchanged; global closure PARTIAL/NOT_QUALIFIED, countsUNKNOWN, RC3 unchanged.
