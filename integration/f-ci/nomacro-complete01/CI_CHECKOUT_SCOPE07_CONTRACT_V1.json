@@ -1,5 +1,5 @@
 {
-  "status": "LOCAL_PROFILES_AND_GENUINE648_PARENT_PASS_JOINT_OWNER_WIRED_CURRENT_PUBLIC_CI_CANONICAL_PENDING",
+  "status": "ORIGINAL_FCI_WORKFLOW_ASSERTION_REFUSAL_PRESERVED_EXACT_CHECKOUT_TEST_WITNESS_FIXED_CURRENT_GATES_PENDING",
   "workstream": "SWAP5-NOMACRO-COMPLETE01 / ACCELERATE02",
   "classification": "D_READ_ONLY_BUILD_AND_EVIDENCE_TRANSPORT",
   "qualified_dependency_candidate": "cb712974e37e41256877d9770a0af071afe241dd",
@@ -1473,6 +1473,19 @@
         }
       ],
       "scope": "ADMISSION_METADATA_ONLY_ORIGINAL_SCIENTIFIC_BODY_RETAINED"
+    },
+    "tests/hupsel51/test_successor.py": {
+      "before_lf_sha256": "8bf9fbaa97301146ddcc0dacee1edaa8ac3d20b29c1b120f054a5666c01eaf44",
+      "proposed_lf_sha256": "c43ca1cedde9dc2661312e942ac45c13aa815f267da0f44cfe867235f67c98ba",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1843,
+          "base_end": 1843,
+          "before": "",
+          "after": ")\n            if path==s.FCI:\n                # Compare the exact canonical parent after independently proving\n                # the complete current file differs solely by checkout inputs.\n                spec=importlib.util.spec_from_file_location('bounded_checkout_protocol',s.ROOT/'tests/nomacro_drainage/ci_checkout_scope07.py')\n                checkout=importlib.util.module_from_spec(spec);spec.loader.exec_module(checkout)\n                new=checkout.historical_workflow(path,new"
+        }
+      ],
+      "purpose": "Exact complete current checkout-file inverse before unchanged original workflow/command negative tests; no test command, numerical assertion or historical validator weakened"
     }
   },
   "actual_local_auditor_source": "7f3e5ae83e14212498c79f6abdae3ef5f1a6b174",
@@ -1481,5 +1494,6 @@
   "complete_evidence_checkout_steps": 17,
   "source_component_checkout_steps": 26,
   "admission_authority_state": "WIRED_SOURCE_FREEZE_AND_ACTUAL_CURRENT_GATES_PENDING",
-  "parent_admission_audit": "CI_CHECKOUT_SCOPE07_CANONICAL648_PARENT_AUDIT_V1.json"
+  "parent_admission_audit": "CI_CHECKOUT_SCOPE07_CANONICAL648_PARENT_AUDIT_V1.json",
+  "historical_workflow_test_witness": "tests/hupsel51/test_successor.py"
 }

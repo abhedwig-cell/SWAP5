@@ -29,6 +29,12 @@ class Boundaries(unittest.TestCase):
                 current=importlib.util.module_from_spec(current_spec);current_spec.loader.exec_module(current)
                 new=current.strip_evidence_checkout(new)
                 new=checkout.remove(new,checkout.CHECKOUT)
+            if path==s.FCI:
+                # Compare the exact canonical parent after independently proving
+                # the complete current file differs solely by checkout inputs.
+                spec=importlib.util.spec_from_file_location('bounded_checkout_protocol',s.ROOT/'tests/nomacro_drainage/ci_checkout_scope07.py')
+                checkout=importlib.util.module_from_spec(spec);spec.loader.exec_module(checkout)
+                new=checkout.historical_workflow(path,new)
             s.validate_workflow(path, new, old)
             with self.assertRaises(ValueError):
                 s.validate_workflow(path, new.replace('python', 'echo', 1), old)

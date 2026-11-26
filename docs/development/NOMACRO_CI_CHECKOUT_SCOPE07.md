@@ -36,3 +36,5 @@ checkout steps exclude only740archive paths from16770tracked paths;17F-CI
 steps preserve the complete versioned evidence tree. The engine, original
 scientific programs and their qualified producer identities remain unchanged.
 Current public/admission and actual CI qualification are still pending.
+
+The original PR1806 modular-feedback attempt refused the checkout additions in its historical workflow unit assertion. The corrected read-only witness validates the entire current workflow SHA256, reconstructs every pinned literal checkout insertion against actual canonical648, and passes that exact parent text to the unchanged original command-mutation test. All original failure logs are retained. No model period is replayed for this assertion repair.

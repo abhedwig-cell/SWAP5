@@ -7,6 +7,26 @@ SHA=lambda b:hashlib.sha256(b).hexdigest()
 git=lambda *a,**kw:subprocess.check_output(['git',*a],cwd=R,**kw)
 
 
+def historical_workflow(path,text):
+    """Invert only a complete exact current checkout file for a legacy assertion."""
+    contract=json.loads(git('show','HEAD:integration/f-ci/nomacro-complete01/CI_CHECKOUT_SCOPE07_CONTRACT_V1.json'))
+    item=contract['files'].get(path)
+    if item is None or SHA(text.encode())!=item['proposed_lf_sha256']:
+        raise ValueError('Foreign complete current checkout workflow: '+path)
+    original=git('show',contract['actual_canonical_dependency']+':'+path)
+    if SHA(original)!=item['before_lf_sha256']:
+        raise ValueError('Foreign original checkout workflow: '+path)
+    before=original.decode();parts=[];cursor=0
+    for edit in item['ordered_literal_edits']:
+        if edit['before']!='' or edit['base_start']!=edit['base_end'] or edit['base_start']<cursor:
+            raise ValueError('Foreign checkout-only literal inverse: '+path)
+        parts.extend((before[cursor:edit['base_start']],edit['after']));cursor=edit['base_end']
+    parts.append(before[cursor:])
+    if ''.join(parts)!=text:
+        raise ValueError('Changed current workflow command or checkout body: '+path)
+    return before
+
+
 def audit():
     head=git('rev-parse','HEAD').decode().strip();contract=json.loads((P/'CI_CHECKOUT_SCOPE07_CONTRACT_V1.json').read_text())
     base=contract.get('actual_canonical_dependency',contract['qualified_dependency_candidate'])
