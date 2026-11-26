@@ -7,6 +7,7 @@ def render_rate(source):
     source=replace(source,'      if (ITask == 1) return','      call macro_contact_seal(ITask)\n      if (ITask == 1) return')
     a=source.index('      subroutine ABSORPTION');b=source.index('      subroutine RAPIDDRAIN',a)
     body=source[a:b]
+    body=replace(body,'SUBROUTINE MACROSTATE ()','SUBROUTINE MACROSTATE (initializing)')
     body=replace(body,'      use variables,     only: thetas, theta, thetar, dt, h, k','      use variables,     only: thetas, theta, thetar, dt, h, k,t1900\n      use MOD_swap_mp,only:GwlFlCpZo')
     decl='''      real(8)::contact,wet_top,wet_span,overlap,wet_rate
       real(8),save::ref_delta(madm,macp)=0d0,ref_heads(macp),ref_t,ref_dt
@@ -72,18 +73,23 @@ def render_rate(source):
 
 def render_macro(source):
     source=source.replace('\r\n','\n')
+    source=replace(source,'      ICpTpSatZon = NodGwlFlCpZo\n      call MACROSTATE ()','      ICpTpSatZon = NodGwlFlCpZo\n      call MACROSTATE (.true.)')
     a=source.index('SUBROUTINE MACROSTATE ()');b=source.index('end subroutine MacroState',a)
     body=source[a:b]
     body=replace(body,'      use variables,     only: dt','      use variables,     only: dt,h,t1900')
     body=replace(body,'      real(8) Time, VlHlp, MPWatbal','''      real(8) Time, VlHlp, MPWatbal
+      logical,intent(in),optional::initializing
+      logical::is_initial
       real(8)::accepted_delta(madm,macp)
       logical::accepted_mask(madm,macp)
       integer,save::contact_log=0''')
-    body=replace(body,'      WaSrMp            = 0.d0', '''      if(swmbf==1.and.swabs==1)call macro_contact_take(accepted_delta,accepted_mask)
+    body=replace(body,'      WaSrMp            = 0.d0', '''      is_initial=.false.
+      if(present(initializing))is_initial=initializing
+      if(.not.is_initial.and.swmbf==1.and.swabs==1)call macro_contact_take(accepted_delta,accepted_mask)
       WaSrMp            = 0.d0''')
     needle='           ICpBtUnsMtxDm = min0(ICpBtDm(id),ICpTpSatZon-1)'
     body=replace(body,needle,needle+'''
-            if(swmbf==1.and.ICpTpSatZon<=NumNod)then
+            if(.not.is_initial.and.swmbf==1.and.ICpTpSatZon<=NumNod)then
                if(h(ICpTpSatZon)<0d0)ICpBtUnsMtxDm=min0(ICpBtDm(id),ICpTpSatZon)
             end if''')
     start=body.index('                  ThtSrpRefDmCp(id,ic) = ThtSrpRefDmCp(id,ic) +AwlCorFac(ic)')

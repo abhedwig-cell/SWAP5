@@ -1,0 +1,7 @@
+{
+  "initial_setup": "v5 unique whitespace anchor mismatch; no executable model",
+  "initial_execution": "v5r1 cold constructor refuses reference because original MACROPORE(1) invokes MacroState before any RATE",
+  "correction": "Explicit optional initializing argument in generated private MacroState; only MACROPORE(1) passes true. Preserve original initialization geometry/history path. Normal case4 commits still require exact unconsumed accepted RATE.",
+  "no_relaxation": "No missing/stale RATE acceptance at actual step; no physical law or convergence/budget limits changed",
+  "models_retained": "CONTACT_V5R1_COLD2 O0/O2 failed during HYBRID_READY constructor; no accepted days"
+}
