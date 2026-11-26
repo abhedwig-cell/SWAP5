@@ -1,0 +1,391 @@
+{
+  "status": "ALL124_OLD_INTEGER_READER_SITES_LOCATED_IN_EXACT_ORIGINAL_ARCHIVE_WITH13_EXPLICIT_INDEX_TRUNCATION_CORRECTIONS",
+  "old_records": 124,
+  "exact_index_matches": 111,
+  "old_index_destination_truncations": [
+    {
+      "original_index_entry": {
+        "source": "drainage.f90",
+        "line": 311,
+        "input": "SWDTYP",
+        "minimum": 1,
+        "maximum": 2,
+        "variable": "swdtyp"
+      },
+      "problem": "Old integer index retained only the root identifier, dropping an array index or derived-type component; full original argument retained here",
+      "actual_original_full_destination": "swdtyp(1)",
+      "exact_original_archive_site": {
+        "unit": "SWAP/drainage.f90",
+        "source_raw_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+        "first_line": 311,
+        "last_line": 311,
+        "containing_routine": "read_drainage_basic",
+        "callee": "rdsinr",
+        "arguments": [
+          "'swdtyp'",
+          "1",
+          "2",
+          "swdtyp(1)"
+        ],
+        "original_logical_statement": "call rdsinr ('swdtyp' ,1,2,swdtyp(1))",
+        "input_keyword": "swdtyp",
+        "dynamic_first_argument": false
+      }
+    },
+    {
+      "original_index_entry": {
+        "source": "readswap.f90",
+        "line": 373,
+        "input": "IHWCKMODEL",
+        "minimum": 1,
+        "maximum": 12,
+        "variable": "iHWCKmodel"
+      },
+      "problem": "Old integer index retained only the root identifier, dropping an array index or derived-type component; full original argument retained here",
+      "actual_original_full_destination": "iHWCKmodel(1)",
+      "exact_original_archive_site": {
+        "unit": "SWAP/readswap.f90",
+        "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+        "first_line": 373,
+        "last_line": 373,
+        "containing_routine": null,
+        "callee": "rdsinr",
+        "arguments": [
+          "'iHWCKmodel'",
+          "1",
+          "12",
+          "iHWCKmodel(1)"
+        ],
+        "original_logical_statement": "call rdsinr ('iHWCKmodel',1,12,iHWCKmodel(1))",
+        "input_keyword": "iHWCKmodel",
+        "dynamic_first_argument": false
+      }
+    },
+    {
+      "original_index_entry": {
+        "source": "wofost.f90",
+        "line": 465,
+        "input": "IDSL",
+        "minimum": 0,
+        "maximum": 2,
+        "variable": "p_wof"
+      },
+      "problem": "Old integer index retained only the root identifier, dropping an array index or derived-type component; full original argument retained here",
+      "actual_original_full_destination": "p_wof%idsl",
+      "exact_original_archive_site": {
+        "unit": "SWAP/wofost.f90",
+        "source_raw_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+        "first_line": 465,
+        "last_line": 465,
+        "containing_routine": "read_wofost",
+        "callee": "rdsinr",
+        "arguments": [
+          "'idsl'",
+          "0",
+          "2",
+          "p_wof%idsl"
+        ],
+        "original_logical_statement": "call rdsinr ('idsl', 0, 2, p_wof%idsl)",
+        "input_keyword": "idsl",
+        "dynamic_first_argument": false
+      }
+    },
+    {
+      "original_index_entry": {
+        "source": "wofost.f90",
+        "line": 500,
+        "input": "SWPHENODAYL",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "p_soy"
+      },
+      "problem": "Old integer index retained only the root identifier, dropping an array index or derived-type component; full original argument retained here",
+      "actual_original_full_destination": "p_soy%sw_phenodayl",
+      "exact_original_archive_site": {
+        "unit": "SWAP/wofost.f90",
+        "source_raw_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+        "first_line": 500,
+        "last_line": 500,
+        "containing_routine": "read_wofost",
+        "callee": "rdsinr",
+        "arguments": [
+          "'swphenodayl'",
+          "0",
+          "1",
+          "p_soy%sw_phenodayl"
+        ],
+        "original_logical_statement": "call rdsinr ('swphenodayl', 0, 1, p_soy%sw_phenodayl)",
+        "input_keyword": "swphenodayl",
+        "dynamic_first_argument": false
+      }
+    },
+    {
+      "original_index_entry": {
+        "source": "wofost.f90",
+        "line": 509,
+        "input": "SWTSUM",
+        "minimum": 0,
+        "maximum": 2,
+        "variable": "p_grs"
+      },
+      "problem": "Old integer index retained only the root identifier, dropping an array index or derived-type component; full original argument retained here",
+      "actual_original_full_destination": "p_grs%sw_tsum",
+      "exact_original_archive_site": {
+        "unit": "SWAP/wofost.f90",
+        "source_raw_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+        "first_line": 510,
+        "last_line": 510,
+        "containing_routine": "read_wofost",
+        "callee": "rdsinr",
+        "arguments": [
+          "'swtsum'",
+          "0",
+          "2",
+          "p_grs%sw_tsum"
+        ],
+        "original_logical_statement": "call rdsinr ('swtsum', 0, 2, p_grs%sw_tsum)",
+        "input_keyword": "swtsum",
+        "dynamic_first_argument": false
+      }
+    },
+    {
+      "original_index_entry": {
+        "source": "wofost.f90",
+        "line": 515,
+        "input": "TTEMPTSUM",
+        "minimum": 1,
+        "maximum": 20,
+        "variable": "p_grs"
+      },
+      "problem": "Old integer index retained only the root identifier, dropping an array index or derived-type component; full original argument retained here",
+      "actual_original_full_destination": "p_grs%t_temptsum",
+      "exact_original_archive_site": {
+        "unit": "SWAP/wofost.f90",
+        "source_raw_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+        "first_line": 515,
+        "last_line": 515,
+        "containing_routine": "read_wofost",
+        "callee": "rdsinr",
+        "arguments": [
+          "'ttemptsum'",
+          "1",
+          "20",
+          "p_grs%t_temptsum"
+        ],
+        "original_logical_statement": "call rdsinr ('ttemptsum', 1, 20, p_grs%t_temptsum)",
+        "input_keyword": "ttemptsum",
+        "dynamic_first_argument": false
+      }
+    },
+    {
+      "original_index_entry": {
+        "source": "wofost.f90",
+        "line": 525,
+        "input": "SWHARV",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "p"
+      },
+      "problem": "Old integer index retained only the root identifier, dropping an array index or derived-type component; full original argument retained here",
+      "actual_original_full_destination": "p%sw_harv",
+      "exact_original_archive_site": {
+        "unit": "SWAP/wofost.f90",
+        "source_raw_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+        "first_line": 525,
+        "last_line": 525,
+        "containing_routine": "read_wofost",
+        "callee": "rdsinr",
+        "arguments": [
+          "'swharv'",
+          "0",
+          "1",
+          "p%sw_harv"
+        ],
+        "original_logical_statement": "call rdsinr ('swharv', 0, 1, p%sw_harv)",
+        "input_keyword": "swharv",
+        "dynamic_first_argument": false
+      }
+    },
+    {
+      "original_index_entry": {
+        "source": "wofost.f90",
+        "line": 603,
+        "input": "SWHARVEST",
+        "minimum": 1,
+        "maximum": 2,
+        "variable": "p_agro"
+      },
+      "problem": "Old integer index retained only the root identifier, dropping an array index or derived-type component; full original argument retained here",
+      "actual_original_full_destination": "p_agro%sw_harvest",
+      "exact_original_archive_site": {
+        "unit": "SWAP/wofost.f90",
+        "source_raw_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+        "first_line": 603,
+        "last_line": 603,
+        "containing_routine": "read_wofost",
+        "callee": "rdsinr",
+        "arguments": [
+          "'swharvest'",
+          "1",
+          "2",
+          "p_agro%sw_harvest"
+        ],
+        "original_logical_statement": "call rdsinr ('swharvest', 1, 2, p_agro%sw_harvest)",
+        "input_keyword": "swharvest",
+        "dynamic_first_argument": false
+      }
+    },
+    {
+      "original_index_entry": {
+        "source": "wofost.f90",
+        "line": 627,
+        "input": "MXGDGRZ",
+        "minimum": 1,
+        "maximum": 366,
+        "variable": "p_agro"
+      },
+      "problem": "Old integer index retained only the root identifier, dropping an array index or derived-type component; full original argument retained here",
+      "actual_original_full_destination": "p_agro%mxgdgrz",
+      "exact_original_archive_site": {
+        "unit": "SWAP/wofost.f90",
+        "source_raw_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+        "first_line": 627,
+        "last_line": 627,
+        "containing_routine": "read_wofost",
+        "callee": "rdsinr",
+        "arguments": [
+          "'mxgdgrz'",
+          "1",
+          "366",
+          "p_agro%mxgdgrz"
+        ],
+        "original_logical_statement": "call rdsinr ('mxgdgrz', 1, 366, p_agro%mxgdgrz)",
+        "input_keyword": "mxgdgrz",
+        "dynamic_first_argument": false
+      }
+    },
+    {
+      "original_index_entry": {
+        "source": "wofost.f90",
+        "line": 637,
+        "input": "MXGDMOW",
+        "minimum": 1,
+        "maximum": 366,
+        "variable": "p_agro"
+      },
+      "problem": "Old integer index retained only the root identifier, dropping an array index or derived-type component; full original argument retained here",
+      "actual_original_full_destination": "p_agro%mxgdmow",
+      "exact_original_archive_site": {
+        "unit": "SWAP/wofost.f90",
+        "source_raw_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+        "first_line": 637,
+        "last_line": 637,
+        "containing_routine": "read_wofost",
+        "callee": "rdsinr",
+        "arguments": [
+          "'mxgdmow'",
+          "1",
+          "366",
+          "p_agro%mxgdmow"
+        ],
+        "original_logical_statement": "call rdsinr ('mxgdmow', 1, 366, p_agro%mxgdmow)",
+        "input_keyword": "mxgdmow",
+        "dynamic_first_argument": false
+      }
+    },
+    {
+      "original_index_entry": {
+        "source": "wofost.f90",
+        "line": 658,
+        "input": "DAYGRZ",
+        "minimum": 1,
+        "maximum": 366,
+        "variable": "p_agro"
+      },
+      "problem": "Old integer index retained only the root identifier, dropping an array index or derived-type component; full original argument retained here",
+      "actual_original_full_destination": "p_agro%daygrz",
+      "exact_original_archive_site": {
+        "unit": "SWAP/wofost.f90",
+        "source_raw_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+        "first_line": 658,
+        "last_line": 658,
+        "containing_routine": "read_wofost",
+        "callee": "rdsinr",
+        "arguments": [
+          "'daygrz'",
+          "1",
+          "366",
+          "p_agro%daygrz"
+        ],
+        "original_logical_statement": "call rdsinr ('daygrz', 1, 366, p_agro%daygrz)",
+        "input_keyword": "daygrz",
+        "dynamic_first_argument": false
+      }
+    },
+    {
+      "original_index_entry": {
+        "source": "wofost.f90",
+        "line": 665,
+        "input": "SWLOSSGRZ",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "p_agro"
+      },
+      "problem": "Old integer index retained only the root identifier, dropping an array index or derived-type component; full original argument retained here",
+      "actual_original_full_destination": "p_agro%sw_lossgrz",
+      "exact_original_archive_site": {
+        "unit": "SWAP/wofost.f90",
+        "source_raw_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+        "first_line": 665,
+        "last_line": 665,
+        "containing_routine": "read_wofost",
+        "callee": "rdsinr",
+        "arguments": [
+          "'swlossgrz'",
+          "0",
+          "1",
+          "p_agro%sw_lossgrz"
+        ],
+        "original_logical_statement": "call rdsinr ('swlossgrz', 0, 1, p_agro%sw_lossgrz)",
+        "input_keyword": "swlossgrz",
+        "dynamic_first_argument": false
+      }
+    },
+    {
+      "original_index_entry": {
+        "source": "wofost.f90",
+        "line": 683,
+        "input": "SWLOSSMOW",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "p_agro"
+      },
+      "problem": "Old integer index retained only the root identifier, dropping an array index or derived-type component; full original argument retained here",
+      "actual_original_full_destination": "p_agro%sw_lossmow",
+      "exact_original_archive_site": {
+        "unit": "SWAP/wofost.f90",
+        "source_raw_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+        "first_line": 683,
+        "last_line": 683,
+        "containing_routine": "read_wofost",
+        "callee": "rdsinr",
+        "arguments": [
+          "'swlossmow'",
+          "0",
+          "1",
+          "p_agro%sw_lossmow"
+        ],
+        "original_logical_statement": "call rdsinr ('swlossmow', 0, 1, p_agro%sw_lossmow)",
+        "input_keyword": "swlossmow",
+        "dynamic_first_argument": false
+      }
+    }
+  ],
+  "unresolved": [],
+  "source_catalog": "NOMACRO_CLOSURE03_ORIGINAL_SOURCE_CALL_CATALOG_V1.json",
+  "original_V1_observation_preserved": true,
+  "no_source_or_runtime_projection": true,
+  "global_valid_configuration_space_complete": false,
+  "compiler_executions": 0,
+  "model_executions": 0
+}

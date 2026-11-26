@@ -37,7 +37,9 @@ def selection(text, selectors, boundary, *, original_output=None):
         raise ValueError('Implicit conductivity requires one explicit original Mualem parameter table')
     header, body = tables[0]
     names = header.upper().split()
-    if len(set(names)) != len(names) or not {'ORES','OSAT','ALFA','ALFAW','NPAR','LEXP','H_ENPR'} <= set(names):
+    required_columns={'ORES','OSAT','ALFA','NPAR','LEXP','H_ENPR'}
+    if selectors['SWHYST']>0:required_columns.add('ALFAW')
+    if len(set(names)) != len(names) or not required_columns <= set(names):
         raise ValueError('Ambiguous implicit conductivity parameter columns')
     fitted = 'KSATFIT' if 'KSATFIT' in names else 'KSAT'
     if fitted not in names:

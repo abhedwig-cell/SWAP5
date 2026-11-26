@@ -1,0 +1,3403 @@
+{
+  "status": "OLD_INTEGER_READER_INDEX_RECONCILED_AGAINST_EXACT_ORIGINAL_ARCHIVE_LEXICAL_SITES",
+  "old_records": 124,
+  "matched": 111,
+  "unresolved": [
+    {
+      "source": "drainage.f90",
+      "line": 311,
+      "input": "SWDTYP",
+      "minimum": 1,
+      "maximum": 2,
+      "variable": "swdtyp"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 373,
+      "input": "IHWCKMODEL",
+      "minimum": 1,
+      "maximum": 12,
+      "variable": "iHWCKmodel"
+    },
+    {
+      "source": "wofost.f90",
+      "line": 465,
+      "input": "IDSL",
+      "minimum": 0,
+      "maximum": 2,
+      "variable": "p_wof"
+    },
+    {
+      "source": "wofost.f90",
+      "line": 500,
+      "input": "SWPHENODAYL",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "p_soy"
+    },
+    {
+      "source": "wofost.f90",
+      "line": 509,
+      "input": "SWTSUM",
+      "minimum": 0,
+      "maximum": 2,
+      "variable": "p_grs"
+    },
+    {
+      "source": "wofost.f90",
+      "line": 515,
+      "input": "TTEMPTSUM",
+      "minimum": 1,
+      "maximum": 20,
+      "variable": "p_grs"
+    },
+    {
+      "source": "wofost.f90",
+      "line": 525,
+      "input": "SWHARV",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "p"
+    },
+    {
+      "source": "wofost.f90",
+      "line": 603,
+      "input": "SWHARVEST",
+      "minimum": 1,
+      "maximum": 2,
+      "variable": "p_agro"
+    },
+    {
+      "source": "wofost.f90",
+      "line": 627,
+      "input": "MXGDGRZ",
+      "minimum": 1,
+      "maximum": 366,
+      "variable": "p_agro"
+    },
+    {
+      "source": "wofost.f90",
+      "line": 637,
+      "input": "MXGDMOW",
+      "minimum": 1,
+      "maximum": 366,
+      "variable": "p_agro"
+    },
+    {
+      "source": "wofost.f90",
+      "line": 658,
+      "input": "DAYGRZ",
+      "minimum": 1,
+      "maximum": 366,
+      "variable": "p_agro"
+    },
+    {
+      "source": "wofost.f90",
+      "line": 665,
+      "input": "SWLOSSGRZ",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "p_agro"
+    },
+    {
+      "source": "wofost.f90",
+      "line": 683,
+      "input": "SWLOSSMOW",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "p_agro"
+    }
+  ],
+  "exact_matches": [
+    {
+      "original": {
+        "source": "drainage.f90",
+        "line": 240,
+        "input": "DRAMET",
+        "minimum": 1,
+        "maximum": 3,
+        "variable": "dramet"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/drainage.f90",
+          "source_raw_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+          "first_line": 240,
+          "last_line": 240,
+          "containing_routine": "read_drainage_basic",
+          "callee": "rdsinr",
+          "arguments": [
+            "'dramet'",
+            "1",
+            "3",
+            "dramet"
+          ],
+          "original_logical_statement": "call rdsinr ('dramet',1,3,dramet)",
+          "input_keyword": "dramet",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "drainage.f90",
+        "line": 244,
+        "input": "SWDIVD",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swdivd"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/drainage.f90",
+          "source_raw_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+          "first_line": 244,
+          "last_line": 244,
+          "containing_routine": "read_drainage_basic",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swdivd'",
+            "0",
+            "1",
+            "swdivd"
+          ],
+          "original_logical_statement": "call rdsinr ('swdivd',0,1,swdivd)",
+          "input_keyword": "swdivd",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "drainage.f90",
+        "line": 280,
+        "input": "SWDISLAY",
+        "minimum": 0,
+        "maximum": 2,
+        "variable": "swdislay"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/drainage.f90",
+          "source_raw_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+          "first_line": 280,
+          "last_line": 280,
+          "containing_routine": "read_drainage_basic",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swdislay'",
+            "0",
+            "2",
+            "swdislay"
+          ],
+          "original_logical_statement": "call rdsinr ('swdislay',0,2,swdislay)",
+          "input_keyword": "swdislay",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "drainage.f90",
+        "line": 328,
+        "input": "IPOS",
+        "minimum": 1,
+        "maximum": 5,
+        "variable": "ipos"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/drainage.f90",
+          "source_raw_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+          "first_line": 328,
+          "last_line": 328,
+          "containing_routine": "read_drainage_basic",
+          "callee": "rdsinr",
+          "arguments": [
+            "'ipos'",
+            "1",
+            "5",
+            "ipos"
+          ],
+          "original_logical_statement": "call rdsinr ('ipos',1,5,ipos)",
+          "input_keyword": "ipos",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "drainage.f90",
+        "line": 348,
+        "input": "SWINTFL",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swnrsrf"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/drainage.f90",
+          "source_raw_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+          "first_line": 348,
+          "last_line": 348,
+          "containing_routine": "read_drainage_basic",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swintfl'",
+            "0",
+            "1",
+            "swnrsrf"
+          ],
+          "original_logical_statement": "call rdsinr ('swintfl',0,1,swnrsrf)",
+          "input_keyword": "swintfl",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "drainage.f90",
+        "line": 389,
+        "input": "SWLIMINF",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swliminf"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/drainage.f90",
+          "source_raw_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+          "first_line": 389,
+          "last_line": 389,
+          "containing_routine": "read_drainage_basic",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swliminf'",
+            "0",
+            "1",
+            "swliminf"
+          ],
+          "original_logical_statement": "call rdsinr ('swliminf',0,1,swliminf)",
+          "input_keyword": "swliminf",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "fixed.f90",
+        "line": 109,
+        "input": "IDEV",
+        "minimum": 1,
+        "maximum": 2,
+        "variable": "idev"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/fixed.f90",
+          "source_raw_sha256": "1d57e86f0bf067e8432da69f46cd19e0df6768b9c6bcf560d2221248f3b12f75",
+          "first_line": 109,
+          "last_line": 109,
+          "containing_routine": "read_cropfixed",
+          "callee": "rdsinr",
+          "arguments": [
+            "'idev'",
+            "1",
+            "2",
+            "idev"
+          ],
+          "original_logical_statement": "call rdsinr ('idev', 1, 2, idev)",
+          "input_keyword": "idev",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "fixed.f90",
+        "line": 111,
+        "input": "LCC",
+        "minimum": 1,
+        "maximum": 366,
+        "variable": "lcc"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/fixed.f90",
+          "source_raw_sha256": "1d57e86f0bf067e8432da69f46cd19e0df6768b9c6bcf560d2221248f3b12f75",
+          "first_line": 111,
+          "last_line": 111,
+          "containing_routine": "read_cropfixed",
+          "callee": "rdsinr",
+          "arguments": [
+            "'lcc'",
+            "1",
+            "366",
+            "lcc"
+          ],
+          "original_logical_statement": "call rdsinr ('lcc', 1, 366, lcc)",
+          "input_keyword": "lcc",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "fixed.f90",
+        "line": 122,
+        "input": "SWGC",
+        "minimum": 1,
+        "maximum": 2,
+        "variable": "swgc"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/fixed.f90",
+          "source_raw_sha256": "1d57e86f0bf067e8432da69f46cd19e0df6768b9c6bcf560d2221248f3b12f75",
+          "first_line": 122,
+          "last_line": 122,
+          "containing_routine": "read_cropfixed",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swgc'",
+            "1",
+            "2",
+            "swgc"
+          ],
+          "original_logical_statement": "call rdsinr ('swgc', 1, 2, swgc)",
+          "input_keyword": "swgc",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "fixed.f90",
+        "line": 145,
+        "input": "SWHARV",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "sw_harv"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/fixed.f90",
+          "source_raw_sha256": "1d57e86f0bf067e8432da69f46cd19e0df6768b9c6bcf560d2221248f3b12f75",
+          "first_line": 145,
+          "last_line": 145,
+          "containing_routine": "read_cropfixed",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swharv'",
+            "0",
+            "1",
+            "sw_harv"
+          ],
+          "original_logical_statement": "call rdsinr ('swharv', 0, 1, sw_harv)",
+          "input_keyword": "swharv",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "irrigation.f90",
+        "line": 125,
+        "input": "SCHEDULE",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "schedule"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/irrigation.f90",
+          "source_raw_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+          "first_line": 125,
+          "last_line": 125,
+          "containing_routine": "irrigation",
+          "callee": "rdsinr",
+          "arguments": [
+            "'schedule'",
+            "0",
+            "1",
+            "schedule"
+          ],
+          "original_logical_statement": "call rdsinr ('schedule',0,1,schedule)",
+          "input_keyword": "schedule",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "irrigation.f90",
+        "line": 158,
+        "input": "ISUAS",
+        "minimum": 0,
+        "maximum": 2,
+        "variable": "isuas"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/irrigation.f90",
+          "source_raw_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+          "first_line": 158,
+          "last_line": 158,
+          "containing_routine": "irrigation",
+          "callee": "rdsinr",
+          "arguments": [
+            "'isuas'",
+            "0",
+            "2",
+            "isuas"
+          ],
+          "original_logical_statement": "call rdsinr ('isuas',0,2,isuas)",
+          "input_keyword": "isuas",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "irrigation.f90",
+        "line": 192,
+        "input": "TCS",
+        "minimum": 1,
+        "maximum": 8,
+        "variable": "tcs"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/irrigation.f90",
+          "source_raw_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+          "first_line": 192,
+          "last_line": 192,
+          "containing_routine": "irrigation",
+          "callee": "rdsinr",
+          "arguments": [
+            "'tcs'",
+            "1",
+            "8",
+            "tcs"
+          ],
+          "original_logical_statement": "call rdsinr ('tcs',1,8,tcs)",
+          "input_keyword": "tcs",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "irrigation.f90",
+        "line": 250,
+        "input": "TCSFIX",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "tcsfix"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/irrigation.f90",
+          "source_raw_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+          "first_line": 250,
+          "last_line": 250,
+          "containing_routine": "irrigation",
+          "callee": "rdsinr",
+          "arguments": [
+            "'tcsfix'",
+            "0",
+            "1",
+            "tcsfix"
+          ],
+          "original_logical_statement": "call rdsinr ('tcsfix',0,1,tcsfix)",
+          "input_keyword": "tcsfix",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "irrigation.f90",
+        "line": 256,
+        "input": "IRGDAYFIX",
+        "minimum": 1,
+        "maximum": 366,
+        "variable": "irgdayfix"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/irrigation.f90",
+          "source_raw_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+          "first_line": 256,
+          "last_line": 256,
+          "containing_routine": "irrigation",
+          "callee": "rdsinr",
+          "arguments": [
+            "'irgdayfix'",
+            "1",
+            "366",
+            "irgdayfix"
+          ],
+          "original_logical_statement": "call rdsinr('irgdayfix',1,366,irgdayfix)",
+          "input_keyword": "irgdayfix",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "irrigation.f90",
+        "line": 296,
+        "input": "SWCIRRTHRES",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swcirrthres"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/irrigation.f90",
+          "source_raw_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+          "first_line": 296,
+          "last_line": 296,
+          "containing_routine": "irrigation",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swcirrthres'",
+            "0",
+            "1",
+            "swcirrthres"
+          ],
+          "original_logical_statement": "call rdsinr ('swcirrthres',0,1,swcirrthres)",
+          "input_keyword": "swcirrthres",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "irrigation.f90",
+        "line": 306,
+        "input": "DCS",
+        "minimum": 1,
+        "maximum": 2,
+        "variable": "dcs"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/irrigation.f90",
+          "source_raw_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+          "first_line": 306,
+          "last_line": 306,
+          "containing_routine": "irrigation",
+          "callee": "rdsinr",
+          "arguments": [
+            "'dcs'",
+            "1",
+            "2",
+            "dcs"
+          ],
+          "original_logical_statement": "call rdsinr ('dcs',1,2,dcs)",
+          "input_keyword": "dcs",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "irrigation.f90",
+        "line": 340,
+        "input": "DCSLIM",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "dcslim"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/irrigation.f90",
+          "source_raw_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+          "first_line": 340,
+          "last_line": 340,
+          "containing_routine": "irrigation",
+          "callee": "rdsinr",
+          "arguments": [
+            "'dcslim'",
+            "0",
+            "1",
+            "dcslim"
+          ],
+          "original_logical_statement": "call rdsinr ('dcslim',0,1,dcslim)",
+          "input_keyword": "dcslim",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "irrigation.f90",
+        "line": 674,
+        "input": "SWIRGFIL",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swirgfil"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/irrigation.f90",
+          "source_raw_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+          "first_line": 674,
+          "last_line": 674,
+          "containing_routine": "read_irrigation_fixed",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swirgfil'",
+            "0",
+            "1",
+            "swirgfil"
+          ],
+          "original_logical_statement": "call rdsinr ('swirgfil',0,1,swirgfil)",
+          "input_keyword": "swirgfil",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "macropore.f90",
+        "line": 1950,
+        "input": "SWDARCY",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "SwDarcy"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/macropore.f90",
+          "source_raw_sha256": "1cb5a2ce30610c05a4da5655bff217d6f52052d57d99efe8af7928f1d2187d0b",
+          "first_line": 1950,
+          "last_line": 1950,
+          "containing_routine": "read_macropore",
+          "callee": "rdsinr",
+          "arguments": [
+            "'SwDarcy'",
+            "0",
+            "1",
+            "SwDarcy"
+          ],
+          "original_logical_statement": "call rdsinr('SwDarcy',0,1,SwDarcy)",
+          "input_keyword": "SwDarcy",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "macropore.f90",
+        "line": 1953,
+        "input": "SWDRRAP",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "SwDrRap"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/macropore.f90",
+          "source_raw_sha256": "1cb5a2ce30610c05a4da5655bff217d6f52052d57d99efe8af7928f1d2187d0b",
+          "first_line": 1953,
+          "last_line": 1953,
+          "containing_routine": "read_macropore",
+          "callee": "rdsinr",
+          "arguments": [
+            "'SwDrRap'",
+            "0",
+            "1",
+            "SwDrRap"
+          ],
+          "original_logical_statement": "call rdsinr('SwDrRap',0,1,SwDrRap)",
+          "input_keyword": "SwDrRap",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "macropore.f90",
+        "line": 1958,
+        "input": "NUMLEVRAPDRA",
+        "minimum": 1,
+        "maximum": 5,
+        "variable": "NumLevRapDra"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/macropore.f90",
+          "source_raw_sha256": "1cb5a2ce30610c05a4da5655bff217d6f52052d57d99efe8af7928f1d2187d0b",
+          "first_line": 1958,
+          "last_line": 1958,
+          "containing_routine": "read_macropore",
+          "callee": "rdsinr",
+          "arguments": [
+            "'NumLevRapDra'",
+            "1",
+            "5",
+            "NumLevRapDra"
+          ],
+          "original_logical_statement": "call rdsinr('NumLevRapDra',1,5,NumLevRapDra)",
+          "input_keyword": "NumLevRapDra",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_cropdevelopment.f90",
+        "line": 479,
+        "input": "SWPREP",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "sw_prep"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_cropdevelopment.f90",
+          "source_raw_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+          "first_line": 479,
+          "last_line": 479,
+          "containing_routine": "preparation",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swprep'",
+            "0",
+            "1",
+            "sw_prep"
+          ],
+          "original_logical_statement": "call rdsinr ('swprep',0,1,sw_prep)",
+          "input_keyword": "swprep",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_cropdevelopment.f90",
+        "line": 486,
+        "input": "MAXPREPDELAY",
+        "minimum": 1,
+        "maximum": 366,
+        "variable": "max_delay_prep"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_cropdevelopment.f90",
+          "source_raw_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+          "first_line": 486,
+          "last_line": 486,
+          "containing_routine": "preparation",
+          "callee": "rdsinr",
+          "arguments": [
+            "'maxprepdelay'",
+            "1",
+            "366",
+            "max_delay_prep"
+          ],
+          "original_logical_statement": "call rdsinr ('maxprepdelay',1,366,max_delay_prep)",
+          "input_keyword": "maxprepdelay",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_cropdevelopment.f90",
+        "line": 569,
+        "input": "SWSOW",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "sw_sow"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_cropdevelopment.f90",
+          "source_raw_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+          "first_line": 569,
+          "last_line": 569,
+          "containing_routine": "sowing",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swsow'",
+            "0",
+            "1",
+            "sw_sow"
+          ],
+          "original_logical_statement": "call rdsinr ('swsow',0,1,sw_sow)",
+          "input_keyword": "swsow",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_cropdevelopment.f90",
+        "line": 584,
+        "input": "MAXSOWDELAY",
+        "minimum": 1,
+        "maximum": 366,
+        "variable": "max_delay_sow"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_cropdevelopment.f90",
+          "source_raw_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+          "first_line": 584,
+          "last_line": 584,
+          "containing_routine": "sowing",
+          "callee": "rdsinr",
+          "arguments": [
+            "'maxsowdelay'",
+            "1",
+            "366",
+            "max_delay_sow"
+          ],
+          "original_logical_statement": "call rdsinr ('maxsowdelay',1,366,max_delay_sow)",
+          "input_keyword": "maxsowdelay",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_cropdevelopment.f90",
+        "line": 676,
+        "input": "SWGERM",
+        "minimum": 0,
+        "maximum": 2,
+        "variable": "sw_germ"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_cropdevelopment.f90",
+          "source_raw_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+          "first_line": 676,
+          "last_line": 676,
+          "containing_routine": "germination",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swgerm'",
+            "0",
+            "2",
+            "sw_germ"
+          ],
+          "original_logical_statement": "call rdsinr ('swgerm',0,2,sw_germ)",
+          "input_keyword": "swgerm",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_cropdevelopment.f90",
+        "line": 826,
+        "input": "SWCO2",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "sw_co2"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_cropdevelopment.f90",
+          "source_raw_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+          "first_line": 826,
+          "last_line": 826,
+          "containing_routine": "co2_effect",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swco2'",
+            "0",
+            "1",
+            "sw_co2"
+          ],
+          "original_logical_statement": "call rdsinr ('swco2',0,1,sw_co2)",
+          "input_keyword": "swco2",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_cropdevelopment.f90",
+        "line": 843,
+        "input": "SWATMOFIL",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "sw_atmofil"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_cropdevelopment.f90",
+          "source_raw_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+          "first_line": 843,
+          "last_line": 843,
+          "containing_routine": "co2_effect",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swatmofil'",
+            "0",
+            "1",
+            "sw_atmofil"
+          ],
+          "original_logical_statement": "call rdsinr ('swatmofil',0,1,sw_atmofil)",
+          "input_keyword": "swatmofil",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_cropdevelopment.f90",
+        "line": 1127,
+        "input": "SWCF",
+        "minimum": 1,
+        "maximum": 2,
+        "variable": "swcf"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_cropdevelopment.f90",
+          "source_raw_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+          "first_line": 1138,
+          "last_line": 1138,
+          "containing_routine": "cropfactor",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swcf'",
+            "1",
+            "2",
+            "swcf"
+          ],
+          "original_logical_statement": "call rdsinr ('swcf', 1, 2, swcf)",
+          "input_keyword": "swcf",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_cropdevelopment.f90",
+        "line": 1255,
+        "input": "SWDROUGHT",
+        "minimum": 1,
+        "maximum": 3,
+        "variable": "sw_drought"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_cropdevelopment.f90",
+          "source_raw_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+          "first_line": 1266,
+          "last_line": 1266,
+          "containing_routine": "read_droughtstress",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swdrought'",
+            "1",
+            "3",
+            "sw_drought"
+          ],
+          "original_logical_statement": "call rdsinr ('swdrought',1,3,sw_drought)",
+          "input_keyword": "swdrought",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_cropdevelopment.f90",
+        "line": 1306,
+        "input": "SWOXYGEN",
+        "minimum": 0,
+        "maximum": 2,
+        "variable": "sw_oxygen"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_cropdevelopment.f90",
+          "source_raw_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+          "first_line": 1317,
+          "last_line": 1317,
+          "containing_routine": "read_oxygenstress",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swoxygen'",
+            "0",
+            "2",
+            "sw_oxygen"
+          ],
+          "original_logical_statement": "call rdsinr ('swoxygen',0,2,sw_oxygen)",
+          "input_keyword": "swoxygen",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_cropdevelopment.f90",
+        "line": 1350,
+        "input": "SWOXYGENTYPE",
+        "minimum": 1,
+        "maximum": 2,
+        "variable": "sw_oxygentype"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_cropdevelopment.f90",
+          "source_raw_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+          "first_line": 1361,
+          "last_line": 1361,
+          "containing_routine": "read_oxygenstress",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swoxygentype'",
+            "1",
+            "2",
+            "sw_oxygentype"
+          ],
+          "original_logical_statement": "call rdsinr ('swoxygentype',1,2,sw_oxygentype)",
+          "input_keyword": "swoxygentype",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_cropdevelopment.f90",
+        "line": 1415,
+        "input": "SWSALINITY",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "sw_salinity"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_cropdevelopment.f90",
+          "source_raw_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+          "first_line": 1426,
+          "last_line": 1426,
+          "containing_routine": "read_salinitystress",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swsalinity'",
+            "0",
+            "1",
+            "sw_salinity"
+          ],
+          "original_logical_statement": "call rdsinr ('swsalinity',0,1,sw_salinity)",
+          "input_keyword": "swsalinity",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_cropdevelopment.f90",
+        "line": 1459,
+        "input": "SWCOMPENSATE",
+        "minimum": 0,
+        "maximum": 2,
+        "variable": "sw_compensate"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_cropdevelopment.f90",
+          "source_raw_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+          "first_line": 1470,
+          "last_line": 1470,
+          "containing_routine": "read_compensation",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swcompensate'",
+            "0",
+            "2",
+            "sw_compensate"
+          ],
+          "original_logical_statement": "call rdsinr ('swcompensate',0,2,sw_compensate)",
+          "input_keyword": "swcompensate",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_cropdevelopment.f90",
+        "line": 1464,
+        "input": "SWJARVIS",
+        "minimum": 0,
+        "maximum": 4,
+        "variable": "sw_jarvis"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_cropdevelopment.f90",
+          "source_raw_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+          "first_line": 1475,
+          "last_line": 1475,
+          "containing_routine": "read_compensation",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swjarvis'",
+            "0",
+            "4",
+            "sw_jarvis"
+          ],
+          "original_logical_statement": "call rdsinr ('swjarvis',0,4,sw_jarvis)",
+          "input_keyword": "swjarvis",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_cropdevelopment.f90",
+        "line": 1540,
+        "input": "SWINTER",
+        "minimum": 0,
+        "maximum": 3,
+        "variable": "sw_inter"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_cropdevelopment.f90",
+          "source_raw_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+          "first_line": 1551,
+          "last_line": 1551,
+          "containing_routine": "interception",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swinter'",
+            "0",
+            "3",
+            "sw_inter"
+          ],
+          "original_logical_statement": "call rdsinr ('swinter', 0, 3, sw_inter)",
+          "input_keyword": "swinter",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_cropdevelopment.f90",
+        "line": 1671,
+        "input": "SWRD",
+        "minimum": 1,
+        "maximum": 3,
+        "variable": "swrd"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_cropdevelopment.f90",
+          "source_raw_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+          "first_line": 1682,
+          "last_line": 1682,
+          "containing_routine": "read_rootextension",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swrd'",
+            "1",
+            "3",
+            "swrd"
+          ],
+          "original_logical_statement": "call rdsinr ('swrd',1,3,swrd)",
+          "input_keyword": "swrd",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_cropdevelopment.f90",
+        "line": 1715,
+        "input": "SWWRTNONOX",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swwrtnonox"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_cropdevelopment.f90",
+          "source_raw_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+          "first_line": 1726,
+          "last_line": 1726,
+          "containing_routine": "read_rootextension",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swwrtnonox'",
+            "0",
+            "1",
+            "swwrtnonox"
+          ],
+          "original_logical_statement": "call rdsinr ('swwrtnonox',0,1,swwrtnonox)",
+          "input_keyword": "swwrtnonox",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_cropdevelopment.f90",
+        "line": 1988,
+        "input": "SWRDC",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swrdc"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_cropdevelopment.f90",
+          "source_raw_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+          "first_line": 1999,
+          "last_line": 1999,
+          "containing_routine": "read_rootdistribution",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swrdc'",
+            "0",
+            "1",
+            "swrdc"
+          ],
+          "original_logical_statement": "call rdsinr ('swrdc',0,1,swrdc)",
+          "input_keyword": "swrdc",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_meteo.f90",
+        "line": 200,
+        "input": "SWETR",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swetr"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_meteo.f90",
+          "source_raw_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+          "first_line": 200,
+          "last_line": 200,
+          "containing_routine": "meteo",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swetr'",
+            "0",
+            "1",
+            "swetr"
+          ],
+          "original_logical_statement": "call rdsinr ('swetr',0,1,swetr)",
+          "input_keyword": "swetr",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_meteo.f90",
+        "line": 230,
+        "input": "SWMETDETAIL",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swmetdetail"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_meteo.f90",
+          "source_raw_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+          "first_line": 230,
+          "last_line": 230,
+          "containing_routine": "meteo",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swmetdetail'",
+            "0",
+            "1",
+            "swmetdetail"
+          ],
+          "original_logical_statement": "call rdsinr ('swmetdetail',0,1,swmetdetail)",
+          "input_keyword": "swmetdetail",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_meteo.f90",
+        "line": 236,
+        "input": "SWDIVIDE",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swdivide"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_meteo.f90",
+          "source_raw_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+          "first_line": 222,
+          "last_line": 222,
+          "containing_routine": "meteo",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swdivide'",
+            "0",
+            "1",
+            "swdivide"
+          ],
+          "original_logical_statement": "call rdsinr ('swdivide',0,1,swdivide)",
+          "input_keyword": "swdivide",
+          "dynamic_first_argument": false
+        },
+        {
+          "unit": "SWAP/MOD_meteo.f90",
+          "source_raw_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+          "first_line": 236,
+          "last_line": 236,
+          "containing_routine": "meteo",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swdivide'",
+            "0",
+            "1",
+            "swdivide"
+          ],
+          "original_logical_statement": "call rdsinr ('swdivide',0,1,swdivide)",
+          "input_keyword": "swdivide",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_meteo.f90",
+        "line": 280,
+        "input": "SWRAIN",
+        "minimum": 0,
+        "maximum": 3,
+        "variable": "swrain"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_meteo.f90",
+          "source_raw_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+          "first_line": 281,
+          "last_line": 281,
+          "containing_routine": "meteo",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swrain'",
+            "0",
+            "3",
+            "swrain"
+          ],
+          "original_logical_statement": "call rdsinr ('swrain',0,3,swrain)",
+          "input_keyword": "swrain",
+          "dynamic_first_argument": false
+        },
+        {
+          "unit": "SWAP/MOD_meteo.f90",
+          "source_raw_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+          "first_line": 299,
+          "last_line": 299,
+          "containing_routine": "meteo",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swrain'",
+            "0",
+            "3",
+            "swrain"
+          ],
+          "original_logical_statement": "call rdsinr ('swrain',0,3,swrain)",
+          "input_keyword": "swrain",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_meteo.f90",
+        "line": 291,
+        "input": "NMETDETAIL",
+        "minimum": 24,
+        "maximum": 96,
+        "variable": "n_metdetail"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_meteo.f90",
+          "source_raw_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+          "first_line": 292,
+          "last_line": 292,
+          "containing_routine": "meteo",
+          "callee": "rdsinr",
+          "arguments": [
+            "'nmetdetail'",
+            "24",
+            "96",
+            "n_metdetail"
+          ],
+          "original_logical_statement": "call rdsinr ('nmetdetail',24,96,n_metdetail)",
+          "input_keyword": "nmetdetail",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "MOD_meteo.f90",
+        "line": 299,
+        "input": "SWRAIN",
+        "minimum": 0,
+        "maximum": 3,
+        "variable": "swrain"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/MOD_meteo.f90",
+          "source_raw_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+          "first_line": 281,
+          "last_line": 281,
+          "containing_routine": "meteo",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swrain'",
+            "0",
+            "3",
+            "swrain"
+          ],
+          "original_logical_statement": "call rdsinr ('swrain',0,3,swrain)",
+          "input_keyword": "swrain",
+          "dynamic_first_argument": false
+        },
+        {
+          "unit": "SWAP/MOD_meteo.f90",
+          "source_raw_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+          "first_line": 299,
+          "last_line": 299,
+          "containing_routine": "meteo",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swrain'",
+            "0",
+            "3",
+            "swrain"
+          ],
+          "original_logical_statement": "call rdsinr ('swrain',0,3,swrain)",
+          "input_keyword": "swrain",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 118,
+        "input": "SWYRVAR",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swyrvar"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 118,
+          "last_line": 118,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swyrvar'",
+            "0",
+            "1",
+            "swyrvar"
+          ],
+          "original_logical_statement": "call rdsinr ('swyrvar',0,1,swyrvar)",
+          "input_keyword": "swyrvar",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 145,
+        "input": "NPRINTDAY",
+        "minimum": 1,
+        "maximum": 1440,
+        "variable": "nprintday"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 145,
+          "last_line": 145,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'nprintday'",
+            "1",
+            "1440",
+            "nprintday"
+          ],
+          "original_logical_statement": "call rdsinr ('nprintday',1,1440,nprintday)",
+          "input_keyword": "nprintday",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 152,
+        "input": "SWMONTH",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swmonth"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 153,
+          "last_line": 153,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swmonth'",
+            "0",
+            "1",
+            "swmonth"
+          ],
+          "original_logical_statement": "call rdsinr ('swmonth',0,1,swmonth)",
+          "input_keyword": "swmonth",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 182,
+        "input": "PERIOD",
+        "minimum": 0,
+        "maximum": 366,
+        "variable": "period"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 182,
+          "last_line": 182,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'period'",
+            "0",
+            "366",
+            "period"
+          ],
+          "original_logical_statement": "call rdsinr ('period',0,366,period)",
+          "input_keyword": "period",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 183,
+        "input": "SWRES",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swres"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 183,
+          "last_line": 183,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swres'",
+            "0",
+            "1",
+            "swres"
+          ],
+          "original_logical_statement": "call rdsinr ('swres',0,1,swres)",
+          "input_keyword": "swres",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 184,
+        "input": "SWODAT",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swodat"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 185,
+          "last_line": 185,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swodat'",
+            "0",
+            "1",
+            "swodat"
+          ],
+          "original_logical_statement": "call rdsinr ('swodat',0,1,swodat)",
+          "input_keyword": "swodat",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 193,
+        "input": "SWHEADER",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swheader"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 193,
+          "last_line": 193,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swheader'",
+            "0",
+            "1",
+            "swheader"
+          ],
+          "original_logical_statement": "call rdsinr ('swheader',0,1,swheader)",
+          "input_keyword": "swheader",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 198,
+        "input": "SWDISCRVERT",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swdiscrvert"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 198,
+          "last_line": 198,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swdiscrvert'",
+            "0",
+            "1",
+            "swdiscrvert"
+          ],
+          "original_logical_statement": "call rdsinr ('swdiscrvert',0,1,swdiscrvert)",
+          "input_keyword": "swdiscrvert",
+          "dynamic_first_argument": false
+        },
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 213,
+          "last_line": 213,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swdiscrvert'",
+            "0",
+            "1",
+            "swdiscrvert"
+          ],
+          "original_logical_statement": "call rdsinr ('swdiscrvert',0,1,swdiscrvert)",
+          "input_keyword": "swdiscrvert",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 208,
+        "input": "SWCSV",
+        "minimum": 0,
+        "maximum": 3,
+        "variable": "swcsv"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 208,
+          "last_line": 208,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swcsv'",
+            "0",
+            "3",
+            "swcsv"
+          ],
+          "original_logical_statement": "call rdsinr ('swcsv',0,3,swcsv)",
+          "input_keyword": "swcsv",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 234,
+        "input": "SWETR",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swetr"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 234,
+          "last_line": 234,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swetr'",
+            "0",
+            "1",
+            "swetr"
+          ],
+          "original_logical_statement": "call rdsinr ('swetr',0,1,swetr)",
+          "input_keyword": "swetr",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 236,
+        "input": "SWMETDETAIL",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swmetdetail"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 236,
+          "last_line": 236,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swmetdetail'",
+            "0",
+            "1",
+            "swmetdetail"
+          ],
+          "original_logical_statement": "call rdsinr ('swmetdetail',0,1,swmetdetail)",
+          "input_keyword": "swmetdetail",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 247,
+        "input": "SWRAIN",
+        "minimum": 0,
+        "maximum": 3,
+        "variable": "swrain"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 247,
+          "last_line": 247,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swrain'",
+            "0",
+            "3",
+            "swrain"
+          ],
+          "original_logical_statement": "call rdsinr ('swrain',0,3,swrain)",
+          "input_keyword": "swrain",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 249,
+        "input": "NMETDETAIL",
+        "minimum": 24,
+        "maximum": 96,
+        "variable": "n_metdetail"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 249,
+          "last_line": 249,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'nmetdetail'",
+            "24",
+            "96",
+            "n_metdetail"
+          ],
+          "original_logical_statement": "call rdsinr ('nmetdetail',24,96,n_metdetail)",
+          "input_keyword": "nmetdetail",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 254,
+        "input": "SWIRFIX",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swirfix"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 254,
+          "last_line": 254,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swirfix'",
+            "0",
+            "1",
+            "swirfix"
+          ],
+          "original_logical_statement": "call rdsinr ('swirfix',0,1,swirfix)",
+          "input_keyword": "swirfix",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 305,
+        "input": "SWPONDMX",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swpondmx"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 305,
+          "last_line": 305,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swpondmx'",
+            "0",
+            "1",
+            "swpondmx"
+          ],
+          "original_logical_statement": "call rdsinr ('swpondmx',0,1,swpondmx)",
+          "input_keyword": "swpondmx",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 335,
+        "input": "SWCFBS",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swcfbs"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 335,
+          "last_line": 335,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swcfbs'",
+            "0",
+            "1",
+            "swcfbs"
+          ],
+          "original_logical_statement": "call rdsinr ('swcfbs',0,1,swcfbs)",
+          "input_keyword": "swcfbs",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 343,
+        "input": "SWREDU",
+        "minimum": 0,
+        "maximum": 2,
+        "variable": "swredu"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 344,
+          "last_line": 344,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swredu'",
+            "0",
+            "2",
+            "swredu"
+          ],
+          "original_logical_statement": "call rdsinr ('swredu',0,2,swredu)",
+          "input_keyword": "swredu",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 384,
+        "input": "SWSOPHY",
+        "minimum": -1,
+        "maximum": 1,
+        "variable": "swsophy"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 384,
+          "last_line": 384,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swsophy'",
+            "-1",
+            "1",
+            "swsophy"
+          ],
+          "original_logical_statement": "call rdsinr ('swsophy',-1,1,swsophy)",
+          "input_keyword": "swsophy",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 399,
+        "input": "SWHYST",
+        "minimum": 0,
+        "maximum": 2,
+        "variable": "swhyst"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 399,
+          "last_line": 399,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swhyst'",
+            "0",
+            "2",
+            "swhyst"
+          ],
+          "original_logical_statement": "call rdsinr ('swhyst',0,2,swhyst)",
+          "input_keyword": "swhyst",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 729,
+        "input": "SWMACRO",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swmacro"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 729,
+          "last_line": 729,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swmacro'",
+            "0",
+            "1",
+            "swmacro"
+          ],
+          "original_logical_statement": "call rdsinr ('swmacro',0,1,swmacro)",
+          "input_keyword": "swmacro",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 733,
+        "input": "SWSNOW",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swsnow"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 733,
+          "last_line": 733,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swsnow'",
+            "0",
+            "1",
+            "swsnow"
+          ],
+          "original_logical_statement": "call rdsinr ('swsnow',0,1,swsnow)",
+          "input_keyword": "swsnow",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 741,
+        "input": "SWSUBLIM",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swsublim"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 741,
+          "last_line": 741,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swsublim'",
+            "0",
+            "1",
+            "swsublim"
+          ],
+          "original_logical_statement": "call rdsinr ('swsublim',0,1,swsublim)",
+          "input_keyword": "swsublim",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 744,
+        "input": "SWFROST",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swfrost"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 744,
+          "last_line": 744,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swfrost'",
+            "0",
+            "1",
+            "swfrost"
+          ],
+          "original_logical_statement": "call rdsinr ('swfrost',0,1,swfrost)",
+          "input_keyword": "swfrost",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 769,
+        "input": "MAXIT",
+        "minimum": 5,
+        "maximum": 100,
+        "variable": "MaxIt"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 769,
+          "last_line": 769,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'MaxIt'",
+            "5",
+            "100",
+            "MaxIt"
+          ],
+          "original_logical_statement": "call rdsinr ('MaxIt',5,100,MaxIt)",
+          "input_keyword": "MaxIt",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 771,
+        "input": "MAXBACKTR",
+        "minimum": 1,
+        "maximum": 10,
+        "variable": "MaxBackTr"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 771,
+          "last_line": 771,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'MaxBackTr'",
+            "1",
+            "10",
+            "MaxBackTr"
+          ],
+          "original_logical_statement": "call rdsinr ('MaxBackTr',1,10,MaxBackTr)",
+          "input_keyword": "MaxBackTr",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 782,
+        "input": "SWKMEAN",
+        "minimum": 1,
+        "maximum": 7,
+        "variable": "SWkmean"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 782,
+          "last_line": 782,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'SWkmean'",
+            "1",
+            "7",
+            "SWkmean"
+          ],
+          "original_logical_statement": "call rdsinr ('SWkmean',1,7,SWkmean)",
+          "input_keyword": "SWkmean",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 785,
+        "input": "SWKIMPL",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "SwkImpl"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 785,
+          "last_line": 785,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'SwkImpl'",
+            "0",
+            "1",
+            "SwkImpl"
+          ],
+          "original_logical_statement": "call rdsinr ('SwkImpl',0,1,SwkImpl)",
+          "input_keyword": "SwkImpl",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 793,
+        "input": "MAXITERTIME",
+        "minimum": 1,
+        "maximum": 2419200,
+        "variable": "MaxIterTime"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 793,
+          "last_line": 793,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'MaxIterTime'",
+            "1",
+            "2419200",
+            "MaxIterTime"
+          ],
+          "original_logical_statement": "call rdsinr ('MaxIterTime',1,2419200,MaxIterTime)",
+          "input_keyword": "MaxIterTime",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 800,
+        "input": "SWDRA",
+        "minimum": 0,
+        "maximum": 2,
+        "variable": "swdra"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 800,
+          "last_line": 800,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swdra'",
+            "0",
+            "2",
+            "swdra"
+          ],
+          "original_logical_statement": "call rdsinr ('swdra',0,2,swdra)",
+          "input_keyword": "swdra",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 805,
+        "input": "SWRUNON",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swrunon"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 805,
+          "last_line": 805,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swrunon'",
+            "0",
+            "1",
+            "swrunon"
+          ],
+          "original_logical_statement": "call rdsinr ('swrunon',0,1,swrunon)",
+          "input_keyword": "swrunon",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 819,
+        "input": "SWBBCFILE",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swbbcfile"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 819,
+          "last_line": 819,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swbbcfile'",
+            "0",
+            "1",
+            "swbbcfile"
+          ],
+          "original_logical_statement": "call rdsinr ('swbbcfile',0,1,swbbcfile)",
+          "input_keyword": "swbbcfile",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 841,
+        "input": "SWBOTB",
+        "minimum": 1,
+        "maximum": 9,
+        "variable": "swbotb"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 841,
+          "last_line": 841,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swbotb'",
+            "1",
+            "9",
+            "swbotb"
+          ],
+          "original_logical_statement": "call rdsinr ('swbotb',1,9,swbotb)",
+          "input_keyword": "swbotb",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 870,
+        "input": "SW2",
+        "minimum": 1,
+        "maximum": 2,
+        "variable": "sw2"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 870,
+          "last_line": 870,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'sw2'",
+            "1",
+            "2",
+            "sw2"
+          ],
+          "original_logical_statement": "call rdsinr ('sw2',1,2,sw2)",
+          "input_keyword": "sw2",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 893,
+        "input": "SWBOTB3IMPL",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swbotb3Impl"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 893,
+          "last_line": 893,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swbotb3Impl'",
+            "0",
+            "1",
+            "swbotb3Impl"
+          ],
+          "original_logical_statement": "call rdsinr ('swbotb3Impl',0,1,swbotb3Impl)",
+          "input_keyword": "swbotb3Impl",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 906,
+        "input": "SWBOTB3RESVERT ",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "SwBotb3ResVert"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 906,
+          "last_line": 906,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'SwBotb3ResVert '",
+            "0",
+            "1",
+            "SwBotb3ResVert"
+          ],
+          "original_logical_statement": "call rdsinr ('SwBotb3ResVert ',0,1,SwBotb3ResVert)",
+          "input_keyword": "SwBotb3ResVert ",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 907,
+        "input": "SW3",
+        "minimum": 1,
+        "maximum": 2,
+        "variable": "sw3"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 908,
+          "last_line": 908,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'sw3'",
+            "1",
+            "2",
+            "sw3"
+          ],
+          "original_logical_statement": "call rdsinr ('sw3',1,2,sw3)",
+          "input_keyword": "sw3",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 926,
+        "input": "SW4",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "sw4"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 926,
+          "last_line": 926,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'sw4'",
+            "0",
+            "1",
+            "sw4"
+          ],
+          "original_logical_statement": "call rdsinr ('sw4',0,1,sw4)",
+          "input_keyword": "sw4",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "readswap.f90",
+        "line": 944,
+        "input": "SWQHBOT",
+        "minimum": 1,
+        "maximum": 2,
+        "variable": "swqhbot"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/readswap.f90",
+          "source_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+          "first_line": 944,
+          "last_line": 944,
+          "containing_routine": null,
+          "callee": "rdsinr",
+          "arguments": [
+            "'swqhbot'",
+            "1",
+            "2",
+            "swqhbot"
+          ],
+          "original_logical_statement": "call rdsinr ('swqhbot',1,2,swqhbot)",
+          "input_keyword": "swqhbot",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "RWU_micro.f90",
+        "line": 646,
+        "input": "SWALPTOT",
+        "minimum": 1,
+        "maximum": 3,
+        "variable": "swAlpTot"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/RWU_micro.f90",
+          "source_raw_sha256": "cac3d723cc11fb001878d53f2747bbff9fd53fb22949b682906df4361cb90477",
+          "first_line": 646,
+          "last_line": 646,
+          "containing_routine": "read_rwu_micro_input",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swAlpTot'",
+            "1",
+            "3",
+            "swAlpTot"
+          ],
+          "original_logical_statement": "call rdsinr ('swAlpTot',   1,       3,      swAlpTot)",
+          "input_keyword": "swAlpTot",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "RWU_micro.f90",
+        "line": 647,
+        "input": "SWO2ECT",
+        "minimum": 0,
+        "maximum": 3,
+        "variable": "swO2EcT"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/RWU_micro.f90",
+          "source_raw_sha256": "cac3d723cc11fb001878d53f2747bbff9fd53fb22949b682906df4361cb90477",
+          "first_line": 647,
+          "last_line": 647,
+          "containing_routine": "read_rwu_micro_input",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swO2ECT'",
+            "0",
+            "3",
+            "swO2EcT"
+          ],
+          "original_logical_statement": "call rdsinr ('swO2ECT',    0,       3,      swO2EcT)",
+          "input_keyword": "swO2ECT",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "solute.f90",
+        "line": 558,
+        "input": "SWBOTBC",
+        "minimum": 0,
+        "maximum": 2,
+        "variable": "swbotbc"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/solute.f90",
+          "source_raw_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+          "first_line": 558,
+          "last_line": 558,
+          "containing_routine": "solute",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swbotbc'",
+            "0",
+            "2",
+            "swbotbc"
+          ],
+          "original_logical_statement": "call rdsinr ('swbotbc',0,2,swbotbc)",
+          "input_keyword": "swbotbc",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "solute.f90",
+        "line": 627,
+        "input": "SWSP",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swsp"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/solute.f90",
+          "source_raw_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+          "first_line": 627,
+          "last_line": 627,
+          "containing_routine": "solute",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swsp'",
+            "0",
+            "1",
+            "swsp"
+          ],
+          "original_logical_statement": "call rdsinr ('swsp',0,1,swsp)",
+          "input_keyword": "swsp",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "solute.f90",
+        "line": 646,
+        "input": "SWDC",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swdc"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/solute.f90",
+          "source_raw_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+          "first_line": 646,
+          "last_line": 646,
+          "containing_routine": "solute",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swdc'",
+            "0",
+            "1",
+            "swdc"
+          ],
+          "original_logical_statement": "call rdsinr ('swdc',0,1,swdc)",
+          "input_keyword": "swdc",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "solute.f90",
+        "line": 672,
+        "input": "SWBR",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swbr"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/solute.f90",
+          "source_raw_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+          "first_line": 672,
+          "last_line": 672,
+          "containing_routine": "solute",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swbr'",
+            "0",
+            "1",
+            "swbr"
+          ],
+          "original_logical_statement": "call rdsinr ('swbr',0,1,swbr)",
+          "input_keyword": "swbr",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "solute.f90",
+        "line": 688,
+        "input": "SWSBA",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swsba"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/solute.f90",
+          "source_raw_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+          "first_line": 688,
+          "last_line": 688,
+          "containing_routine": "solute",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swsba'",
+            "0",
+            "1",
+            "swsba"
+          ],
+          "original_logical_statement": "call rdsinr ('swsba',0,1,swsba)",
+          "input_keyword": "swsba",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "surfacewater.f90",
+        "line": 717,
+        "input": "SWDIVD",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swdivd"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/surfacewater.f90",
+          "source_raw_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+          "first_line": 717,
+          "last_line": 717,
+          "containing_routine": "read_drainage_extended",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swdivd'",
+            "0",
+            "1",
+            "swdivd"
+          ],
+          "original_logical_statement": "call rdsinr ('swdivd',0,1,swdivd)",
+          "input_keyword": "swdivd",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "surfacewater.f90",
+        "line": 737,
+        "input": "SWDIVDINF",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swdivdinf"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/surfacewater.f90",
+          "source_raw_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+          "first_line": 737,
+          "last_line": 737,
+          "containing_routine": "read_drainage_extended",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swdivdinf'",
+            "0",
+            "1",
+            "swdivdinf"
+          ],
+          "original_logical_statement": "call rdsinr ('swdivdinf',0,1,swdivdinf)",
+          "input_keyword": "swdivdinf",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "surfacewater.f90",
+        "line": 757,
+        "input": "SWDISLAY",
+        "minimum": 0,
+        "maximum": 2,
+        "variable": "swdislay"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/surfacewater.f90",
+          "source_raw_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+          "first_line": 757,
+          "last_line": 757,
+          "containing_routine": "read_drainage_extended",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swdislay'",
+            "0",
+            "2",
+            "swdislay"
+          ],
+          "original_logical_statement": "call rdsinr ('swdislay',0,2,swdislay)",
+          "input_keyword": "swdislay",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "surfacewater.f90",
+        "line": 811,
+        "input": "SWNRSRF",
+        "minimum": 0,
+        "maximum": 2,
+        "variable": "swnrsrf"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/surfacewater.f90",
+          "source_raw_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+          "first_line": 811,
+          "last_line": 811,
+          "containing_routine": "read_drainage_extended",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swnrsrf'",
+            "0",
+            "2",
+            "swnrsrf"
+          ],
+          "original_logical_statement": "call rdsinr ('swnrsrf',0,2,swnrsrf)",
+          "input_keyword": "swnrsrf",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "surfacewater.f90",
+        "line": 826,
+        "input": "SWSRF",
+        "minimum": 1,
+        "maximum": 3,
+        "variable": "swsrf"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/surfacewater.f90",
+          "source_raw_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+          "first_line": 826,
+          "last_line": 826,
+          "containing_routine": "read_drainage_extended",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swsrf'",
+            "1",
+            "3",
+            "swsrf"
+          ],
+          "original_logical_statement": "call rdsinr ('swsrf',1,3,swsrf)",
+          "input_keyword": "swsrf",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "surfacewater.f90",
+        "line": 859,
+        "input": "SWSEC",
+        "minimum": 1,
+        "maximum": 2,
+        "variable": "swsec"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/surfacewater.f90",
+          "source_raw_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+          "first_line": 860,
+          "last_line": 860,
+          "containing_routine": "read_drainage_extended",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swsec'",
+            "1",
+            "2",
+            "swsec"
+          ],
+          "original_logical_statement": "call rdsinr ('swsec',1,2,swsec)",
+          "input_keyword": "swsec",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "surfacewater.f90",
+        "line": 918,
+        "input": "SWQHR",
+        "minimum": 1,
+        "maximum": 2,
+        "variable": "swqhr"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/surfacewater.f90",
+          "source_raw_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+          "first_line": 918,
+          "last_line": 918,
+          "containing_routine": "read_drainage_extended",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swqhr'",
+            "1",
+            "2",
+            "swqhr"
+          ],
+          "original_logical_statement": "call rdsinr ('swqhr',1,2,swqhr)",
+          "input_keyword": "swqhr",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "swap_base.f90",
+        "line": 254,
+        "input": "SWSCRE",
+        "minimum": 0,
+        "maximum": 2,
+        "variable": "swscre"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/swap_base.f90",
+          "source_raw_sha256": "572f5e99fba692f31a5dc30a7bd438628c1afec37edf5423b7e30a7f5ce40424",
+          "first_line": 255,
+          "last_line": 255,
+          "containing_routine": "get_swp_file",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swscre'",
+            "0",
+            "2",
+            "swscre"
+          ],
+          "original_logical_statement": "call rdsinr ('swscre',0,2,swscre)",
+          "input_keyword": "swscre",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "swap_base.f90",
+        "line": 256,
+        "input": "SWERROR",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swerror"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/swap_base.f90",
+          "source_raw_sha256": "572f5e99fba692f31a5dc30a7bd438628c1afec37edf5423b7e30a7f5ce40424",
+          "first_line": 256,
+          "last_line": 256,
+          "containing_routine": "get_swp_file",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swerror'",
+            "0",
+            "1",
+            "swerror"
+          ],
+          "original_logical_statement": "call rdsinr ('swerror',0,1,swerror)",
+          "input_keyword": "swerror",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "swap_base.f90",
+        "line": 264,
+        "input": "SWHEA",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swhea"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/swap_base.f90",
+          "source_raw_sha256": "572f5e99fba692f31a5dc30a7bd438628c1afec37edf5423b7e30a7f5ce40424",
+          "first_line": 265,
+          "last_line": 265,
+          "containing_routine": "get_swp_file",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swhea'",
+            "0",
+            "1",
+            "swhea"
+          ],
+          "original_logical_statement": "call rdsinr('swhea', 0, 1, swhea)",
+          "input_keyword": "swhea",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "swap_base.f90",
+        "line": 267,
+        "input": "SWSOLU",
+        "minimum": 0,
+        "maximum": 2,
+        "variable": "swsolu"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/swap_base.f90",
+          "source_raw_sha256": "572f5e99fba692f31a5dc30a7bd438628c1afec37edf5423b7e30a7f5ce40424",
+          "first_line": 267,
+          "last_line": 267,
+          "containing_routine": "get_swp_file",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swsolu'",
+            "0",
+            "2",
+            "swsolu"
+          ],
+          "original_logical_statement": "call rdsinr('swsolu', 0, 2, swsolu)",
+          "input_keyword": "swsolu",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "swap_base.f90",
+        "line": 269,
+        "input": "SWSNOW",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swsnow"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/swap_base.f90",
+          "source_raw_sha256": "572f5e99fba692f31a5dc30a7bd438628c1afec37edf5423b7e30a7f5ce40424",
+          "first_line": 269,
+          "last_line": 269,
+          "containing_routine": "get_swp_file",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swsnow'",
+            "0",
+            "1",
+            "swsnow"
+          ],
+          "original_logical_statement": "call rdsinr ('swsnow',0,1,swsnow)",
+          "input_keyword": "swsnow",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "swap_base.f90",
+        "line": 270,
+        "input": "SWFROST",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swfrost"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/swap_base.f90",
+          "source_raw_sha256": "572f5e99fba692f31a5dc30a7bd438628c1afec37edf5423b7e30a7f5ce40424",
+          "first_line": 270,
+          "last_line": 270,
+          "containing_routine": "get_swp_file",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swfrost'",
+            "0",
+            "1",
+            "swfrost"
+          ],
+          "original_logical_statement": "call rdsinr ('swfrost',0,1,swfrost)",
+          "input_keyword": "swfrost",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "swap_base.f90",
+        "line": 271,
+        "input": "SWDRA",
+        "minimum": 0,
+        "maximum": 2,
+        "variable": "swdra"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/swap_base.f90",
+          "source_raw_sha256": "572f5e99fba692f31a5dc30a7bd438628c1afec37edf5423b7e30a7f5ce40424",
+          "first_line": 271,
+          "last_line": 271,
+          "containing_routine": "get_swp_file",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swdra'",
+            "0",
+            "2",
+            "swdra"
+          ],
+          "original_logical_statement": "call rdsinr ('swdra',0,2,swdra)",
+          "input_keyword": "swdra",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "swap_base.f90",
+        "line": 272,
+        "input": "SWMACRO",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swmacro"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/swap_base.f90",
+          "source_raw_sha256": "572f5e99fba692f31a5dc30a7bd438628c1afec37edf5423b7e30a7f5ce40424",
+          "first_line": 272,
+          "last_line": 272,
+          "containing_routine": "get_swp_file",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swmacro'",
+            "0",
+            "1",
+            "swmacro"
+          ],
+          "original_logical_statement": "call rdsinr ('swmacro',0,1,swmacro)",
+          "input_keyword": "swmacro",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "swap_base.f90",
+        "line": 273,
+        "input": "SWHYST",
+        "minimum": 0,
+        "maximum": 2,
+        "variable": "swhyst"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/swap_base.f90",
+          "source_raw_sha256": "572f5e99fba692f31a5dc30a7bd438628c1afec37edf5423b7e30a7f5ce40424",
+          "first_line": 273,
+          "last_line": 273,
+          "containing_routine": "get_swp_file",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swhyst'",
+            "0",
+            "2",
+            "swhyst"
+          ],
+          "original_logical_statement": "call rdsinr ('swhyst',0,2,swhyst)",
+          "input_keyword": "swhyst",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "swap_base.f90",
+        "line": 274,
+        "input": "SWPONDMX",
+        "minimum": 0,
+        "maximum": 1,
+        "variable": "swpondmx"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/swap_base.f90",
+          "source_raw_sha256": "572f5e99fba692f31a5dc30a7bd438628c1afec37edf5423b7e30a7f5ce40424",
+          "first_line": 274,
+          "last_line": 274,
+          "containing_routine": "get_swp_file",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swpondmx'",
+            "0",
+            "1",
+            "swpondmx"
+          ],
+          "original_logical_statement": "call rdsinr ('swpondmx',0,1,swpondmx)",
+          "input_keyword": "swpondmx",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "swap_base.f90",
+        "line": 283,
+        "input": "SWINCO",
+        "minimum": 0,
+        "maximum": 3,
+        "variable": "swinco"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/swap_base.f90",
+          "source_raw_sha256": "572f5e99fba692f31a5dc30a7bd438628c1afec37edf5423b7e30a7f5ce40424",
+          "first_line": 283,
+          "last_line": 283,
+          "containing_routine": "get_swp_file",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swinco'",
+            "0",
+            "3",
+            "swinco"
+          ],
+          "original_logical_statement": "call rdsinr ('swinco', 0, 3, swinco)",
+          "input_keyword": "swinco",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "temperature.f90",
+        "line": 482,
+        "input": "SWTOPBHEA",
+        "minimum": 1,
+        "maximum": 4,
+        "variable": "SwTopbHea"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/temperature.f90",
+          "source_raw_sha256": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338",
+          "first_line": 482,
+          "last_line": 482,
+          "containing_routine": "devries",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swtopbhea'",
+            "1",
+            "4",
+            "SwTopbHea"
+          ],
+          "original_logical_statement": "call rdsinr ('swtopbhea', 1, 4, SwTopbHea)",
+          "input_keyword": "swtopbhea",
+          "dynamic_first_argument": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "source": "temperature.f90",
+        "line": 489,
+        "input": "SWBOTBHEA",
+        "minimum": 1,
+        "maximum": 2,
+        "variable": "SwBotbHea"
+      },
+      "exact_original_archive_sites": [
+        {
+          "unit": "SWAP/temperature.f90",
+          "source_raw_sha256": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338",
+          "first_line": 489,
+          "last_line": 489,
+          "containing_routine": "devries",
+          "callee": "rdsinr",
+          "arguments": [
+            "'swbotbhea'",
+            "1",
+            "2",
+            "SwBotbHea"
+          ],
+          "original_logical_statement": "call rdsinr ('swbotbhea', 1, 2, SwBotbHea)",
+          "input_keyword": "swbotbhea",
+          "dynamic_first_argument": false
+        }
+      ]
+    }
+  ],
+  "source_catalog": "NOMACRO_CLOSURE03_ORIGINAL_SOURCE_CALL_CATALOG_V1.json",
+  "compiler_executions": 0,
+  "model_executions": 0
+}

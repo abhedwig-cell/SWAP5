@@ -1268,7 +1268,7 @@
       "variable": "p_agro"
     }
   ],
-  "unresolved": "Existing26family rows now reconcile later bounded analytical/Frost/extended drainage/AGE-groundwater receipts. Individual original reader domains and crossdependencies remain incompletely inventoried; broad bounded ADMITTED classifications never imply whole historical family closure. All global family/gap counts remain UNKNOWN.",
+  "unresolved": "Finite source-dependency closure blocks now replace selector-by-selector campaigning. Existing26boundedfamily rows are not a complete original feature denominator: soil tillage/reconsolidation is a newly source-located missing state/input composition. Original forbidden configurations, data dependencies and scientific decisions are separately evidenced; functional PARTIAL and scientific NOT_QUALIFIED remain.",
   "bounded_original_age": {
     "classification": "PARTIAL",
     "qualified_scope": "Canonical PR1711/9e0b9d871: SWSOLU2 initial0/100 daily Hupsel34 O0/O2 Windows/Ubuntu; complete private age/pond/output native state, actual accepted providers, corrected water-weighted effluent and public CLI. Actual RC3/local-wetting composition and fresh repaired pulse preservation qualified.",
@@ -2106,34 +2106,139 @@
   },
   "next_coherent_batches": [
     {
-      "priority": 1,
-      "family": "Original explicit analytical Frost undrained boundary/state/calendar composition",
-      "classification": "B_COMPOSITION_OF_EXISTING_UNCHANGED_PROCESSES",
-      "status": "Original4 zero-day initialization/current public refusal observations preserved; implement concrete bounded coupling next"
+      "id": "CLOSURE_A_HYDRAULIC_THERMAL_STATE",
+      "order": 1,
+      "families": [
+        0,
+        1,
+        2,
+        15,
+        16,
+        17,
+        20,
+        21
+      ],
+      "classification": "COMPOSITION_MISSING",
+      "scope": "Reconcile original hydraulic models1..12 and tabulated-input eligibility against implicit/explicit conductivity, Frost/Snow heat state, native history, initialization and calendars. Group actual valid missing hydraulic/thermal state couplings; preserve existing canonical824 byte postimages.",
+      "concrete_next": "Prove original implicit analytical model dispatch and derivative support, including existing model2/RIA12 owners; implement valid implicit non1 Frost compositions and undrained zero-flux6 model1 hysteresis/implicit state using existing owners. Existing drained bottom6 model1 history/implicit/calendar owners are already present and must not be reopened as missing.",
+      "source_dependencies": [
+        "SWAP/readswap.f90",
+        "SWAP/MOD_MvG_functions.f90",
+        "SWAP/headcalc.f90",
+        "app/hybrid_water/frost_analytical_composition.py",
+        "app/hybrid_water/frost_undrained_state.py",
+        "app/hybrid_water/frost_calendar_state.py",
+        "app/hybrid_water/implicit_frost_composition.py"
+      ],
+      "proven_exclusions": "NOMACRO_CLOSURE03_ORIGINAL_READER_CONSTRAINTS_V2.json",
+      "scientific_data_exception": "Explicit SWKMEAN7 requires original Kavg_Szymkiewicz_0001_<actualnodes>.unf matching actual layer and dz arrays; missing physical data never becomes an invented table or unsupported-scope claim"
     },
     {
-      "priority": 2,
-      "family": "Existing active vapor and paired9 thermal/budget coupling",
-      "classification": "NUMERICAL_FAILURE",
-      "status": "Original120-trial evidence already localizes internal versus prescribed bottom flux mismatch; endpoint storage jump is zero in those runtime trials. Explicit scientific decision about simultaneous head/flux semantics remains required. Keep route refused; no repeat merely to rediscover the same cause."
+      "id": "CLOSURE_B_BOUNDARY_DRAINAGE_VAPOR",
+      "order": 2,
+      "families": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        19
+      ],
+      "classification": "COMPOSITION_MISSING",
+      "depends_on": [
+        "CLOSURE_A_HYDRAULIC_THERMAL_STATE"
+      ],
+      "scope": "Reconcile all originally reachable bottom drivers, drainage and surfacewater methods with existing water/CDE/vapor and thermal state owners. Separate supplied head/flux scientific semantics and AGE retained-moment decisions. Source-proven implicit paired9 is not a missing function.",
+      "independent_work_allowed": true
     },
     {
-      "priority": 3,
-      "family": "Broader original undrained Frost/calendar/state compositions",
-      "classification": "MISSING_COMPOSITION",
-      "status": "Dependency-ordered original dispatch/state-owner reconciliation after current RIA numerical admission; avoid separate campaign per selector spelling."
+      "id": "CLOSURE_C_CROP_WEATHER_CHEMICAL_DRIVERS",
+      "order": 3,
+      "families": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        18,
+        23,
+        24,
+        25
+      ],
+      "classification": "EVIDENCE_ONLY",
+      "classification_scope": "Inventory of already migrated bounded drivers and actual remaining guard dependencies; reclassify individual proven missing couplings as COMPOSITION_MISSING or FUNCTIONAL_MISSING rather than claim full support.",
+      "scope": "Reconcile original driver dispatch, all124 retained integer reader calls and noninteger/table/logical inputs against actual call dependencies and existing canonical evidence. Preserve accepted crop/weather/irrigation/solute/aquifer runtime bodies; replay a period only for changed dependency surface or a specific unresolved criterion. Include source-discovered water-only tillage/reconsolidation and private MOD_tillage native state; retain active input-data and known SWAP002/SWAP004 source-contract decisions separately."
     },
     {
-      "priority": 4,
-      "family": "Original explicit SWKMEAN7 physical table",
-      "classification": "MISSING_IMPLEMENTATION",
-      "status": "Required original physical table still absent; seek genuinely new original evidence before any further search or implementation; never invent the table."
+      "id": "CLOSURE_D_INTEGRAL_RELEASE_REVIEW",
+      "order": 4,
+      "families": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25
+      ],
+      "classification": "EVIDENCE_ONLY",
+      "depends_on": [
+        "CLOSURE_A_HYDRAULIC_THERMAL_STATE",
+        "CLOSURE_B_BOUNDARY_DRAINAGE_VAPOR",
+        "CLOSURE_C_CROP_WEATHER_CHEMICAL_DRIVERS"
+      ],
+      "scope": "Independent release assessment against eight explicit functional-completion conditions; source/readers/state/rollback/restart/output and representative integrated applications. Scientific equivalence remains separate."
     },
     {
-      "priority": 5,
-      "family": "Retained dry surface AGE moment",
-      "classification": "NUMERICAL_FAILURE",
-      "status": "Scientific evaporation/storage contract blocker remains; no epsilon carrier, disposal or unqualified physics change."
+      "id": "SCIENCE_PAIRED9_VAPOR",
+      "order": null,
+      "families": [
+        5,
+        19
+      ],
+      "classification": "SCIENTIFIC_DECISION",
+      "blocking_only": "Active vapor with simultaneous prescribed head/flux thermal bottom semantics; original120trial causal evidence retained, no stock/flux normalization or fresh rediscovery run"
+    },
+    {
+      "id": "SCIENCE_AGE_DRY_MOMENT",
+      "order": null,
+      "families": [
+        7,
+        18,
+        19
+      ],
+      "classification": "SCIENTIFIC_DECISION",
+      "blocking_only": "Zero physical surface water with retained AGE moment; no epsilon carrier, disposal, tolerance relaxation or silent replacement"
+    },
+    {
+      "id": "EXCLUDED_ACTIVE_MACRO",
+      "order": null,
+      "families": [
+        22
+      ],
+      "classification": "EXCLUDED_MACRO",
+      "scope": "No active macro, MODFLOW, RossFast or general architecture work"
     }
   ],
   "bounded_frost_drainage_explicit": {
@@ -3121,10 +3226,10 @@
       "NUMERICAL_DEFECT",
       "EVIDENCE_ONLY"
     ],
-    "status": "FOUR_INDEPENDENT_COMPOSITE_PROFILES64_CONTEXTS_PASS_PUBLIC_ACCEPTANCE_PENDING",
+    "status": "ACTUAL_CANONICAL824_ANALYTICAL_FROST_BOUNDARY_COMPOSITION_ADMITTED",
     "historical_support": "Six D1 and ten D0/D1free6 actual original initializations;0modeldays. Nine free6 current refusals and one existing M1D1free6 positive preserved.",
     "scope": "D0free6 default/model1/3..11 mixed; D1SWDIVD1 non1bottom5/6/8; explicit/hys0/NoVap water/CDE Frost/Snow calendars",
-    "new_admitted_contexts": 0,
+    "new_admitted_contexts": 64,
     "whole_family_closed": false,
     "actual_canonical_parent": "9af88c3de6198ddec40c2674dd1542a89fa9c0d7",
     "actual_physical_source": "b24cebc3993b0f350c7aef7fb773a177d00425ce",
@@ -3151,9 +3256,13 @@
     "local_search_independent_observer": "e9092e4e4ed14b0e51c66b449e5ad8e6d8d840fc",
     "local_search_raw_archive": "FROST_ANALYTICAL_BOUNDARY10_LOCAL_WINDOWS_O0_O2_RAW_V2.json",
     "local_search_raw_sha256": "175e4ddef38778bb60001b1449cf0fcb23ae343852206e06d9a7f98538346d13",
-    "portable_admission": false,
-    "canonical_admission": false,
-    "next_action": "Complete frozen owner10 real HEAD/index/working/source/inherited/raw gates, clean public and ordinary publication, fresh four committed negative controls and required CI; integrate actual canonical and observe postmerge; then reconcile finite source-dependency closure backlog."
+    "portable_admission": true,
+    "canonical_admission": true,
+    "next_action": "Bounded10 integrated; preserve original producers and move to finite source-dependency closure and original implicit hydraulic state batch11.",
+    "actual_merge": "22520105f5a3ccac2bd2ae1b726f27b7b0d67b1e",
+    "PR": 1809,
+    "admission_archive": "FROST_ANALYTICAL_BOUNDARY10_ADMISSION_RAW_V1.json",
+    "admission_archive_sha256": "33ddbc31944e78b6cb3e34c24853aa3fe5a4f539550f51815936fd89c2b0819b"
   },
   "closure03_functional_and_scientific_judgements_separate": {
     "functional": "PARTIAL",
@@ -3172,5 +3281,102 @@
       "Scientific limitations recorded separately",
       "Independent integral release review possible"
     ]
-  }
+  },
+  "canonical824_actual_admission": {
+    "status": "ACTUAL_CANONICAL824_ANALYTICAL_FROST_NATIVE_STATE_CALENDAR_ADMISSION_VERIFIED",
+    "PR": 1809,
+    "previous_canonical": "9af88c3de6198ddec40c2674dd1542a89fa9c0d7",
+    "ordered_parents": [
+      "9af88c3de6198ddec40c2674dd1542a89fa9c0d7",
+      "fc2c49ce7ee866ca961e6189007287214d16189b"
+    ],
+    "synthetic_merge": "f5add718dfd76a6d780199dbc88f830a670ad21d",
+    "admission_archive_sha256": "33ddbc31944e78b6cb3e34c24853aa3fe5a4f539550f51815936fd89c2b0819b",
+    "canonical_admission": true,
+    "actual_merge": "22520105f5a3ccac2bd2ae1b726f27b7b0d67b1e",
+    "qualified_candidate": "fc2c49ce7ee866ca961e6189007287214d16189b",
+    "source_anchor": "8443d1d25e84dedd5a4de34912639b92247bcfeb",
+    "whole_tree": "107511cce06e9023d7ee81152f9549bd61bdccc1",
+    "coadmission": {
+      "contexts": 824,
+      "short35_contexts": 730,
+      "year367_contexts": 2,
+      "new_short_calendar_contexts": 12,
+      "new_frost_calendar_state_contexts": 28,
+      "new_frost_boundary_contexts": 24,
+      "new_frost_boundary_state_calendar_contexts": 44,
+      "reopened_parent_plate_contexts": 8,
+      "native_calendar_samples": 5414,
+      "exact_cold_windows": 2344,
+      "compiled_initialization_postimages": 375,
+      "current_unselected_dense_compiled_postimages": 4,
+      "current_bottom5_generated_compiled_postimages": 16,
+      "current_bottom5_object_comparisons": 432,
+      "previous_canonical": "9af88c3de6198ddec40c2674dd1542a89fa9c0d7",
+      "new_frost_implicit_plate_contexts": 32,
+      "new_frost_implicit_plate_current_postimages": 16,
+      "new_frost_implicit_plate_object_comparisons": 468,
+      "new_frost_implicit_hys2_contexts": 48,
+      "requalified_implicit5_contexts": 16,
+      "new_frost_implicit_hys2_current_postimages": 32,
+      "new_frost_implicit_hys2_object_comparisons": 916,
+      "new_frost_undrained_contexts": 64,
+      "new_frost_undrained_year12_contexts": 16,
+      "new_frost_undrained_unchanged_drained_postimages": 32,
+      "new_frost_undrained_whole_object_comparisons": 932,
+      "new_frost_analytical_contexts": 48,
+      "new_frost_analytical_year12_contexts": 16,
+      "new_frost_analytical_model1_postimages": 32,
+      "new_frost_analytical_whole_object_comparisons": 848,
+      "new_frost_analytical_boundary_contexts": 64,
+      "new_frost_analytical_boundary_year12_contexts": 16,
+      "new_frost_analytical_boundary_unaffected_postimages": 32,
+      "new_frost_analytical_boundary_whole_object_comparisons": 808
+    },
+    "scientific_change_class": "B_COMPOSITION_OF_EXISTING_UNCHANGED_PHYSICAL_PROCESSES_AND_EXISTING_NUMERICAL_SEARCH",
+    "new_scientific_contexts": 64,
+    "actual_portable_scientific_producers": [
+      "b4ffcc914453225562ffe0e847faa21a765432ce",
+      "9d53d55a0ae5aa7567ee62bfcbc60fece1629905",
+      "45bb6146f5800f4050e95feb5d1912ddfdd23d4d"
+    ],
+    "actual_local_scientific_producers": [
+      "b24cebc3993b0f350c7aef7fb773a177d00425ce"
+    ],
+    "scientific_producers_rebound": false,
+    "whole_historical_completion": "PARTIAL",
+    "whole_scientific_equivalence": "NOT_QUALIFIED",
+    "global_family_and_gap_counts": "UNKNOWN",
+    "RC3_changed": false
+  },
+  "implicit_hydraulic_state11": {
+    "status": "FIRST_ORIGINAL_OPTIONAL_ALFAW_GUARD_REPAIR_INSTALLED_NOT_YET_TESTED_OR_ADMITTED",
+    "actual_canonical_parent": "22520105f5a3ccac2bd2ae1b726f27b7b0d67b1e",
+    "branch": "codex/nomacro-implicit-hydraulic-state11",
+    "source_proposal": "IMPLICIT_HYDRAULIC_STATE11_SOURCE_PROPOSAL_V1.json",
+    "classification": "GUARD_ONLY_FIRST_SEAM_WITHIN_COHERENT_COMPOSITION_BLOCK",
+    "new_qualified_contexts": 0,
+    "new_admitted_contexts": 0,
+    "canonical_admission": false,
+    "next_action": "Persist first; run real original zero-day reader and source/object controls for original hys0 without inactive ALFAW, retain hys>0 refusal. Then implement valid original implicit constitutive/state couplings in the same coherent batch; no separate metadata/selector PR."
+  },
+  "closure03_source_catalog": {
+    "actual_canonical": "22520105f5a3ccac2bd2ae1b726f27b7b0d67b1e",
+    "source_units": 63,
+    "reader_or_presence_sites": 983,
+    "guard_sites": 368,
+    "direct_call_sites": 2322,
+    "old_integer_index_records": 124,
+    "old_integer_index_root_destination_truncations": 13,
+    "global_valid_configuration_inventory_complete": false,
+    "no_percentage": true
+  },
+  "source_discovered_additional_features": [
+    {
+      "feature": "Soil tillage and reconsolidation",
+      "classification": "COMPOSITION_MISSING",
+      "proof": "NOMACRO_CLOSURE03_ORIGINAL_TILLAGE_STATE_GAP_V1.json",
+      "owning_block": "CLOSURE_C_CROP_WEATHER_CHEMICAL_DRIVERS"
+    }
+  ]
 }
