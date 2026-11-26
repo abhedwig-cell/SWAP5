@@ -29,3 +29,10 @@ The existing STATUS.json remains the recovery point. Its genuine merge is reconc
 Qualify the actual current checkout/dependency postimage and selected CI.
 Historical closure remains PARTIAL, whole science NOT_QUALIFIED, global
 family/gap counts UNKNOWN and fixed RC3 unchanged.
+
+The actual V2 local audit at7f3e5ae83e14212498c79f6abdae3ef5f1a6b174
+passes all43 literal inverses and both real Git selections:26source/component
+checkout steps exclude only740archive paths from16770tracked paths;17F-CI
+steps preserve the complete versioned evidence tree. The engine, original
+scientific programs and their qualified producer identities remain unchanged.
+Current public/admission and actual CI qualification are still pending.

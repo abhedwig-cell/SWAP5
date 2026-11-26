@@ -1,0 +1,78 @@
+"""Real current source/index/working bytes and exact canonical648 inverses."""
+import hashlib,json,re,subprocess
+from pathlib import Path
+from explicit_bottom9_analytical_inherited_custody import tracked_working_files,materialized
+from frost_implicit_hys2_source_custody import DOMAINS as PARENT_DOMAINS
+from ci_checkout_scope07 import audit as complete_inverse
+from ria12_corrected_source_custody import original_git_payload
+ROOT=Path(__file__).resolve().parents[2]
+BASE='df00f9393ac552b0a6cab8ee84f8b8d8c06ac26c'
+ENGINE_BASE=BASE
+SELF='tests/nomacro_drainage/ci_checkout_scope07_verify.py'
+JOINT='tests/nomacro_drainage/initial_profile_age_groundwater_verify.py'
+PREFIX='integration/f-ci/nomacro-complete01/'
+DOMAINS=(*PARENT_DOMAINS,'examples','CMakeLists.txt','Makefile','pyproject.toml','docs/development/NOMACRO_CI_CHECKOUT_SCOPE07.md')
+git=lambda *a:subprocess.check_output(['git',*a],cwd=ROOT)
+SHA=lambda b:hashlib.sha256(b).hexdigest()
+
+
+def source(anchor):
+    complete_inverse();head=git('rev-parse','HEAD')
+    assert re.fullmatch('[0-9a-f]{40}',anchor) and not git('for-each-ref','--format=%(refname)','refs/replace')
+    assert not git('diff',ENGINE_BASE,'HEAD','--','app','src','tools','reference')
+    assert not git('status','--porcelain=v1','--untracked-files=all','--',*DOMAINS)
+    tree=lambda ref:{line.split('\t',1)[1]:line.split('\t',1)[0] for line in git('ls-tree','-rl',ref,'--',*DOMAINS).decode().splitlines()}
+    old,current,frozen=tree(BASE),tree('HEAD'),tree(anchor)
+    assert old.keys()<=current.keys() and current.keys()==frozen.keys()
+    from ci_checkout_scope07_metadata import read
+    contract=read('CI_CHECKOUT_SCOPE07_CONTRACT_V1.json');adapters=contract.get('read_only_runtime_witnesses',{})
+    modified={p for p in old if old[p]!=current[p]}
+    assert modified=={p for p,i in contract['files'].items() if not i.get('added')}|{JOINT}|set(adapters),modified
+    def repository_tree(ref):
+        values={}
+        for row in git('ls-tree','-r','-z',ref).split(b'\0'):
+            if row:
+                meta,path=row.split(b'\t',1);values[path.decode()]=tuple(meta.decode().split())
+        return values
+    old_all,current_all,frozen_all=repository_tree(BASE),repository_tree('HEAD'),repository_tree(anchor)
+    assert old_all.keys()<=current_all.keys() and current_all.keys()==frozen_all.keys()
+    metadata_exceptions={PREFIX+'STATUS.json',PREFIX+'GAP_MATRIX.json'}
+    assert {p for p in old_all if old_all[p]!=current_all[p]}==modified|metadata_exceptions
+    for p in frozen_all:
+        mode,kind,digest=current_all[p]
+        assert tracked[p][1:]==(mode,digest),'Changed actual repository index: '+p
+        if p not in metadata_exceptions|{SELF}:assert current_all[p]==frozen_all[p],'Changed frozen repository object: '+p
+    for p,item in adapters.items():
+        before=git('show',BASE+':'+p);after=(ROOT/p).read_bytes().replace(b'\r\n',b'\n')
+        assert SHA(before)==item['before_lf_sha256'] and SHA(after)==item['proposed_lf_sha256']
+        text=before.decode();parts=[];cursor=0
+        for edit in item['ordered_literal_edits']:
+            assert text[edit['base_start']:edit['base_end']]==edit['before'];parts.extend((text[cursor:edit['base_start']],edit['after']));cursor=edit['base_end']
+        parts.append(text[cursor:]);assert ''.join(parts).encode()==after==git('show','HEAD:'+p)
+    actual=(ROOT/JOINT).read_bytes().replace(b'\r\n',b'\n')
+    for name in ['guard_previous_source','verify','strip_current_evidence','publication_dependencies_unchanged']:
+        args='text' if name=='strip_current_evidence' else ''
+        before=' import frost_implicit_hys2_verify as hys2_owner\n return hys2_owner.'+name+'('+args+')\n'
+        after=' import ci_checkout_scope07_verify as checkout_owner\n return checkout_owner.'+name+'('+args+')\n'
+        assert actual.count(after.encode())==1;actual=actual.replace(after.encode(),before.encode(),1)
+    assert actual==git('show',BASE+':'+JOINT)
+    tracked=tracked_working_files();observed=[]
+    for p,meta in frozen.items():
+        mode,kind,digest,size=meta.split();assert mode!='120000' and kind=='blob' and tracked[p][1]==mode
+        if p!=SELF:assert current[p]==meta and tracked[p][2]==digest,'Changed frozen actual source/index: '+p
+        if not materialized(p,tracked):continue
+        raw=(ROOT/p).read_bytes();normal=raw.replace(b'\r\n',b'\n')
+        if p==SELF:
+            pattern=br"(?m)^SEALED='[0-9a-f]{40}'$";left,a=re.subn(pattern,b"SEALED='SOURCE_ANCHOR'",normal);right,b=re.subn(pattern,b"SEALED='SOURCE_ANCHOR'",git('show',anchor+':'+p));assert a==b==1 and left==right
+        else:
+            blob=lambda b:hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest();assert digest in (blob(raw),blob(normal)),'Changed actual working source: '+p
+        observed.append(dict(path=p,actual_raw_sha256=SHA(raw)))
+    proof_tree=lambda ref:{line.split('\t',1)[1]:line.split('\t',1)[0] for line in git('ls-tree','-rl',ref,'--',PREFIX).decode().splitlines()}
+    parent_proof,actual_proof,sealed_proof=proof_tree(BASE),proof_tree('HEAD'),proof_tree(anchor);new_proof=[]
+    for p,meta in sealed_proof.items():
+        if p in parent_proof or Path(p).name in ('STATUS.json','GAP_MATRIX.json'):continue
+        mode,kind,digest,size=meta.split();assert actual_proof.get(p)==meta and tracked[p][1:]==(mode,digest)
+        raw=(ROOT/p).read_bytes() if materialized(p,tracked) else git('cat-file','blob',digest);original,storage=original_git_payload(raw,p,digest)
+        new_proof.append(dict(path=p,actual_raw_sha256=SHA(raw),actual_git_bytes_sha256=SHA(original),storage=storage))
+    assert git('rev-parse','HEAD')==head
+    return dict(status='REAL_CHECKOUT_PROTOCOL_HEAD_INDEX_WORKING_COMPLETE_SOURCE_AND_HISTORICAL_DATA_INTERFACE_CUSTODY_PASS',actual_head=head.decode().strip(),source_anchor=anchor,parent=BASE,files=observed,new_proof=new_proof,modified_inherited_files=sorted(modified),source_or_filesystem_identity_projected=False,compiler_executions=0,model_executions=0)
