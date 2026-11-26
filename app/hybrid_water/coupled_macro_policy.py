@@ -8,7 +8,7 @@ import daily_host as h
 import original_macro_policy as original
 from donor_sources import replace
 from macro_trial_origin import render as render_trial_origin,PHYSICAL_FIELDS
-POLICY='fresh-coupled-unreduced-macro-complete-trial-origin-v1'
+POLICY='fresh-coupled-unreduced-field-darcy-contract06-v2'
 
 def render_headcalc(source):
     source=source.replace('\r\n','\n')
@@ -53,6 +53,14 @@ def render_headcalc(source):
     source=source[:m.end()]+'\n\n   subroutine fresh_coupled_candidate_checks()\n'+checks+'   end subroutine fresh_coupled_candidate_checks\n'+source[m.end():]
     return source
 
+
+def render_macrorate(source):
+    """CONTRACT06 field route: retain Darcy gradient in already-unsaturated zone."""
+    source=source.replace('\r\n','\n')
+    old='if (H(ic) < cofgen(9,lay)-1.d-8 .AND. HMp > 1.d-8) then'
+    if source.count(old)!=1:raise ValueError('Original Darcy contract anchor differs')
+    return source.replace(old,'if (HMp > 1.d-8) then')
+
 def build_bundle(base,reference,target,*,owner_optimization='O2'):
     if owner_optimization not in ('O0','O2'):raise ValueError('Unsupported owner optimization')
     base,reference,target=map(Path,(base,reference,target))
@@ -63,8 +71,10 @@ def build_bundle(base,reference,target,*,owner_optimization='O2'):
     if rendered.count('FRESH_UNREDUCED_SCALE_REQUEST')!=1 or rendered.count('call fresh_coupled_candidate_checks()')!=2:raise ValueError('Incomplete fresh/unreduced worker guard')
     p.write_text(rendered,encoding='cp1252')
     p=target/'macropore.f90';p.write_text(render_trial_origin(p.read_text(encoding='cp1252'),(reference/'build/swap-selected/variables.f90').read_text(encoding='cp1252')),encoding='cp1252')
+    p=target/'macrorate.f90';p.write_text(render_macrorate((reference/'build/swap-selected/macrorate.f90').read_text(encoding='cp1252')),encoding='cp1252')
+    identity['donor_generated']['macrorate.f90']=h.sha(p)
     flags=[('-'+owner_optimization if f in ('-O0','-O2') else f) for f in identity['donor_flags']]
-    commands=[['gfortran',*flags,'-I',str(objects),'-I',str(ttutil),'-c',n] for n in ['macropore.f90','headcalc.f90','swap_main.f90']]
+    commands=[['gfortran',*flags,'-I',str(objects),'-I',str(ttutil),'-c',n] for n in ['macropore.f90','macrorate.f90','headcalc.f90','swap_main.f90']]
     replacements={Path(n).with_suffix('.o').name:target/Path(n).with_suffix('.o').name for n in identity['donor_generated']}
     commands.append(['gfortran','-o',str(h.executable(target,'day_donor')),*(str(replacements.get(p.name,p)) for p in sorted(objects.glob('*.o'))),str(target/'hybrid_step_budget.o'),str(ttutil/'libttutil.a')])
     logs=[]
@@ -73,9 +83,9 @@ def build_bundle(base,reference,target,*,owner_optimization='O2'):
         logs.append(dict(command=command,returncode=p.returncode,stdout=p.stdout,stderr=p.stderr))
         (target/'COUPLED_MACRO_BUILD.json').write_text(json.dumps(logs,indent=2)+'\n')
         if p.returncode:raise ValueError(p.stderr)
-    for n in ['headcalc.f90','macropore.f90','swap_main.f90']:identity['donor_generated'][n]=h.sha(target/n)
+    for n in ['headcalc.f90','macropore.f90','macrorate.f90','swap_main.f90']:identity['donor_generated'][n]=h.sha(target/n)
     identity['original_macro_policy_parent']=identity.pop('macro_policy')
-    identity['coupled_macro']={'policy':POLICY,'generator_sha256':h.sha(Path(__file__)),'trial_origin_generator_sha256':h.sha(Path(__file__).with_name('macro_trial_origin.py')),'physical_origin_fields':list(PHYSICAL_FIELDS),'owner_flags':flags,'unmodified_original_pool_flags':identity['donor_flags'],'owner_objects_sha256':{n:h.sha(target/n) for n in ['headcalc.o','macropore.o','swap_main.o']},'native_codec':'UNCHANGED_S5MAC006; new policy/build receipt refuses foreign origins'}
+    identity['coupled_macro']={'policy':POLICY,'generator_sha256':h.sha(Path(__file__)),'trial_origin_generator_sha256':h.sha(Path(__file__).with_name('macro_trial_origin.py')),'field_contract':'CONTRACT06: remove redundant air-entry exclusion only; original Andelst scope','physical_origin_fields':list(PHYSICAL_FIELDS),'owner_flags':flags,'unmodified_original_pool_flags':identity['donor_flags'],'owner_objects_sha256':{n:h.sha(target/n) for n in ['headcalc.o','macropore.o','macrorate.o','swap_main.o']},'native_codec':'UNCHANGED_S5MAC006; new policy/build receipt refuses foreign origins'}
     identity['macro_policy']={'name':POLICY,'generator_sha256':h.sha(Path(__file__)),'native_macro_format':'S5MAC006-complete-physical-trial-origin','objects_sha256':identity['coupled_macro']['owner_objects_sha256']}
     meta['identity']=identity;meta['binding']={**meta['binding'],'build':identity,'macro_policy':POLICY}
     meta['executable_sha256']['donor']=h.sha(h.executable(target,'day_donor'))

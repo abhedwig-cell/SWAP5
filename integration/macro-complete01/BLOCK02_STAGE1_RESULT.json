@@ -1,0 +1,18 @@
+{
+  "decision": "STRICT_V1_OWN_ORIGIN_VALID_NEXT_DAY_UNREDUCED_REFUSAL",
+  "models_launched": 0,
+  "results": [
+    {
+      "opt": "O0",
+      "seconds": 2.8592634997330606,
+      "scale_refusal": "ERROR STOP Fresh unreduced macro policy refuses exchange scaling\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0xd3549b94\n#1  0xd34c4471\n#2  0xd33728f4\n#3  0xf4f5d170\n#4  0xf4fd2050\n#5  0xf4fe7ccb\n#6  0xf500515c\n#7  0xf5005650\n#8  0xf4f51156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n FRESH_UNREDUCED_SCALE_REQUEST   35796.951353333097        1.4142135623730951E-004           1\n",
+      "origin_unchanged": true
+    },
+    {
+      "opt": "O2",
+      "seconds": 2.9339880999177694,
+      "scale_refusal": "ERROR STOP Fresh unreduced macro policy refuses exchange scaling\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0xd3549b94\n#1  0xd34c4471\n#2  0xd33728f4\n#3  0x2b0b000e\n#4  0x2b11ac90\n#5  0x2b13090b\n#6  0x2b14dcab\n#7  0x2b190d2f\n#8  0x2b0a1156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n FRESH_UNREDUCED_SCALE_REQUEST   35796.951353333097        1.4142135623730951E-004           1\n",
+      "origin_unchanged": true
+    }
+  ]
+}
