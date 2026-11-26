@@ -1,0 +1,25 @@
+{"phase": "O2", "status": "FAILED", "seconds": 24.16733539989218}
+Traceback (most recent call last):
+  File "C:\Users\Veldh012\swap5-macro-complete01\tests\macro_complete01\prepare_worker.py", line 31, in <module>
+    build_bundle(base,ref,target,owner_optimization=opt)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Veldh012\swap5-macro-complete01\app\hybrid_water\coupled_macro_policy.py", line 59, in build_bundle
+    original.build_bundle(base,reference,target)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Veldh012\swap5-macro-complete01\app\hybrid_water\original_macro_policy.py", line 65, in build_bundle
+    meta,_=validate_bundle(base,reference,h.ANDELST)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Veldh012\swap5-macro-complete01\app\hybrid_water\daily_coupling.py", line 146, in validate_bundle
+    meta = json.loads((bundle / 'BUILD.json').read_text())
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 546, in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Veldh012\AppData\Local\Programs\Python\Python313\Lib\pathlib\_abc.py", line 632, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Veldh012\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Veldh012\\SWAP5-work\\01a1d419-6607-7c12-b0dc-f8ae427e8330-3bef53d8\\macro-complete01-O2\\worker-base\\BUILD.json'
+
