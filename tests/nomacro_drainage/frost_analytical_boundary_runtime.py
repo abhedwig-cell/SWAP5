@@ -19,7 +19,7 @@ def snapshots(folder,meta,data,selected,days):
             assert all(hashlib.sha256(z.read(name)).hexdigest()==value for name,value in q['files'].items())
             raw=z.read('macro.bin');assert raw[:8]==expected_magic
             native_domain(raw,selected,nodes)
-            thermal=struct.pack('<10i',1,nodes,0,solute,hys,1,1,0,1,2);assert raw.count(thermal+thermal)==1
+            thermal=struct.pack('<10i',1,nodes,0,solute,hys,1,1,selected['drainage'],1,2);assert raw.count(thermal+thermal)==1
             header=struct.pack('<4i',1,nodes,solute,7);assert raw.count(header+header)==1
             at=raw.index(header+header)+32;snow=struct.unpack_from('<7d',raw,at);assert all(math.isfinite(value) and value>=0 for value in snow)
             if solute:
