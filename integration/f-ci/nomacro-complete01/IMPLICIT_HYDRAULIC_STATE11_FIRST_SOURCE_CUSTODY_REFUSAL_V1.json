@@ -1,0 +1,9 @@
+{
+  "status": "FIRST_GENUINE_SOURCE_GATE_REFUSED_UNDECLARED_OLD_DOCUMENTATION_DELTA_AS_REQUIRED",
+  "actual_head": "c0492ed91cddae4e013db44057cee3eedf72228d",
+  "source_anchor": "8bc4ab32cd55dd86c7f144b614de52239b6caf1a",
+  "extra_changed_path": "docs/science/NOMACRO_FROST_ANALYTICAL_BOUNDARY10.md",
+  "actual_existing_documentation_commit": "f161e40ef0e538b6ef22788d88ff684e6157d4e3",
+  "cause": "Prior canonical824 postmerge receipt text was committed with the first11 checkpoint; strict inherited-change set requires an explicit exact literal witness for this old documentation path.",
+  "fix": "Declare original M10 before bytes, exact existing f161 after bytes and complete literal inverse; preserve all physical guards unchanged. Refresh a genuine source anchor."
+}

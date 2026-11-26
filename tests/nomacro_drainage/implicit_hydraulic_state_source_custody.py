@@ -39,7 +39,18 @@ def source(anchor):
     assert a==b==1 and left==right
     complete_inverse()
     contract=json.loads(git('show','HEAD:'+PREFIX+'IMPLICIT_HYDRAULIC_STATE11_SOURCE_PROPOSAL_V9.json'))
-    expected={p for p,item in contract['files'].items() if not item['new_file']}|{JOINT}|metadata
+    documentation=json.loads(git('show','HEAD:'+PREFIX+'IMPLICIT_HYDRAULIC_STATE11_PARENT_DOCUMENTATION_WITNESSES_V1.json'))
+    assert documentation['actual_parent']==BASE
+    for path,item in documentation['files'].items():
+        before=git('show',BASE+':'+path);actual=(ROOT/path).read_bytes().replace(b'\r\n',b'\n')
+        assert SHA(before)==item['before_lf_sha256'] and SHA(actual)==item['proposed_lf_sha256']
+        assert actual==git('show','HEAD:'+path)==git('show',documentation['actual_original_receipt_documentation_commit']+':'+path)
+        text=before.decode();parts=[];cursor=0
+        for edit in item['ordered_literal_edits']:
+            assert cursor<=edit['base_start']<=edit['base_end'] and text[edit['base_start']:edit['base_end']]==edit['before']
+            parts.extend((text[cursor:edit['base_start']],edit['after']));cursor=edit['base_end']
+        parts.append(text[cursor:]);assert ''.join(parts).encode()==actual
+    expected={p for p,item in contract['files'].items() if not item['new_file']}|{JOINT}|metadata|set(documentation['files'])
     assert {p for p in old if old[p]!=current[p]}==expected
     actual=(ROOT/JOINT).read_bytes().replace(b'\r\n',b'\n')
     for name in ['guard_previous_source','verify','strip_current_evidence','publication_dependencies_unchanged']:
