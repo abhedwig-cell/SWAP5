@@ -33,7 +33,9 @@ def audit():
     assert not git('status','--porcelain=v1','--untracked-files=all','--','app','src','tools','tests','.github','reference')
     assert not git('diff',base,'HEAD','--','app','src','tools','reference')
     changes=set(git('diff','--name-only',base,'HEAD','--','.github/workflows').decode().splitlines())
-    assert changes==set(contract['files']) and len(changes)==13
+    workflow_witnesses=set(contract.get('read_only_workflow_selection_paths',[]))
+    assert workflow_witnesses=={'.github/workflows/hupsel51-water-balance.yml'}
+    assert changes==set(contract['files'])|workflow_witnesses and len(changes)==14
     observations=[];steps=0
     for path,item in sorted(contract['files'].items()):
         before=git('show',base+':'+path);actual=(R/path).read_bytes().replace(b'\r\n',b'\n')
@@ -49,6 +51,20 @@ def audit():
         expected_profile='complete_evidence' if path=='.github/workflows/fci-canonical.yml' else 'source_and_metadata'
         assert all(x['profile']==expected_profile for x in item['checkout_steps'])
         steps+=len(item['checkout_steps']);observations.append(dict(path=path,before_sha256=SHA(before),actual_sha256=SHA(actual),checkout_steps=len(item['checkout_steps'])))
+    for path in sorted(workflow_witnesses):
+        item=contract['read_only_runtime_witnesses'][path]
+        before=git('show',base+':'+path);actual=(R/path).read_bytes().replace(b'\r\n',b'\n')
+        assert SHA(before)==item['before_lf_sha256'] and SHA(actual)==item['proposed_lf_sha256']
+        assert actual==git('show','HEAD:'+path)
+        text=before.decode();parts=[];cursor=0
+        for edit in item['ordered_literal_edits']:
+            assert edit['before']=='' and edit['base_start']==edit['base_end']>=cursor
+            parts.extend((text[cursor:edit['base_start']],edit['after']));cursor=edit['base_end']
+        parts.append(text[cursor:]);assert ''.join(parts).encode()==actual
+        condition="    needs: dependency-impact\n    if: needs.dependency-impact.outputs.run_models == 'true'\n"
+        heading='  qualification:\n';original_body=text.split(heading,1)[1];current_body=actual.decode().split(heading,1)[1]
+        assert current_body==condition+original_body
+        observations.append(dict(path=path,before_sha256=SHA(before),actual_sha256=SHA(actual),new_read_only_checkout_steps=1,original_model_job_body_identical=True))
     assert steps==43
     names_raw=git('ls-tree','-r','--name-only','-z','HEAD');names=set(names_raw.decode().rstrip('\0').split('\0'))
     rules=Path(__file__).with_suffix('.rules');raw=rules.read_bytes();normal=raw.replace(b'\r\n',b'\n')
@@ -72,7 +88,7 @@ def audit():
         meta,name=row.split(b'\t',1);mode,kind,digest=meta.decode().split();references[name.decode()]=(kind,digest)
     assert all(references[name][0]=='blob' and len(references[name][1])==40 for name in excluded)
     assert git('rev-parse','HEAD').decode().strip()==head
-    return dict(status='ACTUAL_LITERAL43_CHECKOUT_ONLY_INVERSES_AND_REAL_GIT_COMPLETE_SOURCE_SELECTION_PASS_NOT_CANONICALLY_ADMITTED',actual_head=head,actual_base=base,workflow_files=observations,checkout_steps=43,complete_evidence_checkout_steps=sum(x['profile']=='complete_evidence' for v in contract['files'].values() for x in v['checkout_steps']),fci_canonical_keeps_complete_versioned_evidence=True,real_Git_complete_evidence_selection_sha256=SHA(full_selected),tracked_paths=len(names),included_paths=len(included),excluded_archive_paths=sorted(excluded),real_Git_rules_input_sha256=SHA(names_raw),real_Git_rules_output_sha256=SHA(selected),engine_source_changed=False,scientific_model_periods_replayed=0,compiler_executions=0,model_executions=0,performance_speedup_claimed=False,canonical_admission=False)
+    return dict(status='ACTUAL_LITERAL43_CHECKOUT_ONLY_INVERSES_AND_REAL_GIT_COMPLETE_SOURCE_SELECTION_PASS_NOT_CANONICALLY_ADMITTED',actual_head=head,actual_base=base,workflow_files=observations,checkout_steps=43,new_read_only_dependency_checkout_steps=1,total_changed_or_added_checkout_steps=44,hupsel_original_model_job_body_preserved=True,complete_evidence_checkout_steps=sum(x['profile']=='complete_evidence' for v in contract['files'].values() for x in v['checkout_steps']),fci_canonical_keeps_complete_versioned_evidence=True,real_Git_complete_evidence_selection_sha256=SHA(full_selected),tracked_paths=len(names),included_paths=len(included),excluded_archive_paths=sorted(excluded),real_Git_rules_input_sha256=SHA(names_raw),real_Git_rules_output_sha256=SHA(selected),engine_source_changed=False,scientific_model_periods_replayed=0,compiler_executions=0,model_executions=0,performance_speedup_claimed=False,canonical_admission=False)
 
 
 def main():

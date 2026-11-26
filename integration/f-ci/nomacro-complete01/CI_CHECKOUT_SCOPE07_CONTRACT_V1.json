@@ -1,5 +1,5 @@
 {
-  "status": "ORIGINAL_FCI_WORKFLOW_ASSERTION_REFUSAL_PRESERVED_EXACT_CHECKOUT_TEST_WITNESS_FIXED_CURRENT_GATES_PENDING",
+  "status": "EXACT_HISTORICAL_TEST_WITNESS_AND_PRIVATE_HUPSEL_DEPENDENCY_SELECTION_CURRENT_GATES_PENDING",
   "workstream": "SWAP5-NOMACRO-COMPLETE01 / ACCELERATE02",
   "classification": "D_READ_ONLY_BUILD_AND_EVIDENCE_TRANSPORT",
   "qualified_dependency_candidate": "cb712974e37e41256877d9770a0af071afe241dd",
@@ -14,7 +14,7 @@
   },
   "fci_canonical_retains_complete_versioned_evidence": true,
   "real_Git_complete_evidence_selection_sha256": "5f0ecd14ea4c9928503768dea69b070bebca2fe69cb6d788c2b9df95ebe512c5",
-  "workflows": 13,
+  "workflows": 14,
   "checkout_steps": 43,
   "files": {
     ".github/workflows/docs.yml": {
@@ -1486,6 +1486,31 @@
         }
       ],
       "purpose": "Exact complete current checkout-file inverse before unchanged original workflow/command negative tests; no test command, numerical assertion or historical validator weakened"
+    },
+    ".github/workflows/hupsel51-water-balance.yml": {
+      "before_lf_sha256": "d198a66f921802e3a40089965a50a2297199986096eca8af5ee16bdc82b13662",
+      "proposed_lf_sha256": "f74d0df2d0fd2792ac3df02a0653a9f6fca9a7f4697eba650d55e37cc4d1edc0",
+      "ordered_literal_edits": [
+        {
+          "base_start": 389,
+          "base_end": 389,
+          "before": "",
+          "after": "      - 'tests/nomacro_drainage/ci_checkout_scope07_hupsel_impact.py'\n"
+        },
+        {
+          "base_start": 504,
+          "base_end": 504,
+          "before": "",
+          "after": "dependency-impact:\n    runs-on: ubuntu-26.04\n    timeout-minutes: 15\n    outputs:\n      run_models: ${{ steps.impact.outputs.run_models }}\n    steps:\n      - uses: actions/checkout@v4\n        with:\n          fetch-depth: 2\n          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n            !/integration/f-ci/nomacro-complete01/*.zip\n            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]\n      - name: Compare actual scientific dependencies and original model commands\n        id: impact\n        env:\n          BASE: ${{ github.event.pull_request.base.sha }}\n        run: python3 -B tests/nomacro_drainage/ci_checkout_scope07_hupsel_impact.py\n  "
+        },
+        {
+          "base_start": 518,
+          "base_end": 518,
+          "before": "",
+          "after": "\n    needs: dependency-impact\n    if: needs.dependency-impact.outputs.run_models == 'true'"
+        }
+      ],
+      "purpose": "Private exact scientific source/input/build and original model-job comparison; original scientific job commands and all criteria retained. Unchanged dependencies reuse prior qualification without full model periods."
     }
   },
   "actual_local_auditor_source": "7f3e5ae83e14212498c79f6abdae3ef5f1a6b174",
@@ -1495,5 +1520,11 @@
   "source_component_checkout_steps": 26,
   "admission_authority_state": "WIRED_SOURCE_FREEZE_AND_ACTUAL_CURRENT_GATES_PENDING",
   "parent_admission_audit": "CI_CHECKOUT_SCOPE07_CANONICAL648_PARENT_AUDIT_V1.json",
-  "historical_workflow_test_witness": "tests/hupsel51/test_successor.py"
+  "historical_workflow_test_witness": "tests/hupsel51/test_successor.py",
+  "read_only_workflow_selection_paths": [
+    ".github/workflows/hupsel51-water-balance.yml"
+  ],
+  "existing_checkout_only_workflows": 13,
+  "existing_checkout_only_steps": 43,
+  "additional_read_only_dependency_checkout_steps": 1
 }

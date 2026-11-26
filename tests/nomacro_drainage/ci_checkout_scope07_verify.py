@@ -50,6 +50,7 @@ def verify():
     assert contract['actual_canonical_dependency']==BASE and contract['parent_admission_archive_sha256']==parent['receipt']['admission_archive_sha256']
     assert contract['dependency_canonical_admission_pending'] is False
     assert protocol['checkout_steps']==43 and protocol['fci_canonical_keeps_complete_versioned_evidence'] and not protocol['engine_source_changed']
+    assert protocol['new_read_only_dependency_checkout_steps']==1 and protocol['total_changed_or_added_checkout_steps']==44 and protocol['hupsel_original_model_job_body_preserved']
     coadmission=dict(parent['receipt']['coadmission']);assert coadmission['contexts']==648
     return dict(status='CURRENT_CHECKOUT_ONLY_PROTOCOL_COMPLETE_FROZEN_FCI_EVIDENCE_AND_EXACT_UNCHANGED_SCIENTIFIC_SURFACE_PASS',actual_current_source=current,fresh_inherited_evidence=inherited,parent_historical_admission=parent,inherited_original_scientific_authority=science,current_checkout_protocol=protocol,coadmission=coadmission,
         scientific_change_class='D_READ_ONLY_BUILD_AND_EVIDENCE_TRANSPORT',new_scientific_contexts=0,

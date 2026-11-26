@@ -9,13 +9,36 @@ on:
       - 'tools/solute/check_hupsel51_repair.py'
       - '.github/workflows/hupsel51-water-balance.yml'
       - 'tests/hupsel51/**'
+      - 'tests/nomacro_drainage/ci_checkout_scope07_hupsel_impact.py'
 permissions:
   contents: read
 concurrency:
   group: hupsel51-${{ github.ref }}
   cancel-in-progress: false
 jobs:
+  dependency-impact:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 15
+    outputs:
+      run_models: ${{ steps.impact.outputs.run_models }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/integration/f-ci/nomacro-complete01/*.zip
+            !/integration/f-ci/nomacro-complete01/*.zip.part[0-9][0-9][0-9]
+      - name: Compare actual scientific dependencies and original model commands
+        id: impact
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: python3 -B tests/nomacro_drainage/ci_checkout_scope07_hupsel_impact.py
   qualification:
+    needs: dependency-impact
+    if: needs.dependency-impact.outputs.run_models == 'true'
     runs-on: ubuntu-26.04
     timeout-minutes: 15
     env:
