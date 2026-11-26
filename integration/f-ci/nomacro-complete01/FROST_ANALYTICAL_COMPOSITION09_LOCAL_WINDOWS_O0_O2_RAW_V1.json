@@ -5,7 +5,7 @@
   "sha256": "7cb587035b9194fcf5d550931a455781c4f6cfebeb0c884cf7bebc206967bfc5",
   "parts": [
     {
-      "file": "FROST_ANALYTICAL_COMPOSITION09_LOCAL_WINDOWS_O0_O2_RAW_V1.zip.part001",
+      "file": "FROST_ANALYTICAL_COMPOSITION09_LOCAL_WINDOWS_O0_O2_RAW_V1.zip",
       "bytes": 13939693,
       "sha256": "7cb587035b9194fcf5d550931a455781c4f6cfebeb0c884cf7bebc206967bfc5"
     }
@@ -3429,5 +3429,13 @@
   "compiled_native_controls": "PENDING",
   "independent_and_portable_qualification": "PENDING",
   "new_admitted_contexts": 0,
-  "canonical_admission": false
+  "canonical_admission": false,
+  "single_part_storage_correction": {
+    "original_data_revision": "3507dff96bc2315789d3975e3b077a6a4a0e76cd",
+    "original_file": "FROST_ANALYTICAL_COMPOSITION09_LOCAL_WINDOWS_O0_O2_RAW_V1.zip.part001",
+    "original_descriptor": "FROST_ANALYTICAL_COMPOSITION09_LOCAL_WINDOWS_O0_O2_RAW_V1_ORIGINAL_SINGLE_PART_DESCRIPTOR_V1.json.txt",
+    "reason": "The first sealer emitted one part001 smaller than25MiB. The established Archive single-part contract requires the direct ZIP name. Only this exact file was renamed; all archive, source, member and scientific hashes remain unchanged.",
+    "archive_bytes_rewritten": false,
+    "model_periods_replayed": 0
+  }
 }
