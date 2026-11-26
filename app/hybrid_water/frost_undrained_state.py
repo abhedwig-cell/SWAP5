@@ -64,7 +64,8 @@ def metadata(project):
     folder=Path(__file__).parent
     providers=['frost_undrained_state.py','frost_boundary_state_calendar.py',
                'frost_boundary_composition.py','frost_drainage_composition.py',
-               'frost_calendar_output.py','frost_calendar_terminal_water.py']
+               'frost_calendar_output.py','frost_calendar_terminal_water.py',
+               'frost_undrained_terminal_water.py']
     if item['implicit']:
         providers+=['implicit_frost_composition.py','implicit_frost_surface_conductivity.py',
                     'implicit_frost_source_guard.py','implicit_frost_root_state.py',

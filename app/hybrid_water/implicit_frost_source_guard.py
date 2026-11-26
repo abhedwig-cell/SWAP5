@@ -77,6 +77,10 @@ def validate_source(bundle, project, identity, reference):
             if calendar_selection(project.input_directory,project.original_output) is not None:
                 from frost_calendar_terminal_water import source as terminal_day_source
                 expected=terminal_day_source().encode('cp1252')
+                from frost_undrained_state import selected as undrained_selection
+                if undrained_selection(project) is not None:
+                    from frost_undrained_terminal_water import source as undrained_terminal_source
+                    expected=undrained_terminal_source().encode('cp1252')
             if trial_enabled(project):expected=receipt_source(expected.decode('cp1252')).encode('cp1252')
         if (bundle/name).read_bytes().replace(b'\r\n', b'\n') != expected:
             raise ValueError('Foreign actual implicit Frost private provider: ' + name)
