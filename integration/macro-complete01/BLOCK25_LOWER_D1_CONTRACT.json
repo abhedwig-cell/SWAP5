@@ -1,0 +1,7 @@
+{
+  "observed": "Read-onlyobserver24 on actualfixedV21day22context finds D1FrOut0.980376 at35817.614 dt.002, rawoutmatrixSATvolume2.382784804e-4 and rapidpot0, minimumL1.5. Current helper excludesD1FrOut!=1. Also128actualbalance-retryincrements, dtcollapse to1e-5. Cause of retries will be qualified after correction, not assertedsolelyfromcorrelation.",
+  "implementation": "Add D1lower dfOut=(dI-dL-fOut*dO)/O including current matrixin, Darcy/contactout and constantacceptedmacroheadrapiddrain potential. Separate domain1..N rank slots plus sharedcontact row to avoid overwriting simultaneous D2/D3constraints. D1contactrow weights actualoutfactor, subtracts correctednative localderivative exactlyonce. dLusesactualnative min(V,W) orconstantdrainfloor branch. Inflowprojectionandotherdomains retain independent slots.",
+  "inventory_identity": "Matrixexchange column derivative =dL/dH/dt + rapidPotential/dt*dfOut/dH forD1 (rapidexternalflux normalization included); rapid0 observedcontrol reduces to fixedL derivative0.",
+  "preserved": "Allphysicalrate/state/clock/history/nativecodec/residual/budget/timestep/backtracking owners byteidentical; onlyprivateJacobian source/object changes. Shapechange is internalJac37scratch, no public interface/codec change.",
+  "status": "IMPLEMENTED_BUILT_O0_O2_QUALIFICATION_PENDING"
+}

@@ -9,11 +9,11 @@ use MOD_swap_mp,only:swmbf,IcTopMp,IDecMpRat,GwlFlCpZo
 use variables,only:h,theta,thetas,pegwl,dt,t1900,numbit
 implicit none
 integer,intent(in)::n
-real(8),intent(out)::uu(macp,madm),vv(macp,madm),bl,bd,meta(16)
+real(8),intent(out)::uu(macp,madm+1),vv(macp,madm+1),bl,bd,meta(16)
 logical,intent(out)::eligible
-real(8)::cm(24,madm),pot(macp,madm),pu(macp,madm),valid,den,g,g0,g1,depth,hm,delta,doo,rhoslope,cg,fr,dq,qp,latvalid,dI(macp),proof_base(macp),proof_meta(10),ct0(madm),ct1(madm),nativeU(madm),du0,du1,contact_valid,contactD1(2),upperIn(macp),dUpperIn(macp),upperValid,frIn1,upperG0,upperG1,upperBase(macp),dUpperOut(macp),upperContact(macp)
+real(8)::cm(24,madm),pot(macp,madm),pu(macp,madm),valid,den,g,g0,g1,depth,hm,delta,doo,rhoslope,cg,fr,dq,qp,latvalid,dI(macp),proof_base(macp),proof_meta(10),ct0(madm),ct1(madm),nativeU(madm),du0,du1,contact_valid,contactD1(2),upperIn(macp),dUpperIn(macp),upperValid,frIn1,upperG0,upperG1,upperBase(macp),dUpperOut(macp),upperContact(macp),lowerPS(macp),lowerPU(macp),lowerDL(macp),lowerL,lowerO,lowerF
 integer::d,k,i,cell,upper,lower
-integer,save::proof_count=0,proof_unit,upper_count=0,upper_unit
+integer,save::proof_count=0,proof_unit,upper_count=0,upper_unit,lower_count=0,lower_unit
 uu=0d0;vv=0d0;bl=0d0;bd=0d0;meta=0d0;eligible=.false.;meta(1)=-1
 if(n/=numnod.or.n<2.or.NumDm<3.or.swmbf/=1.or.IcTopMp/=1.or.IDecMpRat/=0.or.FrReduQ/=1d0)return
 call macro_saturated_data(cm,pot,pu,valid);meta(15)=valid;meta(1)=-2
@@ -36,8 +36,9 @@ meta(1)=-4
 if(any(cm(8,2:NumDm)/=1d0).or.any(cm(22,1:NumDm)/=0d0))return
 frIn1=cm(8,1);meta(9)=frIn1
 if(frIn1<0d0.or.frIn1>1d0)return
-if(frIn1/=1d0.and.any(cm(16,2:NumDm)/=1d0))return
-if(cm(16,1)/=1d0)return
+meta(10)=cm(16,1)
+if(cm(16,1)<0d0.or.cm(16,1)>1d0)return
+if(frIn1/=1d0.and.cm(16,1)/=1d0)return
 meta(1)=-5
 if(any(QInIntSatDmCp(1:NumDm,1:n)/=0d0))return
 depth=g-(z(cell)-.5d0*dz(cell))
@@ -51,36 +52,38 @@ meta(11)=cg;meta(12)=0d0;meta(1)=-6
 ct0=0d0;ct1=0d0;nativeU=0d0;contactD1=0d0
 ! Complete current contact row, including unconstrained domains, exactly once.
 if(h(cell)<0d0)then
- call macro_contact_cell_gradient(1,cell,g0,g1,QOutMtxUnsDmCp(1,cell)*dt,du0,du1,nativeU(1),contact_valid)
- if(contact_valid/=1d0)return
- contactD1=[-du0/dt-nativeU(1),-du1/dt]
- vv(upper,NumDm)=contactD1(1);vv(lower,NumDm)=contactD1(2)
- uu(cell,NumDm)=1d0
+ if(cm(16,1)>0d0)then
+  call macro_contact_cell_gradient(1,cell,g0,g1,QOutMtxUnsDmCp(1,cell)*dt/cm(16,1),du0,du1,nativeU(1),contact_valid)
+  if(contact_valid/=1d0)return
+  contactD1=[-cm(16,1)*du0/dt-nativeU(1),-cm(16,1)*du1/dt]
+ end if
+ vv(upper,NumDm+1)=contactD1(1);vv(lower,NumDm+1)=contactD1(2)
+ uu(cell,NumDm+1)=1d0
  do d=2,NumDm
   call macro_contact_cell_gradient(d,cell,g0,g1,pu(cell,d-1),du0,du1,nativeU(d),contact_valid)
   if(contact_valid/=1d0)return
   ct0(d)=-cm(16,d)*du0/dt-nativeU(d);ct1(d)=-cm(16,d)*du1/dt
-  vv(upper,NumDm)=vv(upper,NumDm)+ct0(d);vv(lower,NumDm)=vv(lower,NumDm)+ct1(d)
+  vv(upper,NumDm+1)=vv(upper,NumDm+1)+ct0(d);vv(lower,NumDm+1)=vv(lower,NumDm+1)+ct1(d)
  end do
 end if
 ! One stock normalization per bounded domain, with no duplicate contact derivative.
-do k=1,NumDm-1
- d=k+1
+do d=2,NumDm
+ k=d
  if(cm(5,d)<0d0.or.abs(cm(5,d)-(cm(9,d)+cm(10,d)+cm(12,d)))>128d0*epsilon(1d0)*max(cm(5,d),tiny(1d0)).or.cm(11,d)/=0d0)return
  if(cm(6,d)<0d0.or.dt<=0d0)return
  if(abs(sum(QInMtxSatDmCp(d,1:n))*dt-cm(12,d))>128d0*epsilon(1d0)*max(abs(cm(12,d)),tiny(1d0)))return
  if(cm(2,d)/=min(cm(4,d),cm(1,d)))return
- fr=cm(16,d);if(k<=2)meta(2+k)=fr
+ fr=cm(16,d);if(d<=3)meta(d+1)=fr
  if(fr<0d0.or.fr>1d0)return
  rhoslope=0d0
  if(cm(4,d)<=cm(1,d)+128d0*epsilon(1d0)*max(abs(cm(4,d)),abs(cm(1,d)),tiny(1d0)))then
-  rhoslope=cm(18,d);if(k<=2)meta(4+k)=1d0
+  rhoslope=cm(18,d);if(d<=3)meta(d+3)=1d0
  end if
- if(cm(4,d)==cm(1,d).and.k<=2)meta(6+k)=1d0
+ if(cm(4,d)==cm(1,d).and.d<=3)meta(d+5)=1d0
  if(fr==0d0.or.fr==1d0)cycle
  if(cm(6,d)<=0d0.or.cm(15,d)/=0d0)return
- if(any(pu(1:cell-1,k)/=0d0).or.any(pu(cell+1:n,k)/=0d0))return
- if(abs(sum(pot(1:n,k))+sum(pu(1:n,k))-cm(6,d))>128d0*epsilon(1d0)*max(abs(cm(6,d)),tiny(1d0)))return
+ if(any(pu(1:cell-1,d-1)/=0d0).or.any(pu(cell+1:n,d-1)/=0d0))return
+ if(abs(sum(pot(1:n,d-1))+sum(pu(1:n,d-1))-cm(6,d))>128d0*epsilon(1d0)*max(abs(cm(6,d)),tiny(1d0)))return
  dI=0d0
  if(cm(10,d)>0d0)then
   call macro_top_lateral_gradient(dq,qp,latvalid)
@@ -99,26 +102,26 @@ do k=1,NumDm-1
  dI(upper)=dI(upper)+dt*QInMtxSatDmCp(d,cell)/depth*g0
  dI(lower)=dI(lower)+dt*QInMtxSatDmCp(d,cell)/depth*g1
  if(h(cell)<0d0)then
-  call macro_contact_cell_gradient(d,cell,g0,g1,pu(cell,k),du0,du1,nativeU(d),contact_valid)
+  call macro_contact_cell_gradient(d,cell,g0,g1,pu(cell,d-1),du0,du1,nativeU(d),contact_valid)
   if(contact_valid/=1d0)return
   dI(upper)=dI(upper)-fr*du0;dI(lower)=dI(lower)-fr*du1
  end if
  vv(1:n,k)=dI(1:n)/cm(6,d)
  if(cm(17,d)/cm(21,d)<=1d-7.or.cm(6,d)<=cm(17,d))return
  do i=1,n
-  if(pot(i,k)>0d0)then
+  if(pot(i,d-1)>0d0)then
    if(i<lower.or.h(i)<=0d0)return
    delta=max(0d0,cm(24,d)-z(i))-h(i)
    if(delta<=0d0)return
-   doo=-pot(i,k)/delta;vv(i,k)=vv(i,k)-fr*doo/cm(6,d)
+   doo=-pot(i,d-1)/delta;vv(i,k)=vv(i,k)-fr*doo/cm(6,d)
   end if
  end do
- uu(1:n,k)=-(pot(1:n,k)+pu(1:n,k))/dt
+ uu(1:n,k)=-(pot(1:n,d-1)+pu(1:n,d-1))/dt
  vv(upper,k)=vv(upper,k)-rhoslope*g0/cm(6,d);vv(lower,k)=vv(lower,k)-rhoslope*g1/cm(6,d)
  meta(2)=meta(2)+1d0
 end do
 ! D1 upper inventory projector: incoming matrix, outgoing Darcy/contact and fixed rapid drainage.
-! This uses slot1 only when all D2..N out factors are1 (guard above).
+! Slot1 belongs toD1; every other lower constraint has its domain slot.
 if(frIn1>0d0.and.frIn1<1d0)then
  if(cm(5,1)<=0d0.or.cm(3,1)/=cm(4,1).or.any(cm(9:11,1)/=0d0))return
  if(abs(cm(6,1)-sum(cm(13:15,1)))>128d0*epsilon(1d0)*max(cm(6,1),tiny(1d0)))return
@@ -171,13 +174,78 @@ if(frIn1>0d0.and.frIn1<1d0)then
   write(upper_unit,*)upperIn(1:n),upperBase(1:n),uu(1:n,1),vv(1:n,1),QInMtxSatDmCp(1,1:n),upperContact(1:n)
  end if
 end if
+! D1 lower inventory projection, including fixed rapid outflow in total O.
+lowerF=cm(16,1)
+if(frIn1==1d0.and.lowerF>0d0.and.lowerF<1d0)then
+ lowerL=cm(2,1);lowerO=cm(6,1)
+ if(lowerO<=0d0.or.cm(17,1)/dt<=1d-7.or.lowerO<=cm(17,1))return
+ if(cm(11,1)/=0d0.or.any(QInIntSatDmCp(1,1:n)/=0d0))return
+ if(abs(cm(5,1)-sum(cm(9:12,1)))>128d0*epsilon(1d0)*max(cm(5,1),tiny(1d0)))return
+ if(abs(lowerO-sum(cm(13:15,1)))>128d0*epsilon(1d0)*max(lowerO,tiny(1d0)))return
+ if(any(QOutMtxUnsDmCp(1,1:cell-1)/=0d0).or.any(QOutMtxUnsDmCp(1,cell+1:n)/=0d0))return
+ if(thetas(cell)-theta(cell)>1d-6)return
+ call macro_upper1_data(upperIn,upperValid)
+ if(upperValid/=1d0)return
+ if(abs(sum(upperIn(1:n))-cm(12,1))>128d0*epsilon(1d0)*max(cm(12,1),tiny(1d0)))return
+ dUpperIn=0d0;dUpperOut=0d0;upperBase=0d0;lowerPS=0d0;lowerPU=0d0;lowerDL=0d0;upperContact=0d0
+ lowerPS(1:n)=dt*QOutMtxSatDmCp(1,1:n)/lowerF
+ lowerPU(1:n)=dt*QOutMtxUnsDmCp(1,1:n)/lowerF
+ if(abs(sum(lowerPS(1:n))-cm(13,1))>256d0*epsilon(1d0)*max(cm(13,1),tiny(1d0)))return
+ if(abs(sum(lowerPU(1:n))-cm(14,1))>256d0*epsilon(1d0)*max(cm(14,1),tiny(1d0)))return
+ if(cm(10,1)>0d0)then
+  call macro_top_lateral_gradient(dq,qp,latvalid)
+  if(latvalid/=1d0.or.qp<=0d0)return
+  dUpperIn(1)=cm(10,1)/qp*dq
+ end if
+ do i=lower,n
+  hm=max(0d0,cm(24,1)-z(i))
+  if(hm<1d-8)hm=0d0
+  if(upperIn(i)>0d0)then
+   delta=h(i)-hm
+   if(delta<=0d0)return
+   dUpperIn(i)=upperIn(i)/delta
+   upperBase(i)=QInMtxSatDmCp(1,i)/delta
+  end if
+  if(lowerPS(i)>0d0)then
+   delta=hm-h(i)
+   if(delta<=1d-8)return
+   dUpperOut(i)=-lowerPS(i)/delta
+   upperBase(i)=upperBase(i)+QOutMtxSatDmCp(1,i)/delta
+  end if
+ end do
+ if(h(cell)>=0d0)then
+  dUpperIn(upper)=dUpperIn(upper)+upperIn(cell)/depth*g0
+  dUpperIn(lower)=dUpperIn(lower)+upperIn(cell)/depth*g1
+ end if
+ if(h(cell)<0d0)then
+  call macro_contact_cell_gradient(1,cell,g0,g1,lowerPU(cell),du0,du1,nativeU(1),contact_valid)
+  if(contact_valid/=1d0)return
+  dUpperOut(upper)=dUpperOut(upper)+du0;dUpperOut(lower)=dUpperOut(lower)+du1
+  upperBase(cell)=upperBase(cell)+nativeU(1)
+  upperContact(upper)=contactD1(1);upperContact(lower)=contactD1(2)
+ end if
+ if(lowerL==cm(4,1).and.cm(4,1)<=cm(1,1)+128d0*epsilon(1d0)*max(abs(cm(4,1)),abs(cm(1,1)),tiny(1d0)))then
+  lowerDL(upper)=cm(18,1)*g0;lowerDL(lower)=cm(18,1)*g1
+ else if(lowerL/=cm(1,1).and.lowerL>=min(cm(4,1),cm(1,1)))then
+  return
+ end if
+ uu(1:n,1)=-(lowerPS(1:n)+lowerPU(1:n))/dt
+ vv(1:n,1)=(dUpperIn(1:n)-lowerDL(1:n)-lowerF*dUpperOut(1:n))/lowerO
+ meta(2)=meta(2)+1d0
+ lower_count=lower_count+1
+ if(lower_count<=64)then
+  if(lower_count==1)open(newunit=lower_unit,file='macro_lower1_inventory_terms.txt',status='replace')
+  write(lower_unit,*)n,t1900,dt,numbit,cell,upper,lower,lowerF,cm(5,1),lowerO,cm(1,1),lowerL,cm(4,1),cm(18,1),g0,g1,cm(15,1),depth
+  write(lower_unit,*)upperIn(1:n),lowerPS(1:n)+lowerPU(1:n),upperBase(1:n),uu(1:n,1),vv(1:n,1),QInMtxSatDmCp(1,1:n),upperContact(1:n)
+ end if
+end if
 meta(1)=1d0;eligible=.true.
 ! Primitive state and actual local derivatives for independent all-domain inventory.
 proof_count=proof_count+1
 if(proof_count<=64)then
  if(proof_count==1)open(newunit=proof_unit,file='macro_saturated_contact_mass_base.txt',status='replace')
  proof_meta=[dble(cell),dble(upper),dble(lower),h(upper),h(lower),z(upper),z(lower),depth,contactD1]
- write(proof_unit,*)n,NumDm,t1900,dt,numbit
+ write(proof_unit,*)n,NumDm+1,t1900,dt,numbit
  write(proof_unit,*)proof_meta
  do d=2,NumDm
   dq=0d0;qp=0d0;latvalid=0d0
@@ -208,13 +276,13 @@ real(8),intent(in)::a(n),b(n),c(n),r(n)
 real(8),intent(out)::x(n)
 integer,intent(out)::ierror
 logical,intent(out)::handled
-real(8)::uu(macp,madm),vv(macp,madm),meta(16),bl,bd,aa(n),bb(n),zz(n,madm),M(madm,madm),rhs(madm),lam(madm),res(n)
-real(8)::aug(madm,madm+1),row(madm+1),pivot,factor
+real(8)::uu(macp,madm+1),vv(macp,madm+1),meta(16),bl,bd,aa(n),bb(n),zz(n,madm+1),M(madm+1,madm+1),rhs(madm+1),lam(madm+1),res(n)
+real(8)::aug(madm+1,madm+2),row(madm+2),pivot,factor
 integer::k,i,e,cell,nr,j,ip
 logical,save::opened=.false.
 integer,save::tu,systems_unit=0,active_count=0
 call jac37_terms(n,uu,vv,bl,bd,meta,handled)
-M=0d0;lam=0d0;res=-1d0;nr=NumDm
+M=0d0;lam=0d0;res=-1d0;nr=NumDm+1
 if(handled) then
  cell=int(meta(14));aa=a;bb=b;aa(cell)=aa(cell)+bl;bb(cell)=bb(cell)+bd
  call tridag(n,aa,bb,c,r,x,ierror)
