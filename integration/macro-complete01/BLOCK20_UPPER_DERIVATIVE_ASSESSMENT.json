@@ -1,0 +1,26 @@
+{
+  "scope": "Actual D1 matrix-inflow/constant-rapid-out constrained derivative only; modelcap20s, no full day13 inventory or nonlinear qualification",
+  "results": [
+    {
+      "opt": "O0",
+      "last_observed_model_time": 35807.70739408141,
+      "complete_retained_terms": 64,
+      "censored_tail_tokens": 0,
+      "max_D1_upper_inventory_derivative_error": 1.4210854715202004e-14,
+      "old_refusal_time": 35807.61256074782,
+      "trace_progress_beyond_old_refusal": true,
+      "whole_day13_pass": false
+    },
+    {
+      "opt": "O2",
+      "last_observed_model_time": 35807.75939408161,
+      "complete_retained_terms": 64,
+      "censored_tail_tokens": 0,
+      "max_D1_upper_inventory_derivative_error": 1.4210854715202004e-14,
+      "old_refusal_time": 35807.61256074782,
+      "trace_progress_beyond_old_refusal": true,
+      "whole_day13_pass": false
+    }
+  ],
+  "models_launched": 0
+}

@@ -1,0 +1,6 @@
+{
+  "prior": "V20 D1-inflow gradient correctly closes64actualinventoryderivatives to1.42e-14 and advances beyond originalday13refusal; day13 is20s-censored. Currenthelper excludes anyD1outgoingmatrix/contact potential, returns outside scope at laterstates. Exact remainingpredicate notyetindependentlyidentified; extending mathematicallydeclared dO term is not claimed as sole diagnosedcause.",
+  "implementation": "Extend dfIn=(dM+dO-f*dI)/I by current saturated Darcy outpotential gradient and current single-cell contact absorption gradient; fixedrapidoutderivative0. Include actualnativeDarcy+absorptionlocalbase and subtractexistingcontactlocalcontributiononce. Rawphysical macrorate/headcalc/boundtop/calcgwl/macropore byteexact V20/V21.",
+  "preserved": "Every physicalstock/flow law andthreshold, alliteration/backtracking/timestepandmassbudgetrules unchanged. Currentnumericalscope noindependentperch, onlyD1matrixincomingandD1alloutbranches, otherfactors1, fixedlocalgeometry.",
+  "status": "IMPLEMENTED_BUILT_O0_O2_PENDING_QUALIFICATION"
+}
