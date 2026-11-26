@@ -11,7 +11,7 @@ from macro_contact_history import render_rate as render_contact_rate,render_macr
 from macro_stock_rank2 import render_rate as render_rank2_rate,render_head as render_rank2_head
 from macro_stock_jacobian import render_rate as render_stock_rate,render_head as render_stock_head
 from macro_trial_origin import render as render_trial_origin,PHYSICAL_FIELDS
-POLICY='fresh-coupled-unreduced-field-stock-contact43-reference48-v5r3'
+POLICY='fresh-coupled-unreduced-field-stock-contact-reference-dtmin58-v6'
 
 def render_headcalc(source):
     source=source.replace('\r\n','\n')
@@ -54,6 +54,7 @@ def render_headcalc(source):
     m=re.search(r'(?mi)^[ \t]*contains[ \t]*$',source)
     if not m:raise ValueError('Original contained solver missing')
     source=source[:m.end()]+'\n\n   subroutine fresh_coupled_candidate_checks()\n'+checks+'   end subroutine fresh_coupled_candidate_checks\n'+source[m.end():]
+    source=replace(source,'h(i) = hold(i) - difh(i) * factmax1','h(i) = hold(i) - (difh(i) * factmax1) * factor')
     return source
 
 

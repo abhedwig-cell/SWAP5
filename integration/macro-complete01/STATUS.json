@@ -2,7 +2,7 @@
   "work_unit": "SWAP5-MACRO-COMPLETE01",
   "canonical_baseline": "9af88c3de6198ddec40c2674dd1542a89fa9c0d7",
   "active_branch": "codex/macro-complete01",
-  "stage": "BLOCK03_CHECKED_O0_EXTENT_FIX_IMPLEMENTED_PENDING_MODEL",
+  "stage": "BLOCK05_DTMIN58_PRODUCT_IMPLEMENTED_PENDING_QUALIFICATION",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -11,7 +11,7 @@
   "MACRO_NUMERICAL_QUALIFICATION": "PARTIAL_INHERITED_NOT_REQUALIFIED",
   "MACRO_SCIENTIFIC_EQUIVALENCE": "NOT_QUALIFIED",
   "MACRO_RELEASE_READINESS": "NOT_READY",
-  "current_hypothesis": "Known node52 minimum-stock partial limiter has missing GWL/outflow-factor derivative; current provider supplies only existing local derivative. Guarded live JAC24 rank-one correction pending model result.",
+  "current_hypothesis": "Actual new node35/D5 sorption two-cycle during extendeddtmin; source ignores backtrackingfactor there. One product expression correction from DTMIN58 now implemented.",
   "first_code_change": "src/legacy/b1_10_port/headcalc.f90: reuse unchanged criteria; refresh macro rates/residual at provisional convergence. Existing typed legacy-fldtmin validation stays unchanged.",
   "interfaces_changed": [],
   "invariants_affected": [
@@ -28,7 +28,7 @@
     "own_historical_baseline": "Immutable central Git10576fcd935cfaa7457351a42144f447c4351f8d and verified SELECT66 archive; old worktree/reject64 build copies released; old phase/audit input protections removed because new canonical original source/input provider replaces them.",
     "parallel_nomacro": "no files or generated resources shared with its worktree"
   },
-  "next_action": "Qualify v3r2 checked O0 and optimized O2 cold2 and own2-to3; previous metadata/shape implementation errors retained",
+  "next_action": "Qualify dtmin-v6 cold2 and own2-to3 O0checked/O2 under20s; if day3 passes compare directcold3/native and new own continuation",
   "recovery_point": "integration/macro-complete01/STATUS.json; CONTRACT.md; RECONCILIATION.json",
   "baseline_discriminator": {
     "optimization": "O0",
@@ -39,6 +39,6 @@
     "source": "O0_BASELINE_FRESH.json"
   },
   "minimum_step_disposition": "The existing binding refuses fldtmin at validation (SW_SOLVE_FAILED), so new legacy fallback edit was removed rather than claim unsupported-path qualification. First control expected wrong refusal kind and remains retained. No guard relaxed.",
-  "completed_block": "Fresh coupled acceptance plus25-field trial origin; field Darcy contract06 now passes first2original days and own native restart exact O0/O2",
+  "completed_block": "Fresh kernel residual gate; scoped Darcy first2days/own native; guarded stock rank1+rank2 actual linear systems O0checked/O2 exact, next contact refusal",
   "operational_note": "PowerShell exec sessions stalled; direct Node filesystem and native executable route remains available. No blanket process kill or cleanup bypass."
 }
