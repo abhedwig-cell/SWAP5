@@ -11,7 +11,7 @@ from implicit_hydraulic_state_local_archive_science import local
 from implicit_hydraulic_state_components_archive_science import components
 from implicit_hydraulic_state_postimages_archive_science import audit as object_postimages
 import frost_analytical_boundary_verify as previous
-SEALED='8bc4ab32cd55dd86c7f144b614de52239b6caf1a'
+SEALED='547d107e94ff96c537b77397591ab245da5885d2'
 
 def data_source():return GitArchiveSource(ROOT,git('rev-parse','HEAD').decode().strip())
 def frozen(name):
