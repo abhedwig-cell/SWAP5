@@ -1,0 +1,74 @@
+{
+  "actual_source": "dd7596685c91074789ab56e9a3ecb3d4a4ef4b4c",
+  "contexts": [
+    {
+      "case": "model3-3-water-b5-p2",
+      "status": "ACTUAL_PUBLIC_READER_REFUSED_NOT_QUALIFIED",
+      "error": "ValueError('Original hydraulic model3 with physical oxygen stress2 is explicitly not implemented: grass.crp')"
+    },
+    {
+      "case": "model7-7-cde-b8-p1",
+      "status": "ACTUAL_PUBLIC_READER_ACCEPTED_NEW_TYPED_DOMAIN_NOT_SCIENTIFICALLY_QUALIFIED",
+      "selection": {
+        "undrained_frost": true,
+        "boundary_state_calendar": true,
+        "frost_calendar": true,
+        "dense_daily_requested": true,
+        "policy": "existing-explicit-analytical-frost-undrained-boundary58-state-calendar-v1",
+        "bottom": 8,
+        "kind": "cde",
+        "implicit": 0,
+        "hysteresis": 0,
+        "initial": 1,
+        "drainage": 0,
+        "swmonth": 0,
+        "swodat": 0,
+        "swres": 1,
+        "requested_period": 1,
+        "physical_equations_changed": false,
+        "requires_divdra": false,
+        "analytical_frost_models": [
+          7,
+          7
+        ]
+      },
+      "native_codec": "S5UAC001"
+    },
+    {
+      "case": "model11-11-water-b8-p2",
+      "status": "ACTUAL_PUBLIC_READER_ACCEPTED_NEW_TYPED_DOMAIN_NOT_SCIENTIFICALLY_QUALIFIED",
+      "selection": {
+        "undrained_frost": true,
+        "boundary_state_calendar": true,
+        "frost_calendar": true,
+        "dense_daily_requested": true,
+        "policy": "existing-explicit-analytical-frost-undrained-boundary58-state-calendar-v1",
+        "bottom": 8,
+        "kind": "water",
+        "implicit": 0,
+        "hysteresis": 0,
+        "initial": 2,
+        "drainage": 0,
+        "swmonth": 0,
+        "swodat": 0,
+        "swres": 1,
+        "requested_period": 1,
+        "physical_equations_changed": false,
+        "requires_divdra": false,
+        "analytical_frost_models": [
+          11,
+          11
+        ]
+      },
+      "native_codec": "S5UAW001"
+    },
+    {
+      "case": "model7-3-cde-b5-p1",
+      "status": "ACTUAL_PUBLIC_READER_REFUSED_NOT_QUALIFIED",
+      "error": "ValueError('Original hydraulic model3 with physical oxygen stress2 is explicitly not implemented: grass.crp')"
+    }
+  ],
+  "compiler_executions": 0,
+  "model_days": 0,
+  "canonical_admission": false
+}
