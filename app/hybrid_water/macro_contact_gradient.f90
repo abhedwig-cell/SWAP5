@@ -1,5 +1,5 @@
 
-! Original ABSORPTION branch derivative at the partially saturated main-GWL cell.
+! Original ABSORPTION derivative: partial main-GWL contact or full-contact ordinary cell.
 subroutine macro_contact_cell_gradient(d,cell,g0,g1,pu,du0,du1,native,valid)
 use MOD_grid,only:z,dz,layer
 use MOD_macropore,only:ICpTpWaSrDm,ZWaLevDm,TimAbsCumDmCp,ThtSrpRefDmCp, &
@@ -26,7 +26,7 @@ if(span<=0d0.or.overlap<=0d0.or.cell<ICpTpWaSrDm(d))then
  if(pu==0d0)valid=1d0
  return
 end if
-if(overlap>=span.or.SwAbs/=1)return
+if(SwAbs/=1)return
 lay=layer(cell);C=moiscap(cell,h(cell));power=SorpAlfa(lay)
 deficit=max(0d0,thetas(cell)-theta(cell));active=ThtSrpRefDmCp(d,cell)-theta(cell);age=TimAbsCumDmCp(d,cell)
 rawS=0d0;ds=0d0;rawD=0d0;dd=0d0
@@ -64,5 +64,10 @@ else
  if(QOutMtxUnsDmCp(d,cell)>1d-7)native=QOutMtxUnsDmCp(d,cell)*(1d0/delta-dsfac/sfac-dk/k(cell))
 end if
 if(abs(pu-raw*overlap/span)>256d0*epsilon(1d0)*max(abs(pu),abs(raw*overlap/span),tiny(1d0)))return
-du0=der*overlap/span-raw/span*g0;du1=-raw/span*g1;valid=1d0
+if(overlap>=span)then
+ du0=der;du1=0d0
+else
+ du0=der*overlap/span-raw/span*g0;du1=-raw/span*g1
+end if
+valid=1d0
 end subroutine

@@ -1,0 +1,7 @@
+{
+  "opt": "O2",
+  "status": "FAILED",
+  "models_launched": 0,
+  "error": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-macro-complete01\\tests\\macro_complete01\\build_constraint_budget_probe.py\", line 11, in <module>\n    p=out/'macro_stock_rank2.f90';s=p.read_text().replace('\\r\\n','\\n');s=replace(s,'if(valid/=1d0)return','if(valid/=1d0)return\\ncall observe_constraint_budget(n,cm)');s+='\\n'+Path(__file__).with_name('constraint_budget_probe.f90').read_text();p.write_text(s)\n                                                                         ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-macro-complete01\\app\\hybrid_water\\donor_sources.py\", line 9, in replace\n    raise ValueError(f\"Expected a unique donor anchor: {anchor!r}\")\nValueError: Expected a unique donor anchor: 'if(valid/=1d0)return'\n",
+  "seconds": 0.35752359963953495
+}

@@ -1,0 +1,36 @@
+{
+  "opt": "O2",
+  "start": 21,
+  "end": 23,
+  "status": "STOPPED_AT_MODEL_REFUSAL_OR_CAP",
+  "pid": 17908,
+  "routes": [
+    {
+      "day": 21,
+      "returncode": 0,
+      "wall_seconds": 7.016847599763423,
+      "stdout": "{\"status\": \"OWN_RESTART_WINDOW_COMPLETE\", \"elapsed_seconds\": 6.218622399959713, \"requested_day\": 21}\n",
+      "stderr": "",
+      "status": "OWN_RESTART_WINDOW_COMPLETE",
+      "model_route_seconds": 6.218622399959713
+    },
+    {
+      "day": 22,
+      "returncode": 0,
+      "wall_seconds": 6.945623999927193,
+      "stdout": "{\"status\": \"OWN_RESTART_WINDOW_COMPLETE\", \"elapsed_seconds\": 5.861025599762797, \"requested_day\": 22}\n",
+      "stderr": "",
+      "status": "OWN_RESTART_WINDOW_COMPLETE",
+      "model_route_seconds": 5.861025599762797
+    },
+    {
+      "day": 23,
+      "returncode": 2,
+      "wall_seconds": 21.210783100221306,
+      "stdout": "{\"status\": \"MODEL_CAP_REACHED\", \"elapsed_seconds\": 20.11973140016198, \"requested_day\": 23}\n",
+      "stderr": "",
+      "status": "MODEL_CAP_REACHED",
+      "model_route_seconds": 20.11973140016198
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "label": "ORDINARY_V27_OWN24TO25",
+  "scope": "Actual retained constrained-domain plus contact-row linear systems and inventory derivative only; no independent contact-law finite-difference or full-period claim",
+  "results": [
+    {
+      "opt": "O0",
+      "systems": 64,
+      "negative_contact_cell_systems": 0,
+      "active_contact_domain_rows": 0,
+      "partial_domain_counts": {
+        "2": 46
+      },
+      "branches": {
+        "V": 46
+      },
+      "active_surface_derivatives": 0,
+      "max_linear_residual": 3.0531133177191805e-16,
+      "max_inventory_derivative_error": 1.6756394546121004e-15
+    },
+    {
+      "opt": "O2",
+      "systems": 64,
+      "negative_contact_cell_systems": 0,
+      "active_contact_domain_rows": 0,
+      "partial_domain_counts": {
+        "2": 46
+      },
+      "branches": {
+        "V": 46
+      },
+      "active_surface_derivatives": 0,
+      "max_linear_residual": 3.0531133177191805e-16,
+      "max_inventory_derivative_error": 1.6756394546121004e-15
+    }
+  ],
+  "models_launched": 0
+}

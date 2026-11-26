@@ -9,12 +9,12 @@ def render_head(source):
       use MOD_macropore,only:NumDm,ICpTpSatZon
       integer,save::mask=0,tu=0
       integer::kind,cell,upper,lower,col,jj,side,e,cols(3),rep
-      real(8)::uu(macp,madm+1),vv(macp,madm+1),meta(16),bl,bd,hs(macp),ts(macp),ks(macp),kms(macp+1),gs(macp+1),fs(macp)
+      real(8)::uu(macp,madm+1),vv(macp,madm+1),meta(16),bl,bd,diag_extra(macp),hs(macp),ts(macp),ks(macp),kms(macp+1),gs(macp+1),fs(macp)
       real(8)::Jcol(macp),qplus(macp),qminus(macp),qplus2(macp),qminus2(macp),eps,pdelta,native(macp)
       logical::eligible
       character(40)::tag
       if(mask==7)return
-      call jac37_terms(NN,uu,vv,bl,bd,meta,eligible)
+      call jac37_terms(NN,uu,vv,bl,bd,diag_extra,meta,eligible)
       if(.not.eligible)return
       cell=ICpTpSatZon;upper=cell-1;lower=cell
       kind=3
@@ -37,7 +37,7 @@ def render_head(source):
       do jj=1,3
          col=cols(jj);eps=min(1d-5*max(1d0,abs(hs(col))),.1d0*abs(hs(col)))
          if(eps<=1d-12)cycle
-         Jcol(1:NN)=0d0;Jcol(col)=native(col)
+         Jcol(1:NN)=0d0;Jcol(col)=native(col)+diag_extra(col)
          Jcol(1:NN)=Jcol(1:NN)+matmul(uu(1:NN,1:NumDm+1),vv(col,1:NumDm+1))
          if(col==cell-1)Jcol(cell)=Jcol(cell)+bl
          if(col==cell)Jcol(cell)=Jcol(cell)+bd

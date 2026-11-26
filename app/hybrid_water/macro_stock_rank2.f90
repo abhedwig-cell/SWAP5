@@ -1,5 +1,5 @@
 ! Native current-cell saturated stock and main inflow geometry derivatives.
-subroutine jac37_terms(n,uu,vv,bl,bd,meta,eligible)
+subroutine jac37_terms(n,uu,vv,bl,bd,diag_extra,meta,eligible)
 use MOD_top,only:macro_top_lateral_gradient
 use MOD_arrays,only:macp,madm
 use MOD_grid,only:numnod,z,dz
@@ -9,12 +9,13 @@ use MOD_swap_mp,only:swmbf,IcTopMp,IDecMpRat,GwlFlCpZo
 use variables,only:h,theta,thetas,pegwl,dt,t1900,numbit
 implicit none
 integer,intent(in)::n
-real(8),intent(out)::uu(macp,madm+1),vv(macp,madm+1),bl,bd,meta(16)
+real(8),intent(out)::uu(macp,madm+1),vv(macp,madm+1),bl,bd,diag_extra(macp),meta(16)
 logical,intent(out)::eligible
 real(8)::cm(24,madm),pot(macp,madm),pu(macp,madm),valid,den,g,g0,g1,depth,hm,delta,doo,rhoslope,cg,fr,dq,qp,latvalid,dI(macp),proof_base(macp),proof_meta(10),ct0(madm),ct1(madm),nativeU(madm),du0,du1,contact_valid,contactD1(2),upperIn(macp),dUpperIn(macp),upperValid,frIn1,upperG0,upperG1,upperBase(macp),dUpperOut(macp),upperContact(macp),lowerPS(macp),lowerPU(macp),lowerDL(macp),lowerL,lowerO,lowerF
+real(8)::ordinary_base(macp,madm),ordinary_native
 integer::d,k,i,cell,upper,lower
 integer,save::proof_count=0,proof_unit,upper_count=0,upper_unit,lower_count=0,lower_unit
-uu=0d0;vv=0d0;bl=0d0;bd=0d0;meta=0d0;eligible=.false.;meta(1)=-1
+uu=0d0;vv=0d0;bl=0d0;bd=0d0;diag_extra=0d0;ordinary_base=0d0;meta=0d0;eligible=.false.;meta(1)=-1
 if(n/=numnod.or.n<2.or.NumDm<3.or.swmbf/=1.or.IcTopMp/=1.or.IDecMpRat/=0.or.FrReduQ/=1d0)return
 call macro_saturated_data(cm,pot,pu,valid);meta(15)=valid;meta(1)=-2
 if(valid/=1d0)return
@@ -60,6 +61,7 @@ if(h(cell)<0d0)then
  vv(upper,NumDm+1)=contactD1(1);vv(lower,NumDm+1)=contactD1(2)
  uu(cell,NumDm+1)=1d0
  do d=2,NumDm
+  if(cm(16,d)==0d0)cycle
   call macro_contact_cell_gradient(d,cell,g0,g1,pu(cell,d-1),du0,du1,nativeU(d),contact_valid)
   if(contact_valid/=1d0)return
   ct0(d)=-cm(16,d)*du0/dt-nativeU(d);ct1(d)=-cm(16,d)*du1/dt
@@ -82,7 +84,7 @@ do d=2,NumDm
  if(cm(4,d)==cm(1,d).and.d<=3)meta(d+5)=1d0
  if(fr==0d0.or.fr==1d0)cycle
  if(cm(6,d)<=0d0.or.cm(15,d)/=0d0)return
- if(any(pu(1:cell-1,d-1)/=0d0).or.any(pu(cell+1:n,d-1)/=0d0))return
+ if(any(pu(cell+1:n,d-1)/=0d0))return
  if(abs(sum(pot(1:n,d-1))+sum(pu(1:n,d-1))-cm(6,d))>128d0*epsilon(1d0)*max(abs(cm(6,d)),tiny(1d0)))return
  dI=0d0
  if(cm(10,d)>0d0)then
@@ -106,6 +108,14 @@ do d=2,NumDm
   if(contact_valid/=1d0)return
   dI(upper)=dI(upper)-fr*du0;dI(lower)=dI(lower)-fr*du1
  end if
+ do i=1,cell-1
+  if(pu(i,d-1)<=0d0)cycle
+  call macro_contact_cell_gradient(d,i,0d0,0d0,pu(i,d-1),du0,du1,ordinary_native,contact_valid)
+  if(contact_valid/=1d0.or.du1/=0d0)return
+  dI(i)=dI(i)-fr*du0
+  ordinary_base(i,d)=-fr*du0/dt
+  diag_extra(i)=diag_extra(i)+ordinary_base(i,d)-ordinary_native
+ end do
  vv(1:n,k)=dI(1:n)/cm(6,d)
  if(cm(17,d)/cm(21,d)<=1d-7.or.cm(6,d)<=cm(17,d))return
  do i=1,n
@@ -125,7 +135,7 @@ end do
 if(frIn1>0d0.and.frIn1<1d0)then
  if(cm(5,1)<=0d0.or.cm(3,1)/=cm(4,1).or.any(cm(9:11,1)/=0d0))return
  if(abs(cm(6,1)-sum(cm(13:15,1)))>128d0*epsilon(1d0)*max(cm(6,1),tiny(1d0)))return
- if(any(QOutMtxUnsDmCp(1,1:cell-1)/=0d0).or.any(QOutMtxUnsDmCp(1,cell+1:n)/=0d0))return
+ if(any(QOutMtxUnsDmCp(1,cell+1:n)/=0d0))return
  if(cm(5,1)/=cm(12,1).or.cm(5,1)/dt<=1d-7)return
  if(cm(7,1)<=cm(3,1)+1d-7)return
  if(abs(frIn1-(cm(3,1)-cm(1,1)+cm(6,1))/cm(5,1))>256d0*epsilon(1d0)* &
@@ -162,6 +172,14 @@ if(frIn1>0d0.and.frIn1<1d0)then
   dUpperIn(upper)=dUpperIn(upper)+upperIn(cell)/depth*g0
   dUpperIn(lower)=dUpperIn(lower)+upperIn(cell)/depth*g1
  end if
+ do i=1,cell-1
+  if(QOutMtxUnsDmCp(1,i)<=0d0)cycle
+  call macro_contact_cell_gradient(1,i,0d0,0d0,dt*QOutMtxUnsDmCp(1,i),du0,du1,ordinary_native,contact_valid)
+  if(contact_valid/=1d0.or.du1/=0d0)return
+  dUpperOut(i)=dUpperOut(i)+du0
+  upperBase(i)=upperBase(i)-du0/dt
+  diag_extra(i)=diag_extra(i)-du0/dt-ordinary_native
+ end do
  uu(1:n,1)=upperIn(1:n)/dt
  vv(1:n,1)=(dUpperOut(1:n)-frIn1*dUpperIn(1:n))/cm(5,1)
  vv(upper,1)=vv(upper,1)+cm(18,1)*g0/cm(5,1)
@@ -182,7 +200,7 @@ if(frIn1==1d0.and.lowerF>0d0.and.lowerF<1d0)then
  if(cm(11,1)/=0d0.or.any(QInIntSatDmCp(1,1:n)/=0d0))return
  if(abs(cm(5,1)-sum(cm(9:12,1)))>128d0*epsilon(1d0)*max(cm(5,1),tiny(1d0)))return
  if(abs(lowerO-sum(cm(13:15,1)))>128d0*epsilon(1d0)*max(lowerO,tiny(1d0)))return
- if(any(QOutMtxUnsDmCp(1,1:cell-1)/=0d0).or.any(QOutMtxUnsDmCp(1,cell+1:n)/=0d0))return
+ if(any(QOutMtxUnsDmCp(1,cell+1:n)/=0d0))return
  if(thetas(cell)-theta(cell)>1d-6)return
  call macro_upper1_data(upperIn,upperValid)
  if(upperValid/=1d0)return
@@ -224,6 +242,14 @@ if(frIn1==1d0.and.lowerF>0d0.and.lowerF<1d0)then
   upperBase(cell)=upperBase(cell)+nativeU(1)
   upperContact(upper)=contactD1(1);upperContact(lower)=contactD1(2)
  end if
+ do i=1,cell-1
+  if(lowerPU(i)<=0d0)cycle
+  call macro_contact_cell_gradient(1,i,0d0,0d0,lowerPU(i),du0,du1,ordinary_native,contact_valid)
+  if(contact_valid/=1d0.or.du1/=0d0)return
+  dUpperOut(i)=dUpperOut(i)+du0
+  upperBase(i)=upperBase(i)-lowerF*du0/dt
+  diag_extra(i)=diag_extra(i)-lowerF*du0/dt-ordinary_native
+ end do
  if(lowerL==cm(4,1).and.cm(4,1)<=cm(1,1)+128d0*epsilon(1d0)*max(abs(cm(4,1)),abs(cm(1,1)),tiny(1d0)))then
   lowerDL(upper)=cm(18,1)*g0;lowerDL(lower)=cm(18,1)*g1
  else if(lowerL/=cm(1,1).and.lowerL>=min(cm(4,1),cm(1,1)))then
@@ -259,6 +285,7 @@ if(proof_count<=64)then
    delta=hm-h(i)
    if(abs(delta)>1d-14)proof_base(i)=(QOutMtxSatDmCp(d,i)-QInMtxSatDmCp(d,i))/delta
   end do
+  proof_base=proof_base+ordinary_base(:,d)
   proof_base(cell)=proof_base(cell)+nativeU(d)
   write(proof_unit,*)proof_base(1:n)
  end do
@@ -276,15 +303,15 @@ real(8),intent(in)::a(n),b(n),c(n),r(n)
 real(8),intent(out)::x(n)
 integer,intent(out)::ierror
 logical,intent(out)::handled
-real(8)::uu(macp,madm+1),vv(macp,madm+1),meta(16),bl,bd,aa(n),bb(n),zz(n,madm+1),M(madm+1,madm+1),rhs(madm+1),lam(madm+1),res(n)
+real(8)::uu(macp,madm+1),vv(macp,madm+1),meta(16),bl,bd,diag_extra(macp),aa(n),bb(n),zz(n,madm+1),M(madm+1,madm+1),rhs(madm+1),lam(madm+1),res(n)
 real(8)::aug(madm+1,madm+2),row(madm+2),pivot,factor
 integer::k,i,e,cell,nr,j,ip
 logical,save::opened=.false.
 integer,save::tu,systems_unit=0,active_count=0
-call jac37_terms(n,uu,vv,bl,bd,meta,handled)
+call jac37_terms(n,uu,vv,bl,bd,diag_extra,meta,handled)
 M=0d0;lam=0d0;res=-1d0;nr=NumDm+1
 if(handled) then
- cell=int(meta(14));aa=a;bb=b;aa(cell)=aa(cell)+bl;bb(cell)=bb(cell)+bd
+ cell=int(meta(14));aa=a;bb=b+diag_extra(1:n);aa(cell)=aa(cell)+bl;bb(cell)=bb(cell)+bd
  call tridag(n,aa,bb,c,r,x,ierror)
  if(ierror/=0)error stop 'Saturated multi-domain base solve failed'
  zz=0d0
