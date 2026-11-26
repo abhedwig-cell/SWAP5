@@ -1,0 +1,17 @@
+{
+  "status": "GENUINE_ORIGINAL_SWVAPOR_SCALAR_REFUSALS_ZERO_MODEL_DAYS_PRESERVED_AND_PUBLIC_INPUT_GRAMMAR_NARROWED",
+  "actual_failed_source": "dd7596685c91074789ab56e9a3ecb3d4a4ef4b4c",
+  "original_source": "J original readswap/RDFINR strictly requires numlay array values for SWVAPOR",
+  "original_error": "INTEGER array SWVAPOR; precisely2 values; data variable is scalar",
+  "attempts": 2,
+  "optimizations": [
+    "O0",
+    "O2"
+  ],
+  "accepted_model_days": 0,
+  "physical_equations_changed": false,
+  "new_guard": "SWVAPOR vector length must equal original ISOILLAY physical-layer count; scalar IHWCKMODEL replication remains separate",
+  "raw_archive": "FROST_ANALYTICAL_COMPOSITION09_LOCAL_WINDOWS_O0_O2_RAW_V1",
+  "raw_sha256": "7cb587035b9194fcf5d550931a455781c4f6cfebeb0c884cf7bebc206967bfc5",
+  "previous_model7_70days_replayed": false
+}

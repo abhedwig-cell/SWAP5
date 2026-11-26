@@ -1,0 +1,168 @@
+{
+  "status": "IMPLEMENTED_PERSISTENCE_AND_FIRST_PUBLIC_QUALIFICATION_PENDING",
+  "actual_canonical_parent": "f3faeaa540e7fd81686802414d53ff6686f3ce7b",
+  "actual_metadata_source": "e5a0c50460de8f7839d6accf76161bb79afaa1fc",
+  "classification": "B_COMPOSITION_OF_EXISTING_UNCHANGED_PROCESSES",
+  "files": {
+    "app/hybrid_water/frost_undrained_state.py": {
+      "before_lf_sha256": "f6726e7bb8687e643e541412c9f456597e2389377032241a61e5cc978b1b3739",
+      "proposed_lf_sha256": "c912be4c44f7f7a0316b912e921d653b56873fab1bbece0e953a37d9d27cb563",
+      "ordered_literal_edits": [
+        {
+          "base_start": 2167,
+          "base_end": 2167,
+          "before": "",
+          "after": ":return"
+        },
+        {
+          "base_start": 2168,
+          "base_end": 2168,
+          "before": "",
+          "after": "N"
+        },
+        {
+          "base_start": 2169,
+          "base_end": 2170,
+          "before": "r",
+          "after": "ne\n    analytical=None\n    if"
+        },
+        {
+          "base_start": 2238,
+          "base_end": 2238,
+          "before": "",
+          "after": " is None:\n        from frost_analytical_composition import model_domain\n        analytical=model_domain(active,values)\n        if analytical"
+        },
+        {
+          "base_start": 2387,
+          "base_end": 2387,
+          "before": "",
+          "after": "sul"
+        },
+        {
+          "base_start": 2388,
+          "base_end": 2392,
+          "before": "urn ",
+          "after": "="
+        },
+        {
+          "base_start": 2983,
+          "base_end": 2983,
+          "before": "",
+          "after": "    if analytical is not None:\n        from frost_analytical_composition import POLICY as analytical_policy\n        result.update(analytical_frost_models=analytical,policy=analytical_policy)\n    return result\n"
+        },
+        {
+          "base_start": 3328,
+          "base_end": 3328,
+          "before": "",
+          "after": ")\n    if item.get('analytical_frost_models'):\n        from frost_analytical_composition import codec as analytical_codec\n        return analytical_codec(item"
+        },
+        {
+          "base_start": 4881,
+          "base_end": 4881,
+          "before": "",
+          "after": ".get('analytical_frost_models'):\n        from frost_analytical_composition import metadata as analytical_metadata\n        domain=analytical_metadata(item)\n        result.update(policy=item['policy'],analytical_frost_models=item['analytical_frost_models'],analytical_frost_native=domain)\n        result['providers'].update(domain['providers'])\n    if item"
+        },
+        {
+          "base_start": 6257,
+          "base_end": 6257,
+          "before": "",
+          "after": "    from frost_analytical_composition import validate as analytical_validate\n    analytical_validate(bundle,project)\n"
+        }
+      ]
+    },
+    "app/hybrid_water/frost_calendar_output.py": {
+      "before_lf_sha256": "f17d83e938843e4614eecba0ef7e2ee3d76d3a435ca688ed9b7c1efa14d887e5",
+      "proposed_lf_sha256": "53925746b73017f6d6c9a32b174c83f83a087f20ffd1e5308be6a7b25df2ece7",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1910,
+          "base_end": 1910,
+          "before": "",
+          "after": "**({'analytical_frost_models':selected['analytical_frost_models']} if selected.get('analytical_frost_models') else {}),"
+        },
+        {
+          "base_start": 3812,
+          "base_end": 3812,
+          "before": "",
+          "after": "']\n    if boundary.get('analytical_frost_models'):providers+=['frost_analytical_composition.py','frost_analytical_native.f90"
+        },
+        {
+          "base_start": 6371,
+          "base_end": 6371,
+          "before": "",
+          "after": "from frost_analytical_composition import render_macro as analytical_macro\n    "
+        },
+        {
+          "base_start": 6378,
+          "base_end": 6378,
+          "before": "",
+          "after": "analytical_macro("
+        },
+        {
+          "base_start": 6382,
+          "base_end": 6382,
+          "before": "",
+          "after": ",project)"
+        },
+        {
+          "base_start": 9500,
+          "base_end": 9500,
+          "before": "",
+          "after": "from frost_analytical_composition import write_provider as analytical_provider\n    analytical_provider(output,project)\n    "
+        }
+      ]
+    },
+    "app/hybrid_water/model7_capacity.py": {
+      "before_lf_sha256": "5a6f227b46acdda14cc5642aff5164a8c48e8afc212317dd1b459f1f8c2acb54",
+      "proposed_lf_sha256": "0417a863d027d3dc17ecb78d11a22dcd15c57de29afcc8de042660638f6b4a7a",
+      "ordered_literal_edits": [
+        {
+          "base_start": 330,
+          "base_end": 330,
+          "before": "",
+          "after": "\n    from frost_analytical_composition import selected as analytical_frost\n    composed=analytical_frost(project)\n    if composed is not None:return tuple(composed['analytical_frost_models'])"
+        }
+      ]
+    },
+    "app/hybrid_water/daily_coupling.py": {
+      "before_lf_sha256": "e6a9a76422abfecedb1c5fc38230b2d5a4bd183695786d10e471b4a445d4a429",
+      "proposed_lf_sha256": "35801f3363d4b098ed028d2321f883c6a3a72417929950b582d1d023314259e4",
+      "ordered_literal_edits": [
+        {
+          "base_start": 49332,
+          "base_end": 49332,
+          "before": "",
+          "after": "(self.meta['identity'].get('frost_drainage_composition') or {}).get('analytical_frost_models'):\n                from frost_analytical_composition import validate_candidate as validate_analytical_frost\n                validate_analytical_frost((ready/'macro.bin').read_bytes(),self.project)\n            if "
+        },
+        {
+          "base_start": 53761,
+          "base_end": 53761,
+          "before": "",
+          "after": "if (self.meta['identity'].get('frost_drainage_composition') or {}).get('analytical_frost_models'):\n            from frost_analytical_composition import validate_candidate as validate_analytical_frost\n            validate_analytical_frost((ready/'macro.bin').read_bytes(),self.project)\n        "
+        }
+      ]
+    },
+    "app/hybrid_water/frost_analytical_composition.py": {
+      "added": true,
+      "proposed_lf_sha256": "fd48a48ff7672ccea7248550b88f194c80369551cb37ea8904797dfceb84a540"
+    },
+    "app/hybrid_water/frost_analytical_native.f90": {
+      "added": true,
+      "proposed_lf_sha256": "9cfb1223e0e09c41fc4039d914843aebcab3d2ef06bc4a5cac7fd752a8f8a97d"
+    }
+  },
+  "physical_implementations": "UNCHANGED_ORIGINAL_ANALYTICAL_AND_QUALIFIED_MODEL7_CAPACITY_FROST_BOUNDARY_CALENDAR_CDE",
+  "native_header_version": 2,
+  "native_header": "version,nodes,layers,solute,bottom,effective_per_layer_models; duplicated",
+  "native_codecs": [
+    "S5UAW001",
+    "S5UAC001"
+  ],
+  "no_active_vapor": true,
+  "no_implicit_or_hysteresis": true,
+  "new_physical_state": false,
+  "physical_equations_changed": false,
+  "mass_or_convergence_limits_changed": false,
+  "canonical_admission": false,
+  "new_qualified_contexts": 0
+}

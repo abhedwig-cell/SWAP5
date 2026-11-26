@@ -735,6 +735,9 @@ class CoupledDailyColumn:
             candidate = trial / f"accepted-column-1-day-{raw['day']}.zip"
             ready = trial / 'verified-candidate'
             checked = h.verify_checkpoint(candidate, self._day+1, host.binding, ready)
+            if (self.meta['identity'].get('frost_drainage_composition') or {}).get('analytical_frost_models'):
+                from frost_analytical_composition import validate_candidate as validate_analytical_frost
+                validate_analytical_frost((ready/'macro.bin').read_bytes(),self.project)
             if self.project.solute:
                 # Current nonmacro codec: same strict state domain as the real
                 # original consumer, checked BEFORE external publication.
@@ -798,6 +801,9 @@ class CoupledDailyColumn:
         if h.sha(candidate) != digest:
             raise ValueError('Private proposal changed')
         # Verify the bytes actually being published, not only the retained ZIP.
+        if (self.meta['identity'].get('frost_drainage_composition') or {}).get('analytical_frost_models'):
+            from frost_analytical_composition import validate_candidate as validate_analytical_frost
+            validate_analytical_frost((ready/'macro.bin').read_bytes(),self.project)
         from extended_drainage import enabled as extended_enabled,validate_candidate as validate_extended
         if extended_enabled(self.project):validate_extended((ready/'macro.bin').read_bytes(),raw,self.project)
 

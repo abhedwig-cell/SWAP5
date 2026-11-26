@@ -32,7 +32,7 @@ def selection(project):
     fmt=one('SWCSV',0);precision=one('NUM_DECIMALS',5) if fmt else None
     if fmt not in (0,1,2,3) or precision is not None and not 5<=precision<=12:
         raise ValueError('Invalid original Frost calendar output format/precision')
-    return dict(thermal_output=True,thermal_calendar=True,frost_calendar=True,
+    return dict(**({'analytical_frost_models':selected['analytical_frost_models']} if selected.get('analytical_frost_models') else {}),thermal_output=True,thermal_calendar=True,frost_calendar=True,
         cde_interval_output=bool(project.solute),kind=selected['kind'],swsnow=1,swhea=1,swcalt=2,
         swfrost=1,swdra=selected.get('drainage',1),swhyst=selected['hysteresis'],swcsv=fmt,nprintday=1,
         swmonth=selected['swmonth'],swodat=selected['swodat'],swres=selected['swres'],
@@ -61,6 +61,7 @@ def metadata(project):
                'frost_calendar_terminal_water.py']
     if boundary.get('boundary_state_calendar'):providers+=['frost_boundary_state_calendar.py','frost_boundary_composition.py']
     if boundary.get('undrained_frost'):providers+=['frost_undrained_state.py','frost_undrained_terminal_water.py']
+    if boundary.get('analytical_frost_models'):providers+=['frost_analytical_composition.py','frost_analytical_native.f90']
     from frost_implicit_plate_calendar import selected as implicit_plate_water
     if implicit_plate_water(project):providers.append('frost_implicit_plate_calendar.py')
     providers.append('cde_interval_snow_state.f90' if project.solute else SNOW_PROVIDER+'.f90')
@@ -94,7 +95,8 @@ def render_macro(source,project):
     for flag in ('.true.','.false.'):
         anchor='        call hybrid_output_calendar_checkpoint(unit,'+flag+')';assert text.count(anchor)==1
         text=text.replace(anchor,'        call snow_output_calendar_checkpoint(unit,'+flag+')\n'+anchor,1)
-    return text
+    from frost_analytical_composition import render_macro as analytical_macro
+    return analytical_macro(text,project)
 
 
 def apply_build(output,donor_build,project,patched):
@@ -134,6 +136,8 @@ def apply_build(output,donor_build,project,patched):
     anchor='         call hybrid_apply_wofost(fl_cropemergence)';assert text.count(anchor)==1
     path.write_text(text.replace(anchor,anchor+'\n         call hybrid_output_crop_apply()',1),encoding='cp1252')
     path=output/'macropore.f90';path.write_text(render_macro(path.read_text(encoding='cp1252'),project),encoding='cp1252')
+    from frost_analytical_composition import write_provider as analytical_provider
+    analytical_provider(output,project)
     path=output/'swap_main.f90';text=path.read_text(encoding='cp1252');anchor='use MOD_grid, only: numnod';assert text.count(anchor)==1
     imports='\nuse MOD_integral,only:hybrid_output_calendar_apply\nuse hybrid_thermal_output_snow_calendar_state,only:snow_output_calendar_apply'
     calls='\n   call hybrid_output_calendar_apply()\n   call snow_output_calendar_apply()'

@@ -1,0 +1,19 @@
+{
+  "status": "TWO_VALID_MODEL11_YEAR_PRIMARIES_PASS_ORIGINAL_PRESTART_DATE_POINTER_COLD_REFUSALS_PRESERVED_GUARD_COMPOSITION_REQUIRED",
+  "actual_failed_cold_source": "b57134372c66c10ada81e2ca580306855ef4fe46",
+  "original_primary_days": 24,
+  "original_cold_model_days": 0,
+  "optimizations": [
+    "O0",
+    "O2"
+  ],
+  "original_error": "Inconsistent original interval date pointer",
+  "cause": "The existing qualified implicit-water pending-prestart-date validator was not selected for the new explicit analytical-water domain. Original actual pending ioutdatint=1 must remain1 even when configured initial dates precede immutable TSTART.",
+  "repair": "Select the exact already-qualified pending-date guard for bounded analytical water; do not assign any date/index or alter mass/convergence/physical equations.",
+  "raw_archive": "FROST_ANALYTICAL_COMPOSITION09_LOCAL_WINDOWS_O0_O2_RAW_V2",
+  "raw_sha256": "f7abdab487b9c52acf09811be8352dc3525b5c80e249dade5d287b6984adb9c5",
+  "model7_periods_replayed": 0,
+  "model7_current_same_compiler_postimages": 2,
+  "model7_current_whole_objects": 54,
+  "new_year_requalification_selected": "Fresh current12day native-bound checkpoint/cold probes are needed because this restart-owner guard dependency changes; original warm outputs remain distinct and retained."
+}

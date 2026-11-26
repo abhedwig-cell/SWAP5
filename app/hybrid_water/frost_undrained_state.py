@@ -35,16 +35,25 @@ def selection(directory,original_output=True):
     if re.search(r'(?i)\bSWAP_SOILS_DB\b',active):return None
     models=re.findall(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[ \t]*([^\r\n]*)',active)
     rest=re.sub(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[^\r\n]*','',active)
-    if re.search(r'(?i)\bIHWCKMODEL\b',rest) or len(models)>1 or models and re.fullmatch(r'\+?0*1(?:[ \t]+\+?0*1)*[ \t]*',models[0]) is None:return None
+    if re.search(r'(?i)\bIHWCKMODEL\b',rest) or len(models)>1:return None
+    analytical=None
+    if models and re.fullmatch(r'\+?0*1(?:[ \t]+\+?0*1)*[ \t]*',models[0]) is None:
+        from frost_analytical_composition import model_domain
+        analytical=model_domain(active,values)
+        if analytical is None:return None
     monthly=values['SWMONTH']
     calendar=monthly!=0 or values['SWODAT']!=0 or values['PERIOD']!=1 or values['SWRES']!=1
-    return dict(undrained_frost=True,boundary_state_calendar=True,frost_calendar=True,
+    result=dict(undrained_frost=True,boundary_state_calendar=True,frost_calendar=True,
                 dense_daily_requested=not calendar,policy=POLICY,bottom=values['SWBOTB'],
                 kind='cde' if values['SWSOLU'] else 'water',implicit=values['SWKIMPL'],
                 hysteresis=values['SWHYST'],initial=values['SWINCO'],drainage=0,
                 swmonth=monthly,swodat=0 if monthly else values['SWODAT'],
                 swres=0 if monthly else values['SWRES'],requested_period=0 if monthly else values['PERIOD'],
                 physical_equations_changed=False,requires_divdra=False)
+    if analytical is not None:
+        from frost_analytical_composition import POLICY as analytical_policy
+        result.update(analytical_frost_models=analytical,policy=analytical_policy)
+    return result
 
 
 def selected(project):
@@ -54,6 +63,9 @@ def selected(project):
 
 def codec(item):
     if not item.get('undrained_frost') or item.get('drainage')!=0:raise ValueError('Foreign undrained Frost codec domain')
+    if item.get('analytical_frost_models'):
+        from frost_analytical_composition import codec as analytical_codec
+        return analytical_codec(item)
     return {('water',0):b'S5UDW001',('cde',0):b'S5UDC001',
             ('water',1):b'S5UDW002',('cde',1):b'S5UDC002'}[(item['kind'],item['implicit'])]
 
@@ -78,6 +90,11 @@ def metadata(project):
                 new_physical_state=False,physical_equations_changed=False,
                 boundary_composition=item,
                 chemical_positive_mass_policy='original-cde-preserve-positive-cell-mass-v1' if project.solute else None)
+    if item.get('analytical_frost_models'):
+        from frost_analytical_composition import metadata as analytical_metadata
+        domain=analytical_metadata(item)
+        result.update(policy=item['policy'],analytical_frost_models=item['analytical_frost_models'],analytical_frost_native=domain)
+        result['providers'].update(domain['providers'])
     if item['implicit']:
         from implicit_frost_root_state import metadata as root_metadata
         result['root_diagnostic_carry']=root_metadata(project)
@@ -105,3 +122,5 @@ def validate(bundle,project,identity):
             raise ValueError('Foreign undrained Frost positive CDE cell-mass predicate')
     from implicit_frost_composition import validate as implicit_validate
     implicit_validate(bundle,project)
+    from frost_analytical_composition import validate as analytical_validate
+    analytical_validate(bundle,project)

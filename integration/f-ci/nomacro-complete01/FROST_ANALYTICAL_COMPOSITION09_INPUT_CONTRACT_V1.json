@@ -1,0 +1,272 @@
+{
+  "status": "PROPOSED_REPRESENTATIVE_ORIGINAL_ANALYTICAL_FROST_COMPOSITION_NOT_ADMITTED",
+  "actual_parent_candidate": "f3faeaa540e7fd81686802414d53ff6686f3ce7b",
+  "representative_cases": [
+    {
+      "name": "model3-water-b5-dense",
+      "models": [
+        3,
+        3
+      ],
+      "kind": "water",
+      "bottom": 5,
+      "initial": 1,
+      "calendar": "dense",
+      "reset": 1,
+      "start": null,
+      "days": 35,
+      "implicit": 0,
+      "hysteresis": 0,
+      "drainage": 0,
+      "explicit_oxygen": 1
+    },
+    {
+      "name": "model4-cde-b8-periodic",
+      "models": [
+        4,
+        4
+      ],
+      "kind": "cde",
+      "bottom": 8,
+      "initial": 2,
+      "calendar": "regular",
+      "reset": 1,
+      "start": null,
+      "days": 35,
+      "implicit": 0,
+      "hysteresis": 0,
+      "drainage": 0,
+      "explicit_oxygen": null
+    },
+    {
+      "name": "model5-water-b8-monthly",
+      "models": [
+        5,
+        5
+      ],
+      "kind": "water",
+      "bottom": 8,
+      "initial": 2,
+      "calendar": "monthly",
+      "reset": 0,
+      "start": null,
+      "days": 35,
+      "implicit": 0,
+      "hysteresis": 0,
+      "drainage": 0,
+      "explicit_oxygen": null
+    },
+    {
+      "name": "model6-cde-b5-dates",
+      "models": [
+        6,
+        6
+      ],
+      "kind": "cde",
+      "bottom": 5,
+      "initial": 1,
+      "calendar": "dates",
+      "reset": 1,
+      "start": null,
+      "days": 35,
+      "implicit": 0,
+      "hysteresis": 0,
+      "drainage": 0,
+      "explicit_oxygen": null
+    },
+    {
+      "name": "model7-cde-b8-dense",
+      "models": [
+        7,
+        7
+      ],
+      "kind": "cde",
+      "bottom": 8,
+      "initial": 1,
+      "calendar": "dense",
+      "reset": 1,
+      "start": null,
+      "days": 35,
+      "implicit": 0,
+      "hysteresis": 0,
+      "drainage": 0,
+      "explicit_oxygen": null
+    },
+    {
+      "name": "model8-water-b5-periodic",
+      "models": [
+        8,
+        8
+      ],
+      "kind": "water",
+      "bottom": 5,
+      "initial": 2,
+      "calendar": "regular",
+      "reset": 0,
+      "start": null,
+      "days": 35,
+      "implicit": 0,
+      "hysteresis": 0,
+      "drainage": 0,
+      "explicit_oxygen": null
+    },
+    {
+      "name": "model9-cde-b8-monthly",
+      "models": [
+        9,
+        9
+      ],
+      "kind": "cde",
+      "bottom": 8,
+      "initial": 1,
+      "calendar": "monthly",
+      "reset": 1,
+      "start": null,
+      "days": 35,
+      "implicit": 0,
+      "hysteresis": 0,
+      "drainage": 0,
+      "explicit_oxygen": null
+    },
+    {
+      "name": "model10-water-b8-dates",
+      "models": [
+        10,
+        10
+      ],
+      "kind": "water",
+      "bottom": 8,
+      "initial": 2,
+      "calendar": "dates",
+      "reset": 0,
+      "start": null,
+      "days": 35,
+      "implicit": 0,
+      "hysteresis": 0,
+      "drainage": 0,
+      "explicit_oxygen": null
+    },
+    {
+      "name": "model11-scalar-water-b8-dates-year",
+      "models": [
+        11
+      ],
+      "kind": "water",
+      "bottom": 8,
+      "initial": 2,
+      "calendar": "dates",
+      "reset": 0,
+      "start": "2002-12-25",
+      "days": 12,
+      "implicit": 0,
+      "hysteresis": 0,
+      "drainage": 0,
+      "explicit_oxygen": null
+    },
+    {
+      "name": "mixed7-3-cde-b5-dates-year",
+      "models": [
+        7,
+        3
+      ],
+      "kind": "cde",
+      "bottom": 5,
+      "initial": 1,
+      "calendar": "dates",
+      "reset": 1,
+      "start": "2002-12-25",
+      "days": 12,
+      "implicit": 0,
+      "hysteresis": 0,
+      "drainage": 0,
+      "explicit_oxygen": 1
+    },
+    {
+      "name": "mixed1-7-water-b5-monthly-year",
+      "models": [
+        1,
+        7
+      ],
+      "kind": "water",
+      "bottom": 5,
+      "initial": 2,
+      "calendar": "monthly",
+      "reset": 1,
+      "start": "2002-12-25",
+      "days": 12,
+      "implicit": 0,
+      "hysteresis": 0,
+      "drainage": 0,
+      "explicit_oxygen": null
+    },
+    {
+      "name": "mixed11-8-cde-b8-periodic-year",
+      "models": [
+        11,
+        8
+      ],
+      "kind": "cde",
+      "bottom": 8,
+      "initial": 1,
+      "calendar": "regular",
+      "reset": 0,
+      "start": "2002-12-25",
+      "days": 12,
+      "implicit": 0,
+      "hysteresis": 0,
+      "drainage": 0,
+      "explicit_oxygen": null
+    }
+  ],
+  "new_physical_equations": false,
+  "unchanged_mass_guard_cm": 1e-10,
+  "scientific_claim": "Representative integrated existing constitutive/Frost/Snow/output/native compositions only; no complete family claim",
+  "hard_exclusions": [
+    "active vapor",
+    "implicit analytical Frost",
+    "analytical hysteresis",
+    "AGE",
+    "model2",
+    "model12",
+    "model3 oxygen2"
+  ],
+  "local_existing_evidence": [
+    "DD model7 O0/O2 70primary/14native/6cold",
+    "BC4 model11 O0/O2 24primary/8native/4cold"
+  ],
+  "selection": {
+    "local_cases": [
+      0,
+      9
+    ],
+    "local_optimizations": [
+      "O0",
+      "O2"
+    ],
+    "rationale": "Model3 original oxygen1 and mixed per-layer CDE year seam are new dependencies; old70day model7 periods and unchanged model11 periods not replayed",
+    "portable_cases": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "portable_profiles": [
+      "Windows/O0",
+      "Windows/O2",
+      "Ubuntu/O0",
+      "Ubuntu/O2"
+    ],
+    "expected_seconds_per_local_case": 180,
+    "expected_seconds_per_portable_profile": 1800,
+    "mandatory_controls": "Actual compiled thermal/calendar/Snow/CDE/model header attacks before HYBRID_READY; actual Snow transactions and active Frost transactions for short profiles",
+    "authority": "AGENTS.md independent local testability and execution protocol change-impact selection; COMPLETE01/ACCELERATE02 sections7..9; invariants3,4,7,13,21,23"
+  }
+}
