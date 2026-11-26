@@ -81,7 +81,7 @@ def render_macro(source):
       integer,save::contact_log=0''')
     body=replace(body,'      WaSrMp            = 0.d0', '''      if(swmbf==1.and.swabs==1)call macro_contact_take(accepted_delta,accepted_mask)
       WaSrMp            = 0.d0''')
-    needle='            ICpBtUnsMtxDm = min0(ICpBtDm(id),ICpTpSatZon-1)'
+    needle='           ICpBtUnsMtxDm = min0(ICpBtDm(id),ICpTpSatZon-1)'
     body=replace(body,needle,needle+'''
             if(swmbf==1.and.ICpTpSatZon<=NumNod)then
                if(h(ICpTpSatZon)<0d0)ICpBtUnsMtxDm=min0(ICpBtDm(id),ICpTpSatZon)
