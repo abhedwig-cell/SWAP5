@@ -1,0 +1,84 @@
+{
+  "decision": "FIELD_DARCY_TWO_DAY_AND_OWN_NATIVE_SCOPE_PASS_NEXT_KNOWN_NODE52_BLOCKER",
+  "results": [
+    {
+      "opt": "O0",
+      "windows": {
+        "COLD1": {
+          "status": "FRESH_WINDOW_COMPLETE",
+          "seconds": 7.7502292999997735,
+          "water": [
+            -5.49177320412935e-07
+          ]
+        },
+        "OWN1TO2": {
+          "status": "OWN_RESTART_WINDOW_COMPLETE",
+          "seconds": 2.386899800039828,
+          "water": [
+            -4.73811770945352e-08
+          ]
+        },
+        "COLD2": {
+          "status": "FRESH_WINDOW_COMPLETE",
+          "seconds": 2.8156425999477506,
+          "water": [
+            -5.49177320412935e-07,
+            -4.73811770945352e-08
+          ]
+        },
+        "OWN2TO3": {
+          "status": "FAILED",
+          "seconds": 2.1751226000487804,
+          "water": []
+        }
+      },
+      "own_native_vs_continuous_exact": true,
+      "day2_payload": {
+        "result.end": "b70833bdc991fc79e88b65cedb94d4b370fb76ed3f588b0691332bab98d7d3e0",
+        "macro.bin": "51ca725abb855158f5a4b37fea28c926f5eedab97752b1b5a0ba42744dd4128e"
+      }
+    },
+    {
+      "opt": "O2",
+      "windows": {
+        "COLD1": {
+          "status": "FRESH_WINDOW_COMPLETE",
+          "seconds": 7.698950200341642,
+          "water": [
+            -5.49177320412935e-07
+          ]
+        },
+        "OWN1TO2": {
+          "status": "OWN_RESTART_WINDOW_COMPLETE",
+          "seconds": 2.199481399729848,
+          "water": [
+            -4.73811770945352e-08
+          ]
+        },
+        "COLD2": {
+          "status": "FRESH_WINDOW_COMPLETE",
+          "seconds": 2.7092134999111295,
+          "water": [
+            -5.49177320412935e-07,
+            -4.73811770945352e-08
+          ]
+        },
+        "OWN2TO3": {
+          "status": "FAILED",
+          "seconds": 2.113665800075978,
+          "water": []
+        }
+      },
+      "own_native_vs_continuous_exact": true,
+      "day2_payload": {
+        "result.end": "b70833bdc991fc79e88b65cedb94d4b370fb76ed3f588b0691332bab98d7d3e0",
+        "macro.bin": "51ca725abb855158f5a4b37fea28c926f5eedab97752b1b5a0ba42744dd4128e"
+      }
+    }
+  ],
+  "optimization_scope": "kernel and touched owners O0/O2; unchanged original physics poolO2",
+  "mass_scope": "existing legacy host1e-6cm only, no modern1e-10 or full-period claim",
+  "full_migration": false,
+  "scientific_equivalence": "NOT_QUALIFIED",
+  "next": "Known DIAG19/NODE20 minimum-stock derivative; no exchange scaling accepted"
+}
