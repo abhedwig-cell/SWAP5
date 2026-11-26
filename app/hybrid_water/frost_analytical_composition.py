@@ -50,7 +50,7 @@ def native_source(item):
 
 def native_domain(raw,item,nodes):
     if raw[:8]!=codec(item):raise ValueError('Foreign analytical Frost native codec')
-    models=item['analytical_frost_models'];expected=[2,nodes,len(models),int(item['kind']=='cde'),item['bottom'],*models]
+    models=item['analytical_frost_models'];expected=[3,nodes,len(models),int(item['kind']=='cde'),item['bottom'],*models]
     header=struct.pack('<'+str(len(expected))+'i',*expected)
     if raw.count(header+header)!=1:raise ValueError('Foreign or incomplete original analytical Frost per-layer native model witness')
     return expected
