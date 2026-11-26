@@ -16,7 +16,7 @@ def source():
     raw=git('show','HEAD:'+P+'FROST_ANALYTICAL_COMPOSITION09_SOURCE_PROPOSAL_V3.json')
     contract=json.loads(raw)
     assert (R/P/'FROST_ANALYTICAL_COMPOSITION09_SOURCE_PROPOSAL_V3.json').read_bytes().replace(b'\r\n',b'\n')==raw
-    assert contract['actual_parent_candidate']==BASE
+    assert contract['actual_canonical_parent']==BASE
     assert set(git('diff','--name-only',BASE,'HEAD','--','app').decode().splitlines())==set(contract['files'])
     for path,item in contract['files'].items():
         actual=(R/path).read_bytes().replace(b'\r\n',b'\n')
