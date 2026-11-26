@@ -2,7 +2,7 @@
 import argparse,hashlib,json,math,re,shutil,struct,subprocess,sys
 from pathlib import Path
 R=Path(__file__).resolve().parents[2]
-sys.path[:0]=[str(R/'app/hybrid_water')]
+sys.path[:0]=[str(R/'app/hybrid_water'),str(R/'tests/nomacro_scheduled_subsurface')]
 from implicit_saturation_derivative import source as preceding_source
 from implicit_analytical_saturation import source as current_source
 from original_output_baseline import assignment
