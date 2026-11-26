@@ -26,7 +26,10 @@ def observe(folder,locations=None):
     inputs=Path(q['input_root']) if locations is None else locations(q['input_root'])
     b=json.loads((build/'BUILD.json').read_text());assert SHA((build/'BUILD.json').read_bytes())==q['actual_BUILD_sha256']
     for name,digest in b['identity']['donor_generated'].items():assert SHA((build/name).read_bytes())==digest
-    for role,name in [('donor','day_donor.exe'),('kernel','day_kernel.exe')]:assert SHA((build/name).read_bytes())==b['executable_sha256'][role]
+    for role in ['donor','kernel']:
+        names=[name for name in ['day_'+role,'day_'+role+'.exe'] if (build/name).is_file()]
+        assert len(names)==1,('Missing or ambiguous actual executable',role,names)
+        assert SHA((build/names[0]).read_bytes())==b['executable_sha256'][role]
     for name,digest in q['input_inventory']:assert SHA((inputs/name).read_bytes())==digest
     source=(inputs/'swap.swp').read_text(encoding='cp1252');active='\n'.join(line.split('!',1)[0] for line in source.splitlines() if not line.lstrip().startswith('*'))
     def integers(name):
