@@ -4,7 +4,7 @@ import sys,os,json,subprocess,time,re,traceback,shutil
 ROOT=Path(__file__).resolve().parents[2];R=ROOT/'integration/macro-complete01'
 os.environ['PATH']=r'C:\msys64\ucrt64\bin;C:\Program Files\Git\cmd;'+os.environ.get('PATH','');sys.path.insert(0,str(ROOT/'app/hybrid_water'))
 import macro_perched_classification as candidate
-res=json.loads((R/'RESOURCE_PATHS.json').read_text());ref=Path(res['O2']['path'])/'original-worker-reference';opt=sys.argv[1];b=Path(res[opt]['path'])/'PERCHED_COMPONENT';b.mkdir(exist_ok=False)
+res=json.loads((R/'RESOURCE_PATHS.json').read_text());ref=Path(res['O2']['path'])/'original-worker-reference';opt=sys.argv[1];b=Path(res[opt]['path'])/'PERCHED_COMPONENT_R1';b.mkdir(exist_ok=False)
 text=(ref/'distribution/SWAP_4.3.1/cases/3.macroporeflow/swap.swp').read_text();grid=[list(map(float,l.split())) for l in text[text.index(' ISUBLAY ISOILLAY HSUBLAY NCOMP'):].splitlines()[1:9]];soil=[list(map(float,l.split())) for l in text[text.index('  ORES  OSAT'):].splitlines()[1:9]]
 dz=[];sat=[]
 for sub,lay,ht,n in grid:
@@ -15,7 +15,7 @@ for i in range(0,len(lines),9):
  if h[0]=='3' and (h[3],h[13]) in [('59','2'),('60','4')]:
   v=list(map(float,lines[i+1].split()));cases.append(dict(gwl=float(h[6]),heads=v[:112],theta=v[112:224],perched=[int(h[17]),int(h[18])]))
 assert len(cases)==2 and len(dz)==112
-swbot=int(re.search(r'(?mi)^\s*SWBOTB\s*=\s*(\d+)',text).group(1));crit=float(re.search(r'(?mi)^\s*CRITUNDSATVOL\s*=\s*([\d.]+)',text).group(1))
+bbc=(ref/'distribution/SWAP_4.3.1/cases/3.macroporeflow/swap.bbc').read_text();swbot=int(re.search(r'(?mi)^\s*SWBOTB\s*=\s*(-?\d+)',bbc).group(1));crit=float(re.search(r'(?mi)^\s*CRITUNDSATVOL\s*=\s*([\d.]+)',text).group(1))
 context=f'112 {swbot} {crit}\n'+''.join(f'{a:.17g} {s:.17g}\n' for a,s in zip(dz,sat))+'2\n'+''.join(' '.join(format(v,'.17g') for v in c['heads']+c['theta'])+'\n' for c in cases)
 source=(ref/'build/swap-selected/calcgwl.f90').read_text();flags=['-'+opt,'-ffree-line-length-none','-fallow-argument-mismatch','-finit-local-zero']+(['-fcheck=all'] if opt=='O0' else [])
 q=dict(opt=opt,status='RUNNING',contexts=cases,critical_air_cm=crit,compiler_scope='CALCGWL and driver '+opt+'; unchanged original providerO2',routes=[]);t=time.perf_counter()
@@ -33,4 +33,4 @@ try:
   x=line.split();assert int(x[7])==-1 and int(x[8])==-1
  q['status']='REAL_CALCGWL_COMPONENT_PASS_MACRO_CLASSIFICATION_AND_EXACT_NONMACRO_CONTROL'
 except Exception:q.update(status='FAILED',error=traceback.format_exc())
-q['seconds']=time.perf_counter()-t;(R/('PERCHED_'+opt+'_COMPONENT.json')).write_text(json.dumps(q,indent=2)+'\n');print(json.dumps({k:v for k,v in q.items() if k not in ['contexts']}));sys.exit(1 if q['status']=='FAILED' else 0)
+q['seconds']=time.perf_counter()-t;(R/('PERCHED_'+opt+'_COMPONENT_R1.json')).write_text(json.dumps(q,indent=2)+'\n');print(json.dumps({k:v for k,v in q.items() if k not in ['contexts']}));sys.exit(1 if q['status']=='FAILED' else 0)
