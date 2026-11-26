@@ -1,0 +1,403 @@
+{
+  "status": "PROPOSED16_CASE_COHERENT_FREE6_UNDRAINED_AND_DRAINED_ANALYTICAL_FROST_NOT_INSTALLED_NOT_QUALIFIED",
+  "actual_parent": "9af88c3de6198ddec40c2674dd1542a89fa9c0d7",
+  "representative_cases": [
+    {
+      "name": "default-model1-water-d0-b6-dense",
+      "models": [],
+      "effective_models": [
+        1,
+        1
+      ],
+      "kind": "water",
+      "drainage": 0,
+      "bottom": 6,
+      "initial": 2,
+      "calendar": "dense",
+      "reset": 1,
+      "start": null,
+      "days": 35,
+      "implicit": 0,
+      "hysteresis": 0,
+      "explicit_oxygen": null,
+      "full_legacy_native_controls": true,
+      "active_frost_transactions": true
+    },
+    {
+      "name": "scalar-model1-cde-d0-b6-periodic",
+      "models": [
+        1
+      ],
+      "effective_models": [
+        1,
+        1
+      ],
+      "kind": "cde",
+      "drainage": 0,
+      "bottom": 6,
+      "initial": 1,
+      "calendar": "regular",
+      "reset": 0,
+      "start": null,
+      "days": 35,
+      "implicit": 0,
+      "hysteresis": 0,
+      "explicit_oxygen": null,
+      "full_legacy_native_controls": false,
+      "active_frost_transactions": true
+    },
+    {
+      "name": "model3-water-d1-b5-dense",
+      "models": [
+        3,
+        3
+      ],
+      "effective_models": [
+        3,
+        3
+      ],
+      "kind": "water",
+      "drainage": 1,
+      "bottom": 5,
+      "initial": 1,
+      "calendar": "dense",
+      "reset": 1,
+      "start": null,
+      "days": 35,
+      "implicit": 0,
+      "hysteresis": 0,
+      "explicit_oxygen": 1,
+      "full_legacy_native_controls": false,
+      "active_frost_transactions": true
+    },
+    {
+      "name": "model4-cde-d1-b6-periodic",
+      "models": [
+        4,
+        4
+      ],
+      "effective_models": [
+        4,
+        4
+      ],
+      "kind": "cde",
+      "drainage": 1,
+      "bottom": 6,
+      "initial": 2,
+      "calendar": "regular",
+      "reset": 1,
+      "start": null,
+      "days": 35,
+      "implicit": 0,
+      "hysteresis": 0,
+      "explicit_oxygen": null,
+      "full_legacy_native_controls": true,
+      "active_frost_transactions": false
+    },
+    {
+      "name": "model5-water-d1-b8-monthly",
+      "models": [
+        5,
+        5
+      ],
+      "effective_models": [
+        5,
+        5
+      ],
+      "kind": "water",
+      "drainage": 1,
+      "bottom": 8,
+      "initial": 2,
+      "calendar": "monthly",
+      "reset": 0,
+      "start": null,
+      "days": 35,
+      "implicit": 0,
+      "hysteresis": 0,
+      "explicit_oxygen": null,
+      "full_legacy_native_controls": false,
+      "active_frost_transactions": false
+    },
+    {
+      "name": "model6-cde-d0-b6-dates",
+      "models": [
+        6,
+        6
+      ],
+      "effective_models": [
+        6,
+        6
+      ],
+      "kind": "cde",
+      "drainage": 0,
+      "bottom": 6,
+      "initial": 1,
+      "calendar": "dates",
+      "reset": 1,
+      "start": null,
+      "days": 35,
+      "implicit": 0,
+      "hysteresis": 0,
+      "explicit_oxygen": null,
+      "full_legacy_native_controls": false,
+      "active_frost_transactions": false
+    },
+    {
+      "name": "model7-cde-d1-b8-dense",
+      "models": [
+        7,
+        7
+      ],
+      "effective_models": [
+        7,
+        7
+      ],
+      "kind": "cde",
+      "drainage": 1,
+      "bottom": 8,
+      "initial": 1,
+      "calendar": "dense",
+      "reset": 1,
+      "start": null,
+      "days": 35,
+      "implicit": 0,
+      "hysteresis": 0,
+      "explicit_oxygen": null,
+      "full_legacy_native_controls": false,
+      "active_frost_transactions": true
+    },
+    {
+      "name": "model8-water-d0-b6-periodic",
+      "models": [
+        8,
+        8
+      ],
+      "effective_models": [
+        8,
+        8
+      ],
+      "kind": "water",
+      "drainage": 0,
+      "bottom": 6,
+      "initial": 2,
+      "calendar": "regular",
+      "reset": 0,
+      "start": null,
+      "days": 35,
+      "implicit": 0,
+      "hysteresis": 0,
+      "explicit_oxygen": null,
+      "full_legacy_native_controls": false,
+      "active_frost_transactions": false
+    },
+    {
+      "name": "model9-cde-d1-b6-monthly",
+      "models": [
+        9,
+        9
+      ],
+      "effective_models": [
+        9,
+        9
+      ],
+      "kind": "cde",
+      "drainage": 1,
+      "bottom": 6,
+      "initial": 1,
+      "calendar": "monthly",
+      "reset": 1,
+      "start": null,
+      "days": 35,
+      "implicit": 0,
+      "hysteresis": 0,
+      "explicit_oxygen": null,
+      "full_legacy_native_controls": false,
+      "active_frost_transactions": true
+    },
+    {
+      "name": "model10-water-d1-b8-dates",
+      "models": [
+        10,
+        10
+      ],
+      "effective_models": [
+        10,
+        10
+      ],
+      "kind": "water",
+      "drainage": 1,
+      "bottom": 8,
+      "initial": 2,
+      "calendar": "dates",
+      "reset": 0,
+      "start": null,
+      "days": 35,
+      "implicit": 0,
+      "hysteresis": 0,
+      "explicit_oxygen": null,
+      "full_legacy_native_controls": false,
+      "active_frost_transactions": false
+    },
+    {
+      "name": "scalar-model11-water-d0-b6-dates-year",
+      "models": [
+        11
+      ],
+      "effective_models": [
+        11,
+        11
+      ],
+      "kind": "water",
+      "drainage": 0,
+      "bottom": 6,
+      "initial": 2,
+      "calendar": "dates",
+      "reset": 0,
+      "start": "2002-12-25",
+      "days": 12,
+      "implicit": 0,
+      "hysteresis": 0,
+      "explicit_oxygen": null,
+      "full_legacy_native_controls": false,
+      "active_frost_transactions": false
+    },
+    {
+      "name": "mixed7-3-cde-d1-b5-dates-year",
+      "models": [
+        7,
+        3
+      ],
+      "effective_models": [
+        7,
+        3
+      ],
+      "kind": "cde",
+      "drainage": 1,
+      "bottom": 5,
+      "initial": 1,
+      "calendar": "dates",
+      "reset": 1,
+      "start": "2002-12-25",
+      "days": 12,
+      "implicit": 0,
+      "hysteresis": 0,
+      "explicit_oxygen": 1,
+      "full_legacy_native_controls": false,
+      "active_frost_transactions": false
+    },
+    {
+      "name": "mixed1-7-water-d0-b6-monthly-year",
+      "models": [
+        1,
+        7
+      ],
+      "effective_models": [
+        1,
+        7
+      ],
+      "kind": "water",
+      "drainage": 0,
+      "bottom": 6,
+      "initial": 2,
+      "calendar": "monthly",
+      "reset": 1,
+      "start": "2002-12-25",
+      "days": 12,
+      "implicit": 0,
+      "hysteresis": 0,
+      "explicit_oxygen": null,
+      "full_legacy_native_controls": false,
+      "active_frost_transactions": false
+    },
+    {
+      "name": "mixed11-8-cde-d1-b8-periodic-year",
+      "models": [
+        11,
+        8
+      ],
+      "effective_models": [
+        11,
+        8
+      ],
+      "kind": "cde",
+      "drainage": 1,
+      "bottom": 8,
+      "initial": 1,
+      "calendar": "regular",
+      "reset": 0,
+      "start": "2002-12-25",
+      "days": 12,
+      "implicit": 0,
+      "hysteresis": 0,
+      "explicit_oxygen": null,
+      "full_legacy_native_controls": false,
+      "active_frost_transactions": false
+    },
+    {
+      "name": "model3-water-d0-b6-monthly",
+      "models": [
+        3,
+        3
+      ],
+      "effective_models": [
+        3,
+        3
+      ],
+      "kind": "water",
+      "drainage": 0,
+      "bottom": 6,
+      "initial": 1,
+      "calendar": "monthly",
+      "reset": 1,
+      "start": null,
+      "days": 35,
+      "implicit": 0,
+      "hysteresis": 0,
+      "explicit_oxygen": 1,
+      "full_legacy_native_controls": false,
+      "active_frost_transactions": false
+    },
+    {
+      "name": "mixed7-3-cde-d0-b6-dense",
+      "models": [
+        7,
+        3
+      ],
+      "effective_models": [
+        7,
+        3
+      ],
+      "kind": "cde",
+      "drainage": 0,
+      "bottom": 6,
+      "initial": 1,
+      "calendar": "dense",
+      "reset": 1,
+      "start": null,
+      "days": 35,
+      "implicit": 0,
+      "hysteresis": 0,
+      "explicit_oxygen": 1,
+      "full_legacy_native_controls": false,
+      "active_frost_transactions": true
+    }
+  ],
+  "prospective_portable_profiles": 4,
+  "prospective_new_contexts": 64,
+  "prospective_primary_days": 1872,
+  "prospective_native_samples": 400,
+  "prospective_exact_cold_windows": 176,
+  "qualification_selection": {
+    "classification": "B_C_existing_original_process_state_and_boundary_composition",
+    "new_native_domain_controls": "Every case must reject each actual compiled model/node/layer/kind/bottom/drainage/partition/codec/witness mutant before readiness; distinguish valid default1 from foreign all-model1 where required",
+    "old_calendar_thermal_snow_CDE_corruptions": "Target actual water drainage0/free6 and CDE drainage1/free6 framing seams on2representatives per platform/optimization. Preserve frozen old algorithms; exact unchanged component/source/whole-object binding required rather than repeat identical old corruption suites for every new valid hydraulic value.",
+    "physical_budget_and_convergence": "Every full warm trajectory and all required cold/native/output seams retain original absolute1e-10 water/CDE/day/prefix budgets, convergence/retry criteria and original datetimes/counters.",
+    "external_transactions": "Real Snow/cold and selected six actual active-Frost case transactions across new/default/mixed models, drainage0/1 and bottoms5/6/8; use measured original temperatures, never assume activity.",
+    "not_selected": "Replay old09 periods solely for ownership/metadata changes; unrelated model campaigns; general performance; obsolete highest low-air stress",
+    "expected_seconds_per_local_case": 150,
+    "expected_seconds_per_portable_profile": 2400,
+    "authority": "ACCELERATE02 sections6..9; AGENTS independent local testability; workstream execution protocol proportional existing-process composition and strict source/native/mass/cold preservation"
+  },
+  "canonical_admission": false,
+  "model_periods_executed": 0
+}

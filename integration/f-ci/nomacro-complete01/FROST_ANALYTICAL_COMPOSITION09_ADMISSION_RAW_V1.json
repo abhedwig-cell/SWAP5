@@ -1,0 +1,914 @@
+{
+  "status": "ACTUAL_CANONICAL760_ORIGINAL_PUBLIC_ORDINARY_PUB_14CI45CHECKS_SIX_LOGS_REAL_NEGATIVES_AND_SIGNED_OBJECTS_PRESERVED",
+  "archive": "FROST_ANALYTICAL_COMPOSITION09_ADMISSION_RAW_V1.zip",
+  "bytes": 5590827,
+  "sha256": "a81b0a9575b958f7729c16e3aff7d26fdbe63cb0d285af5f02e6c955fecf4f73",
+  "parts": [
+    {
+      "file": "FROST_ANALYTICAL_COMPOSITION09_ADMISSION_RAW_V1.zip",
+      "bytes": 5590827,
+      "sha256": "a81b0a9575b958f7729c16e3aff7d26fdbe63cb0d285af5f02e6c955fecf4f73"
+    }
+  ],
+  "members": {
+    "FROST_ANALYTICAL_COMPOSITION09_ACTUAL_MERGE_ALL_CI_API_V1.json": {
+      "bytes": 51747,
+      "sha256": "9ebdb0dca04df4bdfc45f130ce4c83bdf1b5ed7f670c64ffd67ca902ab733d08"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_ACTUAL_MERGE_CI_JOBS_45770075092_V1.json": {
+      "bytes": 1379,
+      "sha256": "8562a96ef64fe48071806da991d59f09f850e36b13222916108529266d757958"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_ACTUAL_MERGE_CI_JOBS_45770075104_V1.json": {
+      "bytes": 1586,
+      "sha256": "861de235c7c62687095452799a78c91b200b43e9cf12e9f0fedabba02cbfca49"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_ACTUAL_MERGE_CI_JOBS_45770075107_V1.json": {
+      "bytes": 1042,
+      "sha256": "77c025d763fba7601ba5f9442f53ad4ef4cf1761716aead3dcdfbec1e45c7d15"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_ACTUAL_MERGE_CI_JOBS_45770075115_V1.json": {
+      "bytes": 5666,
+      "sha256": "6f35fb00797a580e73390ef9e707bacacd1754fce78b9b16eca3ac1d7fb2be1e"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_ACTUAL_MERGE_PUBLICATION_V1.json": {
+      "bytes": 18397,
+      "sha256": "97e9d918a518689d2612bba392cd986233f20d5d883dc736a6032ec2254ed937"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_ACTUAL_MERGE_PUBLICATION_V1.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_ACTUAL_MERGE_PUBLICATION_V1.stdout.txt": {
+      "bytes": 124,
+      "sha256": "b7a46d07c983f3c14ce7985e592af223c2b5cc506e9939a60cb25a504563c0b7"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_ACTUAL_MERGE_PUBLIC_V1.json": {
+      "bytes": 18227,
+      "sha256": "db6ab3208499014e431290656512277dea833073f740b8fa9f7a7952e820156b"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_ACTUAL_MERGE_PUBLIC_V1.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_ACTUAL_MERGE_PUBLIC_V1.stdout.txt": {
+      "bytes": 2674832,
+      "sha256": "221e5b0934a5f7fa0cb47b234abd50e73a855fdfc31df81cafc474669a4495fc"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_ACTUAL_PUBLIC_READER_V1.json": {
+      "bytes": 2383,
+      "sha256": "38cacba23796bbf50925e42c28f2b52e21515668fee5a707cc127b6090534653"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_ACTUAL_RECOVERY_V2.json": {
+      "bytes": 3286,
+      "sha256": "7ff5bf047c005e214b21c9fa4d189a0b780d7a7a72cbadbd5ab2f09525526e1b"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_ACTUAL_RECOVERY_V3.json": {
+      "bytes": 6362,
+      "sha256": "b8f7cd6b8843c25b25032794e250d00b5e10e077541f8fd81dde8180a6fcff86"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_ACTUAL_RECOVERY_V4.json": {
+      "bytes": 7299,
+      "sha256": "2cd83d880d9ec4bb61924b79a3418cb0bf0faad40de65a23d0d0c48c0a65a029"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_CANDIDATE_PUBLICATION_V2.json": {
+      "bytes": 18397,
+      "sha256": "958d73d6451b2dff9fe285dc7154ed888a54ca1fa10f52f9e6df490334e3782f"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_CANDIDATE_PUBLICATION_V2.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_CANDIDATE_PUBLICATION_V2.stdout.txt": {
+      "bytes": 124,
+      "sha256": "b7a46d07c983f3c14ce7985e592af223c2b5cc506e9939a60cb25a504563c0b7"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_CANDIDATE_PUBLIC_V1.json": {
+      "bytes": 18227,
+      "sha256": "a99b8ab6af249dfe9f94d99f31954f53716be49eabaa675ea9980a1e3c718fe9"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_CANDIDATE_PUBLIC_V1.stderr.txt": {
+      "bytes": 12767,
+      "sha256": "851cda7c77afc462f6ebe377786bb1624619642a5d6dcddc87cecad1605593eb"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_CANDIDATE_PUBLIC_V1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_CANDIDATE_PUBLIC_V2.json": {
+      "bytes": 18227,
+      "sha256": "a64cf4346bf578a4f47cb2e04294a296aa858aac67e2af789ed6a464a80923fd"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_CANDIDATE_PUBLIC_V2.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_CANDIDATE_PUBLIC_V2.stdout.txt": {
+      "bytes": 2674832,
+      "sha256": "90f2b812a54c8188100852cddb82d2f8072f394172498902f51ac7b77fd52593"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_COMPILED_PROJECTION_V1.json": {
+      "bytes": 1389,
+      "sha256": "b9651bc70bba7e58edc13944540b1241f17b2fde474285f105145782e528ee9e"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_CONTROLLER_SOURCE_V1.json": {
+      "bytes": 391106,
+      "sha256": "21b69e04223ed220748250c64971094beb864bfc2be4e96b7e01b331b62c0017"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_CONTROLLER_SOURCE_V2.json": {
+      "bytes": 391106,
+      "sha256": "ac9f333f5c16cf76e16428b62e1bbb3a9778a32403fc3ac71cbed9420a6d101f"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_CONTROLLER_SOURCE_V3.json": {
+      "bytes": 391105,
+      "sha256": "332f6cef1ed8dd9666fb40512b24fec8360d6c2a7ce44e859ce0d25626eec764"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_CONTROLLER_SOURCE_V4.json": {
+      "bytes": 393490,
+      "sha256": "d7750233eba66b606c7cbbafdf4d7858ba6a07ebd383e0fd20a8e54087a3112d"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_CONTROLLER_SOURCE_V5.json": {
+      "bytes": 395906,
+      "sha256": "7050b54d6f72e60ad238ab3d2d5562b505595b75162d8b92fadb4a296e04e1b7"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_CURRENT_MODEL7_O0_POSTIMAGE_V1.json": {
+      "bytes": 6420,
+      "sha256": "f3515c02d3cbe7660f674a123e192375dfaff8a9fa149dd520e06d31653c1326"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_CURRENT_MODEL7_O0_POSTIMAGE_V2.json": {
+      "bytes": 6421,
+      "sha256": "f3e96fde83643a6fd47edf1b26408bde05fdfe7b35c7868e90c6ae1372532182"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_CURRENT_MODEL7_O2_POSTIMAGE_V1.json": {
+      "bytes": 6418,
+      "sha256": "7c209d716b5b9f6bf4370821c23f333f5a4f1ac5ce4e3f9c2944f7cbfcadebb0"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_CURRENT_MODEL7_O2_POSTIMAGE_V2.json": {
+      "bytes": 6419,
+      "sha256": "8b121648a62d654094488acbcb266f04185cfabcb94c2d465537b47d24769267"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_E00_PREFLIGHT_ORIGINAL_REFUSAL_V1.stderr": {
+      "bytes": 775,
+      "sha256": "eba4c38646002c17b45e9222e177b0706dc4da183eb6297ad9665d64183af846"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_E00_PREFLIGHT_ORIGINAL_REFUSAL_V1.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_INHERITED_PUBLIC_V1-observer.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_INHERITED_PUBLIC_V1-observer.stdout.txt": {
+      "bytes": 94,
+      "sha256": "6ba17684685d646555d0f936147bcc29e5660838942fc30ae6739662c5a76484"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_INHERITED_PUBLIC_V1.json": {
+      "bytes": 18287,
+      "sha256": "dc1c0ffbf4d58aceb2e814aaf31fc804a0f9ec754a7f85a42b9bdcd97d57493c"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_INHERITED_PUBLIC_V1.stderr.txt": {
+      "bytes": 12778,
+      "sha256": "dced2d102d1a34469bb3b240049d1e71a43f7b0e89f75aa519ec6f95874ba035"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_INHERITED_PUBLIC_V1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_INHERITED_PUSH_ATTEMPT1.stderr.txt": {
+      "bytes": 391,
+      "sha256": "98faa98bcf6cea0d6421d37b8e0678d81eeecc1bea86b3cef9ff19a568c53cb2"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_INHERITED_PUSH_ATTEMPT1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_NEGATIVES_V1.json": {
+      "bytes": 6091,
+      "sha256": "e328189bcbe620c15eb3452d4255752ad13b21f98059ab71de612e74edc2e828"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_PUBLICATION_PUBLIC_V1-observer.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_PUBLICATION_PUBLIC_V1-observer.stdout.txt": {
+      "bytes": 93,
+      "sha256": "08a2112f35dd9cb0ef2c805e549989e838e08220f1b38eecf0732ac8351f01f8"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_PUBLICATION_PUBLIC_V1.json": {
+      "bytes": 18286,
+      "sha256": "5dd3042819c4c1d0fdc4711e38e93e56ea0cf9c352a104c9e434b77211be4852"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_PUBLICATION_PUBLIC_V1.stderr.txt": {
+      "bytes": 12773,
+      "sha256": "c370ea82578ffd3aa22963d013ec34893feaf09d999d9c4b52affd740307bbbf"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_PUBLICATION_PUBLIC_V1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_PUBLICATION_PUSH_ATTEMPT1.stderr.txt": {
+      "bytes": 397,
+      "sha256": "ff8f42ea0da73fb34a76a0badf7ff892a5e48f92632d3bb780f74c7c4b91e46e"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_PUBLICATION_PUSH_ATTEMPT1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_PUBLICATION_SCOPE_V1-observer.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_PUBLICATION_SCOPE_V1-observer.stdout.txt": {
+      "bytes": 94,
+      "sha256": "a95299291639633a26d523de3afd245092fc6ac0cb5fb0515299da82d10604ec"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_PUBLICATION_SCOPE_V1.json": {
+      "bytes": 18302,
+      "sha256": "ece3f8d4eb0bb530139e35af80263733335605eac16da30d488a5b748274b385"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_PUBLICATION_SCOPE_V1.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_PUBLICATION_SCOPE_V1.stdout.txt": {
+      "bytes": 204,
+      "sha256": "259a06a062ed5c9be710bdcdfab1bece4b3bcdc703bb0dea36cd789a2a9afd09"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_RAW_PUBLIC_V1-observer.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_RAW_PUBLIC_V1-observer.stdout.txt": {
+      "bytes": 94,
+      "sha256": "07928a273944021a8da22a6e743cae597c8fe9c54bc298277ff32b86a0208b2f"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_RAW_PUBLIC_V1.json": {
+      "bytes": 18287,
+      "sha256": "945efdf2b51579357c32133e25bb0139e3de82223b41d7dcdc74eb13c72b0ea8"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_RAW_PUBLIC_V1.stderr.txt": {
+      "bytes": 12798,
+      "sha256": "9df9dc3e9f8cc200ed56714bce7ee86349dc4fd4bfda0cc18a66d572ce99d842"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_RAW_PUBLIC_V1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_RAW_PUSH_ATTEMPT1.stderr.txt": {
+      "bytes": 373,
+      "sha256": "ba90515ae4f49f12051cbde66fe73ce3e43c10f7f95d352b8fda58f75f3abdad"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_RAW_PUSH_ATTEMPT1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_SOURCE_PUBLIC_V1-observer.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_SOURCE_PUBLIC_V1-observer.stdout.txt": {
+      "bytes": 94,
+      "sha256": "102f9be9309b6f6f1de2d80123ab8a56037c7af0425b2ca58ecf9e938c84ea3d"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_SOURCE_PUBLIC_V1.json": {
+      "bytes": 18287,
+      "sha256": "955ae80eb9993ac64a539202c422075b9173ca594f4091e3378a90cecffb564b"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_SOURCE_PUBLIC_V1.stderr.txt": {
+      "bytes": 12626,
+      "sha256": "47ce0f2281f6a320bf3ab3545a9fd1921df836b5ac78c756efe38f32d6714933"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_SOURCE_PUBLIC_V1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_SOURCE_PUSH_ATTEMPT1.stderr.txt": {
+      "bytes": 382,
+      "sha256": "e6fafe815fd7432f0e2fa67c9c292141e55c692480ad44d62c00d06f507d910f"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL1_SOURCE_PUSH_ATTEMPT1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_FINAL_SCIENCE_RUNS_API_V1.json": {
+      "bytes": 28501,
+      "sha256": "0279dfeb040bf1c69ee389f46c2e8bbc88feb4f14815aed6d43647239447aa4f"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_IMPLEMENTED_SOURCE_V1.json": {
+      "bytes": 7786,
+      "sha256": "aadbda2d9d2cb9ba15a6c0926256406f177dc36d058df40e674c94db4eafc0fc"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_INDEPENDENT_UBUNTU_O0_V1.json": {
+      "bytes": 69042,
+      "sha256": "2036c0688828524bf432ee10a5ca7960cf49cb57a9dcf832fa5247f6a08b37fe"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_INDEPENDENT_UBUNTU_O2_V1.json": {
+      "bytes": 69042,
+      "sha256": "368ec9837957e1d6f9c0fd7584073d6b47d5867fe8c6a68dff6db2553b0b4925"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_INDEPENDENT_WINDOWS_O0_V1.json": {
+      "bytes": 69105,
+      "sha256": "2b3a617ecd3da1c873d2432855562a9f58b1075b7353ef76688c088efbcd16b6"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_INDEPENDENT_WINDOWS_O2_V1.json": {
+      "bytes": 69105,
+      "sha256": "7ae07a3f2125be0f8371dcde8fa6d61b5adfad502a188d064d68a3d45d0d6534"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_LOCAL_INDEPENDENT_V1.json": {
+      "bytes": 205,
+      "sha256": "6daf6abad241f68b34b527f00de4d70530442c0d83594473eedf2b62a722cebe"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_LOCAL_INDEPENDENT_V2.json": {
+      "bytes": 240,
+      "sha256": "b020fe3f557512cb5b0de4dbb314851b10931d4d6d9a687af08c73ccfcedf0f7"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_LOCAL_INDEPENDENT_V3.json": {
+      "bytes": 42458,
+      "sha256": "c191bffd4ce80601218b02c8c6a635cb1c42f705e69853fc2878796b39ade18b"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_LOCAL_INDEPENDENT_V4.json": {
+      "bytes": 43830,
+      "sha256": "9b19d8e23c24c50dc6ea783a7f83793f426cd8eacce9c891cea98bf3d488ddf8"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_LOCAL_PROVIDER_DEPENDENCY_V1.json": {
+      "bytes": 19846,
+      "sha256": "0b23d767f94222dcff975ca6b30243fa22e7399de815d698de6a6e7cecd28b76"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_LOCAL_WINDOWS_O0_O2_RAW_V1.json": {
+      "bytes": 162672,
+      "sha256": "a9af2ee06d35e6847291e8bfcab10c0f91f83847471b4229435349f4eb6b9657"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_LOCAL_WINDOWS_O0_O2_RAW_V2.json": {
+      "bytes": 142048,
+      "sha256": "fc1ba837bbe36dabe86c95c7942dfb0f1e2831f1343f964733f78488f809ac12"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_LOCAL_WINDOWS_O0_O2_RAW_V3.json": {
+      "bytes": 109779,
+      "sha256": "1b93602d306722ba312a193794020f6720885d108bdc681dd446add8dcd3d332"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_LOCAL_WINDOWS_O0_O2_RAW_V4.json": {
+      "bytes": 2287959,
+      "sha256": "132a032a3699faaad1415c83b799335b8844a01bbb3fbde481ffd6f76a288078"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_LOCAL_WINDOWS_O0_O2_RAW_V5.json": {
+      "bytes": 162184,
+      "sha256": "c566ef81e2a74de5f4337288f69d7016e4fa4842b59418a1449d3a7475338580"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_MCSOL_UNCHANGED_DEPENDENCY_SELECTION_V1.json": {
+      "bytes": 1804,
+      "sha256": "109d3ae247fbae2e3556115c19eef4f4892d3f259e6a6035cdc157ffcebee9c7"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_METADATA_TYPE_DISPATCH_PREFLIGHT_V1.json": {
+      "bytes": 1118,
+      "sha256": "bde8d9d18a246b9799cbc7a0330a999dd53e843b1e12457950a050ec16293093"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_ORIGINAL_READER_DISCOVERY_V1.json": {
+      "bytes": 17565,
+      "sha256": "1872b54dd4d26fb6a3d418a85361356366e5e2ad9231908724e86e38d4d4fe38"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_OWN_RELEASED_CLEANUP_APPLY_V1.json": {
+      "bytes": 53846,
+      "sha256": "9b27972dff3ae2942061f1422c90854de11d14fbc8ae17b4365ca5d877452985"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_OWN_RELEASED_CLEANUP_APPLY_V1.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_OWN_RELEASED_CLEANUP_PREVIEW_V1.json": {
+      "bytes": 54144,
+      "sha256": "b2d0a1ea13b729fe7a52c4765f75fff6fa3e18809f417650cebd16e6b9b366be"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PARENT712_INDEPENDENT_V1.json": {
+      "bytes": 268,
+      "sha256": "753a9d08489ed6fe27cfc16a4b396d618ef00374b448ad313caf3ffe056d46be"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PARENT712_INDEPENDENT_V2.json": {
+      "bytes": 26857,
+      "sha256": "7036885b4e66c79b116d039339b2c973271ef529237d972d41eb3169475cbe4d"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PARENT_ADMISSION_AND_DISCOVERY_COMMITTED_V1.json": {
+      "bytes": 895,
+      "sha256": "a9d612104e063a94e83eb8fab36f517d2e58cd19c098ef4a64f2880f8e61ea32"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PORTABLE_ACTUAL_SOURCE_PREFLIGHT_V1.json": {
+      "bytes": 340,
+      "sha256": "e6a70731c3f44814d10cdad02655367de3973bc38a776bedf0b6ce913898ee7d"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_ACTUAL_CANONICAL_API_V1.json": {
+      "bytes": 838255,
+      "sha256": "e646b20a4d16cea0242f6858ee26cff2500fa1b5d90b27af1bb17fcc27f978ff"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_ACTUAL_GIT_API_V1.json": {
+      "bytes": 2985,
+      "sha256": "f5f51182695fcf98b74fe1bd4eb3b579f283b814e11fd047bcd490b3eb433472"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_ACTUAL_MERGED_PR_API_V1.json": {
+      "bytes": 21901,
+      "sha256": "d3bcbcf81b6ecedab7dd35bc6df1f7d0be9c0c20a6fe09927915126fc6de12be"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_ACTUAL_MERGE_RESULT_V1.json": {
+      "bytes": 123,
+      "sha256": "040262e9911431ba5e36b84a47269c696c6f98be2f60c6e9200092c378ad19ec"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_CO2_ORIGINAL_CI_V1.log": {
+      "bytes": 23620,
+      "sha256": "6fc64973349b3083d8ee5a46864f17ec99c3216c8cd670af083696b583153467"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_CO2_ORIGINAL_CI_V1.log.json": {
+      "bytes": 441,
+      "sha256": "4c101eb92f55bb730416c0c53dd78cd3a4154ac9ae92347d1490b867b44e5d16"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_CO2_ORIGINAL_CI_V2.log": {
+      "bytes": 22411,
+      "sha256": "552ae426ea2990cf1fe3f29c35619803321d7c92305da75fdb7149f4d5eac362"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_CO2_ORIGINAL_CI_V2.log.json": {
+      "bytes": 441,
+      "sha256": "ee0156060179026e4ed60312a49d98958c2aa005d3369a9b29e2eb4c399780ad"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_DVS_ORIGINAL_CI_V1.log": {
+      "bytes": 24531,
+      "sha256": "9d6f73aa9f28bf79b87ed255c41904d9967df797ac8503779fca56408dde10a7"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_DVS_ORIGINAL_CI_V1.log.json": {
+      "bytes": 441,
+      "sha256": "8081347bde9af3d691e1376af720dac38440f0f7ba84388a1b95178b19856160"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_DVS_ORIGINAL_CI_V2.log": {
+      "bytes": 23195,
+      "sha256": "88f9ab05f68705be69fd62f4d4d11f7a884910f1123f7f7ee8c05bf505b357b6"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_DVS_ORIGINAL_CI_V2.log.json": {
+      "bytes": 441,
+      "sha256": "b08e150af7eca7942b15d3da812d33b4f3564afedd57d2e7ff31944a374390ef"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_FCI_MODULAR_ORIGINAL_CI_V2.log": {
+      "bytes": 4566642,
+      "sha256": "0450d0dc611cf9cc4747e7bcc420513f15231bbdeb45e647d0d2b41ae5548cd3"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_FCI_MODULAR_ORIGINAL_CI_V2.log.json": {
+      "bytes": 459,
+      "sha256": "74c653b07839dcdeb1dc7070272cab9945e392a8e589a370c1b04503666f3999"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_FINAL_ALL_CI_API_V2.json": {
+      "bytes": 464742,
+      "sha256": "b6d22f865d7da6bf7340e965facada01a80349fdd26abb3ea2f261de77078d7f"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_FINAL_READY_GATES_V1.json": {
+      "bytes": 6803,
+      "sha256": "ef04f03add0145c9c447757f36dbe3281586836d33ee9473bb8ad11e9551c5ef"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_GENUINE_GIT_OBJECT_18f55ac859e3d447eb26f632dd3624ddd5efcb76.bin": {
+      "bytes": 1175,
+      "sha256": "8ec8ae3633e58813285a53efe5d593271cc9ec614c13c08cdb825e898f849946"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_GENUINE_GIT_OBJECT_18f55ac859e3d447eb26f632dd3624ddd5efcb76.json": {
+      "bytes": 952,
+      "sha256": "89d836a6d3e5e3786f9b5a4e53fcf7d3b9e780a4e537fa4c538c5816c4d38771"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_GENUINE_GIT_OBJECT_9af88c3de6198ddec40c2674dd1542a89fa9c0d7.bin": {
+      "bytes": 1255,
+      "sha256": "1256c33a97458bcd22f801c9ed6bd95bc0c3160417d8aba53cd3c0f6dba093e0"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_GENUINE_GIT_OBJECT_9af88c3de6198ddec40c2674dd1542a89fa9c0d7.json": {
+      "bytes": 941,
+      "sha256": "f628478a9e58157da7bb148302765ef6674f4957829ba8524b29f83fd6e7feaa"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_GENUINE_GIT_OBJECT_d197c80084fefc059b79336e89395e0af1d051ca.bin": {
+      "bytes": 1175,
+      "sha256": "29a8237c65bb2a8e9fe807daa1b909efe1634c7b78e67028c17db5f796088ab0"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_GENUINE_GIT_OBJECT_d197c80084fefc059b79336e89395e0af1d051ca.json": {
+      "bytes": 952,
+      "sha256": "c02f983716e93242199a29971dd0115a9e5dc8c9294bff69f827d67b62daa628"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_GENUINE_SYNTHETIC_GIT_API_V1.json": {
+      "bytes": 2821,
+      "sha256": "7a61ee9ce9f0c77fc49bbcd319e33bf322f25d6eaec22bc2c2ccb9a6e8795082"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_GENUINE_SYNTHETIC_GIT_API_V2.json": {
+      "bytes": 2821,
+      "sha256": "bc834ba986bd62f57ca939598ae373f6f147b3550e58e08c9cfce8324f6685c0"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_LRV_ORIGINAL_CI_V1.log": {
+      "bytes": 18009,
+      "sha256": "9a4183c92e976e40c185f977c6f0d680ce3087339a43494a5c6429f4029184ef"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_LRV_ORIGINAL_CI_V1.log.json": {
+      "bytes": 441,
+      "sha256": "cee368d03925da311deddbc7a5cb639b78ac602ae1e185cbee203ab262c5742d"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_LRV_ORIGINAL_CI_V2.log": {
+      "bytes": 20927,
+      "sha256": "f64503c238e336aba41e12e03a13688a8d614ce7ddbeeb117b8d8292266d9024"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_LRV_ORIGINAL_CI_V2.log.json": {
+      "bytes": 441,
+      "sha256": "9791d624c074fdc5f5aad22726f685d77c49ca0b4a5d6278bf83dd44865991a5"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_TIMEINT_INVERSE_ORIGINAL_CI_V1.log": {
+      "bytes": 555258,
+      "sha256": "dfe96f8895e2c8b2a3d540c55adab76eca6796090624c3a75b621eebf24ffa70"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_TIMEINT_INVERSE_ORIGINAL_CI_V1.log.json": {
+      "bytes": 466,
+      "sha256": "b6f6a845edb4e5eb56dd38a5acbab3070705f16a81cc68ff8fec674fb746842d"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_TIMEINT_INVERSE_ORIGINAL_CI_V2.log": {
+      "bytes": 555382,
+      "sha256": "43d45a4e3891f30941ee9188e3eb6e99e43fddb41969b520092f05783696f4d9"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_TIMEINT_INVERSE_ORIGINAL_CI_V2.log.json": {
+      "bytes": 466,
+      "sha256": "67471cb8e6414b00c48bd9b70acb3877c4fe7db08997b28217d0207dcccfecd6"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_TIMEINT_STARTUP_ORIGINAL_CI_V1.log": {
+      "bytes": 622293,
+      "sha256": "8724bec5753d74aa9191addf98311c8a336e205c857b953b52d8441208257221"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_TIMEINT_STARTUP_ORIGINAL_CI_V1.log.json": {
+      "bytes": 466,
+      "sha256": "9d55336c7b9de86fcd4ddcb910fa669b8bfe08eb9e84956b36699b3f1c95065c"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_TIMEINT_STARTUP_ORIGINAL_CI_V2.log": {
+      "bytes": 622417,
+      "sha256": "9866d8a2fc8590f3cac03af441b49263c0ffbb6c206c404fa22a0d6a05c211f4"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PR1808_TIMEINT_STARTUP_ORIGINAL_CI_V2.log.json": {
+      "bytes": 466,
+      "sha256": "fd7ce7319f9304004bec255d4b1b86f4e049aff54a54eedf5d77abc8747645e0"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PREMERGE_CLOSURE_V1.json": {
+      "bytes": 655,
+      "sha256": "bec850b832ca3ffaacb887c224e8fd60e609324044da431f30c431a5eab5efba"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_PUBLIC_METADATA_LIST_REFUSAL_V1.json": {
+      "bytes": 832,
+      "sha256": "f31fa09a3dd190e002855963d06674d8edc1dcf9586733117fbb8c133eb60bd3"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_REAL_SPARSE_REAPPLY_V1.json": {
+      "bytes": 18442,
+      "sha256": "da038f8f042e3264cc10ee8c9fc47fea0b54271dab248feaef7197aaa679c373"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_REAL_SPARSE_REAPPLY_V1.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_REAL_SPARSE_REAPPLY_V1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_RELEASE_frost-analytical-composition09-local-O0-v1_V1.json": {
+      "bytes": 197,
+      "sha256": "c6658bd8b980d68aa90638afeae9e3ecfccd2e5dba2e35996019ee7a2bd25417"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_RELEASE_frost-analytical-composition09-local-O0-v2_V1.json": {
+      "bytes": 197,
+      "sha256": "ad9e3f2ec4cc4cdd2f1958db4243ad78b621676e7649e8ed5bc478ac2a0a8a84"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_RELEASE_frost-analytical-composition09-local-O0-v3_V1.json": {
+      "bytes": 197,
+      "sha256": "5113881ab7de4dfa3fe912380766156a9dff7e9fbb8af5e01353cade141aff76"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_RELEASE_frost-analytical-composition09-local-O0-v4_V1.json": {
+      "bytes": 197,
+      "sha256": "d6ab6699ddb69e02c7baeabd51e303f1e464309b3b67ee3ad1908e1b5befa255"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_RELEASE_frost-analytical-composition09-local-O0-v5_V1.json": {
+      "bytes": 197,
+      "sha256": "fe9f7cf7e55bd8334bda56e778de94002593fdb92e52da54d26bc920c9de1079"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_RELEASE_frost-analytical-composition09-local-O2-v1_V1.json": {
+      "bytes": 197,
+      "sha256": "0e2424cc2002fbfa6b10a076c5133dc7fd05ab8f6536cda5b4b73361ff8b2379"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_RELEASE_frost-analytical-composition09-local-O2-v2_V1.json": {
+      "bytes": 197,
+      "sha256": "695b7e085af2dc04e791fde1bb014e04c967c41cf302ab2a29d67f80ecc42248"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_RELEASE_frost-analytical-composition09-local-O2-v3_V1.json": {
+      "bytes": 197,
+      "sha256": "fe0edf05ee5537384a8294ca25beffc354efccb3dedae15ce1422cc0fe2b74f0"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_RELEASE_frost-analytical-composition09-local-O2-v4_V1.json": {
+      "bytes": 197,
+      "sha256": "f74e66908ee6359afd9eb07c1fcbea467f98b883122da647d0aac05f30505c16"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_RELEASE_frost-analytical-composition09-local-O2-v5_V1.json": {
+      "bytes": 197,
+      "sha256": "f2509d784c6aab8e9c4b81f5853d05cb4288e90d147874f7a5f1276aebfa74a4"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_RELEASE_frost-analytical-composition09-local-science-O0-v4_V1.json": {
+      "bytes": 205,
+      "sha256": "c962f27e103ca7789b5ba7b557e3d749b08e03cfc952269d05e2601169a4b062"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_RELEASE_frost-analytical-composition09-local-science-O2-v4_V1.json": {
+      "bytes": 205,
+      "sha256": "8aae95be799eefa2b032ed49ef4d0e22c8d82b1bdd0903c2b9460d3a0da1858d"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_RELEASE_frost-analytical-composition09-local-science-v1_V1.json": {
+      "bytes": 202,
+      "sha256": "0c47bfb9fca5f0ec32801ec20ae669b73da1e0503120014704166a2fdeb5067c"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_RELEASE_frost-analytical-composition09-local-science-v2_V1.json": {
+      "bytes": 202,
+      "sha256": "e6977a15c123a441803d1c2aa78c5124f9e99bec3ad78ba6b977e443e1e16dbc"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_RELEASE_frost-analytical-composition09-local-science-v3_V1.json": {
+      "bytes": 202,
+      "sha256": "1a85f7806169b0726a81ed77066b58a7b26fb30f5352adbc3c68f47e6cc72404"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_RELEASE_frost-analytical-composition09-local-science-v5_V1.json": {
+      "bytes": 202,
+      "sha256": "5b6ebdc73a2a9c2c4448aba4482c9cfc73382f9cd1b3302fa90910558d2e3120"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_RELEASE_frost-analytical-composition09-public-reader-controls-v1_V1.json": {
+      "bytes": 211,
+      "sha256": "5fdfac56f7e839411d6f546154fbad696244950f493ac462a334d4670f8a8dde"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_RELEASE_frost-analytical-composition09-twelve-original-readers-v1_V1.json": {
+      "bytes": 212,
+      "sha256": "c6ad7301d2dbf493c48c0f6fc7bbb31f6e92907bbfacfd1f3be87b5afdd40d94"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_RESOURCE_CENTRAL_CUSTODY_BEFORE_RELEASE_V1.json": {
+      "bytes": 4349505,
+      "sha256": "e89b4fda656f92e6ead95ac9b453c9feae9dd20bcdf152f31ef2efab37270843"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_SINGLE_PART_INDEX_OPERATIONAL_REFUSAL_V1.json": {
+      "bytes": 527,
+      "sha256": "03bbbbd153f3f9c082cc1c5154759893b8594d8e82b0b405d5cb21efb1ca4a56"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_SOURCE_INPUT_CONTRACT_CURRENT_V1.json": {
+      "bytes": 340,
+      "sha256": "45f1ec7a0766ed76567253ecd309ed0d838edf9d260a1f80bf4cc202bf89b982"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_SUPERSEDED_FCI_CANCEL_REQUEST_V1.json": {
+      "bytes": 33196,
+      "sha256": "d20bf2a95c82ddeb7c590b8201d2ca19eaacf2547e48c487fb7fee03e0366ac8"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_SUPERSEDED_FCI_CANCEL_RESPONSE_V1.json": {
+      "bytes": 181,
+      "sha256": "ad8dc7e0c5fe4a4456e37fb9f1d487f89447f53bc9b0c658838acda10f97e25c"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_TWELVE_ORIGINAL_READER_DISCOVERY_V1.json": {
+      "bytes": 39987,
+      "sha256": "ce4fd6dcf7f4ab0c925ec00be9307e05b6208183cc8a1880655e5a166bea1c1e"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_UBUNTU_O0_ORIGINAL_V1.json": {
+      "bytes": 7341536,
+      "sha256": "cee40107e87988018fdeaed02846fc6ac98a8b46643bc3975fc1be89588078a7"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_UBUNTU_O2_ORIGINAL_V1.json": {
+      "bytes": 7341486,
+      "sha256": "025bffdedd4e87d137f04fbe5b717564748f4d16fd144f7958b8616ce9e18ba4"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_V2_COMPILED_PROJECTION_V1.json": {
+      "bytes": 1389,
+      "sha256": "d3f99b38c812936455980f831ac767e2ed96d03c9077759622a1b283c8fa8cfb"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_V2_LOCAL_PROVIDER_DEPENDENCY_V1.json": {
+      "bytes": 19846,
+      "sha256": "0b23d767f94222dcff975ca6b30243fa22e7399de815d698de6a6e7cecd28b76"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_V3_COMPILED_PROJECTION_V1.json": {
+      "bytes": 741,
+      "sha256": "430c6103fc9313135ecb7fbc6a5f91a3eb63460534913ab4663266605c172c06"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_V3_LOCAL_PROVIDER_DEPENDENCY_V1.json": {
+      "bytes": 19846,
+      "sha256": "9de4e0f1180d1685c92948b50feedb150d350bf35d681c063f48d5b6fc9fe00a"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_V4_ALLOCATE_O0_build.json": {
+      "bytes": 237,
+      "sha256": "47f248f0f6e0c2a25d0cea871dfeec2157b2c8abeaeb3bee4bead6d14d6b0e6f"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_V4_ALLOCATE_O0_debug.json": {
+      "bytes": 245,
+      "sha256": "95e87b3d2cc4ba81b8c770b37ce0ade0f401734f0d0fe5a90e50a0c32a506eae"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_V4_ALLOCATE_O2_build.json": {
+      "bytes": 237,
+      "sha256": "854c03e36e2401fb505a3ce8a018f188117447c681827eb528a67fa89b20f960"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_V4_ALLOCATE_O2_debug.json": {
+      "bytes": 245,
+      "sha256": "b7a75182a50cb38db81ae93da8dbcea16c2b3458bf1087d3696c6c8e087c6ab6"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_V4_COMPILED_PROJECTION_V1.json": {
+      "bytes": 1205,
+      "sha256": "8abb19855d00b43ba5ae92072b6f43f25e9eb96ba7a1878fd09bebbe16ae9097"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_V4_LOCAL_PROVIDER_DEPENDENCY_V1.json": {
+      "bytes": 19676,
+      "sha256": "ac751792ce23bbb8aaeb259f76bc7ff913eec6d84c342fffd4d81cadc44f4c73"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_V5_ALLOCATE_build_O0.json": {
+      "bytes": 237,
+      "sha256": "537510ab16754aa1c69510fdf3af58370976e117d5cd370cfd0ec24036670bec"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_V5_ALLOCATE_build_O2.json": {
+      "bytes": 237,
+      "sha256": "ca01ccc67dd2dfab6e0707ea0d5da893f8d995ab5d64729741154541d372a3b8"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_V5_ALLOCATE_debug_None.json": {
+      "bytes": 242,
+      "sha256": "5e8a76e3cf6c4fc0bb9d0d2b1f76b687ea027ac5d6cee865aef14942ca79f968"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_V5_COMPILED_PROJECTION_V1.json": {
+      "bytes": 653,
+      "sha256": "448367cc23875c32717ffb5a62e88dff04e0ddf752f949a69736911111d36c45"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_V5_LOCAL_PROVIDER_DEPENDENCY_V1.json": {
+      "bytes": 19501,
+      "sha256": "42a7a172fcee50b0d92c8a1a9637b59b7e8435a299afc288a51215122bb4b7f9"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_WINDOWS_O0_ORIGINAL_V1.json": {
+      "bytes": 7341805,
+      "sha256": "01b7664b2cf1fe45bcf46ce40016a3e99b4f5f40443653d2e1e99f2608acbf3d"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_WINDOWS_O2_ORIGINAL_V1.json": {
+      "bytes": 7341771,
+      "sha256": "faa50b52ca99ac5246697bb255cd3bbfadb973130a5be6ab10df41ceca55369c"
+    },
+    "FROST_ANALYTICAL_COMPOSITION09_WRONG_CWD_SWITCH_OPERATIONAL_REFUSAL_V1.json": {
+      "bytes": 587,
+      "sha256": "70793f008b2515f0d7b67b5dc6e6cd5b3bd17a3a3f987de91967a2ee785e889c"
+    },
+    "frost-analytical-composition09-actual-candidate-observer-v1.py": {
+      "bytes": 3043,
+      "sha256": "a348a546c0dd7d0d6c773d1988b40b73a7ad42023a14b530e00d1f1483b4b273"
+    },
+    "frost-analytical-composition09-actual-local-first-v1.py": {
+      "bytes": 3264,
+      "sha256": "25488925f5d649ba87aff2be99fe791a5cf652c48d3b8c0a0c145793037927b9"
+    },
+    "frost-analytical-composition09-actual-local-followups-v1.py": {
+      "bytes": 4958,
+      "sha256": "07e58217ae2e119d9875983d049b995e408867a75842ac9d996ef4fcd0d656e3"
+    },
+    "frost-analytical-composition09-actual-local-followups-v2.py": {
+      "bytes": 5003,
+      "sha256": "0b3599f2257a329e17b058c144d4ea11b47c300dbb2ef10cfccf89d64e40fa97"
+    },
+    "frost-analytical-composition09-actual-local-followups-v3.py": {
+      "bytes": 5003,
+      "sha256": "e9bde07185ff321fa78afa134153bb2ebdf33e13625841ece9fdb792f5737241"
+    },
+    "frost-analytical-composition09-actual-merge-observer-v1.py": {
+      "bytes": 3046,
+      "sha256": "732e774e6997941b457eafd15bd656c6b3c1cf9566eca76cf295c32f1cb70fe9"
+    },
+    "frost-analytical-composition09-admission-seal-v1.py": {
+      "bytes": 8990,
+      "sha256": "06248011113b300bc20f28b6cf4332702aee461a60b8f18ce512fc4f3425754b"
+    },
+    "frost-analytical-composition09-cancel-superseded-checkout-v1.py": {
+      "bytes": 2814,
+      "sha256": "3b71797c3205579c128d970298dbedf2494257222a9da1efed8826c11c66fae6"
+    },
+    "frost-analytical-composition09-genuine-signed-object-import-v1.py": {
+      "bytes": 2866,
+      "sha256": "1c2f632cd2ad8f7fb2b3dc68dbfff006d262d6a00a28a27cc6d069db68c75014"
+    },
+    "frost-analytical-composition09-install-source-v1.py": {
+      "bytes": 11019,
+      "sha256": "abeee9f3596d2bcf2067fbc81bd155ce9c2eed34f22813e283b078f1a3194bc7"
+    },
+    "frost-analytical-composition09-model7-current-postimages-v1.py": {
+      "bytes": 5058,
+      "sha256": "ee1f1956a12f72685d7372b9dd6b46226e27d3c840c44386f6e9d158767d5809"
+    },
+    "frost-analytical-composition09-model7-current-postimages-v2.py": {
+      "bytes": 5100,
+      "sha256": "d08ed34d6f9dee1fb518f5af27395cf35328a742453b57b35ea9769fa9e3e3a7"
+    },
+    "frost-analytical-composition09-observe-parent712-v1.py": {
+      "bytes": 1099,
+      "sha256": "d4ea761de77b506eaed929d275e3f207958bba89701375e229e4157a9fd96d47"
+    },
+    "frost-analytical-composition09-observe-parent712-v2.py": {
+      "bytes": 1099,
+      "sha256": "8020672e874ee912739876c36d15ced36e940f99a5465471120c52891f0a6f9a"
+    },
+    "frost-analytical-composition09-original-reader-discovery-v1.py": {
+      "bytes": 6261,
+      "sha256": "5fec7afa4e1136485767158cde0ca24d2aaf96087007984467e2b67050ad1821"
+    },
+    "frost-analytical-composition09-persist-parent-admission-and-discovery-v1.py": {
+      "bytes": 12858,
+      "sha256": "47225dc293c853024a7c29c9db4e41e08c8caafb4097d686bea9650345d72986"
+    },
+    "frost-analytical-composition09-premerge-closure-v1.py": {
+      "bytes": 4337,
+      "sha256": "586e3166252635791ca3301a7eee6c2077099254a7321baffc7e10b492ed3608"
+    },
+    "frost-analytical-composition09-premerge-closure-v2.py": {
+      "bytes": 4337,
+      "sha256": "169f465628356cf10ccd71d2e75f20aaf3299aca64ef21917d5c541f64b1f3bf"
+    },
+    "frost-analytical-composition09-premerge-closure-v3.py": {
+      "bytes": 4338,
+      "sha256": "0d65ecdc4d3e86bf6f96ea1d915390fc031fa3cee8574667b7dd08780797ddf3"
+    },
+    "frost-analytical-composition09-preserve-first-local-v1.py": {
+      "bytes": 7010,
+      "sha256": "52b507a718a526fc55e1ac9f5047d58faf01d3e09709f9560e3affe64f00221c"
+    },
+    "frost-analytical-composition09-preserve-integrated-local-v4.py": {
+      "bytes": 6652,
+      "sha256": "122520fbbee9558a4335387b073514784f73dc321591fd2926f7739d37bee237"
+    },
+    "frost-analytical-composition09-preserve-official-artifact-v1.py": {
+      "bytes": 2461,
+      "sha256": "e350743515515fca7dd84aee4b0e53a828d8f3420ffc3375fd85498aa6dd8371"
+    },
+    "frost-analytical-composition09-preserve-postimages-and-readers-v5.py": {
+      "bytes": 5908,
+      "sha256": "96b6dea12aaa61dff11d71f8e5a138ff4c9db3c6ae77b370e7f40d14e0eb6d5e"
+    },
+    "frost-analytical-composition09-preserve-valid-year-cold-refusals-v1.py": {
+      "bytes": 7347,
+      "sha256": "5a2adbbf978852748c12ed1b651e42c1d92d71fbac719358038cde596ffe3d41"
+    },
+    "frost-analytical-composition09-preserve-valid-year-pass-v1.py": {
+      "bytes": 5923,
+      "sha256": "a573963a2c58fafc9e485dc6a16c2f1d41fe4d8283852abf83733d81cba3b6fb"
+    },
+    "frost-analytical-composition09-real-negative-controls-v1.py": {
+      "bytes": 8027,
+      "sha256": "ddfd66a65569b88d554d126ccac172f505c1ce911b43548f432d8ecd1353a033"
+    },
+    "frost-analytical-composition09-release-central-copies-v1.py": {
+      "bytes": 3455,
+      "sha256": "e94a584a24b9b879989a8b9f5fe2299556bfdfa4738b5eb9ab751859107260c2"
+    },
+    "frost-analytical-composition09-twelve-original-readers-v1.py": {
+      "bytes": 5907,
+      "sha256": "a0a25e41fd000281fcc9ada99068bc4175f5df68660fb2f9ac117ca6707b6221"
+    }
+  },
+  "actual_public_observations": {
+    "FROST_ANALYTICAL_COMPOSITION09_CANDIDATE_PUBLIC_V2": 921.7033974998631,
+    "FROST_ANALYTICAL_COMPOSITION09_CANDIDATE_PUBLICATION_V2": 698.4070360995829,
+    "FROST_ANALYTICAL_COMPOSITION09_ACTUAL_MERGE_PUBLIC_V1": 890.3987374003045,
+    "FROST_ANALYTICAL_COMPOSITION09_ACTUAL_MERGE_PUBLICATION_V1": 747.1314697000198
+  },
+  "canonical_push_workflows_success": 4,
+  "successful_workflows": 14,
+  "successful_checks": 28,
+  "skipped_checks": 17,
+  "full_model_periods_replayed_for_metadata": 0,
+  "local_eight_contexts_counted_again": false,
+  "unchanged_MCSOL_model_replay": "NOT_SELECTED_IMPACT_1063_EXACT_DEPENDENCY_FILES",
+  "canonical_admission": true,
+  "actual_merge": "9af88c3de6198ddec40c2674dd1542a89fa9c0d7",
+  "qualified_candidate": "084a3b5d194fecc9f0aa606e46c51b34a7f0662f",
+  "source_anchor": "7f8ee2a8131bcaab54a486fc546c519c244faa74",
+  "whole_tree": "47a7640f08f1ce8f539359c7de4128742db49153",
+  "coadmission": {
+    "contexts": 760,
+    "short35_contexts": 682,
+    "year367_contexts": 2,
+    "new_short_calendar_contexts": 12,
+    "new_frost_calendar_state_contexts": 28,
+    "new_frost_boundary_contexts": 24,
+    "new_frost_boundary_state_calendar_contexts": 44,
+    "reopened_parent_plate_contexts": 8,
+    "native_calendar_samples": 5014,
+    "exact_cold_windows": 2168,
+    "compiled_initialization_postimages": 375,
+    "current_unselected_dense_compiled_postimages": 4,
+    "current_bottom5_generated_compiled_postimages": 16,
+    "current_bottom5_object_comparisons": 432,
+    "previous_canonical": "f3faeaa540e7fd81686802414d53ff6686f3ce7b",
+    "new_frost_implicit_plate_contexts": 32,
+    "new_frost_implicit_plate_current_postimages": 16,
+    "new_frost_implicit_plate_object_comparisons": 468,
+    "new_frost_implicit_hys2_contexts": 48,
+    "requalified_implicit5_contexts": 16,
+    "new_frost_implicit_hys2_current_postimages": 32,
+    "new_frost_implicit_hys2_object_comparisons": 916,
+    "new_frost_undrained_contexts": 64,
+    "new_frost_undrained_year12_contexts": 16,
+    "new_frost_undrained_unchanged_drained_postimages": 32,
+    "new_frost_undrained_whole_object_comparisons": 932,
+    "new_frost_analytical_contexts": 48,
+    "new_frost_analytical_year12_contexts": 16,
+    "new_frost_analytical_model1_postimages": 32,
+    "new_frost_analytical_whole_object_comparisons": 848
+  },
+  "scientific_change_class": "B_COMPOSITION_OF_EXISTING_UNCHANGED_PROCESSES",
+  "new_scientific_contexts": 48,
+  "actual_portable_scientific_producer": "a2df828cf19dea76a9012c7cb13f14db0cdbbe08",
+  "actual_local_scientific_producers": [
+    "dd7596685c91074789ab56e9a3ecb3d4a4ef4b4c",
+    "bc4b57be42e198a100e3e2b4cce725c1fa600642",
+    "23dd30d6a2bbf062a8b6a23ea2089399526db6a4"
+  ],
+  "scientific_producers_rebound": false,
+  "whole_historical_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false
+}
