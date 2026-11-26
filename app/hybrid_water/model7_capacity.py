@@ -10,6 +10,9 @@ NAME='WC_K_models_04_11'
 
 
 def analytical_models(project):
+    from frost_analytical_composition import selected as analytical_frost
+    composed=analytical_frost(project)
+    if composed is not None:return tuple(composed['analytical_frost_models'])
     if not project.input_directory or project.macro or project.age:return None
     from experimental_project import switches
     text=(Path(project.input_directory)/'swap.swp').read_text(encoding='cp1252')

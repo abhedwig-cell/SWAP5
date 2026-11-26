@@ -3,7 +3,7 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "f3faeaa540e7fd81686802414d53ff6686f3ce7b",
   "branch": "codex/nomacro-frost-analytical-composition09",
-  "last_commit": "f3faeaa540e7fd81686802414d53ff6686f3ce7b",
+  "last_commit": "e5a0c50460de8f7839d6accf76161bb79afaa1fc",
   "status": "PARTIAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -433,7 +433,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Implement bounded explicit analytical3..11/mixed Frost water/CDE composition at bottom5/8, hysteresis0, original initial1/2 and calendars; preserve existing analytical corrections and strict native model witnesses. Persist actual source before O0/O2 targeted public builds/runtimes; preserve source127/656old evidence without rerunning old model periods.",
+  "next_action": "Capture actual committed09 producer source; first real O0/O2 public model7 CDE bottom8 Frost35 and model3 water bottom5/year scopes, unchanged1e-10 conservation/native/cold; preserve every original failure; do not claim admission from implementation.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -36734,7 +36734,7 @@
     "RC3_changed": false
   },
   "frost_analytical_composition09": {
-    "status": "FOUR_GENUINE_ORIGINAL_READER_INITIALIZATIONS_AND_CURRENT_PUBLIC_REFUSALS_CONFIRMED_IMPLEMENTATION_REQUIRED",
+    "status": "BOUNDED_SOURCE_AND_TYPED_NATIVE_IMPLEMENTED_FIRST_PUBLIC_O0_O2_QUALIFICATION_PENDING",
     "branch": "codex/nomacro-frost-analytical-composition09",
     "actual_canonical_parent": "f3faeaa540e7fd81686802414d53ff6686f3ce7b",
     "classification": "B_COMPOSITION_OF_EXISTING_UNCHANGED_PROCESSES",
@@ -36747,6 +36747,13 @@
     "new_scientific_contexts": 0,
     "new_admitted_contexts": 0,
     "canonical_admission": false,
-    "next_action": "Implement bounded explicit analytical3..11/mixed Frost water/CDE composition at bottom5/8, hysteresis0, original initial1/2 and calendars; preserve existing analytical corrections and strict native model witnesses. Persist actual source before O0/O2 targeted public builds/runtimes; preserve source127/656old evidence without rerunning old model periods."
+    "next_action": "Implement bounded explicit analytical3..11/mixed Frost water/CDE composition at bottom5/8, hysteresis0, original initial1/2 and calendars; preserve existing analytical corrections and strict native model witnesses. Persist actual source before O0/O2 targeted public builds/runtimes; preserve source127/656old evidence without rerunning old model periods.",
+    "source_contract": "FROST_ANALYTICAL_COMPOSITION09_SOURCE_PROPOSAL_V1.json",
+    "native_codecs": [
+      "S5UAW001",
+      "S5UAC001"
+    ],
+    "native_header_version": 2,
+    "first_runtime": "tests/nomacro_drainage/frost_analytical_state_runtime.py"
   }
 }
