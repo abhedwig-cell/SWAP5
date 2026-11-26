@@ -1,0 +1,330 @@
+{
+  "actual_observer": "8bd6d32b61fcc1468fe1a6964c461aa008b0bded",
+  "actual_parent": "df00f9393ac552b0a6cab8ee84f8b8d8c06ac26c",
+  "seconds": 9.81678789993748,
+  "result": {
+    "status": "GENUINE_CANONICAL648_SIGNED_MERGE_ACTUAL_PUBLIC_PUB_14CI_SIX_LOGS_REAL_NEGATIVES_AND_PRIOR600_CHAIN_PASS",
+    "actual_parent": "df00f9393ac552b0a6cab8ee84f8b8d8c06ac26c",
+    "receipt": {
+      "status": "ACTUAL_CANONICAL648_FROST_IMPLICIT_HYS2_BOUNDARY_ADMISSION_VERIFIED",
+      "PR": 1805,
+      "actual_merge": "df00f9393ac552b0a6cab8ee84f8b8d8c06ac26c",
+      "qualified_candidate": "cb712974e37e41256877d9770a0af071afe241dd",
+      "source_anchor": "427974eb7b669856da9876ad39ba73bed5d437a5",
+      "whole_tree": "a1c7b85e9a446cb3891cd3b115b63f9469668e7e",
+      "previous_canonical": "47124f4de18a752fc466d50e2752e843548e5fea",
+      "ordered_parents": [
+        "47124f4de18a752fc466d50e2752e843548e5fea",
+        "cb712974e37e41256877d9770a0af071afe241dd"
+      ],
+      "synthetic_merge": "c65c7eb92cdc82ab786f62cb96bf376404e45130",
+      "admission_archive_sha256": "686d02451f9e5f3b5f624a10fea5c464000d91abc94d46243a0c5ef3526d1b7f",
+      "coadmission": {
+        "contexts": 648,
+        "short35_contexts": 602,
+        "year367_contexts": 2,
+        "new_short_calendar_contexts": 12,
+        "new_frost_calendar_state_contexts": 28,
+        "new_frost_boundary_contexts": 24,
+        "new_frost_boundary_state_calendar_contexts": 44,
+        "reopened_parent_plate_contexts": 8,
+        "native_calendar_samples": 4326,
+        "exact_cold_windows": 1864,
+        "compiled_initialization_postimages": 375,
+        "current_unselected_dense_compiled_postimages": 4,
+        "current_bottom5_generated_compiled_postimages": 16,
+        "current_bottom5_object_comparisons": 432,
+        "previous_canonical": "47124f4de18a752fc466d50e2752e843548e5fea",
+        "new_frost_implicit_plate_contexts": 32,
+        "new_frost_implicit_plate_current_postimages": 16,
+        "new_frost_implicit_plate_object_comparisons": 468,
+        "new_frost_implicit_hys2_contexts": 48,
+        "requalified_implicit5_contexts": 16,
+        "new_frost_implicit_hys2_current_postimages": 32,
+        "new_frost_implicit_hys2_object_comparisons": 916
+      },
+      "canonical_admission": true,
+      "whole_historical_completion": "PARTIAL",
+      "whole_scientific_equivalence": "NOT_QUALIFIED",
+      "global_family_and_gap_counts": "UNKNOWN",
+      "RC3_changed": false
+    },
+    "observations": {
+      "FROST_IMPLICIT_HYS2_YEAR06_CANDIDATE_PUBLIC_V1": 913.4430833002552,
+      "FROST_IMPLICIT_HYS2_YEAR06_CANDIDATE_PUBLICATION_V1": 549.4899051999673,
+      "FROST_IMPLICIT_HYS2_YEAR06_ACTUAL_MERGE_PUBLIC_V1": 875.0141058000736,
+      "FROST_IMPLICIT_HYS2_YEAR06_ACTUAL_MERGE_PUBLICATION_V1": 486.0042507001199
+    },
+    "original_archived_signed_commit_custody": [
+      {
+        "status": "ORIGINAL_ARCHIVED_SIGNED_COMMIT_EXACT_GIT_SHA1_TREE_AND_ORDERED_PARENTS_PASS",
+        "sha": "df00f9393ac552b0a6cab8ee84f8b8d8c06ac26c",
+        "tree": "a1c7b85e9a446cb3891cd3b115b63f9469668e7e",
+        "parents": [
+          "47124f4de18a752fc466d50e2752e843548e5fea",
+          "cb712974e37e41256877d9770a0af071afe241dd"
+        ],
+        "bytes": 1216,
+        "raw_sha256": "305fee1b0b611b05cf4f2d5402e7fcdfed7a48013444756f24d603e6be6fe207",
+        "archive_data_not_a_local_Git_object_projection": true
+      },
+      {
+        "status": "ORIGINAL_ARCHIVED_SIGNED_COMMIT_EXACT_GIT_SHA1_TREE_AND_ORDERED_PARENTS_PASS",
+        "sha": "c65c7eb92cdc82ab786f62cb96bf376404e45130",
+        "tree": "a1c7b85e9a446cb3891cd3b115b63f9469668e7e",
+        "parents": [
+          "47124f4de18a752fc466d50e2752e843548e5fea",
+          "cb712974e37e41256877d9770a0af071afe241dd"
+        ],
+        "bytes": 1175,
+        "raw_sha256": "4ec3549e6c523fdaaa3225bd84b1ffeb860e96b04e821f7e6140f8d65e1c62f6",
+        "archive_data_not_a_local_Git_object_projection": true
+      }
+    ],
+    "prior_600_admission": {
+      "status": "GENUINE_CANONICAL600_SIGNED_MERGE_ACTUAL_PUBLIC_PUB_14CI_SIX_LOGS_REAL_NEGATIVES_AND_PRIOR568_CHAIN_PASS",
+      "actual_parent": "47124f4de18a752fc466d50e2752e843548e5fea",
+      "receipt": {
+        "status": "ACTUAL_CANONICAL600_FROST_IMPLICIT_PLATE_ADMISSION_VERIFIED",
+        "PR": 1804,
+        "actual_merge": "47124f4de18a752fc466d50e2752e843548e5fea",
+        "qualified_candidate": "cb5946a6d8205462d96495a39611f72f570db58a",
+        "source_anchor": "81f4f9ad7d7debf7bddc17e991e689341a28192c",
+        "whole_tree": "c8ca41ee58a52cb57074485ba7a812bfbed56181",
+        "previous_canonical": "087fc67db3e1e58d45215522eb284e89cb6c12f1",
+        "ordered_parents": [
+          "087fc67db3e1e58d45215522eb284e89cb6c12f1",
+          "cb5946a6d8205462d96495a39611f72f570db58a"
+        ],
+        "synthetic_merge": "06b31c0ea8d0bb087441be1dab0d1f1ad9236fcc",
+        "admission_archive_sha256": "413af4b36a23ba07972ec04d7ed385ea82d1d4fc46b64e42edeaab7c83a5d6e4",
+        "coadmission": {
+          "contexts": 600,
+          "short35_contexts": 570,
+          "year367_contexts": 2,
+          "new_short_calendar_contexts": 12,
+          "new_frost_calendar_state_contexts": 28,
+          "new_frost_boundary_contexts": 24,
+          "new_frost_boundary_state_calendar_contexts": 44,
+          "reopened_parent_plate_contexts": 8,
+          "native_calendar_samples": 4070,
+          "exact_cold_windows": 1752,
+          "compiled_initialization_postimages": 375,
+          "current_unselected_dense_compiled_postimages": 4,
+          "current_bottom5_generated_compiled_postimages": 16,
+          "current_bottom5_object_comparisons": 432,
+          "previous_canonical": "087fc67db3e1e58d45215522eb284e89cb6c12f1",
+          "new_frost_implicit_plate_contexts": 32,
+          "new_frost_implicit_plate_current_postimages": 16,
+          "new_frost_implicit_plate_object_comparisons": 468
+        },
+        "canonical_admission": true,
+        "whole_historical_completion": "PARTIAL",
+        "whole_scientific_equivalence": "NOT_QUALIFIED",
+        "global_family_and_gap_counts": "UNKNOWN",
+        "RC3_changed": false
+      },
+      "observations": {
+        "FROST_IMPLICIT_PLATE05_CANDIDATE_PUBLIC_V1": 545.6604531002231,
+        "FROST_IMPLICIT_PLATE05_CANDIDATE_PUBLICATION_V1": 336.1937850001268,
+        "FROST_IMPLICIT_PLATE05_ACTUAL_MERGE_PUBLIC_V1": 733.8576745996252,
+        "FROST_IMPLICIT_PLATE05_ACTUAL_MERGE_PUBLICATION_V1": 505.683720999863
+      },
+      "original_archived_signed_commit_custody": [
+        {
+          "status": "ORIGINAL_ARCHIVED_SIGNED_COMMIT_EXACT_GIT_SHA1_TREE_AND_ORDERED_PARENTS_PASS",
+          "sha": "47124f4de18a752fc466d50e2752e843548e5fea",
+          "tree": "c8ca41ee58a52cb57074485ba7a812bfbed56181",
+          "parents": [
+            "087fc67db3e1e58d45215522eb284e89cb6c12f1",
+            "cb5946a6d8205462d96495a39611f72f570db58a"
+          ],
+          "bytes": 1212,
+          "raw_sha256": "8ddff2a87d545209b24dd8ef155653aca959fa1dc51d46e569c0634ee5adce1c",
+          "archive_data_not_a_local_Git_object_projection": true
+        },
+        {
+          "status": "ORIGINAL_ARCHIVED_SIGNED_COMMIT_EXACT_GIT_SHA1_TREE_AND_ORDERED_PARENTS_PASS",
+          "sha": "06b31c0ea8d0bb087441be1dab0d1f1ad9236fcc",
+          "tree": "c8ca41ee58a52cb57074485ba7a812bfbed56181",
+          "parents": [
+            "087fc67db3e1e58d45215522eb284e89cb6c12f1",
+            "cb5946a6d8205462d96495a39611f72f570db58a"
+          ],
+          "bytes": 1175,
+          "raw_sha256": "c690deb96e7903312ed8a0148f4e03f45e918a201f4324175aac1d9588e9d839",
+          "archive_data_not_a_local_Git_object_projection": true
+        }
+      ],
+      "prior_568_admission": {
+        "status": "GENUINE_CANONICAL568_SIGNED_MERGE_ACTUAL_PUBLIC_PUB_15CI_SEVEN_LOGS_REAL_NEGATIVES_AND_PRIOR524_CHAIN_PASS",
+        "actual_parent": "087fc67db3e1e58d45215522eb284e89cb6c12f1",
+        "receipt": {
+          "status": "ACTUAL_CANONICAL568_FROST_BOUNDARY_STATE_CALENDAR_ADMISSION_VERIFIED",
+          "PR": 1803,
+          "actual_merge": "087fc67db3e1e58d45215522eb284e89cb6c12f1",
+          "qualified_candidate": "e66867c5de454f45fd8d4adde31f68454c61cf9c",
+          "source_anchor": "f28db55d7653d6029e870af45cc97ff310c5ffd4",
+          "whole_tree": "e8bd491bbf37828528958c9ea4e982c0afac3bf8",
+          "previous_canonical": "9936bcda75eb920d67aa74e47018baf39ab18f78",
+          "ordered_parents": [
+            "9936bcda75eb920d67aa74e47018baf39ab18f78",
+            "e66867c5de454f45fd8d4adde31f68454c61cf9c"
+          ],
+          "synthetic_merge": "18e31348e7e72fadc564c3046ce3645578bd46b1",
+          "admission_archive_sha256": "6ea2618bb8115ba18b1222aa92d18b5f10647af330703faad6a44882ca9f7455",
+          "coadmission": {
+            "contexts": 568,
+            "short35_contexts": 546,
+            "year367_contexts": 2,
+            "new_short_calendar_contexts": 12,
+            "new_frost_calendar_state_contexts": 28,
+            "new_frost_boundary_contexts": 24,
+            "new_frost_boundary_state_calendar_contexts": 44,
+            "reopened_parent_plate_contexts": 8,
+            "native_calendar_samples": 3886,
+            "exact_cold_windows": 1672,
+            "compiled_initialization_postimages": 375,
+            "current_unselected_dense_compiled_postimages": 4,
+            "current_bottom5_generated_compiled_postimages": 16,
+            "current_bottom5_object_comparisons": 432,
+            "previous_canonical": "9936bcda75eb920d67aa74e47018baf39ab18f78"
+          },
+          "canonical_admission": true,
+          "whole_historical_completion": "PARTIAL",
+          "whole_scientific_equivalence": "NOT_QUALIFIED",
+          "global_family_and_gap_counts": "UNKNOWN",
+          "RC3_changed": false
+        },
+        "observations": {
+          "FROST_BOUNDARY_STATE_CALENDAR04_CANDIDATE_PUBLIC_V2": 708.6630196999758,
+          "FROST_BOUNDARY_STATE_CALENDAR04_CANDIDATE_PUBLICATION_V2": 437.8032283000648,
+          "FROST_BOUNDARY_STATE_CALENDAR04_ACTUAL_MERGE_PUBLIC_V1": 860.9279106999747,
+          "FROST_BOUNDARY_STATE_CALENDAR04_ACTUAL_MERGE_PUBLICATION_V1": 597.5406148997135
+        },
+        "original_archived_signed_commit_custody": [
+          {
+            "status": "ORIGINAL_ARCHIVED_SIGNED_COMMIT_EXACT_GIT_SHA1_TREE_AND_ORDERED_PARENTS_PASS",
+            "sha": "087fc67db3e1e58d45215522eb284e89cb6c12f1",
+            "tree": "e8bd491bbf37828528958c9ea4e982c0afac3bf8",
+            "parents": [
+              "9936bcda75eb920d67aa74e47018baf39ab18f78",
+              "e66867c5de454f45fd8d4adde31f68454c61cf9c"
+            ],
+            "bytes": 1239,
+            "raw_sha256": "58abe98c61c8e78a00426a31219121cd233e147fba430030fa21cf1567da813b",
+            "archive_data_not_a_local_Git_object_projection": true
+          },
+          {
+            "status": "ORIGINAL_ARCHIVED_SIGNED_COMMIT_EXACT_GIT_SHA1_TREE_AND_ORDERED_PARENTS_PASS",
+            "sha": "18e31348e7e72fadc564c3046ce3645578bd46b1",
+            "tree": "e8bd491bbf37828528958c9ea4e982c0afac3bf8",
+            "parents": [
+              "9936bcda75eb920d67aa74e47018baf39ab18f78",
+              "e66867c5de454f45fd8d4adde31f68454c61cf9c"
+            ],
+            "bytes": 1175,
+            "raw_sha256": "abfb1fed035975a208f10f90aa88ae352d0a42d79d3d140f6670de535baf1688",
+            "archive_data_not_a_local_Git_object_projection": true
+          }
+        ],
+        "prior_524_admission": {
+          "status": "HISTORICAL_CANONICAL524_SIGNED_PARENT_ORIGINAL_PUBLIC_PUB_ALL16CI_EIGHT_ORIGINAL_LOGS_AND_REAL_NEGATIVES_PASS",
+          "actual_parent": "9936bcda75eb920d67aa74e47018baf39ab18f78",
+          "receipt": {
+            "status": "ACTUAL_CANONICAL524_FROST_BOUNDARY_ADMISSION_VERIFIED",
+            "PR": 1802,
+            "actual_merge": "9936bcda75eb920d67aa74e47018baf39ab18f78",
+            "qualified_candidate": "2e9dc651b13e54eca0ba91a867d0849dd7904959",
+            "source_anchor": "ac2b20889487163a5e8ec1829ed41bf141dea3fa",
+            "whole_tree": "b70bb40894c548c94a0356a056d3fc4ad08169d3",
+            "previous_canonical": "1c3b8725548c836c9a73570c2579dd6cdc683217",
+            "ordered_parents": [
+              "1c3b8725548c836c9a73570c2579dd6cdc683217",
+              "2e9dc651b13e54eca0ba91a867d0849dd7904959"
+            ],
+            "synthetic_merge": "601d706e04de3e548e00b775cf584d76ff6eefbd",
+            "admission_archive_sha256": "70ab469b46905909c6b68cc613b5bd72815677fbe36ddc2dc6c39512f3cb5350",
+            "coadmission": {
+              "contexts": 524,
+              "short35_contexts": 510,
+              "year367_contexts": 2,
+              "new_short_calendar_contexts": 12,
+              "new_frost_calendar_state_contexts": 28,
+              "new_frost_boundary_contexts": 24,
+              "native_calendar_samples": 3618,
+              "exact_cold_windows": 1556,
+              "compiled_initialization_postimages": 375,
+              "current_unselected_dense_compiled_postimages": 4,
+              "current_selected_boundary_generated_compiled_postimages": 20,
+              "previous_canonical": "1c3b8725548c836c9a73570c2579dd6cdc683217"
+            },
+            "canonical_admission": true,
+            "whole_historical_completion": "PARTIAL",
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "global_family_and_gap_counts": "UNKNOWN",
+            "RC3_changed": false
+          },
+          "actual_admitted_coadmission": {
+            "contexts": 524,
+            "short35_contexts": 510,
+            "year367_contexts": 2,
+            "new_short_calendar_contexts": 12,
+            "new_frost_calendar_state_contexts": 28,
+            "new_frost_boundary_contexts": 24,
+            "native_calendar_samples": 3618,
+            "exact_cold_windows": 1556,
+            "compiled_initialization_postimages": 375,
+            "current_unselected_dense_compiled_postimages": 4,
+            "current_selected_boundary_generated_compiled_postimages": 20,
+            "previous_canonical": "1c3b8725548c836c9a73570c2579dd6cdc683217"
+          },
+          "observations": {
+            "FROST_BOUNDARY03_CANDIDATE_PUBLIC_V5": 616.1206106003374,
+            "FROST_BOUNDARY03_CANDIDATE_PUBLICATION_V5": 504.50370009988546,
+            "FROST_BOUNDARY03_ACTUAL_MERGE_PUBLIC_V1": 495.48539200006053,
+            "FROST_BOUNDARY03_ACTUAL_MERGE_PUBLICATION_V1": 389.1717072003521
+          },
+          "original_archived_signed_commit_custody": [
+            {
+              "status": "ORIGINAL_ARCHIVED_SIGNED_COMMIT_EXACT_GIT_SHA1_TREE_AND_ORDERED_PARENTS_PASS",
+              "sha": "9936bcda75eb920d67aa74e47018baf39ab18f78",
+              "tree": "b70bb40894c548c94a0356a056d3fc4ad08169d3",
+              "parents": [
+                "1c3b8725548c836c9a73570c2579dd6cdc683217",
+                "2e9dc651b13e54eca0ba91a867d0849dd7904959"
+              ],
+              "bytes": 1225,
+              "raw_sha256": "3852f58bcbabd0415ef092f939e9e9570be629c1373149d21367722706939735",
+              "archive_data_not_a_local_Git_object_projection": true
+            },
+            {
+              "status": "ORIGINAL_ARCHIVED_SIGNED_COMMIT_EXACT_GIT_SHA1_TREE_AND_ORDERED_PARENTS_PASS",
+              "sha": "601d706e04de3e548e00b775cf584d76ff6eefbd",
+              "tree": "b70bb40894c548c94a0356a056d3fc4ad08169d3",
+              "parents": [
+                "1c3b8725548c836c9a73570c2579dd6cdc683217",
+                "2e9dc651b13e54eca0ba91a867d0849dd7904959"
+              ],
+              "bytes": 1175,
+              "raw_sha256": "7883e99d11baf9d134566d5d73f01c25f59dfef75f01c2b936ea2f53c7baf614",
+              "archive_data_not_a_local_Git_object_projection": true
+            }
+          ],
+          "inherited_model_periods_reexecuted": 0,
+          "compiler_executions": 0,
+          "model_executions": 0,
+          "plate_convergence": "REOPENED_8_CONTEXTS_SEPARATE_CURRENT_QUALIFICATION_REQUIRED"
+        },
+        "compiler_executions": 0,
+        "model_executions": 0
+      },
+      "compiler_executions": 0,
+      "model_executions": 0
+    },
+    "compiler_executions": 0,
+    "model_executions": 0
+  },
+  "compiler_executions": 0,
+  "model_executions": 0
+}
