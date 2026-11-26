@@ -3,7 +3,7 @@ from pathlib import Path
 import hashlib
 from model7_terminal_water import SEARCH
 PARENT_SHA='15bac3d3cc0ee41918b5c6bf53aa75f50c85a1bbc0f56db66431045ab9d87a69'
-SEARCH_SHA='SEARCH_DIGEST'
+SEARCH_SHA='4b22bd8837053638592d3069f3b156495c064d214999a084668549011c8679d5'
 IMPORT='   use hybrid_step_budget, only: projected_water_residual'
 COMPOSED_IMPORT=IMPORT+', linear_pond_top_jacobian\n   use variables, only: rsro, rsroexp, pondmx'
 JACOBIAN='   if (ftoph) dFdhM(1) = dFdhM(1) + kmean(1)/disnod(1)'

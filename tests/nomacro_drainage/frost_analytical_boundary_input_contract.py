@@ -13,9 +13,9 @@ def source():
     assert not git('for-each-ref','--format=%(refname)','refs/replace')
     assert not git('status','--porcelain=v1','--untracked-files=all','--','app','src','tools','tests','reference','.github')
     assert not git('diff',BASE,'HEAD','--','src','tools','reference')
-    raw=git('show','HEAD:'+P+'FROST_ANALYTICAL_BOUNDARY10_SOURCE_PROPOSAL_V3.json')
+    raw=git('show','HEAD:'+P+'FROST_ANALYTICAL_BOUNDARY10_SOURCE_PROPOSAL_V4.json')
     contract=json.loads(raw)
-    assert (R/P/'FROST_ANALYTICAL_BOUNDARY10_SOURCE_PROPOSAL_V3.json').read_bytes().replace(b'\r\n',b'\n')==raw
+    assert (R/P/'FROST_ANALYTICAL_BOUNDARY10_SOURCE_PROPOSAL_V4.json').read_bytes().replace(b'\r\n',b'\n')==raw
     assert contract['actual_before_source']==BASE
     assert set(git('diff','--name-only',BASE,'HEAD','--','app').decode().splitlines())==set(contract['files'])
     for path,item in contract['files'].items():
