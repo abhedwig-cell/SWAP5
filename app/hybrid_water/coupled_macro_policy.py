@@ -14,7 +14,7 @@ from macro_contact_history import render_rate as render_contact_rate,render_macr
 from macro_stock_rank2 import render_rate as render_rank2_rate,render_head as render_rank2_head
 from macro_stock_jacobian import render_rate as render_stock_rate,render_head as render_stock_head
 from macro_trial_origin import render as render_trial_origin,PHYSICAL_FIELDS
-POLICY='fresh-coupled-unreduced-field-coupled-current-all-domain-inflow-gradient-v11r2'
+POLICY='fresh-coupled-unreduced-field-coupled-current-all-domain-contact-gradient-v12'
 
 def render_headcalc(source):
     source=source.replace('\r\n','\n')
@@ -83,7 +83,8 @@ def build_bundle(base,reference,target,*,owner_optimization='O2'):
     p=target/'macrorate.f90';p.write_text(render_complete_rate(render_contact_rate(render_rank2_rate(render_stock_rate(render_macrorate((reference/'build/swap-selected/macrorate.f90').read_text(encoding='cp1252')))))),encoding='cp1252')
     identity['donor_generated']['macrorate.f90']=h.sha(p)
     shutil.copyfile(Path(__file__).with_name('macro_stock_rank2.f90'),target/'macro_stock_rank2.f90')
-    identity['donor_generated']['macro_stock_rank2.f90']=h.sha(target/'macro_stock_rank2.f90')
+    p=target/'macro_stock_rank2.f90';p.write_text(p.read_text()+Path(__file__).with_name('macro_contact_gradient.f90').read_text())
+    identity['donor_generated']['macro_stock_rank2.f90']=h.sha(p)
     shutil.copyfile(Path(__file__).with_name('macro_stock_complete.f90'),target/'macro_stock_complete.f90')
     identity['donor_generated']['macro_stock_complete.f90']=h.sha(target/'macro_stock_complete.f90')
     p=target/'calcgwl.f90';p.write_text(render_perched_classification((reference/'build/swap-selected/calcgwl.f90').read_text(encoding='cp1252')),encoding='cp1252')
@@ -103,7 +104,7 @@ def build_bundle(base,reference,target,*,owner_optimization='O2'):
         if p.returncode:raise ValueError(p.stderr)
     for n in ['boundtop.f90','calcgwl.f90','headcalc.f90','macropore.f90','macrorate.f90','macro_stock_rank2.f90','macro_stock_complete.f90','swap_main.f90']:identity['donor_generated'][n]=h.sha(target/n)
     identity['original_macro_policy_parent']=identity.pop('macro_policy')
-    identity['coupled_macro']={'policy':POLICY,'generator_sha256':h.sha(Path(__file__)),'trial_origin_generator_sha256':h.sha(Path(__file__).with_name('macro_trial_origin.py')),'stock_gradient_generator_sha256':h.sha(Path(__file__).with_name('macro_stock_jacobian.py')),'rank2_generator_sha256':h.sha(Path(__file__).with_name('macro_stock_rank2.py')),'rank2_source_sha256':h.sha(Path(__file__).with_name('macro_stock_rank2.f90')),'contact_generator_sha256':h.sha(Path(__file__).with_name('macro_contact_history.py')),'surface_generator_sha256':h.sha(Path(__file__).with_name('macro_surface_gradient.py')),'perched_generator_sha256':h.sha(Path(__file__).with_name('macro_perched_classification.py')),'complete_generator_sha256':h.sha(Path(__file__).with_name('macro_complete_jacobian.py')),'complete_source_sha256':h.sha(Path(__file__).with_name('macro_stock_complete.f90')),'field_contract':'CONTRACT06: remove redundant air-entry exclusion only; original Andelst scope','physical_origin_fields':list(PHYSICAL_FIELDS),'owner_flags':flags,'unmodified_original_pool_flags':identity['donor_flags'],'owner_objects_sha256':{n:h.sha(target/n) for n in ['boundtop.o','calcgwl.o','headcalc.o','macropore.o','macrorate.o','macro_stock_rank2.o','macro_stock_complete.o','swap_main.o']},'native_codec':'UNCHANGED_S5MAC006; new policy/build receipt refuses foreign origins'}
+    identity['coupled_macro']={'policy':POLICY,'generator_sha256':h.sha(Path(__file__)),'trial_origin_generator_sha256':h.sha(Path(__file__).with_name('macro_trial_origin.py')),'stock_gradient_generator_sha256':h.sha(Path(__file__).with_name('macro_stock_jacobian.py')),'rank2_generator_sha256':h.sha(Path(__file__).with_name('macro_stock_rank2.py')),'rank2_source_sha256':h.sha(Path(__file__).with_name('macro_stock_rank2.f90')),'contact_generator_sha256':h.sha(Path(__file__).with_name('macro_contact_history.py')),'contact_gradient_source_sha256':h.sha(Path(__file__).with_name('macro_contact_gradient.f90')),'surface_generator_sha256':h.sha(Path(__file__).with_name('macro_surface_gradient.py')),'perched_generator_sha256':h.sha(Path(__file__).with_name('macro_perched_classification.py')),'complete_generator_sha256':h.sha(Path(__file__).with_name('macro_complete_jacobian.py')),'complete_source_sha256':h.sha(Path(__file__).with_name('macro_stock_complete.f90')),'field_contract':'CONTRACT06: remove redundant air-entry exclusion only; original Andelst scope','physical_origin_fields':list(PHYSICAL_FIELDS),'owner_flags':flags,'unmodified_original_pool_flags':identity['donor_flags'],'owner_objects_sha256':{n:h.sha(target/n) for n in ['boundtop.o','calcgwl.o','headcalc.o','macropore.o','macrorate.o','macro_stock_rank2.o','macro_stock_complete.o','swap_main.o']},'native_codec':'UNCHANGED_S5MAC006; new policy/build receipt refuses foreign origins'}
     identity['macro_policy']={'name':POLICY,'generator_sha256':h.sha(Path(__file__)),'native_macro_format':'S5MAC006-complete-physical-trial-origin','objects_sha256':identity['coupled_macro']['owner_objects_sha256']}
     meta['identity']=identity;meta['binding']={**meta['binding'],'build':identity,'macro_policy':POLICY}
     meta['executable_sha256']['donor']=h.sha(h.executable(target,'day_donor'))
@@ -120,6 +121,7 @@ def validate_bundle(bundle,reference):
     if policy['contact_generator_sha256']!=h.sha(Path(__file__).with_name('macro_contact_history.py')):raise ValueError('Contact source differs')
     if policy['perched_generator_sha256']!=h.sha(Path(__file__).with_name('macro_perched_classification.py')):raise ValueError('Perched classification source differs')
     if policy['complete_generator_sha256']!=h.sha(Path(__file__).with_name('macro_complete_jacobian.py')) or policy['complete_source_sha256']!=h.sha(Path(__file__).with_name('macro_stock_complete.f90')):raise ValueError('Complete D3 source differs')
+    if policy['contact_gradient_source_sha256']!=h.sha(Path(__file__).with_name('macro_contact_gradient.f90')):raise ValueError('Contact gradient source differs')
     if policy['surface_generator_sha256']!=h.sha(Path(__file__).with_name('macro_surface_gradient.py')):raise ValueError('Surface gradient source differs')
     if policy['physical_origin_fields']!=list(PHYSICAL_FIELDS):raise ValueError('Coupled physical origin differs')
     for name,digest in policy['owner_objects_sha256'].items():

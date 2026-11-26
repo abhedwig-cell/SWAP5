@@ -21,7 +21,8 @@ def render_rate(source):
 
 def render_head(source):
     old='      call jac37_solve(NN,dFdhU(1:NN),dFdhM(1:NN),dFdhL(1:NN),F(1:NN),difh(1:NN),ierror,rank2_handled)'
-    new='''      call jac63_solve(NN,dFdhU(1:NN),dFdhM(1:NN),dFdhL(1:NN),F(1:NN),difh(1:NN),ierror,rank2_handled)
+    new=old+'''
       if(rank2_handled)return
-'''+old
+      call jac63_solve(NN,dFdhU(1:NN),dFdhM(1:NN),dFdhL(1:NN),F(1:NN),difh(1:NN),ierror,rank2_handled)
+'''
     return replace(source,old,new)

@@ -1,0 +1,6 @@
+{
+  "cause": "V11r2 advances to35797.722512057597; containing main-GWL cell38 centre becomes negative while GWL remains in same volume cell; saturated-only helper -3 validly refuses.",
+  "correction": "Choose actual sign-bracketing GWL centres; derive original max(sorptivity,Darcy) contact potential per domain from current state; reuse original hydraulic derivative policy; subtract actual existing local unsaturated contribution once; combine contact row with all constrained-domain normalization vectors. Original rates/clock/history/criteria unchanged.",
+  "limits": "Near-saturated fixed geometry only; no independent perched zone; all FrIn1/no excess/internal0; partial domains with unsaturated potential only in contact cell; active peak/winner ties fail closed.",
+  "model_limit_seconds_per_route": 20
+}

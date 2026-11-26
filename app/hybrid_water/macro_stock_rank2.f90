@@ -11,34 +11,56 @@ implicit none
 integer,intent(in)::n
 real(8),intent(out)::uu(macp,madm),vv(macp,madm),bl,bd,meta(16)
 logical,intent(out)::eligible
-real(8)::cm(24,madm),pot(macp,madm),valid,den,g,g0,g1,depth,hm,delta,doo,rhoslope,cg,fr,dq,qp,latvalid,dI(macp),proof_base(macp),proof_meta(6)
-integer::d,k,i,cell,upper
+real(8)::cm(24,madm),pot(macp,madm),pu(macp,madm),valid,den,g,g0,g1,depth,hm,delta,doo,rhoslope,cg,fr,dq,qp,latvalid,dI(macp),proof_base(macp),proof_meta(10),ct0(madm),ct1(madm),nativeU(madm),du0,du1,contact_valid,contactD1(2)
+integer::d,k,i,cell,upper,lower
 integer,save::proof_count=0,proof_unit
 uu=0d0;vv=0d0;bl=0d0;bd=0d0;meta=0d0;eligible=.false.;meta(1)=-1
 if(n/=numnod.or.n<2.or.NumDm<3.or.swmbf/=1.or.IcTopMp/=1.or.IDecMpRat/=0.or.FrReduQ/=1d0)return
-call macro_saturated_data(cm,pot,valid);meta(15)=valid;meta(1)=-2
+call macro_saturated_data(cm,pot,pu,valid);meta(15)=valid;meta(1)=-2
 if(valid/=1d0)return
 cell=ICpTpSatZon;upper=cell-1
 meta(1)=-3
 if(cell<2.or.cell>n.or.ICpTpPerZon/=cell.or.ICpBtPerZon/=-1.or.pegwl<990d0)return
-if(h(upper)>=0d0.or.any(h(cell:n)<=0d0).or.any(theta(cell:n)/=thetas(cell:n)))return
-den=h(cell)-h(upper)
-g=z(cell)+h(cell)/den*(z(upper)-z(cell))
+lower=cell
+if(h(cell)<0d0)then
+ upper=cell;lower=cell+1
+end if
+if(lower>n)return
+if(h(upper)>=0d0.or.any(h(lower:n)<=0d0).or.any(theta(lower:n)/=thetas(lower:n)))return
+den=h(lower)-h(upper)
+g=z(lower)+h(lower)/den*(z(upper)-z(lower))
 if(abs(g-GwlFlCpZo)>1d-9)return
-g0=(z(upper)-z(cell))*h(cell)/den**2;g1=-(z(upper)-z(cell))*h(upper)/den**2
+g0=(z(upper)-z(lower))*h(lower)/den**2;g1=-(z(upper)-z(lower))*h(upper)/den**2
 meta(13)=g;meta(14)=dble(cell);meta(16)=theta(upper)-thetas(upper)
 meta(1)=-4
 if(any(cm(8,1:NumDm)/=1d0).or.any(cm(22,1:NumDm)/=0d0))return
 if(cm(16,1)/=1d0)return
 meta(1)=-5
 if(any(QInIntSatDmCp(1:NumDm,1:n)/=0d0))return
-if(any(QOutMtxUnsDmCp(1:NumDm,cell)/=0d0))return
 depth=g-(z(cell)-.5d0*dz(cell))
 if(depth<=0d0.or.depth>=dz(cell))return
 cg=sum(QInMtxSatDmCp(1:NumDm,cell))/depth
-bl=cg*g0;bd=cg*g1
+bl=0d0;bd=0d0
+if(h(cell)>=0d0)then
+ bl=cg*g0;bd=cg*g1
+end if
 meta(11)=cg;meta(12)=0d0;meta(1)=-6
-! Two existing stock normalizations, with no duplicate internal inflow.
+ct0=0d0;ct1=0d0;nativeU=0d0;contactD1=0d0
+! Complete current contact row, including unconstrained domains, exactly once.
+if(h(cell)<0d0)then
+ call macro_contact_cell_gradient(1,cell,g0,g1,QOutMtxUnsDmCp(1,cell)*dt,du0,du1,nativeU(1),contact_valid)
+ if(contact_valid/=1d0)return
+ contactD1=[-du0/dt-nativeU(1),-du1/dt]
+ vv(upper,NumDm)=contactD1(1);vv(lower,NumDm)=contactD1(2)
+ uu(cell,NumDm)=1d0
+ do d=2,NumDm
+  call macro_contact_cell_gradient(d,cell,g0,g1,pu(cell,d-1),du0,du1,nativeU(d),contact_valid)
+  if(contact_valid/=1d0)return
+  ct0(d)=-cm(16,d)*du0/dt-nativeU(d);ct1(d)=-cm(16,d)*du1/dt
+  vv(upper,NumDm)=vv(upper,NumDm)+ct0(d);vv(lower,NumDm)=vv(lower,NumDm)+ct1(d)
+ end do
+end if
+! One stock normalization per bounded domain, with no duplicate contact derivative.
 do k=1,NumDm-1
  d=k+1
  if(cm(5,d)<0d0.or.abs(cm(5,d)-(cm(9,d)+cm(10,d)+cm(12,d)))>128d0*epsilon(1d0)*max(cm(5,d),tiny(1d0)).or.cm(11,d)/=0d0)return
@@ -53,15 +75,16 @@ do k=1,NumDm-1
  end if
  if(cm(4,d)==cm(1,d).and.k<=2)meta(6+k)=1d0
  if(fr==0d0.or.fr==1d0)cycle
- if(cm(6,d)<=0d0.or.any(cm(14:15,d)/=0d0))return
- if(abs(sum(pot(1:n,k))-cm(6,d))>128d0*epsilon(1d0)*max(abs(cm(6,d)),tiny(1d0)))return
+ if(cm(6,d)<=0d0.or.cm(15,d)/=0d0)return
+ if(any(pu(1:cell-1,k)/=0d0).or.any(pu(cell+1:n,k)/=0d0))return
+ if(abs(sum(pot(1:n,k))+sum(pu(1:n,k))-cm(6,d))>128d0*epsilon(1d0)*max(abs(cm(6,d)),tiny(1d0)))return
  dI=0d0
  if(cm(10,d)>0d0)then
   call macro_top_lateral_gradient(dq,qp,latvalid)
   if(latvalid/=1d0.or.qp<=0d0)return
   dI(1)=cm(10,d)/qp*dq
  end if
- do i=cell,n
+ do i=lower,n
   if(QInMtxSatDmCp(d,i)>0d0)then
    hm=max(0d0,cm(24,d)-z(i))
    if(hm<1d-8)hm=0d0
@@ -71,33 +94,39 @@ do k=1,NumDm-1
   end if
  end do
  dI(upper)=dI(upper)+dt*QInMtxSatDmCp(d,cell)/depth*g0
- dI(cell)=dI(cell)+dt*QInMtxSatDmCp(d,cell)/depth*g1
+ dI(lower)=dI(lower)+dt*QInMtxSatDmCp(d,cell)/depth*g1
+ if(h(cell)<0d0)then
+  call macro_contact_cell_gradient(d,cell,g0,g1,pu(cell,k),du0,du1,nativeU(d),contact_valid)
+  if(contact_valid/=1d0)return
+  dI(upper)=dI(upper)-fr*du0;dI(lower)=dI(lower)-fr*du1
+ end if
  vv(1:n,k)=dI(1:n)/cm(6,d)
  if(cm(17,d)/cm(21,d)<=1d-7.or.cm(6,d)<=cm(17,d))return
  do i=1,n
   if(pot(i,k)>0d0)then
-   if(i<cell.or.h(i)<=0d0)return
+   if(i<lower.or.h(i)<=0d0)return
    delta=max(0d0,cm(24,d)-z(i))-h(i)
    if(delta<=0d0)return
-   doo=-pot(i,k)/delta;uu(i,k)=-pot(i,k)/cm(21,d);vv(i,k)=vv(i,k)-fr*doo/cm(6,d)
+   doo=-pot(i,k)/delta;vv(i,k)=vv(i,k)-fr*doo/cm(6,d)
   end if
  end do
- vv(upper,k)=vv(upper,k)-rhoslope*g0/cm(6,d);vv(cell,k)=vv(cell,k)-rhoslope*g1/cm(6,d)
+ uu(1:n,k)=-(pot(1:n,k)+pu(1:n,k))/dt
+ vv(upper,k)=vv(upper,k)-rhoslope*g0/cm(6,d);vv(lower,k)=vv(lower,k)-rhoslope*g1/cm(6,d)
  meta(2)=meta(2)+1d0
 end do
 meta(1)=1d0;eligible=.true.
 ! Primitive state and actual local derivatives for independent all-domain inventory.
 proof_count=proof_count+1
 if(proof_count<=64)then
- if(proof_count==1)open(newunit=proof_unit,file='macro_saturated_all_mass_base.txt',status='replace')
- proof_meta=[dble(cell),h(upper),h(cell),z(upper),z(cell),depth]
- write(proof_unit,*)n,NumDm-1,t1900,dt,numbit
+ if(proof_count==1)open(newunit=proof_unit,file='macro_saturated_contact_mass_base.txt',status='replace')
+ proof_meta=[dble(cell),dble(upper),dble(lower),h(upper),h(lower),z(upper),z(lower),depth,contactD1]
+ write(proof_unit,*)n,NumDm,t1900,dt,numbit
  write(proof_unit,*)proof_meta
  do d=2,NumDm
   dq=0d0;qp=0d0;latvalid=0d0
   if(cm(10,d)>0d0)call macro_top_lateral_gradient(dq,qp,latvalid)
   if(qp>0d0)dq=cm(10,d)/qp*dq
-  write(proof_unit,*)cm(16,d),cm(18,d),merge(1d0,0d0,cm(4,d)<cm(1,d)),QInMtxSatDmCp(d,cell),dq
+  write(proof_unit,*)cm(16,d),cm(18,d),merge(1d0,0d0,cm(4,d)<cm(1,d)),QInMtxSatDmCp(d,cell),dq,ct0(d),ct1(d)
   proof_base=0d0
   do i=1,n
    hm=max(0d0,cm(24,d)-z(i))
@@ -105,6 +134,7 @@ if(proof_count<=64)then
    delta=hm-h(i)
    if(abs(delta)>1d-14)proof_base(i)=(QOutMtxSatDmCp(d,i)-QInMtxSatDmCp(d,i))/delta
   end do
+  proof_base(cell)=proof_base(cell)+nativeU(d)
   write(proof_unit,*)proof_base(1:n)
  end do
 end if
@@ -127,7 +157,7 @@ integer::k,i,e,cell,nr,j,ip
 logical,save::opened=.false.
 integer,save::tu,systems_unit=0,active_count=0
 call jac37_terms(n,uu,vv,bl,bd,meta,handled)
-M=0d0;lam=0d0;res=-1d0;nr=NumDm-1
+M=0d0;lam=0d0;res=-1d0;nr=NumDm
 if(handled) then
  cell=int(meta(14));aa=a;bb=b;aa(cell)=aa(cell)+bl;bb(cell)=bb(cell)+bd
  call tridag(n,aa,bb,c,r,x,ierror)
@@ -181,7 +211,7 @@ write(tu,*)t1900,dt,numbit,meta,bl,bd,merge(maxval(abs(res)),-1d0,handled)
 if(handled)then
  active_count=active_count+1
  if(active_count<=64)then
-  if(systems_unit==0)open(newunit=systems_unit,file='macro_saturated_all_systems.txt',status='replace')
+  if(systems_unit==0)open(newunit=systems_unit,file='macro_saturated_contact_systems.txt',status='replace')
   write(systems_unit,*)n,nr,t1900,dt,numbit
   write(systems_unit,*)aa,bb,c,r,uu(1:n,1:nr),vv(1:n,1:nr),x
  end if

@@ -3,8 +3,8 @@ from donor_sources import replace
 
 def render_rate(source):
     decl='''      real(8),save::rank2_cm(24,madm)=0d0,rank2_pot(macp,2)=0d0
-      real(8),save::rankall_pot(macp,madm)=0d0
-      real(8)::rankall_get_pot(macp,madm)
+      real(8),save::rankall_pot(macp,madm)=0d0,rankall_uns(macp,madm)=0d0
+      real(8)::rankall_get_pot(macp,madm),rankall_get_uns(macp,madm)
       real(8),save::rank2_head(macp),rank2_t,rank2_dt
       integer,save::rank2_seq=-1,rank2_task=-1
       logical,save::rank2_ready=.false.
@@ -26,16 +26,17 @@ def render_rate(source):
 '''+needle)
     source=replace(source,'      call capture_stock_gradient()', '''      if(swmbf==1.and.NumDm>=3)then
          rank2_pot(:,1)=FlwOutMtxSatDmCpPot(2,:);rank2_pot(:,2)=FlwOutMtxSatDmCpPot(3,:)
-         rankall_pot=0d0
+         rankall_pot=0d0;rankall_uns=0d0
          do id=2,NumDm
           rankall_pot(:,id-1)=FlwOutMtxSatDmCpPot(id,:)
+          rankall_uns(:,id-1)=FlwOutMtxUnsDmCpPot(id,:)
          end do
          rank2_head(1:numnod)=h(1:numnod);rank2_t=t1900;rank2_dt=dt
          rank2_seq=stock_seq;rank2_task=ITask;rank2_ready=.true.
       end if
       call capture_stock_gradient()''')
-    source=replace(source,'      entry macro_stock_terms(','''      entry macro_saturated_data(rank2_get_cm,rankall_get_pot,rank2_valid)
-      rank2_get_cm=rank2_cm;rankall_get_pot=rankall_pot;rank2_valid=0d0
+    source=replace(source,'      entry macro_stock_terms(','''      entry macro_saturated_data(rank2_get_cm,rankall_get_pot,rankall_get_uns,rank2_valid)
+      rank2_get_cm=rank2_cm;rankall_get_pot=rankall_pot;rankall_get_uns=rankall_uns;rank2_valid=0d0
       if(rank2_ready.and.rank2_task==2.and.rank2_seq==stock_seq)then
          if(rank2_t==t1900.and.rank2_dt==dt.and.all(rank2_head(1:numnod)==h(1:numnod)))rank2_valid=1d0
       end if
