@@ -1,0 +1,100 @@
+{
+  "status": "TWO_PORTABLE_WORKFLOWS_PREPARED_FOR_NEW_UNDRAINED_COMPOSITION_NOT_YET_EXECUTED",
+  "workflows": [
+    {
+      "path": ".github/workflows/nomacro-frost-undrained-state08-windows.yml",
+      "parent": ".github/workflows/nomacro-frost-implicit-hys2-year06-windows.yml",
+      "actual_parent_revision": "df00f9393ac552b0a6cab8ee84f8b8d8c06ac26c",
+      "parent_sha256": "e21ae6c65e14ede219e65042ef496564d4edb1f1526df650278eec58871a4a3c",
+      "proposed_sha256": "fe69611e899188a42ceff8e4711c127b5d57cdc43bea2c4398c6a0834cc3a20d",
+      "ordered_literal_replacements": [
+        {
+          "before": "codex/nomacro-frost-implicit-hys2-calendar06",
+          "after": "codex/nomacro-frost-undrained-state08"
+        },
+        {
+          "before": "nomacro-frost-implicit-hys2-year06",
+          "after": "nomacro-frost-undrained-state08"
+        },
+        {
+          "before": "Original implicit Frost hysteresis2 boundary state/calendar",
+          "after": "Original undrained Frost boundary state/calendar"
+        },
+        {
+          "before": "47124f4de18a752fc466d50e2752e843548e5fea",
+          "after": "df00f9393ac552b0a6cab8ee84f8b8d8c06ac26c"
+        },
+        {
+          "before": "FROST_IMPLICIT_HYS2_YEAR06_CONTRACT_V1",
+          "after": "FROST_UNDRAINED_STATE08_INPUT_CONTRACT_V1"
+        },
+        {
+          "before": "frost_implicit_hys2_input_contract.py",
+          "after": "frost_undrained_input_contract.py"
+        },
+        {
+          "before": "frost_implicit_hys2_inherited_postimages.py",
+          "after": "frost_undrained_inherited_postimages.py"
+        },
+        {
+          "before": "frost_implicit_hys2_portable.py",
+          "after": "frost_undrained_portable.py"
+        }
+      ],
+      "actual_scientific_producer": "ACTUAL_GITHUB_SHA_AT_EXECUTION_NEVER_REBOUND",
+      "old_model_periods_replayed_by_inherited_builds": 0
+    },
+    {
+      "path": ".github/workflows/nomacro-frost-undrained-state08-ubuntu.yml",
+      "parent": ".github/workflows/nomacro-frost-implicit-hys2-year06-ubuntu.yml",
+      "actual_parent_revision": "df00f9393ac552b0a6cab8ee84f8b8d8c06ac26c",
+      "parent_sha256": "d17de5540a08307b57290efb5f5e8e3c7cfa9a40e08809c49b6940eca3337b34",
+      "proposed_sha256": "2101955364994261aeed6f8f01b9f7b1a4245ce586e0fe07fea6a29973676745",
+      "ordered_literal_replacements": [
+        {
+          "before": "codex/nomacro-frost-implicit-hys2-calendar06",
+          "after": "codex/nomacro-frost-undrained-state08"
+        },
+        {
+          "before": "nomacro-frost-implicit-hys2-year06",
+          "after": "nomacro-frost-undrained-state08"
+        },
+        {
+          "before": "Original implicit Frost hysteresis2 boundary state/calendar",
+          "after": "Original undrained Frost boundary state/calendar"
+        },
+        {
+          "before": "47124f4de18a752fc466d50e2752e843548e5fea",
+          "after": "df00f9393ac552b0a6cab8ee84f8b8d8c06ac26c"
+        },
+        {
+          "before": "FROST_IMPLICIT_HYS2_YEAR06_CONTRACT_V1",
+          "after": "FROST_UNDRAINED_STATE08_INPUT_CONTRACT_V1"
+        },
+        {
+          "before": "frost_implicit_hys2_input_contract.py",
+          "after": "frost_undrained_input_contract.py"
+        },
+        {
+          "before": "frost_implicit_hys2_inherited_postimages.py",
+          "after": "frost_undrained_inherited_postimages.py"
+        },
+        {
+          "before": "frost_implicit_hys2_portable.py",
+          "after": "frost_undrained_portable.py"
+        }
+      ],
+      "actual_scientific_producer": "ACTUAL_GITHUB_SHA_AT_EXECUTION_NEVER_REBOUND",
+      "old_model_periods_replayed_by_inherited_builds": 0
+    }
+  ],
+  "new_representative_cases": 16,
+  "profiles": [
+    "WindowsO0",
+    "WindowsO2",
+    "UbuntuO0",
+    "UbuntuO2"
+  ],
+  "existing_drained_compile_only_postimage_cases_per_profile": 8,
+  "scientific_admission": false
+}
