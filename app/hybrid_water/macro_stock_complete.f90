@@ -1,71 +1,75 @@
 ! COMBINED62 conditional D3 correction; no residual/physics changes.
-subroutine jac63_terms(n,uu,vv,meta,eligible)
+subroutine jac63_terms(n,uu,vv,local_d3,meta,eligible)
 use MOD_arrays,only:macp,madm
 use MOD_grid,only:numnod,z,dz,layer
 use MOD_macropore,only:NumDm,ICpTpSatZon,ICpTpPerZon,ICpBtPerZon,ICpBtDm,ICpTpWaSrDm, &
  QInMtxSatDmCp,QInIntSatDmCp,QOutMtxUnsDmCp,FrReduQ,CDarcy,TimAbsCumDmCp,SorpMax,SorpAlfa, &
- AwlCorFac,PpDmCp,DiPoCp,FrMpWalWet,swabs,SwDarcy,ThtSrpRefDmCp
+ AwlCorFac,PpDmCp,DiPoCp,FrMpWalWet,swabs,SwDarcy,ThtSrpRefDmCp,SwSoilShr,QOutMtxSatDmCp
 use MOD_swap_mp,only:swmbf,IcTopMp,IDecMpRat,GwlFlCpZo
 use MOD_MvG,only:moiscap
 use variables,only:h,theta,thetas,thetar,t1900,dt
 implicit none
 integer,intent(in)::n
-real(8),intent(out)::uu(macp,2),vv(macp,2),meta(44)
+real(8),intent(out)::uu(macp,2),vv(macp,2),local_d3(macp),meta(48)
 logical,intent(out)::eligible
 real(8)::cm(24,madm),ps(macp),pu(macp),valid,f,O,I,L,V,W,gval,zm,den,g0,g1,overlap,span
 real(8)::dO(macp),dL(macp),du0,du1,raw,B,Bprime,C50,deficit,power,rho,event_age,active_deficit
-integer::j,lay
-uu=0d0;vv=0d0;meta=0d0;eligible=.false.;meta(1)=-1
-if(n/=112.or.n/=numnod.or.NumDm/=5.or.swmbf/=1.or.IcTopMp/=1.or.IDecMpRat/=0.or.FrReduQ/=1d0) return
+integer::j,lay,cell,bottom,sample_n
+uu=0d0;vv=0d0;local_d3=0d0;meta=0d0;eligible=.false.;meta(1)=-1
+if(n<2.or.n/=numnod.or.NumDm<3.or.swmbf/=1.or.IcTopMp/=1.or.IDecMpRat/=0.or.FrReduQ/=1d0) return
 if(dt<=0d0) return
 call macro_d3_data(cm,ps,pu,valid);meta(2)=valid;meta(1)=-2
 if(valid/=1d0) return
 meta(21)=t1900;meta(22)=dt;meta(23)=valid
 meta(1)=-3
-if(ICpTpSatZon/=50.or.ICpTpPerZon/=50.or.ICpBtPerZon/=-1.or.ICpBtDm(3)/=57.or.ICpTpWaSrDm(3)/=50) return
-if(h(50)>=0d0.or.any(h(51:57)<=0d0).or.any(theta(51:57)/=thetas(51:57))) return
-if(theta(50)<thetas(50)-1d-6) return
-meta(24)=thetas(50)-theta(50)
+cell=ICpTpSatZon;bottom=ICpBtDm(3)
+if(cell<1.or.cell>=n.or.bottom<=cell.or.bottom>n)return
+if(ICpTpPerZon/=cell.or.ICpBtPerZon/=-1.or.ICpTpWaSrDm(3)/=cell)return
+if(h(cell)>=0d0.or.any(h(cell+1:bottom)<=0d0).or.any(theta(cell+1:bottom)/=thetas(cell+1:bottom))) return
+if(theta(cell)<thetas(cell)-1d-6) return
+meta(24)=thetas(cell)-theta(cell)
 meta(1)=-4
 if(swabs/=1.or.SwDarcy/=1) return
-event_age=TimAbsCumDmCp(3,50)
+event_age=TimAbsCumDmCp(3,cell)
 if(event_age<0d0)return
 if(any(QInMtxSatDmCp(3,1:n)/=0d0).or.any(QInIntSatDmCp(3,1:n)/=0d0)) return
 if(cm(8,3)/=1d0.or.cm(22,3)/=0d0.or.cm(5,3)<0d0.or.cm(5,3)/=cm(9,3).or.any(cm(10:12,3)/=0d0)) return
 meta(1)=-5
-if(any(ps(1:50)/=0d0).or.any(ps(58:n)/=0d0).or.any(ps(51:57)<=0d0)) return
-if(any(pu(1:49)/=0d0).or.any(pu(51:n)/=0d0).or.pu(50)<0d0) return
+if(any(ps(1:cell)/=0d0).or.any(ps(bottom+1:n)/=0d0).or.any(ps(cell+1:bottom)<=0d0)) return
+if(any(pu(1:cell-1)/=0d0).or.any(pu(cell+1:n)/=0d0).or.pu(cell)<0d0) return
 ! Include an active existing local U derivative exactly once (subtracted below).
-if(event_age<1d-8.and.ThtSrpRefDmCp(3,50)/=thetas(50))return
+if(event_age<1d-8.and.ThtSrpRefDmCp(3,cell)/=thetas(cell))return
 f=cm(16,3);O=cm(6,3);I=cm(5,3);L=cm(2,3);V=cm(4,3);W=cm(1,3)
 meta(4:9)=[f,I,O,L,V,W];meta(1)=-6
 if(f<=0d0.or.f>=1d0.or.O<=0d0.or.cm(17,3)/dt<=1d-7.or.O<=cm(17,3)) return
 if(L/=min(V,W).or.V==W.or.V>=cm(3,3)) return
 meta(1)=-7
 gval=GwlFlCpZo;zm=cm(24,3);meta(10)=gval;meta(11)=zm
-if(gval<=z(50)-.5d0*dz(50).or.gval>=z(50)+.5d0*dz(50)) return
-if(zm<=z(50)-.5d0*dz(50).or.zm>=z(50)+.5d0*dz(50).or.gval==zm) return
+if(gval<=z(cell)-.5d0*dz(cell).or.gval>=z(cell)+.5d0*dz(cell)) return
+if(zm<=z(cell)-.5d0*dz(cell).or.zm>=z(cell)+.5d0*dz(cell).or.gval==zm) return
 if((V<W).neqv.(gval<zm)) return
-if(any(zm-z(51:57)-h(51:57)<=1d-8)) return
-lay=layer(50);deficit=thetas(50)-theta(50);power=SorpAlfa(lay);meta(1)=-8
-if(deficit<=1d-8.or.thetas(50)<=thetar(50).or.DiPoCp(50)<=0d0.or.power<=0d0) return
-active_deficit=ThtSrpRefDmCp(3,50)-theta(50)
+if(any(zm-z(cell+1:bottom)-h(cell+1:bottom)<=1d-8)) return
+lay=layer(cell)
+if(SwSoilShr(lay)/=0)return
+deficit=thetas(cell)-theta(cell);power=SorpAlfa(lay);meta(1)=-8
+if(deficit<=1d-8.or.thetas(cell)<=thetar(cell).or.DiPoCp(cell)<=0d0.or.power<=0d0) return
+active_deficit=ThtSrpRefDmCp(3,cell)-theta(cell)
 if(active_deficit<=1d-8)return
-C50=moiscap(50,h(50))
-raw=4d0*AwlCorFac(50)*PpDmCp(3,50)*dz(50)/DiPoCp(50)*FrMpWalWet(3,50) &
- *SorpMax(lay)*(active_deficit/(thetas(50)-thetar(50)))**power*(sqrt(event_age+dt)-sqrt(event_age))
+C50=moiscap(cell,h(cell))
+raw=4d0*AwlCorFac(cell)*PpDmCp(3,cell)*dz(cell)/DiPoCp(cell)*FrMpWalWet(3,cell) &
+ *SorpMax(lay)*(active_deficit/(thetas(cell)-thetar(cell)))**power*(sqrt(event_age+dt)-sqrt(event_age))
 meta(12)=raw
-if(raw<=0d0.or.raw>=1d3*dt*dz(50)) return
-span=zm-(z(50)-.5d0*dz(50));overlap=max(0d0,zm-gval)
+if(raw<=0d0.or.raw>=1d3*dt*dz(cell)) return
+span=zm-(z(cell)-.5d0*dz(cell));overlap=max(0d0,zm-gval)
 meta(13)=overlap;meta(15)=overlap/span
 if(overlap>=span) return
-if(overlap==0d0.and.pu(50)/=0d0) return
-if(overlap>0d0.and.pu(50)<=0d0) return
-if(abs(pu(50)-raw*overlap/span)>128d0*epsilon(1d0)*max(abs(pu(50)),abs(raw*overlap/span),tiny(1d0)))return
+if(overlap==0d0.and.pu(cell)/=0d0) return
+if(overlap>0d0.and.pu(cell)<=0d0) return
+if(abs(pu(cell)-raw*overlap/span)>128d0*epsilon(1d0)*max(abs(pu(cell)),abs(raw*overlap/span),tiny(1d0)))return
 if(abs(sum(ps(1:n))+sum(pu(1:n))-O)>128d0*epsilon(1d0)*O)return
-if(abs(QOutMtxUnsDmCp(3,50)-f*pu(50)/dt)>256d0*epsilon(1d0)* &
- max(abs(QOutMtxUnsDmCp(3,50)),abs(f*pu(50)/dt),tiny(1d0)))return
-den=h(51)-h(50);g0=(z(50)-z(51))*h(51)/den**2;g1=-(z(50)-z(51))*h(50)/den**2
+if(abs(QOutMtxUnsDmCp(3,cell)-f*pu(cell)/dt)>256d0*epsilon(1d0)* &
+ max(abs(QOutMtxUnsDmCp(3,cell)),abs(f*pu(cell)/dt),tiny(1d0)))return
+den=h(cell+1)-h(cell);g0=(z(cell)-z(cell+1))*h(cell+1)/den**2;g1=-(z(cell)-z(cell+1))*h(cell)/den**2
 B=raw/span;Bprime=-B*power*C50/active_deficit;meta(14)=Bprime
 du0=0d0;du1=0d0
 if(overlap>0d0) then
@@ -73,27 +77,31 @@ if(overlap>0d0) then
  du1=-B*g1
 end if
 dO=0d0;dL=0d0
-do j=51,57
+do j=cell+1,bottom
  dO(j)=-dt*CDarcy(3,j)
+ local_d3(j)=QOutMtxSatDmCp(3,j)/(zm-z(j)-h(j))
 end do
-dO(50)=dO(50)+du0;dO(51)=dO(51)+du1
+dO(cell)=dO(cell)+du0;dO(cell+1)=dO(cell+1)+du1
 meta(3)=1d0
 if(V<W) then
- rho=cm(18,3);dL(50)=rho*g0;dL(51)=rho*g1;meta(3)=2d0
+ rho=cm(18,3);dL(cell)=rho*g0;dL(cell+1)=rho*g1;meta(3)=2d0
 end if
 uu(1:n,1)=-(ps(1:n)+pu(1:n))/dt
 vv(1:n,1)=-(dL(1:n)+f*dO(1:n))/O
 if(overlap>0d0) then
- uu(50,2)=1d0
- vv(50,2)=-f*du0/dt;vv(51,2)=-f*du1/dt
- if(QOutMtxUnsDmCp(3,50)>1d-7)vv(50,2)=vv(50,2)-QOutMtxUnsDmCp(3,50)*power*C50/active_deficit
+ uu(cell,2)=1d0
+ vv(cell,2)=-f*du0/dt;vv(cell+1,2)=-f*du1/dt
+ if(QOutMtxUnsDmCp(3,cell)>1d-7)vv(cell,2)=vv(cell,2)-QOutMtxUnsDmCp(3,cell)*power*C50/active_deficit
 end if
-meta(16:20)=[vv(50,2),vv(51,2),vv(50,1),vv(51,1),vv(52,1)]
-meta(25:29)=[h(50),h(51),z(50),z(51),cm(18,3)]
+meta(16:20)=[vv(cell,2),vv(cell+1,2),vv(cell,1),vv(cell+1,1),vv(52,1)]
+meta(25:29)=[h(cell),h(cell+1),z(cell),z(cell+1),cm(18,3)]
 meta(30)=0d0
-if(QOutMtxUnsDmCp(3,50)>1d-7)meta(30)=QOutMtxUnsDmCp(3,50)*power*C50/active_deficit
-meta(31:37)=CDarcy(3,51:57);meta(38)=pu(50);meta(39)=sum(ps(1:n));meta(40)=sum(pu(1:n))
-meta(41:44)=[event_age,ThtSrpRefDmCp(3,50),active_deficit,merge(1d0,0d0,QOutMtxUnsDmCp(3,50)>1d-7)]
+if(QOutMtxUnsDmCp(3,cell)>1d-7)meta(30)=QOutMtxUnsDmCp(3,cell)*power*C50/active_deficit
+local_d3(cell)=meta(30)
+sample_n=min(7,bottom-cell);meta(31:37)=0d0
+meta(31:30+sample_n)=CDarcy(3,cell+1:cell+sample_n);meta(38)=pu(cell);meta(39)=sum(ps(1:n));meta(40)=sum(pu(1:n))
+meta(41:44)=[event_age,ThtSrpRefDmCp(3,cell),active_deficit,merge(1d0,0d0,QOutMtxUnsDmCp(3,cell)>1d-7)]
+meta(45:48)=[dble(cell),dble(bottom),dble(lay),1d0]
 meta(1)=1d0;eligible=.true.
 end subroutine
 
@@ -107,11 +115,11 @@ real(8),intent(in)::a(n),b(n),c(n),r(n)
 real(8),intent(out)::x(n)
 integer,intent(out)::ierror
 logical,intent(out)::handled
-real(8)::uu(macp,2),vv(macp,2),meta(44),zz(n,2),M(2,2),rhs(2),lam(2),det,res(n)
+real(8)::uu(macp,2),vv(macp,2),local_d3(macp),meta(48),zz(n,2),M(2,2),rhs(2),lam(2),det,res(n)
 integer::k,j,e,u,su
 logical,save::opened=.false.
-integer,save::tu,sysu,active_count=0
-call jac63_terms(n,uu,vv,meta,handled)
+integer,save::tu,sysu,massu,active_count=0
+call jac63_terms(n,uu,vv,local_d3,meta,handled)
 ierror=0;M=0d0;M(1,1)=1d0;M(2,2)=1d0;det=1d0;lam=0d0;res=-1d0
 if(handled) then
  call tridag(n,a,b,c,r,x,ierror)
@@ -153,7 +161,12 @@ write(tu,*)t1900,dt,numbit,meta,merge(1,0,handled),det,merge(maxval(abs(res)),-1
 if(handled)then
  active_count=active_count+1
  if(active_count<=64)then
-  if(active_count==1)open(newunit=sysu,file='macro_complete_systems.txt',status='replace')
+  if(active_count==1)then
+   open(newunit=sysu,file='macro_complete_systems.txt',status='replace')
+   open(newunit=massu,file='macro_complete_mass_base.txt',status='replace')
+  end if
+  write(massu,*)n,t1900,dt,numbit
+  write(massu,*)local_d3(1:n)
   write(sysu,*)n,t1900,dt,numbit
   write(sysu,*)a,b,c,r,uu(1:n,1),uu(1:n,2),vv(1:n,1),vv(1:n,2),x
  end if

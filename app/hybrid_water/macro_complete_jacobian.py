@@ -6,7 +6,7 @@ def render_rate(source):
       real(8)::complete_cm(24,madm),complete_ps(macp),complete_pu(macp),complete_valid
 '''
     i=source.index('      implicit NONE');source=source[:i]+source[i:].replace('      implicit NONE','      implicit NONE\n'+decl,1)
-    source=replace(source,'      call capture_stock_gradient()', '''      if(swmbf==1.and.NumDm==5)then
+    source=replace(source,'      call capture_stock_gradient()', '''      if(swmbf==1.and.NumDm>=3)then
          complete_sat=FlwOutMtxSatDmCpPot(3,:);complete_uns=FlwOutMtxUnsDmCpPot(3,:)
       end if
       call capture_stock_gradient()''')

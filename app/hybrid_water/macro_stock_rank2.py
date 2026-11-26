@@ -22,7 +22,7 @@ def render_rate(source):
     source=replace(source,needle,'''            rank2_cm(16,id)=FrFlwOut;rank2_cm(17,id)=FlwOutDmExces(id)
             rank2_cm(22,id)=FlwInTopExcesTot
 '''+needle)
-    source=replace(source,'      call capture_stock_gradient()', '''      if(swmbf==1.and.NumDm==5)then
+    source=replace(source,'      call capture_stock_gradient()', '''      if(swmbf==1.and.NumDm>=3)then
          rank2_pot(:,1)=FlwOutMtxSatDmCpPot(2,:);rank2_pot(:,2)=FlwOutMtxSatDmCpPot(3,:)
          rank2_head(1:numnod)=h(1:numnod);rank2_t=t1900;rank2_dt=dt
          rank2_seq=stock_seq;rank2_task=ITask;rank2_ready=.true.
