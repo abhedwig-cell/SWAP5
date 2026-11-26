@@ -25,9 +25,12 @@ try:
   q['provider_files']={p.relative_to(ref).as_posix():h.sha(p) for folder in ['swap-selected','swap-obj','ttutil-obj'] for p in (ref/'build'/folder).iterdir() if p.is_file()}
   q['status']='ORIGINAL_PROVIDER_READY_NO_MODEL_EXECUTED'
  else:
-  opt=phase;assert opt in ['O0','O2'];base=Path(res[opt]['path'])/'worker-base';target=Path(res[opt]['path'])/'worker-coupled'
+  opt=phase;assert opt in ['O0','O2'];base=Path(res[opt]['path'])/'worker-base-v2';target=Path(res[opt]['path'])/'worker-coupled'
   base.mkdir(exist_ok=False)
-  h.build(ref,base,budget_retry=True,shared_pond_transfer=True,refresh_macro_final=True,runtime_checkpoint=True,kernel_opt=opt,project=h.ANDELST)
+  donor,kernel,case,inputs,identity=h.build(ref,base,budget_retry=True,shared_pond_transfer=True,refresh_macro_final=True,runtime_checkpoint=True,kernel_opt=opt,project=h.ANDELST)
+  project=h.ANDELST
+  meta=dict(project=dict(case=project.case,model=project.model,start_date=project.start_date,nodes=project.nodes,water_tolerance=project.water_tolerance),inputs=inputs,identity=identity,executable_sha256=dict(donor=h.sha(donor),kernel=h.sha(kernel)),binding=h.checkpoint_identity(inputs,identity,budget_retry=True,shared_pond_transfer=True,refresh_macro_final=True,project=project))
+  (base/'BUILD.json').write_text(json.dumps(meta,indent=2)+'\n')
   build_bundle(base,ref,target,owner_optimization=opt)
   meta,case=validate_bundle(target,ref);q['build']=meta;q['status']='STRICT_UNREDUCED_WORKER_BUILT_NOT_EXECUTED';q['optimization_scope']='kernel and changed macro/headcalc/main owners '+opt+'; unchanged original physical pool O2'
 except Exception:

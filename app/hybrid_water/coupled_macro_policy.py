@@ -59,7 +59,9 @@ def build_bundle(base,reference,target,*,owner_optimization='O2'):
     original.build_bundle(base,reference,target)
     meta=json.loads((target/'BUILD.json').read_text());identity=copy.deepcopy(meta['identity'])
     objects=reference/'build/swap-obj';ttutil=reference/'build/ttutil-obj'
-    p=target/'headcalc.f90';p.write_text(render_headcalc(p.read_text(encoding='cp1252')),encoding='cp1252')
+    p=target/'headcalc.f90';rendered=render_headcalc(p.read_text(encoding='cp1252'))
+    if rendered.count('FRESH_UNREDUCED_SCALE_REQUEST')!=1 or rendered.count('call fresh_coupled_candidate_checks()')!=2:raise ValueError('Incomplete fresh/unreduced worker guard')
+    p.write_text(rendered,encoding='cp1252')
     p=target/'macropore.f90';p.write_text(render_trial_origin(p.read_text(encoding='cp1252'),(reference/'build/swap-selected/variables.f90').read_text(encoding='cp1252')),encoding='cp1252')
     flags=[('-'+owner_optimization if f in ('-O0','-O2') else f) for f in identity['donor_flags']]
     commands=[['gfortran',*flags,'-I',str(objects),'-I',str(ttutil),'-c',n] for n in ['macropore.f90','headcalc.f90','swap_main.f90']]
