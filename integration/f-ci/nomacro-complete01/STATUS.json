@@ -36831,6 +36831,26 @@
       "Windows": 45760435483
     },
     "portable_state": "IN_PROGRESS_NOT_PASS",
-    "independent_reader": "tests/nomacro_drainage/frost_analytical_archive_science.py"
+    "independent_reader": "tests/nomacro_drainage/frost_analytical_archive_science.py",
+    "local_independent_observer": "e7ad98752d697953fd5fc93651c240c2ea082010",
+    "local_independent_record": "FROST_ANALYTICAL_COMPOSITION09_LOCAL_INDEPENDENT_V3.json",
+    "local_independent_result": "188_PRIMARY44_NATIVE20_EXACT_COLD394_COMPILED_REFUSALS_AND6_TRANSACTIONS_PASS_READ_ONLY",
+    "original_local_independent_failures": [
+      "V1 missing hashlib import",
+      "V2 original first O0 case uses string label; both failed before model executions"
+    ],
+    "ubuntu_run_state": "SUCCESS_BOTH_O0_O2_OFFICIAL_RAW_PRESERVED_INDEPENDENT_PENDING",
+    "ubuntu_artifacts": {
+      "O0": {
+        "artifact": 15089887588,
+        "bytes": 185151354,
+        "sha256": "97fd8653182f5b52a2a55c327b217ceaf88371bb8084ab8b31a6a939ebc91589"
+      },
+      "O2": {
+        "artifact": 15089652721,
+        "bytes": 185505903,
+        "sha256": "bd5b0dc30fc61571541360eac8bab22950ac895510c97c903e2f40a3d8f26076"
+      }
+    }
   }
 }
