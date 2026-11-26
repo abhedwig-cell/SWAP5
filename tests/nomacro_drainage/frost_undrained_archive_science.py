@@ -1,5 +1,5 @@
 """Independent read-only audit of original undrained Frost scientific bytes."""
-import argparse,io,json,math,re,struct,subprocess,zipfile
+import argparse,hashlib,io,json,math,re,struct,subprocess,tarfile,zipfile
 from contextlib import ExitStack
 from pathlib import Path
 from analytical_hydraulic_archives import Archive,SHA
@@ -211,11 +211,66 @@ def portable(proof,platform,opt):
         postimages=inherited(store,old,PRODUCER,opt)
         return dict(status='INDEPENDENT_ORIGINAL_UNDRAINED_SCIENCE_NATIVE_COLD_REFUSALS_ACTIVE_TRANSACTIONS_AND_DRAINED_POSTIMAGES_PASS_NOT_ADMITTED',source=custody,platform=platform,optimization=opt,contexts=observations,inherited_postimages=postimages,compiler_executions=0,model_executions=0,canonical_admission=False)
 
+def local_source(store,stack):
+    """Check original local capsules at their actual, explicitly recorded paths."""
+    assert not git('diff',LOCAL,PRODUCER,'--','app','src','tools','reference')
+    expected={line.split('\t',1)[1]:line.split('\t',1)[0].split()[2] for line in git('ls-tree','-r',LOCAL).decode().splitlines()}
+    def check(name,value,item):
+        assert len(value)==item['bytes'] and SHA(value)==item['sha256']
+        blob=lambda v:hashlib.sha1(b'blob '+str(len(v)).encode()+b'\0'+v).hexdigest()
+        assert expected[name]==item['git_blob'] and expected[name] in (blob(value),blob(value.replace(b'\r\n',b'\n')))
+    captured=json.loads(store.get('source/RESULT.json'));raw=store.get('source/actual-producer-source.zip')
+    assert captured['producer_head']==LOCAL and len(raw)==captured['bytes'] and SHA(raw)==captured['sha256']
+    z=stack.enter_context(zipfile.ZipFile(io.BytesIO(raw)));absent={n for n,item in captured['members'].items() if item.get('checkout')=='ABSENT'}
+    assert all(n.startswith('reference/swap-4.3.1/') for n in absent) and set(z.namelist())==set(captured['members'])-absent
+    for n,item in captured['members'].items():
+        if n in absent:assert item==dict(git_blob=expected[n],checkout='ABSENT')
+        else:check(n,z.read(n),item)
+    ctl=json.loads(store.get('controllers/FROST_UNDRAINED_STATE08_CONTROLLER_SOURCE_V3.json'));raw=store.get('controllers/FROST_UNDRAINED_STATE08_CONTROLLER_SOURCE_V3.tar')
+    assert ctl['producer_head']==LOCAL and len(raw)==ctl['bytes'] and SHA(raw)==ctl['sha256']
+    t=stack.enter_context(tarfile.open(fileobj=io.BytesIO(raw)));assert {m.name for m in t.getmembers()}==set(ctl['members'])
+    for n,item in ctl['members'].items():check(n,t.extractfile(n).read(),item)
+    return dict(actual_local_producer=LOCAL,actual_controller_producer=LOCAL,source_sha256=captured['sha256'],controller_sha256=ctl['sha256'],source_members=len(captured['members']),controller_members=len(ctl['members']))
+
+def local(proof):
+    with ExitStack() as stack:
+        store=Archive(proof,'FROST_UNDRAINED_STATE08_LOCAL_WINDOWS_O0_O2_RAW_V1',stack);custody=local_source(store,stack)
+        dependency=json.loads(store.get('LOCAL_PROVIDER_DEPENDENCY_V1.json'))
+        provider=Archive(GitArchiveSource(R,dependency['actual_data_revision']),dependency['archive'],stack)
+        assert provider.record['sha256']==dependency['sha256']
+        for n,item in dependency['actual_required_files'].items():raw=provider.get(n);assert len(raw)==item['bytes'] and SHA(raw)==item['sha256']
+        contexts=[];by_opt={}
+        for item in store.record['contexts']:
+            case=item['case'];opt=item['optimization'];prefix='current/'+opt+'-'+case['name']
+            contexts.append(case_audit(store,prefix,case,provider,LOCAL,opt,True))
+            if case['days']==35:by_opt[opt]=(case,ReadView(store,prefix))
+            print('ORIGINAL_LOCAL_UNDRAINED_ARCHIVE_SCIENCE_PASS',opt,case['name'],flush=True)
+        assert len(contexts)==4 and sum(c['case']['days'] for c in contexts)==94
+        active=Archive(proof,'FROST_UNDRAINED_STATE08_ACTIVE_FROST_TRANSACTIONS_RAW_V1',stack)
+        q=json.loads(active.get('RESULT.json'));assert q['actual_observer']==PRODUCER and q['actual_compiled_producer']==LOCAL and q['new_compiler_executions']==q['full_model_periods_replayed']==0
+        observations=[]
+        for opt in ['O0','O2']:
+            case,folder=by_opt[opt];warm=folder/'science/trajectory';report=read(folder/'science/RESULT.json');projection=json.loads(store.get('COMPILED_PROJECTION_V1.json'));build=ReadView(store,projection[report['build_root']]['archive_prefix']);meta=read(build/'BUILD.json')
+            data=[json.loads(line) for line in (warm/'daily.jsonl').read_text().splitlines()]
+            start=19;original=warm/f'accepted-column-1-day-{start}.zip';original_sha=SHA(original.read_bytes());end=checkpoint(original,meta,case,data[start-1])[1]
+            text=(folder/'inputs/swap.swp').read_text(encoding='cp1252');limits=re.findall(r'(?mi)^[ \t]*TFROSTSTA[ \t]*=[ \t]*([^!\r\n]+)',text);assert len(limits)==1;limit=float(limits[0].strip().replace('D','e').replace('d','e'))
+            actual_temperature=active_temperature(end,meta['project']['nodes'],limit);base=ReadView(active,opt+'-active19');payloads=[]
+            for stage in ['trial-1','trial-2','']:
+                payloads.append(checkpoint(base/'external'/stage/f'accepted-column-1-day-{start+1}.zip',meta,case,data[start],True))
+            assert payloads[0]==payloads[1]==payloads[2]
+            checkpoint(base/'recovered/trial-1'/f'accepted-column-1-day-{start+2}.zip',meta,case,data[start+1],True)
+            item=next(x for x in q['contexts'] if x['optimization']==opt)
+            assert item['actual_original_checkpoint_sha256']==original_sha and item['actual_original_temperature']==actual_temperature
+            assert all(item['actual_transaction'][key] for key in ['discard_no_day_advance','replay_exact','accept_exact','recovered_next_day_exact','origin_unchanged']) and item['actual_transaction']['start_day']==start
+            observations.append(dict(optimization=opt,start_day=start,original_checkpoint_sha256=original_sha,actual_temperature=actual_temperature,discard_replay_accept_complete_payload_exact=True,recovered_next_day_physical_exact=True))
+        return dict(status='INDEPENDENT_FOUR_LOCAL_UNDRAINED_ORIGINAL_BUDGETS_COLD_NATIVE_AND_TWO_ACTUAL_ACTIVE19_TRANSACTIONS_PASS_NOT_ADMITTED',source=custody,contexts=contexts,additional_active_frost_transactions=observations,compiler_executions=0,model_executions=0,canonical_admission=False)
+
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--proof',type=Path,default=P);p.add_argument('--platform',choices=['Windows','Ubuntu'],required=True);p.add_argument('--optimization',choices=['O0','O2'],required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--proof',type=Path,default=P);p.add_argument('--platform',choices=['Windows','Ubuntu']);p.add_argument('--optimization',choices=['O0','O2']);p.add_argument('--local',action='store_true');p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+    assert (a.local and a.platform is None and a.optimization is None) or (not a.local and a.platform and a.optimization)
     observer=git('rev-parse','HEAD').decode().strip();assert not git('status','--porcelain','--untracked-files=all')
     q=dict(status='RUNNING_INDEPENDENT_ORIGINAL_UNDRAINED_SCIENCE_NOT_ADMITTED',actual_observer=observer)
-    try:q['audit']=portable(a.proof,a.platform,a.optimization);q['status']=q['audit']['status']
+    try:q['audit']=local(a.proof) if a.local else portable(a.proof,a.platform,a.optimization);q['status']=q['audit']['status']
     except Exception as exc:q.update(status='FAILED_INDEPENDENT_ORIGINAL_UNDRAINED_SCIENCE_NOT_ADMITTED',error=repr(exc));raise
     finally:
         assert git('rev-parse','HEAD').decode().strip()==observer
