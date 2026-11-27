@@ -19,7 +19,11 @@ All five locally pass in O0/O2:350 primary days, original pressure initializatio
 daily water/CDE budgets, complete native calendar/private state, exact cold
 continuations and external discard/replay/accept/recovery. Independent readers
 verify every context;292 native corruptions refuse before any model day, while
-ten exact own positives reach READY. Portable qualification remains pending.
+ten exact own positives reach READY. The five cases also independently pass on
+Windows/Ubuntu O0/O2:20 contexts,700 primary days,140 native samples,60 exact
+cold windows,584 compiled native refusals and20 external transaction contexts.
+All four original artifact ZIPs and source/controller/SDK identities are retained.
+Unchanged-domain preservation and complete canonical admission remain pending.
 Complete source
 literal inverses must preserve every original physical equation, parameter,
 tolerance, iteration limit and native calendar/counter. No numerical policy is
