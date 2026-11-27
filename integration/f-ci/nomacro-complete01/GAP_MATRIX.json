@@ -3820,7 +3820,7 @@
   "closed_initialization_state15": {
     "classification": "COMPOSITION_MISSING",
     "scope": "Original default-model1 SWINCO2 closed SWDRA0/SWBOTB6 non-daily water/CDE/hysteretic/implicit output composition; preserve SWINCO1 domain and policy identity. No SWINCO3 or arbitrary source-domain extension.",
-    "status": "IMPLEMENTED_TEN_LOCAL_PASS_PORTABLE_AND_PRESERVATION_PENDING",
+    "status": "IMPLEMENTED_20_PORTABLE_10_LOCAL_10_CURRENT_OLD_NATIVE_OBJECT_PRESERVATION_PASS_FINAL_ADMISSION_PENDING",
     "actual_parent": "fa77380ecce3317775bd1129b5de007fcbcf2e1f",
     "original_reader_zero_day_positives": 5,
     "current_parent_output_refusals": 5,
@@ -3829,6 +3829,13 @@
     "canonical_admission": false,
     "local_contexts": 10,
     "local_primary_days": 350,
-    "parent_canonical_admission_complete": true
+    "parent_canonical_admission_complete": true,
+    "portable_contexts": 20,
+    "portable_primary_days": 700,
+    "current_old_whole_objects": 210,
+    "current_old_native_positives": 10,
+    "current_old_native_refusals": 40,
+    "original_gap_classification": "COMPOSITION_MISSING",
+    "remaining_classification": "EVIDENCE_ONLY"
   }
 }
