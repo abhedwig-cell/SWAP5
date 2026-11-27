@@ -30,12 +30,19 @@
       "function": "Alternative constitutive models2..11",
       "classification": "PARTIAL",
       "original_source": "MOD_MvG_functions.f90",
-      "scope": "Bounded explicit analytical models3..11 and mixed1/7,7/3 now admitted by PR1778, with model7 and earlier model2 owners inherited. NoSnow/Frost/history0 ordinary DRA1/BOT6 daily water/CDE; original model3/OXY2 day524 unsupported remains a reference defect. Old BLOCK_I failures/censors remain historical observations, not current blanket failures for every model3..11 use.",
+      "scope": "Bounded analytical explicit/implicit closed state and Frost/Snow compositions are inherited through M13. M14 preserves all56 actual non1 closed domains and their unchanged process owners. Two explicit Gardner/Snow9 numerical cases remain functional gaps; full original model/interaction closure is UNKNOWN.",
       "authority": "integration/f-ci/nomacro-complete01/HYDRAULIC_ANALYTICAL_MERGE_RECEIPT_V1.json",
       "authority_present": true,
       "full_historical_family_closed": "UNKNOWN",
       "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed.",
-      "bounded_authority_reconciled_at_actual_canonical": "84e815a0ba9f59a2d56fe838a3b13361ad8670a2"
+      "bounded_authority_reconciled_at_actual_canonical": "84e815a0ba9f59a2d56fe838a3b13361ad8670a2",
+      "historical_scope_description": "Bounded explicit analytical models3..11 and mixed1/7,7/3 now admitted by PR1778, with model7 and earlier model2 owners inherited. NoSnow/Frost/history0 ordinary DRA1/BOT6 daily water/CDE; original model3/OXY2 day524 unsupported remains a reference defect. Old BLOCK_I failures/censors remain historical observations, not current blanket failures for every model3..11 use.",
+      "current_bounded_reconciliation": {
+        "actual_canonical": "fa77380ecce3317775bd1129b5de007fcbcf2e1f",
+        "receipt": "CLOSED_DEFAULT_CALENDAR_STATE14_MERGE_RECEIPT_V1.json",
+        "family_fully_closed": "UNKNOWN",
+        "scientific_producers_rebound": false
+      }
     },
     {
       "function": "Top atmosphere, pond, runon and scheduled maximum",
@@ -61,12 +68,19 @@
       "function": "Prescribed groundwater chemical trial receipt and bottom9",
       "classification": "PARTIAL",
       "original_source": "boundbottom.f90, headcalc.f90",
-      "scope": "Actual canonical04dc through PR1791+corrective1792 admits bounded336: parent280 plus56 Snow/hys1/2/calendar contexts. True clean14 actual canonical public/PUB and all four real negative controls pass;42checks and13workflows successful. Entire family remains open.",
+      "scope": "Bounded prescribed groundwater/CDE and explicit paired9 Snow/history/calendar authorities remain canonically admitted in the preserved M14 lineage. Paired9 active-vapor thermal semantics remain a separate scientific decision; the whole family is open.",
       "authority": "integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_SNOW_HISTORY_MERGE_RECEIPT_V1.json",
       "authority_present": true,
       "full_historical_family_closed": "UNKNOWN",
       "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed.",
-      "bounded_authority_reconciled_at_actual_canonical": "2a14f2094bfbfb29c169eb6331da1d7829faa70a"
+      "bounded_authority_reconciled_at_actual_canonical": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+      "historical_scope_description": "Actual canonical04dc through PR1791+corrective1792 admits bounded336: parent280 plus56 Snow/hys1/2/calendar contexts. True clean14 actual canonical public/PUB and all four real negative controls pass;42checks and13workflows successful. Entire family remains open.",
+      "current_bounded_reconciliation": {
+        "actual_canonical": "fa77380ecce3317775bd1129b5de007fcbcf2e1f",
+        "receipt": "CLOSED_DEFAULT_CALENDAR_STATE14_MERGE_RECEIPT_V1.json",
+        "family_fully_closed": "UNKNOWN",
+        "scientific_producers_rebound": false
+      }
     },
     {
       "function": "Drainage methods2/3 and bounded frost SWDIVD0",
@@ -184,12 +198,19 @@
       "function": "Frost geometry/flow/uptake",
       "classification": "PARTIAL",
       "original_source": "frozencond.f90, rootextraction.f90",
-      "scope": "Actual canonical087fc67 PR1803 admits bounded Frost bottom5 and explicit plate8 water/CDE state/calendars:44 new contexts and8 requalified parent plate contexts. Existing ordinary bottom6 Frost remains inherited. Implicit plate zero-day and new implicit5 hysteresis2 calendar day5 failures remain closed; whole historical family not declared complete.",
+      "scope": "Bounded existing Frost geometry/boundary/implicit/hysteretic/calendar and analytical owners remain admitted through the genuine M13 parent. M14 introduces ordinary no-Frost/no-Snow model1 pressure-calendar composition and preserves the original Frost source. Whole historical Frost closure remains UNKNOWN.",
       "authority": "integration/f-ci/nomacro-complete01/FROST_BOUNDARY_STATE_CALENDAR04_MERGE_RECEIPT_V1.json",
       "authority_present": true,
       "full_historical_family_closed": "UNKNOWN",
       "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed.",
-      "bounded_authority_reconciled_at_actual_canonical": "84e815a0ba9f59a2d56fe838a3b13361ad8670a2"
+      "bounded_authority_reconciled_at_actual_canonical": "84e815a0ba9f59a2d56fe838a3b13361ad8670a2",
+      "historical_scope_description": "Actual canonical087fc67 PR1803 admits bounded Frost bottom5 and explicit plate8 water/CDE state/calendars:44 new contexts and8 requalified parent plate contexts. Existing ordinary bottom6 Frost remains inherited. Implicit plate zero-day and new implicit5 hysteresis2 calendar day5 failures remain closed; whole historical family not declared complete.",
+      "current_bounded_reconciliation": {
+        "actual_canonical": "fa77380ecce3317775bd1129b5de007fcbcf2e1f",
+        "receipt": "CLOSED_DEFAULT_CALENDAR_STATE14_MERGE_RECEIPT_V1.json",
+        "family_fully_closed": "UNKNOWN",
+        "scientific_producers_rebound": false
+      }
     },
     {
       "function": "Conservative CDE, salinity, sorption and decay",
@@ -205,23 +226,37 @@
       "function": "Mixed aquifer reservoir, water age and vapor",
       "classification": "PARTIAL",
       "original_source": "solute.f90, solute1.f90, soilwater.f90",
-      "scope": "Bounded corrected mixed aquifer SWBR1, ordinary and prescribed-groundwater young AGE, and explicit analytical per-layer vapor with later Snow/drainage/BOT5/6/8 and bounded output compositions are admitted. AGE/Snow/aquifer and fully dry retained surface moment, unqualified crossproducts and whole-model reference differences remain open. Current initialpressure AGE24 and prescribed-groundwater46 science is centrally closed as one70-context coadmission; actual candidate156 final gates in PR1788 are running, not yet admitted.",
+      "scope": "Bounded corrected aquifer, AGE and vapor authorities, including the original pressure AGE/groundwater composition, are inherited in actual M14. Retained AGE moment with zero physical surface water and paired9 active-vapor thermal semantics remain scientific decisions. No whole-family equivalence or closure is claimed.",
       "authority": "integration/f-ci/nomacro-complete01/HYDRAULIC_VAPOR_BOUNDARY_MERGE_RECEIPT_V1.json",
       "authority_present": true,
       "full_historical_family_closed": "UNKNOWN",
       "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed.",
-      "bounded_authority_reconciled_at_actual_canonical": "84e815a0ba9f59a2d56fe838a3b13361ad8670a2"
+      "bounded_authority_reconciled_at_actual_canonical": "84e815a0ba9f59a2d56fe838a3b13361ad8670a2",
+      "historical_scope_description": "Bounded corrected mixed aquifer SWBR1, ordinary and prescribed-groundwater young AGE, and explicit analytical per-layer vapor with later Snow/drainage/BOT5/6/8 and bounded output compositions are admitted. AGE/Snow/aquifer and fully dry retained surface moment, unqualified crossproducts and whole-model reference differences remain open. Current initialpressure AGE24 and prescribed-groundwater46 science is centrally closed as one70-context coadmission; actual candidate156 final gates in PR1788 are running, not yet admitted.",
+      "current_bounded_reconciliation": {
+        "actual_canonical": "fa77380ecce3317775bd1129b5de007fcbcf2e1f",
+        "receipt": "CLOSED_DEFAULT_CALENDAR_STATE14_MERGE_RECEIPT_V1.json",
+        "family_fully_closed": "UNKNOWN",
+        "scientific_producers_rebound": false
+      }
     },
     {
       "function": "Original input/initialization/output selector domain",
       "classification": "PARTIAL",
       "original_source": "readswap.f90, swap_csv_output.f90",
-      "scope": "Bounded original initialization1/2/3 and ordinary calendars/output, followed by original pressure Snow/history/implicit state, are admitted. Actual merged PR1787 admits analytical CDE calendars, pressure calendars and pressure Frost in one86-context postimage; actual canonical public/publication and receipt are complete. Joint original pressure AGE24 and groundwater46 scientific closure is complete and PR1788 final integrated156 admission gates are running. No exhaustive selector/crop/boundary/state crossproduct closure.",
+      "scope": "M14 newly admits20 default-model1 SWINCO1 closed SWDRA0/SWBOTB6 non-daily water/CDE/hysteretic/implicit contexts. Original input/state/calendar authorities remain inherited. The next SWINCO2 closed-calendar implementation has10 local passes but no portable/canonical qualification yet; no exhaustive selector crossproduct closure.",
       "authority": "integration/f-ci/nomacro-complete01/INITIAL_STATE_COMPOSITION_MERGE_RECEIPT_V1.json",
       "authority_present": true,
       "full_historical_family_closed": "UNKNOWN",
       "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed.",
-      "bounded_authority_reconciled_at_actual_canonical": "84e815a0ba9f59a2d56fe838a3b13361ad8670a2"
+      "bounded_authority_reconciled_at_actual_canonical": "84e815a0ba9f59a2d56fe838a3b13361ad8670a2",
+      "historical_scope_description": "Bounded original initialization1/2/3 and ordinary calendars/output, followed by original pressure Snow/history/implicit state, are admitted. Actual merged PR1787 admits analytical CDE calendars, pressure calendars and pressure Frost in one86-context postimage; actual canonical public/publication and receipt are complete. Joint original pressure AGE24 and groundwater46 scientific closure is complete and PR1788 final integrated156 admission gates are running. No exhaustive selector/crop/boundary/state crossproduct closure.",
+      "current_bounded_reconciliation": {
+        "actual_canonical": "fa77380ecce3317775bd1129b5de007fcbcf2e1f",
+        "receipt": "CLOSED_DEFAULT_CALENDAR_STATE14_MERGE_RECEIPT_V1.json",
+        "family_fully_closed": "UNKNOWN",
+        "scientific_producers_rebound": false
+      }
     },
     {
       "function": "Time control, day/year restart and transaction coupling",
@@ -3654,7 +3689,7 @@
     },
     "qualified_contexts": 56
   },
-  "canonical": "ae54d7d621a07e54dd8f9fdb758585b2a2cc754d",
+  "canonical": "fa77380ecce3317775bd1129b5de007fcbcf2e1f",
   "closed_implicit_state13_admission": {
     "status": "ACTUAL_CANONICAL1004_CLOSED_IMPLICIT_STATE_ADMISSION_VERIFIED",
     "PR": 1812,
@@ -3744,7 +3779,7 @@
     "RC3_changed": false
   },
   "closed_default_calendar_state14": {
-    "status": "STRICT_CHECKOUT_BODY_INVERSE_AND_ALL_ELEVEN_ORIGINAL_TESTS_PASS_REQUALIFICATION_PENDING",
+    "status": "CANONICALLY_ADMITTED_BOUNDED_TWENTY_CONTEXTS",
     "classification": "EVIDENCE_ONLY",
     "baseline": "ae54d7d621a07e54dd8f9fdb758585b2a2cc754d",
     "original_initializations_accepted": 5,
@@ -3756,8 +3791,8 @@
     },
     "actual_thin_baseline": "REAL_M13_THREE_PATTERN_SPARSE_BASELINE_PUBLIC_AND_ORDINARY_PUBLICATION_IDENTICAL_COMPLETE_OUTPUTS_PASS",
     "qualified_contexts": 0,
-    "new_admitted_contexts": 0,
-    "canonical_admission": false,
+    "new_admitted_contexts": 20,
+    "canonical_admission": true,
     "next_action": "Freeze the complete real source/raw/SDK/CI custody, run current PUBLIC and ordinary publication with actual three-rule sparse checkout, exercise four genuinely committed/pushed negatives, obtain required PR CI and normal canonical merge, then validate actual merge and select NEXT.",
     "local_contexts": 10,
     "local_primary_days": 350,
@@ -3778,17 +3813,22 @@
     "original_protected_test_file_unchanged": true,
     "actual_current_checkout_body_mutant_refusals": 5,
     "actual_original_successor_tests_pass": 11,
-    "batched_actual_Git_EOL_queries_keep_original_payload_validation": true
+    "batched_actual_Git_EOL_queries_keep_original_payload_validation": true,
+    "actual_merge": "fa77380ecce3317775bd1129b5de007fcbcf2e1f",
+    "merge_receipt": "CLOSED_DEFAULT_CALENDAR_STATE14_MERGE_RECEIPT_V1.json"
   },
   "closed_initialization_state15": {
     "classification": "COMPOSITION_MISSING",
     "scope": "Original default-model1 SWINCO2 closed SWDRA0/SWBOTB6 non-daily water/CDE/hysteretic/implicit output composition; preserve SWINCO1 domain and policy identity. No SWINCO3 or arbitrary source-domain extension.",
-    "status": "IMPLEMENTED_NOT_QUALIFIED",
+    "status": "IMPLEMENTED_TEN_LOCAL_PASS_PORTABLE_AND_PRESERVATION_PENDING",
     "actual_parent": "fa77380ecce3317775bd1129b5de007fcbcf2e1f",
     "original_reader_zero_day_positives": 5,
     "current_parent_output_refusals": 5,
     "qualified_contexts": 0,
     "source_proposal": "CLOSED_INITIALIZATION_STATE15_SOURCE_PROPOSAL_V1.json",
-    "canonical_admission": false
+    "canonical_admission": false,
+    "local_contexts": 10,
+    "local_primary_days": 350,
+    "parent_canonical_admission_complete": true
   }
 }
