@@ -149,7 +149,9 @@ def validate_source(bundle,project,identity,reference):
         root='      use hybrid_snow_undrained_root_state,only:snow_undrained_root_checkpoint\n'
         event='      use hybrid_implicit_pond_event_state,only:assert_no_implicit_pond_event\n'
         expected=state.replace(expected,root+event,event+root)
-    body=actual('macropore.f90').split(begin,1)[1].split(end,1)[0]
+    from implicit_hydraulic_state import restore_macro
+    parent_macro=restore_macro(actual('macropore.f90'),project)
+    body=parent_macro.split(begin,1)[1].split(end,1)[0]
     if body!=expected:raise ValueError('Foreign complete original undrained Snow checkpoint procedure')
     raw=(originals/'integral.f90').read_text(encoding='cp1252');stock=(originals/'watstor.f90').read_text(encoding='cp1252')
     equal('integral.f90',build.integral(raw,stock,selected))

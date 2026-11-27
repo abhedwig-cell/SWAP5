@@ -32,3 +32,15 @@ feedback attempts all failed: three output-owner composition guards and two
 Frost clock-resolution failures after32 days each. Complete original failure
 bytes are preserved in FIRST_LOCAL_FAILURES_RAW_V1 (0558985b). The latter
 remain NUMERICAL_DEFECT with original causality UNKNOWN.
+
+Source6a0e: Gardner monthly water O0 completes35 days with exact cold/native
+and transactions. Ordinary model5 CDE O2 fails at day26 after25 accepted days.
+Snow model6 CDE stops in the whole native parent validator before model days;
+the repair removes only the exactly reconstructed implicit EOF witness before
+comparing the complete parent procedure. Existing independent extension
+validation remains required. No physical/native layout bytes are changed.
+The genuine2215 Frost day30 checkpoint reproduces failure after2 resumed days
+with stdout-only pre-rollback observations: zero moisture capacity throughout
+the saturated profile, tiny positive old pond, zero trial pond and persistent
+soil residual. This localizes a numerical wet/dry transition; original
+reference causality remains UNKNOWN. RAW V2 c8ef491d retains all observations.

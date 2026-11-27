@@ -25,7 +25,8 @@ def controls(profile,reference,out):
     domains.append(('implicit-per-layer',hydraulic_header(hydraulic,nodes)))
     attacks=[('foreign-magic',b'S5BAD999'+good[8:]),('truncated',good[:-1]),('trailing',good+b'x')]
     text=(Path(q['input_root'])/'swap.swp').read_text(encoding='cp1252')
-    if spec['calendar']=='dates':
+    actual_output=m.e.switches(text)
+    if actual_output.get('SWODAT')==1 and actual_output.get('SWMONTH')==0:
         date_rows=re.findall(r'(?mis)^\s*OUTDATINT\s*=\s*\n\s*(\d{4}-\d{2}-\d{2})',text)
         assert len(date_rows)==1
         if date_rows[0]<meta['project']['start_date']:

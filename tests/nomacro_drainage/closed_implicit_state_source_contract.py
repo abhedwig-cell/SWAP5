@@ -2,7 +2,7 @@
 import ast,argparse,json,re
 from pathlib import Path
 from closed_implicit_state_feedback import R,P,PARENT,SHA,git
-PROPOSAL='CLOSED_IMPLICIT_STATE13_SOURCE_PROPOSAL_V3.json'
+PROPOSAL='CLOSED_IMPLICIT_STATE13_SOURCE_PROPOSAL_V4.json'
 
 
 def source():
