@@ -26,7 +26,10 @@ def selection(directory,original_output=True):
  history,snow,implicit=(s.get(key) for key in ('SWHYST','SWSNOW','SWKIMPL'));drain,bottom=s.get('SWDRA'),s.get('SWBOTB')
  if history not in (0,1,2) or snow not in (0,1) or implicit not in (0,1) or drain not in (0,1) or bottom not in (5,6,8):return None
  from closed_zero_boundary import input_domain as closed_domain
- if snow and closed_domain(text,s,original_output):pass
+ from closed_default_calendar import input_domain as default_calendar_domain
+ closed_default=default_calendar_domain(text,s,original_output)
+ if closed_default is not None:pass
+ elif snow and closed_domain(text,s,original_output):pass
  elif history:
   if snow or implicit or drain!=1 or bottom not in ((5,8) if s['SWSOLU'] else (6,)):return None
  elif snow or implicit:

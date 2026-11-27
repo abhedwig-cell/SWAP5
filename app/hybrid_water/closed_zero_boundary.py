@@ -18,6 +18,8 @@ def input_domain(text,selectors,original_output=True):
         from implicit_hydraulic_state import input_models
         if input_models(text,selectors,selectors,original_output) is None:return False
         implicit_analytical=True
+    from closed_default_calendar import input_domain as default_calendar_domain
+    if default_calendar_domain(text,selectors,original_output) is not None:return True
     if selectors['SWSNOW']==0 and not implicit_analytical:
         # Ordinary non-daily initialization needs its own complete output-owner
         # qualification; this predicate does not claim that remaining gap.

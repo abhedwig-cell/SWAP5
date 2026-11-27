@@ -96,7 +96,7 @@ def validate(bundle, project, identity):
             form='water'
             from cde_clock_output import active_selection as actual_clock_selection
             clock=actual_clock_selection(project) if project.solute else None
-            if clock is not None and clock.get('closed_implicit_calendar'):
+            if clock is not None and (clock.get('closed_implicit_calendar') or clock.get('closed_default_calendar')):
                 # Invert only the literal original zero-bottom trial receipt;
                 # the entire remaining HeadCalc must equal its qualified parent.
                 from analytical_cde_calendar import HEAD_GUARD,head_guard
