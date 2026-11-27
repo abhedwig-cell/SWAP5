@@ -1,0 +1,38 @@
+{
+  "scope": "Next minimum numerical contract, not yet implemented or qualified",
+  "original_source": "Original MACRORATE SATFLOW(1) perched call and SATFLOW(4) main-zone-only derivative; CALCGWL classification preserved",
+  "observed_state": {
+    "time": 35859.320999999996,
+    "dt": 0.002,
+    "iteration": 3,
+    "perched_top": 27,
+    "perched_bottom": 27,
+    "perched_level_cm": -26.358287163192973,
+    "main_top": 57,
+    "main_level_cm": -80.96840288324091,
+    "air_gap_inventory_cm": 0.14344782862118938,
+    "original_critical_air_cm": 0.1,
+    "all_five_internal_inflows_positive": true,
+    "all_first_observed_incoming_outgoing_factors_one": true
+  },
+  "minimum_terms": [
+    "For each original perched cell with active incoming flow, derivative of the raw SATFLOW potential with respect to its own pressure. In the observed HMp=0 branch: dI/dH=I/H, retaining the original deadbands and frozengeometry checks.",
+    "For the original perched top cell only, derivative of its SATFLOW saturation-depth multiplier through PeGWL. Add I/depth*dPeGWL/dH for the actual interpolating pressure pair. Do not invent another source region or smooth discrete classification.",
+    "Include raw internalincoming derivatives in dI_total for every active outgoing minimum-stock projector; in D1 upper projector use totalincoming potential in both the u column and dfIn numerator. Account for actual fIn/fOut and subtract only native derivative contributions actually present.",
+    "Preserve the original perched ABSORPTION exclusion, true airgap recognition, 25fieldrollback and sourcebound cache invalidation.",
+    "Qualify first on the immutable original day64 checkpoint using actual smooth fullcoupled FD columns at the perched pressure pair, independent inventory, O0/O2 and exact physicalrestore; then check active factors, realrejection/directsmallretry and ownnativecontinuation."
+  ],
+  "unchanged": [
+    "allphysicalRATElaws",
+    "originalCALCGWLcriticalair0.1cm",
+    "physicalnodeanddomaingeometry",
+    "iterations/backtracking/timestepbudgets",
+    "same-state convergence criteria",
+    "independent1e-6cm dailyguard",
+    "20seconds per model route"
+  ],
+  "unresolved": [
+    "Effect of each derivative omission on the final day65 slowdown has not yet been isolated by an implementing candidate.",
+    "No accepted day65 state exists. Do not call the capped result a pass or relabel the old41-day prefix as currentV33 own."
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "opt": "O0",
+  "start": 65,
+  "end": 67,
+  "status": "STOPPED_AT_MODEL_REFUSAL_OR_CAP",
+  "pid": 49160,
+  "routes": [
+    {
+      "day": 65,
+      "returncode": 2,
+      "wall_seconds": 21.50171919958666,
+      "stdout": "{\"status\": \"MODEL_CAP_REACHED\", \"elapsed_seconds\": 20.119896300137043, \"requested_day\": 65}\n",
+      "stderr": "",
+      "status": "MODEL_CAP_REACHED",
+      "model_route_seconds": 20.119896300137043
+    }
+  ]
+}
