@@ -1,0 +1,2253 @@
+{
+  "status": "ALL19_ACTUAL_PUBLIC_INPUTS_ACCEPTED_ZERO_MODELS",
+  "actual_source": "9edb32862190c657b5558fa8285ee2875c7bd042",
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "model_days": 0,
+  "cases": [
+    {
+      "case": "closed-frost-implicit-h0-water",
+      "inputs": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\closure12-feedback-v1\\all-input-preflight-v2\\closed-frost-implicit-h0-water",
+      "input_authority": {
+        "authority": {
+          "actual_git_source": "105b9a8e6ca9e846f214d69a71afe73ed18be11d",
+          "archive": "IMPLICIT_HYDRAULIC_STATE11_FIRST_WINDOWS_O0_ORIGINAL_V1",
+          "archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+          "prefix": "current/frost-mixed2-3-water-d0-b5/inputs/",
+          "original_members": {
+            "control_plot.inp": {
+              "bytes": 1140,
+              "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+            },
+            "grass.crp": {
+              "bytes": 31355,
+              "sha256": "635669acf59bac520cfaaffdb5af9446a2706339484dd7c255fc46b66bd7219c"
+            },
+            "283.met": {
+              "bytes": 71884,
+              "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+            },
+            "maize.crp": {
+              "bytes": 24655,
+              "sha256": "e90553550c2d1e9f8b56aec6ad25e35c06ed1ad11e2e5754839390ff925294ed"
+            },
+            "plot_swap.cmd": {
+              "bytes": 88,
+              "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+            },
+            "potato.crp": {
+              "bytes": 31420,
+              "sha256": "d24a42293b79acc7aa51d9396ceec6ef3dc17d211cd5658e0099197bfcd4dafe"
+            },
+            "swap.dra": {
+              "bytes": 11967,
+              "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+            },
+            "run_swap.cmd": {
+              "bytes": 51,
+              "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+            },
+            "swap.swp": {
+              "bytes": 36752,
+              "sha256": "e8d76e53e4fb815b2ab5c5381300ad7c6d696e6cf3dc3a5fefdfa9355f1ded68"
+            },
+            "swap.tss": {
+              "bytes": 491,
+              "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+            }
+          }
+        },
+        "declared_selectors": {
+          "SWSOLU": 0,
+          "SWINCO": 2,
+          "SWKIMPL": 1,
+          "SWHYST": 0,
+          "SWSNOW": 1,
+          "SWFROST": 1,
+          "SWDRA": 0,
+          "SWBOTB": 6,
+          "IHWCKMODEL": "1",
+          "NPRINTDAY": 1,
+          "PERIOD": 1,
+          "SWMONTH": 0,
+          "SWODAT": 0,
+          "SWRES": 1
+        },
+        "physical_parameter_tables_unchanged": true,
+        "current_swp_sha256": "f82606cb927571073709cefb0996752579208e855e69919a64f5b6a3a6b35f7e"
+      },
+      "status": "ACTUAL_PUBLIC_ACCEPTED",
+      "nodes": 34,
+      "native_codec": "S5UDW002",
+      "policy": "original-adaptive-event-closure-v1",
+      "input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "grass.crp",
+          "635669acf59bac520cfaaffdb5af9446a2706339484dd7c255fc46b66bd7219c"
+        ],
+        [
+          "maize.crp",
+          "e90553550c2d1e9f8b56aec6ad25e35c06ed1ad11e2e5754839390ff925294ed"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "d24a42293b79acc7aa51d9396ceec6ef3dc17d211cd5658e0099197bfcd4dafe"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+        ],
+        [
+          "swap.swp",
+          "f82606cb927571073709cefb0996752579208e855e69919a64f5b6a3a6b35f7e"
+        ],
+        [
+          "swap.tss",
+          "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+        ]
+      ]
+    },
+    {
+      "case": "closed-frost-implicit-h1-cde-profile-monthly",
+      "inputs": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\closure12-feedback-v1\\all-input-preflight-v2\\closed-frost-implicit-h1-cde-profile-monthly",
+      "input_authority": {
+        "authority": {
+          "actual_git_source": "105b9a8e6ca9e846f214d69a71afe73ed18be11d",
+          "archive": "IMPLICIT_HYDRAULIC_STATE11_FIRST_WINDOWS_O0_ORIGINAL_V1",
+          "archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+          "prefix": "current/frost-mixed4-5-cde-d1-b5/inputs/",
+          "original_members": {
+            "283.met": {
+              "bytes": 71884,
+              "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+            },
+            "control_plot.inp": {
+              "bytes": 1140,
+              "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+            },
+            "grass.crp": {
+              "bytes": 31370,
+              "sha256": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+            },
+            "maize.crp": {
+              "bytes": 24670,
+              "sha256": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+            },
+            "plot_swap.cmd": {
+              "bytes": 88,
+              "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+            },
+            "potato.crp": {
+              "bytes": 31435,
+              "sha256": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+            },
+            "run_swap.cmd": {
+              "bytes": 51,
+              "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+            },
+            "swap.dra": {
+              "bytes": 11967,
+              "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+            },
+            "swap.swp": {
+              "bytes": 36765,
+              "sha256": "6a9359ec88cc93f0bb3811da70d317fa1220d280530411e8baeb72d8f79d7c7a"
+            },
+            "swap.tss": {
+              "bytes": 491,
+              "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+            }
+          }
+        },
+        "declared_selectors": {
+          "SWSOLU": 1,
+          "SWINCO": 1,
+          "SWKIMPL": 1,
+          "SWHYST": 1,
+          "SWSNOW": 1,
+          "SWFROST": 1,
+          "SWDRA": 0,
+          "SWBOTB": 6,
+          "IHWCKMODEL": "1",
+          "NPRINTDAY": 1,
+          "PERIOD": 1,
+          "SWMONTH": 1,
+          "SWODAT": 0,
+          "SWRES": 1
+        },
+        "physical_parameter_tables_unchanged": true,
+        "current_swp_sha256": "9ed6240a8abae541ed6442c9f6b60a0260e94965e8d8dbc79d6f5daf06828447"
+      },
+      "status": "ACTUAL_PUBLIC_ACCEPTED",
+      "nodes": 34,
+      "native_codec": "S5UDC002",
+      "policy": "original-adaptive-event-closure-v1",
+      "input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "grass.crp",
+          "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+        ],
+        [
+          "maize.crp",
+          "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+        ],
+        [
+          "swap.swp",
+          "9ed6240a8abae541ed6442c9f6b60a0260e94965e8d8dbc79d6f5daf06828447"
+        ],
+        [
+          "swap.tss",
+          "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+        ]
+      ]
+    },
+    {
+      "case": "closed-frost-implicit-h2-water-dates",
+      "inputs": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\closure12-feedback-v1\\all-input-preflight-v2\\closed-frost-implicit-h2-water-dates",
+      "input_authority": {
+        "authority": {
+          "actual_git_source": "105b9a8e6ca9e846f214d69a71afe73ed18be11d",
+          "archive": "IMPLICIT_HYDRAULIC_STATE11_FIRST_WINDOWS_O0_ORIGINAL_V1",
+          "archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+          "prefix": "current/frost-mixed2-3-water-d0-b5/inputs/",
+          "original_members": {
+            "control_plot.inp": {
+              "bytes": 1140,
+              "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+            },
+            "grass.crp": {
+              "bytes": 31355,
+              "sha256": "635669acf59bac520cfaaffdb5af9446a2706339484dd7c255fc46b66bd7219c"
+            },
+            "283.met": {
+              "bytes": 71884,
+              "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+            },
+            "maize.crp": {
+              "bytes": 24655,
+              "sha256": "e90553550c2d1e9f8b56aec6ad25e35c06ed1ad11e2e5754839390ff925294ed"
+            },
+            "plot_swap.cmd": {
+              "bytes": 88,
+              "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+            },
+            "potato.crp": {
+              "bytes": 31420,
+              "sha256": "d24a42293b79acc7aa51d9396ceec6ef3dc17d211cd5658e0099197bfcd4dafe"
+            },
+            "swap.dra": {
+              "bytes": 11967,
+              "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+            },
+            "run_swap.cmd": {
+              "bytes": 51,
+              "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+            },
+            "swap.swp": {
+              "bytes": 36752,
+              "sha256": "e8d76e53e4fb815b2ab5c5381300ad7c6d696e6cf3dc3a5fefdfa9355f1ded68"
+            },
+            "swap.tss": {
+              "bytes": 491,
+              "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+            }
+          }
+        },
+        "declared_selectors": {
+          "SWSOLU": 0,
+          "SWINCO": 2,
+          "SWKIMPL": 1,
+          "SWHYST": 2,
+          "SWSNOW": 1,
+          "SWFROST": 1,
+          "SWDRA": 0,
+          "SWBOTB": 6,
+          "IHWCKMODEL": "1",
+          "NPRINTDAY": 1,
+          "PERIOD": 0,
+          "SWMONTH": 0,
+          "SWODAT": 1,
+          "SWRES": 1
+        },
+        "physical_parameter_tables_unchanged": true,
+        "current_swp_sha256": "e7b8cad616526a6b92db4542f0556fe4a39de74c2a2bfd4ee256e9ada2187dd5"
+      },
+      "status": "ACTUAL_PUBLIC_ACCEPTED",
+      "nodes": 34,
+      "native_codec": "S5UDW002",
+      "policy": "original-adaptive-event-closure-v1",
+      "input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "grass.crp",
+          "635669acf59bac520cfaaffdb5af9446a2706339484dd7c255fc46b66bd7219c"
+        ],
+        [
+          "maize.crp",
+          "e90553550c2d1e9f8b56aec6ad25e35c06ed1ad11e2e5754839390ff925294ed"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "d24a42293b79acc7aa51d9396ceec6ef3dc17d211cd5658e0099197bfcd4dafe"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+        ],
+        [
+          "swap.swp",
+          "e7b8cad616526a6b92db4542f0556fe4a39de74c2a2bfd4ee256e9ada2187dd5"
+        ],
+        [
+          "swap.tss",
+          "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+        ]
+      ]
+    },
+    {
+      "case": "closed-frost-explicit-h1-water-profile",
+      "inputs": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\closure12-feedback-v1\\all-input-preflight-v2\\closed-frost-explicit-h1-water-profile",
+      "input_authority": {
+        "authority": {
+          "actual_git_source": "105b9a8e6ca9e846f214d69a71afe73ed18be11d",
+          "archive": "IMPLICIT_HYDRAULIC_STATE11_FIRST_WINDOWS_O0_ORIGINAL_V1",
+          "archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+          "prefix": "current/frost-mixed2-3-water-d0-b5/inputs/",
+          "original_members": {
+            "control_plot.inp": {
+              "bytes": 1140,
+              "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+            },
+            "grass.crp": {
+              "bytes": 31355,
+              "sha256": "635669acf59bac520cfaaffdb5af9446a2706339484dd7c255fc46b66bd7219c"
+            },
+            "283.met": {
+              "bytes": 71884,
+              "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+            },
+            "maize.crp": {
+              "bytes": 24655,
+              "sha256": "e90553550c2d1e9f8b56aec6ad25e35c06ed1ad11e2e5754839390ff925294ed"
+            },
+            "plot_swap.cmd": {
+              "bytes": 88,
+              "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+            },
+            "potato.crp": {
+              "bytes": 31420,
+              "sha256": "d24a42293b79acc7aa51d9396ceec6ef3dc17d211cd5658e0099197bfcd4dafe"
+            },
+            "swap.dra": {
+              "bytes": 11967,
+              "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+            },
+            "run_swap.cmd": {
+              "bytes": 51,
+              "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+            },
+            "swap.swp": {
+              "bytes": 36752,
+              "sha256": "e8d76e53e4fb815b2ab5c5381300ad7c6d696e6cf3dc3a5fefdfa9355f1ded68"
+            },
+            "swap.tss": {
+              "bytes": 491,
+              "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+            }
+          }
+        },
+        "declared_selectors": {
+          "SWSOLU": 0,
+          "SWINCO": 1,
+          "SWKIMPL": 0,
+          "SWHYST": 1,
+          "SWSNOW": 1,
+          "SWFROST": 1,
+          "SWDRA": 0,
+          "SWBOTB": 6,
+          "IHWCKMODEL": "1",
+          "NPRINTDAY": 1,
+          "PERIOD": 1,
+          "SWMONTH": 0,
+          "SWODAT": 0,
+          "SWRES": 1
+        },
+        "physical_parameter_tables_unchanged": true,
+        "current_swp_sha256": "6237a4429607f15b5975b07769741913fbbf4e697777183f12ba659d6248b795"
+      },
+      "status": "ACTUAL_PUBLIC_ACCEPTED",
+      "nodes": 34,
+      "native_codec": "S5UDW001",
+      "policy": "original-adaptive-event-closure-v1",
+      "input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "grass.crp",
+          "635669acf59bac520cfaaffdb5af9446a2706339484dd7c255fc46b66bd7219c"
+        ],
+        [
+          "maize.crp",
+          "e90553550c2d1e9f8b56aec6ad25e35c06ed1ad11e2e5754839390ff925294ed"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "d24a42293b79acc7aa51d9396ceec6ef3dc17d211cd5658e0099197bfcd4dafe"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+        ],
+        [
+          "swap.swp",
+          "6237a4429607f15b5975b07769741913fbbf4e697777183f12ba659d6248b795"
+        ],
+        [
+          "swap.tss",
+          "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+        ]
+      ]
+    },
+    {
+      "case": "closed-frost-explicit-h2-cde-calendar",
+      "inputs": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\closure12-feedback-v1\\all-input-preflight-v2\\closed-frost-explicit-h2-cde-calendar",
+      "input_authority": {
+        "authority": {
+          "actual_git_source": "105b9a8e6ca9e846f214d69a71afe73ed18be11d",
+          "archive": "IMPLICIT_HYDRAULIC_STATE11_FIRST_WINDOWS_O0_ORIGINAL_V1",
+          "archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+          "prefix": "current/frost-mixed4-5-cde-d1-b5/inputs/",
+          "original_members": {
+            "283.met": {
+              "bytes": 71884,
+              "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+            },
+            "control_plot.inp": {
+              "bytes": 1140,
+              "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+            },
+            "grass.crp": {
+              "bytes": 31370,
+              "sha256": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+            },
+            "maize.crp": {
+              "bytes": 24670,
+              "sha256": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+            },
+            "plot_swap.cmd": {
+              "bytes": 88,
+              "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+            },
+            "potato.crp": {
+              "bytes": 31435,
+              "sha256": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+            },
+            "run_swap.cmd": {
+              "bytes": 51,
+              "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+            },
+            "swap.dra": {
+              "bytes": 11967,
+              "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+            },
+            "swap.swp": {
+              "bytes": 36765,
+              "sha256": "6a9359ec88cc93f0bb3811da70d317fa1220d280530411e8baeb72d8f79d7c7a"
+            },
+            "swap.tss": {
+              "bytes": 491,
+              "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+            }
+          }
+        },
+        "declared_selectors": {
+          "SWSOLU": 1,
+          "SWINCO": 2,
+          "SWKIMPL": 0,
+          "SWHYST": 2,
+          "SWSNOW": 1,
+          "SWFROST": 1,
+          "SWDRA": 0,
+          "SWBOTB": 6,
+          "IHWCKMODEL": "1",
+          "NPRINTDAY": 1,
+          "PERIOD": 7,
+          "SWMONTH": 0,
+          "SWODAT": 0,
+          "SWRES": 0
+        },
+        "physical_parameter_tables_unchanged": true,
+        "current_swp_sha256": "a5571004a6f8cec50a58d7e5e9acbc37f00009e196fc852c85da1fcdfd32861c"
+      },
+      "status": "ACTUAL_PUBLIC_ACCEPTED",
+      "nodes": 34,
+      "native_codec": "S5UDC001",
+      "policy": "original-adaptive-event-closure-v1",
+      "input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "grass.crp",
+          "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+        ],
+        [
+          "maize.crp",
+          "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+        ],
+        [
+          "swap.swp",
+          "a5571004a6f8cec50a58d7e5e9acbc37f00009e196fc852c85da1fcdfd32861c"
+        ],
+        [
+          "swap.tss",
+          "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+        ]
+      ]
+    },
+    {
+      "case": "closed-snow-implicit-h0-water",
+      "inputs": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\closure12-feedback-v1\\all-input-preflight-v2\\closed-snow-implicit-h0-water",
+      "input_authority": {
+        "authority": {
+          "actual_git_source": "105b9a8e6ca9e846f214d69a71afe73ed18be11d",
+          "archive": "IMPLICIT_HYDRAULIC_STATE11_FIRST_WINDOWS_O0_ORIGINAL_V1",
+          "archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+          "prefix": "current/frost-mixed2-3-water-d0-b5/inputs/",
+          "original_members": {
+            "control_plot.inp": {
+              "bytes": 1140,
+              "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+            },
+            "grass.crp": {
+              "bytes": 31355,
+              "sha256": "635669acf59bac520cfaaffdb5af9446a2706339484dd7c255fc46b66bd7219c"
+            },
+            "283.met": {
+              "bytes": 71884,
+              "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+            },
+            "maize.crp": {
+              "bytes": 24655,
+              "sha256": "e90553550c2d1e9f8b56aec6ad25e35c06ed1ad11e2e5754839390ff925294ed"
+            },
+            "plot_swap.cmd": {
+              "bytes": 88,
+              "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+            },
+            "potato.crp": {
+              "bytes": 31420,
+              "sha256": "d24a42293b79acc7aa51d9396ceec6ef3dc17d211cd5658e0099197bfcd4dafe"
+            },
+            "swap.dra": {
+              "bytes": 11967,
+              "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+            },
+            "run_swap.cmd": {
+              "bytes": 51,
+              "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+            },
+            "swap.swp": {
+              "bytes": 36752,
+              "sha256": "e8d76e53e4fb815b2ab5c5381300ad7c6d696e6cf3dc3a5fefdfa9355f1ded68"
+            },
+            "swap.tss": {
+              "bytes": 491,
+              "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+            }
+          }
+        },
+        "declared_selectors": {
+          "SWSOLU": 0,
+          "SWINCO": 2,
+          "SWKIMPL": 1,
+          "SWHYST": 0,
+          "SWSNOW": 1,
+          "SWFROST": 0,
+          "SWDRA": 0,
+          "SWBOTB": 6,
+          "IHWCKMODEL": "1",
+          "NPRINTDAY": 1,
+          "PERIOD": 1,
+          "SWMONTH": 0,
+          "SWODAT": 0,
+          "SWRES": 1
+        },
+        "physical_parameter_tables_unchanged": true,
+        "current_swp_sha256": "3564b3227c726dec7cdb8db9b9d0f0193ebbf27312f8c875a8d876e4feb36635"
+      },
+      "status": "ACTUAL_PUBLIC_ACCEPTED",
+      "nodes": 34,
+      "native_codec": "S5UWI001",
+      "policy": "original-adaptive-day-seed-v1",
+      "input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "grass.crp",
+          "635669acf59bac520cfaaffdb5af9446a2706339484dd7c255fc46b66bd7219c"
+        ],
+        [
+          "maize.crp",
+          "e90553550c2d1e9f8b56aec6ad25e35c06ed1ad11e2e5754839390ff925294ed"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "d24a42293b79acc7aa51d9396ceec6ef3dc17d211cd5658e0099197bfcd4dafe"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+        ],
+        [
+          "swap.swp",
+          "3564b3227c726dec7cdb8db9b9d0f0193ebbf27312f8c875a8d876e4feb36635"
+        ],
+        [
+          "swap.tss",
+          "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+        ]
+      ]
+    },
+    {
+      "case": "closed-snow-explicit-h1-cde-clock",
+      "inputs": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\closure12-feedback-v1\\all-input-preflight-v2\\closed-snow-explicit-h1-cde-clock",
+      "input_authority": {
+        "authority": {
+          "actual_git_source": "105b9a8e6ca9e846f214d69a71afe73ed18be11d",
+          "archive": "IMPLICIT_HYDRAULIC_STATE11_FIRST_WINDOWS_O0_ORIGINAL_V1",
+          "archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+          "prefix": "current/frost-mixed4-5-cde-d1-b5/inputs/",
+          "original_members": {
+            "283.met": {
+              "bytes": 71884,
+              "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+            },
+            "control_plot.inp": {
+              "bytes": 1140,
+              "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+            },
+            "grass.crp": {
+              "bytes": 31370,
+              "sha256": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+            },
+            "maize.crp": {
+              "bytes": 24670,
+              "sha256": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+            },
+            "plot_swap.cmd": {
+              "bytes": 88,
+              "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+            },
+            "potato.crp": {
+              "bytes": 31435,
+              "sha256": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+            },
+            "run_swap.cmd": {
+              "bytes": 51,
+              "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+            },
+            "swap.dra": {
+              "bytes": 11967,
+              "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+            },
+            "swap.swp": {
+              "bytes": 36765,
+              "sha256": "6a9359ec88cc93f0bb3811da70d317fa1220d280530411e8baeb72d8f79d7c7a"
+            },
+            "swap.tss": {
+              "bytes": 491,
+              "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+            }
+          }
+        },
+        "declared_selectors": {
+          "SWSOLU": 1,
+          "SWINCO": 2,
+          "SWKIMPL": 0,
+          "SWHYST": 1,
+          "SWSNOW": 1,
+          "SWFROST": 0,
+          "SWDRA": 0,
+          "SWBOTB": 6,
+          "IHWCKMODEL": "1",
+          "NPRINTDAY": 3,
+          "PERIOD": 1,
+          "SWMONTH": 0,
+          "SWODAT": 0,
+          "SWRES": 1
+        },
+        "physical_parameter_tables_unchanged": true,
+        "current_swp_sha256": "aa1ba8e169e20576cc98378563d23918169a7040067fdd6ed007c4e3ddbce9e1"
+      },
+      "status": "ACTUAL_PUBLIC_ACCEPTED",
+      "nodes": 34,
+      "native_codec": "S5UCC000",
+      "policy": "original-adaptive-day-seed-v1",
+      "input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "grass.crp",
+          "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+        ],
+        [
+          "maize.crp",
+          "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+        ],
+        [
+          "swap.swp",
+          "aa1ba8e169e20576cc98378563d23918169a7040067fdd6ed007c4e3ddbce9e1"
+        ],
+        [
+          "swap.tss",
+          "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+        ]
+      ]
+    },
+    {
+      "case": "closed-snow-implicit-h2-cde-profile-monthly",
+      "inputs": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\closure12-feedback-v1\\all-input-preflight-v2\\closed-snow-implicit-h2-cde-profile-monthly",
+      "input_authority": {
+        "authority": {
+          "actual_git_source": "105b9a8e6ca9e846f214d69a71afe73ed18be11d",
+          "archive": "IMPLICIT_HYDRAULIC_STATE11_FIRST_WINDOWS_O0_ORIGINAL_V1",
+          "archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+          "prefix": "current/frost-mixed4-5-cde-d1-b5/inputs/",
+          "original_members": {
+            "283.met": {
+              "bytes": 71884,
+              "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+            },
+            "control_plot.inp": {
+              "bytes": 1140,
+              "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+            },
+            "grass.crp": {
+              "bytes": 31370,
+              "sha256": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+            },
+            "maize.crp": {
+              "bytes": 24670,
+              "sha256": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+            },
+            "plot_swap.cmd": {
+              "bytes": 88,
+              "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+            },
+            "potato.crp": {
+              "bytes": 31435,
+              "sha256": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+            },
+            "run_swap.cmd": {
+              "bytes": 51,
+              "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+            },
+            "swap.dra": {
+              "bytes": 11967,
+              "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+            },
+            "swap.swp": {
+              "bytes": 36765,
+              "sha256": "6a9359ec88cc93f0bb3811da70d317fa1220d280530411e8baeb72d8f79d7c7a"
+            },
+            "swap.tss": {
+              "bytes": 491,
+              "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+            }
+          }
+        },
+        "declared_selectors": {
+          "SWSOLU": 1,
+          "SWINCO": 1,
+          "SWKIMPL": 1,
+          "SWHYST": 2,
+          "SWSNOW": 1,
+          "SWFROST": 0,
+          "SWDRA": 0,
+          "SWBOTB": 6,
+          "IHWCKMODEL": "1",
+          "NPRINTDAY": 1,
+          "PERIOD": 1,
+          "SWMONTH": 1,
+          "SWODAT": 0,
+          "SWRES": 1
+        },
+        "physical_parameter_tables_unchanged": true,
+        "current_swp_sha256": "ba6800e41cef6e3935d8f29a05260fcf75c58e5c48b2b15b670024ec0cdf001c"
+      },
+      "status": "ACTUAL_PUBLIC_ACCEPTED",
+      "nodes": 34,
+      "native_codec": "S5UCI001",
+      "policy": "original-adaptive-day-seed-v1",
+      "input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "grass.crp",
+          "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+        ],
+        [
+          "maize.crp",
+          "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+        ],
+        [
+          "swap.swp",
+          "ba6800e41cef6e3935d8f29a05260fcf75c58e5c48b2b15b670024ec0cdf001c"
+        ],
+        [
+          "swap.tss",
+          "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+        ]
+      ]
+    },
+    {
+      "case": "closed-ordinary-implicit-h0-water-profile",
+      "inputs": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\closure12-feedback-v1\\all-input-preflight-v2\\closed-ordinary-implicit-h0-water-profile",
+      "input_authority": {
+        "authority": {
+          "actual_git_source": "105b9a8e6ca9e846f214d69a71afe73ed18be11d",
+          "archive": "IMPLICIT_HYDRAULIC_STATE11_FIRST_WINDOWS_O0_ORIGINAL_V1",
+          "archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+          "prefix": "current/frost-mixed2-3-water-d0-b5/inputs/",
+          "original_members": {
+            "control_plot.inp": {
+              "bytes": 1140,
+              "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+            },
+            "grass.crp": {
+              "bytes": 31355,
+              "sha256": "635669acf59bac520cfaaffdb5af9446a2706339484dd7c255fc46b66bd7219c"
+            },
+            "283.met": {
+              "bytes": 71884,
+              "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+            },
+            "maize.crp": {
+              "bytes": 24655,
+              "sha256": "e90553550c2d1e9f8b56aec6ad25e35c06ed1ad11e2e5754839390ff925294ed"
+            },
+            "plot_swap.cmd": {
+              "bytes": 88,
+              "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+            },
+            "potato.crp": {
+              "bytes": 31420,
+              "sha256": "d24a42293b79acc7aa51d9396ceec6ef3dc17d211cd5658e0099197bfcd4dafe"
+            },
+            "swap.dra": {
+              "bytes": 11967,
+              "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+            },
+            "run_swap.cmd": {
+              "bytes": 51,
+              "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+            },
+            "swap.swp": {
+              "bytes": 36752,
+              "sha256": "e8d76e53e4fb815b2ab5c5381300ad7c6d696e6cf3dc3a5fefdfa9355f1ded68"
+            },
+            "swap.tss": {
+              "bytes": 491,
+              "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+            }
+          }
+        },
+        "declared_selectors": {
+          "SWSOLU": 0,
+          "SWINCO": 1,
+          "SWKIMPL": 1,
+          "SWHYST": 0,
+          "SWSNOW": 0,
+          "SWFROST": 0,
+          "SWDRA": 0,
+          "SWBOTB": 6,
+          "IHWCKMODEL": "1",
+          "NPRINTDAY": 1,
+          "PERIOD": 1,
+          "SWMONTH": 0,
+          "SWODAT": 0,
+          "SWRES": 1
+        },
+        "physical_parameter_tables_unchanged": true,
+        "current_swp_sha256": "637a1fc00b8dcad4d8e8c037996828fe9bcf69fd9e45b4ed80018c8e4c089321"
+      },
+      "status": "ACTUAL_PUBLIC_ACCEPTED",
+      "nodes": 34,
+      "native_codec": "S5IOW001",
+      "policy": "original-adaptive-day-seed-v1",
+      "input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "grass.crp",
+          "635669acf59bac520cfaaffdb5af9446a2706339484dd7c255fc46b66bd7219c"
+        ],
+        [
+          "maize.crp",
+          "e90553550c2d1e9f8b56aec6ad25e35c06ed1ad11e2e5754839390ff925294ed"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "d24a42293b79acc7aa51d9396ceec6ef3dc17d211cd5658e0099197bfcd4dafe"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+        ],
+        [
+          "swap.swp",
+          "637a1fc00b8dcad4d8e8c037996828fe9bcf69fd9e45b4ed80018c8e4c089321"
+        ],
+        [
+          "swap.tss",
+          "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+        ]
+      ]
+    },
+    {
+      "case": "closed-ordinary-implicit-h1-cde",
+      "inputs": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\closure12-feedback-v1\\all-input-preflight-v2\\closed-ordinary-implicit-h1-cde",
+      "input_authority": {
+        "authority": {
+          "actual_git_source": "105b9a8e6ca9e846f214d69a71afe73ed18be11d",
+          "archive": "IMPLICIT_HYDRAULIC_STATE11_FIRST_WINDOWS_O0_ORIGINAL_V1",
+          "archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+          "prefix": "current/frost-mixed4-5-cde-d1-b5/inputs/",
+          "original_members": {
+            "283.met": {
+              "bytes": 71884,
+              "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+            },
+            "control_plot.inp": {
+              "bytes": 1140,
+              "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+            },
+            "grass.crp": {
+              "bytes": 31370,
+              "sha256": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+            },
+            "maize.crp": {
+              "bytes": 24670,
+              "sha256": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+            },
+            "plot_swap.cmd": {
+              "bytes": 88,
+              "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+            },
+            "potato.crp": {
+              "bytes": 31435,
+              "sha256": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+            },
+            "run_swap.cmd": {
+              "bytes": 51,
+              "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+            },
+            "swap.dra": {
+              "bytes": 11967,
+              "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+            },
+            "swap.swp": {
+              "bytes": 36765,
+              "sha256": "6a9359ec88cc93f0bb3811da70d317fa1220d280530411e8baeb72d8f79d7c7a"
+            },
+            "swap.tss": {
+              "bytes": 491,
+              "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+            }
+          }
+        },
+        "declared_selectors": {
+          "SWSOLU": 1,
+          "SWINCO": 2,
+          "SWKIMPL": 1,
+          "SWHYST": 1,
+          "SWSNOW": 0,
+          "SWFROST": 0,
+          "SWDRA": 0,
+          "SWBOTB": 6,
+          "IHWCKMODEL": "1",
+          "NPRINTDAY": 1,
+          "PERIOD": 1,
+          "SWMONTH": 0,
+          "SWODAT": 0,
+          "SWRES": 1
+        },
+        "physical_parameter_tables_unchanged": true,
+        "current_swp_sha256": "f280dbdc56d29ad237263945f750f9b616c02a60fe7f066cb56284292d8c4948"
+      },
+      "status": "ACTUAL_PUBLIC_ACCEPTED",
+      "nodes": 34,
+      "native_codec": "S5IHC001",
+      "policy": "original-adaptive-day-seed-v1",
+      "input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "grass.crp",
+          "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+        ],
+        [
+          "maize.crp",
+          "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+        ],
+        [
+          "swap.swp",
+          "f280dbdc56d29ad237263945f750f9b616c02a60fe7f066cb56284292d8c4948"
+        ],
+        [
+          "swap.tss",
+          "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+        ]
+      ]
+    },
+    {
+      "case": "closed-ordinary-implicit-h2-water",
+      "inputs": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\closure12-feedback-v1\\all-input-preflight-v2\\closed-ordinary-implicit-h2-water",
+      "input_authority": {
+        "authority": {
+          "actual_git_source": "105b9a8e6ca9e846f214d69a71afe73ed18be11d",
+          "archive": "IMPLICIT_HYDRAULIC_STATE11_FIRST_WINDOWS_O0_ORIGINAL_V1",
+          "archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+          "prefix": "current/frost-mixed2-3-water-d0-b5/inputs/",
+          "original_members": {
+            "control_plot.inp": {
+              "bytes": 1140,
+              "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+            },
+            "grass.crp": {
+              "bytes": 31355,
+              "sha256": "635669acf59bac520cfaaffdb5af9446a2706339484dd7c255fc46b66bd7219c"
+            },
+            "283.met": {
+              "bytes": 71884,
+              "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+            },
+            "maize.crp": {
+              "bytes": 24655,
+              "sha256": "e90553550c2d1e9f8b56aec6ad25e35c06ed1ad11e2e5754839390ff925294ed"
+            },
+            "plot_swap.cmd": {
+              "bytes": 88,
+              "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+            },
+            "potato.crp": {
+              "bytes": 31420,
+              "sha256": "d24a42293b79acc7aa51d9396ceec6ef3dc17d211cd5658e0099197bfcd4dafe"
+            },
+            "swap.dra": {
+              "bytes": 11967,
+              "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+            },
+            "run_swap.cmd": {
+              "bytes": 51,
+              "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+            },
+            "swap.swp": {
+              "bytes": 36752,
+              "sha256": "e8d76e53e4fb815b2ab5c5381300ad7c6d696e6cf3dc3a5fefdfa9355f1ded68"
+            },
+            "swap.tss": {
+              "bytes": 491,
+              "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+            }
+          }
+        },
+        "declared_selectors": {
+          "SWSOLU": 0,
+          "SWINCO": 2,
+          "SWKIMPL": 1,
+          "SWHYST": 2,
+          "SWSNOW": 0,
+          "SWFROST": 0,
+          "SWDRA": 0,
+          "SWBOTB": 6,
+          "IHWCKMODEL": "1",
+          "NPRINTDAY": 1,
+          "PERIOD": 1,
+          "SWMONTH": 0,
+          "SWODAT": 0,
+          "SWRES": 1
+        },
+        "physical_parameter_tables_unchanged": true,
+        "current_swp_sha256": "b4ef2577bc3ecd37fc78d1541ddc7772ef39fa2f2e7edba163e206734748d2a9"
+      },
+      "status": "ACTUAL_PUBLIC_ACCEPTED",
+      "nodes": 34,
+      "native_codec": "S5IHW001",
+      "policy": "original-adaptive-day-seed-v1",
+      "input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "grass.crp",
+          "635669acf59bac520cfaaffdb5af9446a2706339484dd7c255fc46b66bd7219c"
+        ],
+        [
+          "maize.crp",
+          "e90553550c2d1e9f8b56aec6ad25e35c06ed1ad11e2e5754839390ff925294ed"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "d24a42293b79acc7aa51d9396ceec6ef3dc17d211cd5658e0099197bfcd4dafe"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+        ],
+        [
+          "swap.swp",
+          "b4ef2577bc3ecd37fc78d1541ddc7772ef39fa2f2e7edba163e206734748d2a9"
+        ],
+        [
+          "swap.tss",
+          "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+        ]
+      ]
+    },
+    {
+      "case": "gardner-snow-explicit-d0-b5-water",
+      "inputs": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\closure12-feedback-v1\\all-input-preflight-v2\\gardner-snow-explicit-d0-b5-water",
+      "input_authority": {
+        "authority": {
+          "actual_git_source": "105b9a8e6ca9e846f214d69a71afe73ed18be11d",
+          "archive": "IMPLICIT_HYDRAULIC_STATE11_FIRST_WINDOWS_O0_ORIGINAL_V1",
+          "archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+          "prefix": "current/frost-mixed2-3-water-d0-b5/inputs/",
+          "original_members": {
+            "control_plot.inp": {
+              "bytes": 1140,
+              "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+            },
+            "grass.crp": {
+              "bytes": 31355,
+              "sha256": "635669acf59bac520cfaaffdb5af9446a2706339484dd7c255fc46b66bd7219c"
+            },
+            "283.met": {
+              "bytes": 71884,
+              "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+            },
+            "maize.crp": {
+              "bytes": 24655,
+              "sha256": "e90553550c2d1e9f8b56aec6ad25e35c06ed1ad11e2e5754839390ff925294ed"
+            },
+            "plot_swap.cmd": {
+              "bytes": 88,
+              "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+            },
+            "potato.crp": {
+              "bytes": 31420,
+              "sha256": "d24a42293b79acc7aa51d9396ceec6ef3dc17d211cd5658e0099197bfcd4dafe"
+            },
+            "swap.dra": {
+              "bytes": 11967,
+              "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+            },
+            "run_swap.cmd": {
+              "bytes": 51,
+              "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+            },
+            "swap.swp": {
+              "bytes": 36752,
+              "sha256": "e8d76e53e4fb815b2ab5c5381300ad7c6d696e6cf3dc3a5fefdfa9355f1ded68"
+            },
+            "swap.tss": {
+              "bytes": 491,
+              "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+            }
+          }
+        },
+        "declared_selectors": {
+          "SWSOLU": 0,
+          "SWINCO": 2,
+          "SWKIMPL": 0,
+          "SWHYST": 0,
+          "SWSNOW": 1,
+          "SWFROST": 0,
+          "SWDRA": 0,
+          "SWBOTB": 5,
+          "IHWCKMODEL": "2",
+          "NPRINTDAY": 1,
+          "PERIOD": 1,
+          "SWMONTH": 0,
+          "SWODAT": 0,
+          "SWRES": 1
+        },
+        "physical_parameter_tables_unchanged": true,
+        "current_swp_sha256": "72e5e2bda35058695e068552a6f00b4ecd92329402ee4ec3051753f31896b964"
+      },
+      "status": "ACTUAL_PUBLIC_ACCEPTED",
+      "nodes": 34,
+      "native_codec": "S5AWI000",
+      "policy": "original-adaptive-day-seed-v1",
+      "input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "grass.crp",
+          "635669acf59bac520cfaaffdb5af9446a2706339484dd7c255fc46b66bd7219c"
+        ],
+        [
+          "maize.crp",
+          "e90553550c2d1e9f8b56aec6ad25e35c06ed1ad11e2e5754839390ff925294ed"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "d24a42293b79acc7aa51d9396ceec6ef3dc17d211cd5658e0099197bfcd4dafe"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+        ],
+        [
+          "swap.swp",
+          "72e5e2bda35058695e068552a6f00b4ecd92329402ee4ec3051753f31896b964"
+        ],
+        [
+          "swap.tss",
+          "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+        ]
+      ]
+    },
+    {
+      "case": "gardner-frost-explicit-d0-b8-cde-profile",
+      "inputs": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\closure12-feedback-v1\\all-input-preflight-v2\\gardner-frost-explicit-d0-b8-cde-profile",
+      "input_authority": {
+        "authority": {
+          "actual_git_source": "105b9a8e6ca9e846f214d69a71afe73ed18be11d",
+          "archive": "IMPLICIT_HYDRAULIC_STATE11_FIRST_WINDOWS_O0_ORIGINAL_V1",
+          "archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+          "prefix": "current/frost-mixed4-5-cde-d1-b5/inputs/",
+          "original_members": {
+            "283.met": {
+              "bytes": 71884,
+              "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+            },
+            "control_plot.inp": {
+              "bytes": 1140,
+              "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+            },
+            "grass.crp": {
+              "bytes": 31370,
+              "sha256": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+            },
+            "maize.crp": {
+              "bytes": 24670,
+              "sha256": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+            },
+            "plot_swap.cmd": {
+              "bytes": 88,
+              "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+            },
+            "potato.crp": {
+              "bytes": 31435,
+              "sha256": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+            },
+            "run_swap.cmd": {
+              "bytes": 51,
+              "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+            },
+            "swap.dra": {
+              "bytes": 11967,
+              "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+            },
+            "swap.swp": {
+              "bytes": 36765,
+              "sha256": "6a9359ec88cc93f0bb3811da70d317fa1220d280530411e8baeb72d8f79d7c7a"
+            },
+            "swap.tss": {
+              "bytes": 491,
+              "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+            }
+          }
+        },
+        "declared_selectors": {
+          "SWSOLU": 1,
+          "SWINCO": 1,
+          "SWKIMPL": 0,
+          "SWHYST": 0,
+          "SWSNOW": 1,
+          "SWFROST": 1,
+          "SWDRA": 0,
+          "SWBOTB": 8,
+          "IHWCKMODEL": "2",
+          "NPRINTDAY": 1,
+          "PERIOD": 1,
+          "SWMONTH": 0,
+          "SWODAT": 0,
+          "SWRES": 1
+        },
+        "physical_parameter_tables_unchanged": true,
+        "current_swp_sha256": "eb61be539e6122d0554c614c54f330a64d0affdc827baea41daf586a6f7ef452"
+      },
+      "status": "ACTUAL_PUBLIC_ACCEPTED",
+      "nodes": 34,
+      "native_codec": "S5UAC001",
+      "policy": "original-adaptive-event-closure-v1",
+      "input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "grass.crp",
+          "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+        ],
+        [
+          "maize.crp",
+          "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+        ],
+        [
+          "swap.swp",
+          "eb61be539e6122d0554c614c54f330a64d0affdc827baea41daf586a6f7ef452"
+        ],
+        [
+          "swap.tss",
+          "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+        ]
+      ]
+    },
+    {
+      "case": "gardner-frost-explicit-d1-b6-water-calendar",
+      "inputs": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\closure12-feedback-v1\\all-input-preflight-v2\\gardner-frost-explicit-d1-b6-water-calendar",
+      "input_authority": {
+        "authority": {
+          "actual_git_source": "105b9a8e6ca9e846f214d69a71afe73ed18be11d",
+          "archive": "IMPLICIT_HYDRAULIC_STATE11_FIRST_WINDOWS_O0_ORIGINAL_V1",
+          "archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+          "prefix": "current/frost-mixed2-3-water-d0-b5/inputs/",
+          "original_members": {
+            "control_plot.inp": {
+              "bytes": 1140,
+              "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+            },
+            "grass.crp": {
+              "bytes": 31355,
+              "sha256": "635669acf59bac520cfaaffdb5af9446a2706339484dd7c255fc46b66bd7219c"
+            },
+            "283.met": {
+              "bytes": 71884,
+              "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+            },
+            "maize.crp": {
+              "bytes": 24655,
+              "sha256": "e90553550c2d1e9f8b56aec6ad25e35c06ed1ad11e2e5754839390ff925294ed"
+            },
+            "plot_swap.cmd": {
+              "bytes": 88,
+              "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+            },
+            "potato.crp": {
+              "bytes": 31420,
+              "sha256": "d24a42293b79acc7aa51d9396ceec6ef3dc17d211cd5658e0099197bfcd4dafe"
+            },
+            "swap.dra": {
+              "bytes": 11967,
+              "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+            },
+            "run_swap.cmd": {
+              "bytes": 51,
+              "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+            },
+            "swap.swp": {
+              "bytes": 36752,
+              "sha256": "e8d76e53e4fb815b2ab5c5381300ad7c6d696e6cf3dc3a5fefdfa9355f1ded68"
+            },
+            "swap.tss": {
+              "bytes": 491,
+              "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+            }
+          }
+        },
+        "declared_selectors": {
+          "SWSOLU": 0,
+          "SWINCO": 2,
+          "SWKIMPL": 0,
+          "SWHYST": 0,
+          "SWSNOW": 1,
+          "SWFROST": 1,
+          "SWDRA": 1,
+          "SWBOTB": 6,
+          "IHWCKMODEL": "2",
+          "NPRINTDAY": 1,
+          "PERIOD": 7,
+          "SWMONTH": 0,
+          "SWODAT": 0,
+          "SWRES": 0
+        },
+        "physical_parameter_tables_unchanged": true,
+        "current_swp_sha256": "24924397f4745479df54d177dbc4dc7b815ef93f7305ba1e1e095b376651c596"
+      },
+      "status": "ACTUAL_PUBLIC_ACCEPTED",
+      "nodes": 34,
+      "native_codec": "S5FAW001",
+      "policy": "original-adaptive-event-closure-v1",
+      "input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "grass.crp",
+          "635669acf59bac520cfaaffdb5af9446a2706339484dd7c255fc46b66bd7219c"
+        ],
+        [
+          "maize.crp",
+          "e90553550c2d1e9f8b56aec6ad25e35c06ed1ad11e2e5754839390ff925294ed"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "d24a42293b79acc7aa51d9396ceec6ef3dc17d211cd5658e0099197bfcd4dafe"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+        ],
+        [
+          "swap.swp",
+          "24924397f4745479df54d177dbc4dc7b815ef93f7305ba1e1e095b376651c596"
+        ],
+        [
+          "swap.tss",
+          "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+        ]
+      ]
+    },
+    {
+      "case": "gardner-mixed2-1-frost-explicit-d1-b5-cde",
+      "inputs": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\closure12-feedback-v1\\all-input-preflight-v2\\gardner-mixed2-1-frost-explicit-d1-b5-cde",
+      "input_authority": {
+        "authority": {
+          "actual_git_source": "105b9a8e6ca9e846f214d69a71afe73ed18be11d",
+          "archive": "IMPLICIT_HYDRAULIC_STATE11_FIRST_WINDOWS_O0_ORIGINAL_V1",
+          "archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+          "prefix": "current/frost-mixed4-5-cde-d1-b5/inputs/",
+          "original_members": {
+            "283.met": {
+              "bytes": 71884,
+              "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+            },
+            "control_plot.inp": {
+              "bytes": 1140,
+              "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+            },
+            "grass.crp": {
+              "bytes": 31370,
+              "sha256": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+            },
+            "maize.crp": {
+              "bytes": 24670,
+              "sha256": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+            },
+            "plot_swap.cmd": {
+              "bytes": 88,
+              "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+            },
+            "potato.crp": {
+              "bytes": 31435,
+              "sha256": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+            },
+            "run_swap.cmd": {
+              "bytes": 51,
+              "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+            },
+            "swap.dra": {
+              "bytes": 11967,
+              "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+            },
+            "swap.swp": {
+              "bytes": 36765,
+              "sha256": "6a9359ec88cc93f0bb3811da70d317fa1220d280530411e8baeb72d8f79d7c7a"
+            },
+            "swap.tss": {
+              "bytes": 491,
+              "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+            }
+          }
+        },
+        "declared_selectors": {
+          "SWSOLU": 1,
+          "SWINCO": 2,
+          "SWKIMPL": 0,
+          "SWHYST": 0,
+          "SWSNOW": 1,
+          "SWFROST": 1,
+          "SWDRA": 1,
+          "SWBOTB": 5,
+          "IHWCKMODEL": "2 1",
+          "NPRINTDAY": 1,
+          "PERIOD": 1,
+          "SWMONTH": 0,
+          "SWODAT": 0,
+          "SWRES": 1
+        },
+        "physical_parameter_tables_unchanged": true,
+        "current_swp_sha256": "b79f2d57678adea56ebc9296898a3fa60e6d5c16a6b7fa5aae753a3ca46de9ae"
+      },
+      "status": "ACTUAL_PUBLIC_ACCEPTED",
+      "nodes": 34,
+      "native_codec": "S5FAC001",
+      "policy": "original-adaptive-event-closure-v1",
+      "input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "grass.crp",
+          "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+        ],
+        [
+          "maize.crp",
+          "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+        ],
+        [
+          "swap.swp",
+          "b79f2d57678adea56ebc9296898a3fa60e6d5c16a6b7fa5aae753a3ca46de9ae"
+        ],
+        [
+          "swap.tss",
+          "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+        ]
+      ]
+    },
+    {
+      "case": "gardner-mixed2-3-snow-explicit-d0-b8-water",
+      "inputs": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\closure12-feedback-v1\\all-input-preflight-v2\\gardner-mixed2-3-snow-explicit-d0-b8-water",
+      "input_authority": {
+        "authority": {
+          "actual_git_source": "105b9a8e6ca9e846f214d69a71afe73ed18be11d",
+          "archive": "IMPLICIT_HYDRAULIC_STATE11_FIRST_WINDOWS_O0_ORIGINAL_V1",
+          "archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+          "prefix": "current/frost-mixed2-3-water-d0-b5/inputs/",
+          "original_members": {
+            "control_plot.inp": {
+              "bytes": 1140,
+              "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+            },
+            "grass.crp": {
+              "bytes": 31355,
+              "sha256": "635669acf59bac520cfaaffdb5af9446a2706339484dd7c255fc46b66bd7219c"
+            },
+            "283.met": {
+              "bytes": 71884,
+              "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+            },
+            "maize.crp": {
+              "bytes": 24655,
+              "sha256": "e90553550c2d1e9f8b56aec6ad25e35c06ed1ad11e2e5754839390ff925294ed"
+            },
+            "plot_swap.cmd": {
+              "bytes": 88,
+              "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+            },
+            "potato.crp": {
+              "bytes": 31420,
+              "sha256": "d24a42293b79acc7aa51d9396ceec6ef3dc17d211cd5658e0099197bfcd4dafe"
+            },
+            "swap.dra": {
+              "bytes": 11967,
+              "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+            },
+            "run_swap.cmd": {
+              "bytes": 51,
+              "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+            },
+            "swap.swp": {
+              "bytes": 36752,
+              "sha256": "e8d76e53e4fb815b2ab5c5381300ad7c6d696e6cf3dc3a5fefdfa9355f1ded68"
+            },
+            "swap.tss": {
+              "bytes": 491,
+              "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+            }
+          }
+        },
+        "declared_selectors": {
+          "SWSOLU": 0,
+          "SWINCO": 2,
+          "SWKIMPL": 0,
+          "SWHYST": 0,
+          "SWSNOW": 1,
+          "SWFROST": 0,
+          "SWDRA": 0,
+          "SWBOTB": 8,
+          "IHWCKMODEL": "2 3",
+          "NPRINTDAY": 1,
+          "PERIOD": 1,
+          "SWMONTH": 0,
+          "SWODAT": 0,
+          "SWRES": 1
+        },
+        "physical_parameter_tables_unchanged": true,
+        "current_swp_sha256": "7efe10258a13f31c49bf3f617bd0a566073bd83894307c17e15aa5e4ed7315d5"
+      },
+      "status": "ACTUAL_PUBLIC_ACCEPTED",
+      "nodes": 34,
+      "native_codec": "S5AWI000",
+      "policy": "original-adaptive-day-seed-v1",
+      "input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "grass.crp",
+          "635669acf59bac520cfaaffdb5af9446a2706339484dd7c255fc46b66bd7219c"
+        ],
+        [
+          "maize.crp",
+          "e90553550c2d1e9f8b56aec6ad25e35c06ed1ad11e2e5754839390ff925294ed"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "d24a42293b79acc7aa51d9396ceec6ef3dc17d211cd5658e0099197bfcd4dafe"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+        ],
+        [
+          "swap.swp",
+          "7efe10258a13f31c49bf3f617bd0a566073bd83894307c17e15aa5e4ed7315d5"
+        ],
+        [
+          "swap.tss",
+          "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+        ]
+      ]
+    },
+    {
+      "case": "gardner-mixed2-8-frost-explicit-inactive-vapor-slot",
+      "inputs": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\closure12-feedback-v1\\all-input-preflight-v2\\gardner-mixed2-8-frost-explicit-inactive-vapor-slot",
+      "input_authority": {
+        "authority": {
+          "actual_git_source": "105b9a8e6ca9e846f214d69a71afe73ed18be11d",
+          "archive": "IMPLICIT_HYDRAULIC_STATE11_FIRST_WINDOWS_O0_ORIGINAL_V1",
+          "archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+          "prefix": "current/frost-mixed4-5-cde-d1-b5/inputs/",
+          "original_members": {
+            "283.met": {
+              "bytes": 71884,
+              "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+            },
+            "control_plot.inp": {
+              "bytes": 1140,
+              "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+            },
+            "grass.crp": {
+              "bytes": 31370,
+              "sha256": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+            },
+            "maize.crp": {
+              "bytes": 24670,
+              "sha256": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+            },
+            "plot_swap.cmd": {
+              "bytes": 88,
+              "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+            },
+            "potato.crp": {
+              "bytes": 31435,
+              "sha256": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+            },
+            "run_swap.cmd": {
+              "bytes": 51,
+              "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+            },
+            "swap.dra": {
+              "bytes": 11967,
+              "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+            },
+            "swap.swp": {
+              "bytes": 36765,
+              "sha256": "6a9359ec88cc93f0bb3811da70d317fa1220d280530411e8baeb72d8f79d7c7a"
+            },
+            "swap.tss": {
+              "bytes": 491,
+              "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+            }
+          }
+        },
+        "declared_selectors": {
+          "SWSOLU": 1,
+          "SWINCO": 2,
+          "SWKIMPL": 0,
+          "SWHYST": 0,
+          "SWSNOW": 1,
+          "SWFROST": 1,
+          "SWDRA": 0,
+          "SWBOTB": 5,
+          "IHWCKMODEL": "2 8",
+          "NPRINTDAY": 1,
+          "PERIOD": 1,
+          "SWMONTH": 0,
+          "SWODAT": 0,
+          "SWRES": 1,
+          "SWVAPOR": "1 0"
+        },
+        "physical_parameter_tables_unchanged": true,
+        "current_swp_sha256": "22b97d1b837d0fae945a8a280881b7837160554c3d181204e0f159fd31be4184"
+      },
+      "status": "ACTUAL_PUBLIC_ACCEPTED",
+      "nodes": 34,
+      "native_codec": "S5UAC001",
+      "policy": "original-adaptive-event-closure-v1",
+      "input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "grass.crp",
+          "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+        ],
+        [
+          "maize.crp",
+          "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+        ],
+        [
+          "swap.swp",
+          "22b97d1b837d0fae945a8a280881b7837160554c3d181204e0f159fd31be4184"
+        ],
+        [
+          "swap.tss",
+          "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+        ]
+      ]
+    },
+    {
+      "case": "gardner-snow-paired9-explicit-water",
+      "inputs": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\closure12-feedback-v1\\all-input-preflight-v2\\gardner-snow-paired9-explicit-water",
+      "input_authority": {
+        "authority": {
+          "actual_git_source": "105b9a8e6ca9e846f214d69a71afe73ed18be11d",
+          "archive": "EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_INPUTS_V1",
+          "archive_sha256": "de4df34251f751bdda598299e44c1aad11749a82ca700a3a6498e090bdb0bdde",
+          "prefix": "model3-water-initial2/",
+          "original_members": {
+            "283.met": {
+              "bytes": 67379,
+              "sha256": "138547fa9f8885a1352de44feba560e88ac45d6b24be66d4e7d26ecc916c72d4"
+            },
+            "control_plot.inp": {
+              "bytes": 1140,
+              "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+            },
+            "fixed-irrigation.irg": {
+              "bytes": 81,
+              "sha256": "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+            },
+            "grass.crp": {
+              "bytes": 31349,
+              "sha256": "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+            },
+            "maize.crp": {
+              "bytes": 24649,
+              "sha256": "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+            },
+            "plot_swap.cmd": {
+              "bytes": 88,
+              "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+            },
+            "potato.crp": {
+              "bytes": 31414,
+              "sha256": "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+            },
+            "run_swap.cmd": {
+              "bytes": 51,
+              "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+            },
+            "swap.dra": {
+              "bytes": 11733,
+              "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+            },
+            "swap.swp": {
+              "bytes": 36189,
+              "sha256": "85e4e5ba1655e98473c93190e21be40056478dab448283aff72905c640dc9ab7"
+            }
+          }
+        },
+        "declared_selectors": {
+          "SWSOLU": 0,
+          "SWINCO": 2,
+          "SWKIMPL": 0,
+          "SWHYST": 0,
+          "SWSNOW": 1,
+          "SWFROST": 0,
+          "SWDRA": 0,
+          "SWBOTB": 9,
+          "IHWCKMODEL": "2",
+          "NPRINTDAY": 1,
+          "PERIOD": 1,
+          "SWMONTH": 0,
+          "SWODAT": 0,
+          "SWRES": 1
+        },
+        "physical_parameter_tables_unchanged": true,
+        "current_swp_sha256": "2c150accf4897a917528d63436ab6376d2bf2cb3dea37c0ff31006e46bc65481"
+      },
+      "status": "ACTUAL_PUBLIC_ACCEPTED",
+      "nodes": 34,
+      "native_codec": "S5AWI000",
+      "policy": "original-adaptive-day-seed-v1",
+      "input_inventory": [
+        [
+          "283.met",
+          "138547fa9f8885a1352de44feba560e88ac45d6b24be66d4e7d26ecc916c72d4"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+        ],
+        [
+          "grass.crp",
+          "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+        ],
+        [
+          "maize.crp",
+          "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "2c150accf4897a917528d63436ab6376d2bf2cb3dea37c0ff31006e46bc65481"
+        ]
+      ]
+    },
+    {
+      "case": "gardner-mixed2-1-snow-paired9-explicit-cde",
+      "inputs": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\closure12-feedback-v1\\all-input-preflight-v2\\gardner-mixed2-1-snow-paired9-explicit-cde",
+      "input_authority": {
+        "authority": {
+          "actual_git_source": "105b9a8e6ca9e846f214d69a71afe73ed18be11d",
+          "archive": "EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_INPUTS_V1",
+          "archive_sha256": "de4df34251f751bdda598299e44c1aad11749a82ca700a3a6498e090bdb0bdde",
+          "prefix": "model3-cde-initial2/",
+          "original_members": {
+            "283.met": {
+              "bytes": 67379,
+              "sha256": "138547fa9f8885a1352de44feba560e88ac45d6b24be66d4e7d26ecc916c72d4"
+            },
+            "control_plot.inp": {
+              "bytes": 1140,
+              "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+            },
+            "fixed-irrigation.irg": {
+              "bytes": 81,
+              "sha256": "12ebdc64ce69c74e102428813551d4117c78e9721f1b3d3b3c723808460bb2dd"
+            },
+            "grass.crp": {
+              "bytes": 31349,
+              "sha256": "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+            },
+            "maize.crp": {
+              "bytes": 24649,
+              "sha256": "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+            },
+            "plot_swap.cmd": {
+              "bytes": 88,
+              "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+            },
+            "potato.crp": {
+              "bytes": 31414,
+              "sha256": "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+            },
+            "run_swap.cmd": {
+              "bytes": 51,
+              "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+            },
+            "swap.dra": {
+              "bytes": 11733,
+              "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+            },
+            "swap.swp": {
+              "bytes": 36191,
+              "sha256": "e0836ba8b883485562acf2bd2adad42822a7e9fb5383c846793577fef104e67b"
+            }
+          }
+        },
+        "declared_selectors": {
+          "SWSOLU": 1,
+          "SWINCO": 2,
+          "SWKIMPL": 0,
+          "SWHYST": 0,
+          "SWSNOW": 1,
+          "SWFROST": 0,
+          "SWDRA": 0,
+          "SWBOTB": 9,
+          "IHWCKMODEL": "2 1",
+          "NPRINTDAY": 1,
+          "PERIOD": 1,
+          "SWMONTH": 0,
+          "SWODAT": 0,
+          "SWRES": 1
+        },
+        "physical_parameter_tables_unchanged": true,
+        "current_swp_sha256": "40f7b0afeead61bbab39a7679b66f976f303585a5e4b9d0be535aa66288d2b90"
+      },
+      "status": "ACTUAL_PUBLIC_ACCEPTED",
+      "nodes": 34,
+      "native_codec": "S5ACR000",
+      "policy": "original-adaptive-day-seed-v1",
+      "input_inventory": [
+        [
+          "283.met",
+          "138547fa9f8885a1352de44feba560e88ac45d6b24be66d4e7d26ecc916c72d4"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "12ebdc64ce69c74e102428813551d4117c78e9721f1b3d3b3c723808460bb2dd"
+        ],
+        [
+          "grass.crp",
+          "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+        ],
+        [
+          "maize.crp",
+          "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "40f7b0afeead61bbab39a7679b66f976f303585a5e4b9d0be535aa66288d2b90"
+        ]
+      ]
+    }
+  ],
+  "canonical_admission": false
+}

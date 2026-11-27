@@ -1,0 +1,91 @@
+{
+  "status": "REAL_UNCOMMITTED_SIX_WHOLE_SOURCE_GUARDS_TWO_GARDNER_TYPED_NATIVE_AND_TWO_PENDING_GUARD_INVERSES_PASS_NO_QUALIFICATION",
+  "actual_git_base": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+  "actual_uncommitted_status": " M app/hybrid_water/analytical_snow_undrained.py\n M app/hybrid_water/frost_implicit_plate_calendar.py\n M app/hybrid_water/ordinary_pond_source_guard.py\n M tests/nomacro_drainage/closed_gardner_state_feedback.py\n M tests/nomacro_drainage/closed_gardner_state_native_controls.py\n",
+  "actual_changed_working_files": {
+    "app/hybrid_water/analytical_snow_undrained.py": "c1a53fcc8605935d1c8cb2749cc04fd34824d0452ae6971aaf32afc3f0eb8e36",
+    "app/hybrid_water/frost_implicit_plate_calendar.py": "6bac5e212a145e81ae60c5c0ee3497277bd34d2b3c6a1b30cc3855e562201a92",
+    "app/hybrid_water/ordinary_pond_source_guard.py": "dbbaeb8cfa6056940a8d734ac40d5e5dc5de9d430172686d8f4ecc7157778b03",
+    "tests/nomacro_drainage/closed_gardner_state_feedback.py": "13414c1046b67fc69fcd7e6e7aca18199690189a3fad6bf889cc71b4a2eff96a",
+    "tests/nomacro_drainage/closed_gardner_state_native_controls.py": "b85b15c19184eed2ae597bd67fc3162e9657bc75639eb4200b569ac07e06b5e1"
+  },
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "canonical_admission": false,
+  "ordinary": [
+    {
+      "case": "closed-ordinary-implicit-h0-water-profile",
+      "optimization": "O0",
+      "actual_original_compiler_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "complete_qualified_parent_source_guard_pass": true
+    },
+    {
+      "case": "closed-ordinary-implicit-h1-cde",
+      "optimization": "O0",
+      "actual_original_compiler_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "complete_qualified_parent_source_guard_pass": true
+    },
+    {
+      "case": "closed-ordinary-implicit-h2-water",
+      "optimization": "O0",
+      "actual_original_compiler_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "complete_qualified_parent_source_guard_pass": true
+    },
+    {
+      "case": "closed-ordinary-implicit-h0-water-profile",
+      "optimization": "O2",
+      "actual_original_compiler_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "complete_qualified_parent_source_guard_pass": true
+    },
+    {
+      "case": "closed-ordinary-implicit-h1-cde",
+      "optimization": "O2",
+      "actual_original_compiler_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "complete_qualified_parent_source_guard_pass": true
+    },
+    {
+      "case": "closed-ordinary-implicit-h2-water",
+      "optimization": "O2",
+      "actual_original_compiler_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "complete_qualified_parent_source_guard_pass": true
+    }
+  ],
+  "Gardner": [
+    {
+      "optimization": "O0",
+      "actual_original_compiler_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "actual_original_native_sha256": "98c1c12f100332e9c55a70aef532c54695e02d1e3ed58723093c166956a2da7f",
+      "true_replication": [
+        2,
+        2
+      ],
+      "actual_typed_native_accepted": true
+    },
+    {
+      "optimization": "O2",
+      "actual_original_compiler_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "actual_original_native_sha256": "98c1c12f100332e9c55a70aef532c54695e02d1e3ed58723093c166956a2da7f",
+      "true_replication": [
+        2,
+        2
+      ],
+      "actual_typed_native_accepted": true
+    }
+  ],
+  "pending_dates": [
+    {
+      "optimization": "O0",
+      "actual_original_compiler_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "whole_old_integral_lf_sha256": "4318ac785d30b220ec4722a60e207562467292cda30785d339bec54629e7e00b",
+      "whole_proposed_integral_lf_sha256": "47e2e6a40ae318879b078b66f7766a3a7dd15c110614c6222b69a7041cd261bb",
+      "complete_literal_existing_pending_date_guard_inverse_pass": true
+    },
+    {
+      "optimization": "O2",
+      "actual_original_compiler_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "whole_old_integral_lf_sha256": "4318ac785d30b220ec4722a60e207562467292cda30785d339bec54629e7e00b",
+      "whole_proposed_integral_lf_sha256": "47e2e6a40ae318879b078b66f7766a3a7dd15c110614c6222b69a7041cd261bb",
+      "complete_literal_existing_pending_date_guard_inverse_pass": true
+    }
+  ]
+}

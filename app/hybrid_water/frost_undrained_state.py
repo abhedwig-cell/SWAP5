@@ -9,7 +9,6 @@ FIXED=dict(SWMACRO=0,SWFROST=1,SWSNOW=1,SWHEA=1,SWCALT=2,SWSOPHY=0,
 
 def input_domain(selectors,boundary,original_output):
     return bool(original_output is not False and boundary.get('SWBOTB') in (5,6,8)
-                and (boundary.get('SWBOTB')!=6 or selectors.get('SWKIMPL')==selectors.get('SWHYST')==0)
                 and selectors.get('SWKIMPL') in (0,1) and selectors.get('SWSOLU') in (0,1)
                 and selectors.get('SWHYST') in (0,1,2) and selectors.get('SWINCO') in (1,2)
                 and all(selectors.get(k)==v for k,v in FIXED.items() if k!='NPRINTDAY'))
@@ -39,9 +38,14 @@ def selection(directory,original_output=True):
     if re.search(r'(?i)\bIHWCKMODEL\b',rest) or len(models)>1:return None
     analytical=None;implicit_analytical=None
     if values['SWBOTB']==6:
-        from frost_analytical_composition import model_domain
-        analytical=model_domain(active,values,allow_model1=True)
-        if analytical is None:return None
+        if values['SWKIMPL']==values['SWHYST']==0:
+            from frost_analytical_composition import model_domain
+            analytical=model_domain(active,values,allow_model1=True)
+            if analytical is None:return None
+        elif models and re.fullmatch(r'\+?0*1(?:[ \t]+\+?0*1)*[ \t]*',models[0]) is None:
+            # Original non1+hysteresis is invalid. Implicit closed non1 still
+            # requires its separate explicit per-layer native admission.
+            return None
     elif models and re.fullmatch(r'\+?0*1(?:[ \t]+\+?0*1)*[ \t]*',models[0]) is None:
         if values['SWKIMPL']==1:
             from implicit_hydraulic_state import input_models

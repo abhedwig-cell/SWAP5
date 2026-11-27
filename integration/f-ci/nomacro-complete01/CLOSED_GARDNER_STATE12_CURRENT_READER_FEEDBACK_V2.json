@@ -1,0 +1,19 @@
+{
+  "status": "RUNNING_ACTUAL_COMMITTED_PUBLIC_READER",
+  "actual_source": "d7ffa497fea6326547a7e2c9ddf0e6c4d22db89f",
+  "original_observation": "e4d9a56143d85550ee272fbac55f1d4a08173195",
+  "cases": [
+    {
+      "case": "gardner-absent",
+      "original_reader_accepted": true,
+      "actual_public_accepted": false,
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\r\n  File \"<string>\", line 1, in <module>\r\n    import sys;sys.path.insert(0,str(__import__('pathlib').Path.cwd()/'app/hybrid_water'));import experimental_project as e;e.load(sys.argv[1],original_output=True);print('ACTUAL_PUBLIC_ACCEPTED')\r\n                                                                                                                            ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\experimental_project.py\", line 387, in load\r\n    raise ValueError('Bounded undrained Frost state/calendar requires qualified original event closure')\r\nValueError: Bounded undrained Frost state/calendar requires qualified original event closure\r\n"
+    }
+  ],
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "model_days": 0,
+  "canonical_admission": false
+}

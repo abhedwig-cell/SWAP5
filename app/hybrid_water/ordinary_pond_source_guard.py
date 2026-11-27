@@ -82,5 +82,15 @@ def validate(bundle, project, identity):
         clock=clock_selection(project)
         if clock is not None and clock['flprintdt']:
             form='cde'
+    if report['boundary']['SWBOTB']==6:
+        from closed_zero_boundary import input_domain as closed_domain
+        text=(Path(project.input_directory)/'swap.swp').read_text(encoding='cp1252')
+        if closed_domain(text,report['selectors'],project.original_output):
+            # The newly composed ordinary closed6 dense domains all retain
+            # the exact qualified water HeadCalc. Reconstruct only the known
+            # independent bottom8 receipt before comparing the WHOLE body.
+            from lower_boundary_receipt import render_headcalc
+            source=render_headcalc(source.decode('cp1252'),8).encode('cp1252')
+            form='water'
     if hashlib.sha256(source).hexdigest() != HEADS[form]:
         raise ValueError('Foreign actual ordinary implicit coupled HeadCalc provider')

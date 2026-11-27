@@ -22,10 +22,24 @@ def source(selected):
         count=text.count(old)
         if count<1:raise ValueError('Changed literal original Snow diagnostic provider')
         text=replace(text,old,new,count)
-    if selected['swbotb']==9:
+    if selected['swbotb']==6:
+        text=replace(text,'(swbotb/=5.and.swbotb/=8)','swbotb/=6')
+    elif selected['swbotb']==9:
         text=replace(text,'(swbotb/=5.and.swbotb/=8)','swbotb/=9')
     if selected.get('analytical_snow_models'):
         extra=Path(__file__).with_name('snow_analytical_native.f90').read_text(encoding='cp1252')
+        if 2 in selected['analytical_snow_models']:
+            before='       any(iHWCKmodel(1:numlay)==2).or.all(iHWCKmodel(1:numlay)==1)) &'
+            after='       all(iHWCKmodel(1:numlay)==1)) &'
+            extra=replace(extra,before,after)
+            extra=replace(extra,'    integer::n,ios','    integer::n,ios,i')
+            before_vapor=('    if(any((iHWCKmodel(1:numlay)>=8).and.(.not.NoVap(1:numlay)))) &\n'
+                          "       error stop 'Active vapor cannot use analytical Snow native'")
+            after_vapor=('    do i=1,numlay\n'
+                         '      if(iHWCKmodel(i)>=8)then\n'
+                         "        if(.not.NoVap(i))error stop 'Active vapor cannot use analytical Snow native'\n"
+                         '      end if\n    end do')
+            extra=replace(extra,before_vapor,after_vapor)
         if selected['swbotb'] in (5,8):
             extra=replace(extra,'swbotb/=9','swbotb/='+str(selected['swbotb']))
         text=replace(text,'  implicit none',
@@ -39,7 +53,7 @@ def source(selected):
 def native_build(output,project,patched,selected):
     provider=source(selected);(output/(STATE+'.f90')).write_text(provider,encoding='cp1252')
     path=output/'macropore.f90';text=path.read_text(encoding='cp1252')
-    if selected['swkimpl'] and not project.solute:
+    if selected['swkimpl'] and not project.solute and selected['swbotb']!=6:
         # The earlier unchanged dispatcher installs the old implicit water
         # carry. Replace that exact provider for this new domain, rather than
         # serializing the same two diagnostic rates twice.

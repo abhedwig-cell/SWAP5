@@ -38,6 +38,10 @@ def selection(project):
     if project.solute and (nprint!=1 or monthly or dates or requested!=1 or perstep):
         raise ValueError('Original CDE output currently requires daily interval reset cadence')
     for key,value in dict(SWSNOW=0,SWBR=0,SWHYST=0,SWFROST=0,SWDRA=1,SWMETDETAIL=0).items():
+        if key=='SWDRA':
+            from closed_zero_boundary import input_domain as closed_domain
+            from experimental_project import switches
+            if closed_domain(text,switches(text),project.original_output):continue
         if key=='SWDRA' and one(key)==0:
             from original_ria12_boundary import selection as ria12_boundary_selection
             if ria12_boundary_selection(project.input_directory,project.original_output) is not None:continue

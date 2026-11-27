@@ -14,7 +14,7 @@ TERMINAL_PARTS = ('   use hybrid_terminal_water_receipt, only: terminal_water_re
 
 def canonical_water_headcalc(source,boundary=None):
     from lower_boundary_receipt import render_headcalc
-    if boundary is None:
+    if boundary is None or boundary==6:
         return render_headcalc(source,8)
     if boundary==5:
         from groundwater_snow_retry import inverse

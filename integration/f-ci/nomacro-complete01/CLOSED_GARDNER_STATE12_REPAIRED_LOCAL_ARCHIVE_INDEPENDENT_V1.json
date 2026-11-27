@@ -1,0 +1,1735 @@
+{
+  "status": "TWELVE_ACTUAL_REPAIRED_CONTEXTS_AND_FORTY_CURRENT_WHOLE_OBJECT_POSTIMAGES_INDEPENDENT_ARCHIVE_PASS",
+  "actual_scientific_producer": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+  "contexts": [
+    {
+      "case": "closed-frost-implicit-h2-water-dates",
+      "optimization": "O0",
+      "actual_producer_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_BUILD_sha256": "5d4c584a3803cff3e35a3d32e6506f4744c6cc6b44085671e441ec768315decd",
+      "original_inputs": {
+        "original_archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+        "all_original_parameters_and_other_input_bytes_preserved": true,
+        "only_explicit_declared_selectors_changed": true
+      },
+      "days": 35,
+      "water_daily_max_cm": "6.835E-14",
+      "cde_daily_max_mg_cm2": "0",
+      "cde_every_prefix_max_mg_cm2": "0",
+      "native_samples": [
+        {
+          "day": 2,
+          "bytes": 1467532,
+          "sha256": "6548abfc139d0b83ded1fa9bdd15da21516a7240b8b24af0bbd7ed3ed85205e5"
+        },
+        {
+          "day": 4,
+          "bytes": 1467532,
+          "sha256": "46073640e8119709624138701e145b5691cb7563e39fb0dc10998d5b6d723dc7"
+        },
+        {
+          "day": 7,
+          "bytes": 1467532,
+          "sha256": "7ed0b05a1a73919e7154bd7a0e5df33dcf25e390e23b505340f94dcd1d691c61"
+        },
+        {
+          "day": 9,
+          "bytes": 1467532,
+          "sha256": "b40cd5dcf5d8bc21de541d10b2aef800cdbfc0219f7e31254c77059031efc913"
+        },
+        {
+          "day": 30,
+          "bytes": 1467532,
+          "sha256": "1c8038ae5126d7ed931f71b226b76c469a3fc7e46add6a8f47fa49f8a63f4b0c"
+        },
+        {
+          "day": 34,
+          "bytes": 1467532,
+          "sha256": "fc2fbd4aad9bf40707df2ad8563291146cbe6e3bee3f36ea7dca5e929bd3fb02"
+        },
+        {
+          "day": 35,
+          "bytes": 1467532,
+          "sha256": "6f1faa14aed5d118c5c27962ac70713fe5263ff9b72cf6a1e9aaeb07aa40bcf3"
+        }
+      ],
+      "exact_cold_windows": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 4,
+          "end": 7,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 1,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_transaction_receipts_and_day5_native_replay_exact": true,
+      "compiled_native_refusals": 24,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "case": "closed-ordinary-implicit-h0-water-profile",
+      "optimization": "O0",
+      "actual_producer_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_BUILD_sha256": "2630da92505031045273ac0387ab8fc1f8b6df621880c2a0d7ee865459e97034",
+      "original_inputs": {
+        "original_archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+        "all_original_parameters_and_other_input_bytes_preserved": true,
+        "only_explicit_declared_selectors_changed": true
+      },
+      "days": 35,
+      "water_daily_max_cm": "2.66E-14",
+      "cde_daily_max_mg_cm2": "0",
+      "cde_every_prefix_max_mg_cm2": "0",
+      "native_samples": [
+        {
+          "day": 2,
+          "bytes": 1465176,
+          "sha256": "6d332b5549319451a6e732bc6e6fd0726bd80ea731a3ef5ea029b3578ae4e08d"
+        },
+        {
+          "day": 4,
+          "bytes": 1465176,
+          "sha256": "81b7221c75fdcf628e362e843f1dbcc011743aec7b8a2d933f3e06ebe72b377a"
+        },
+        {
+          "day": 7,
+          "bytes": 1465176,
+          "sha256": "f88343ea9a8790a8bb0ec62cd4e3435112a77c56f72c7e366036f0b98d31cfcf"
+        },
+        {
+          "day": 9,
+          "bytes": 1465176,
+          "sha256": "edeae3e657a3b1451502b8faff28439d1832b34da4345651253c6e953b8445c9"
+        },
+        {
+          "day": 30,
+          "bytes": 1465176,
+          "sha256": "4d1abb43f93d07be28b7fce7872198aaf45312bf340f11456faf0125c3351846"
+        },
+        {
+          "day": 34,
+          "bytes": 1465176,
+          "sha256": "1df4ef8e9feb755e1a43c275b0ebb3ed42f28aed40d4cb2b983f5021b02e9b6d"
+        },
+        {
+          "day": 35,
+          "bytes": 1465176,
+          "sha256": "3c40faaaef867edb1397fd7113d95c01e5c5fb77d83e4f493134150e3cf5ceac"
+        }
+      ],
+      "exact_cold_windows": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 4,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 4,
+          "end": 7,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 3,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_transaction_receipts_and_day5_native_replay_exact": true,
+      "compiled_native_refusals": 3,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "case": "closed-ordinary-implicit-h1-cde",
+      "optimization": "O0",
+      "actual_producer_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_BUILD_sha256": "d4057e471db3f8dbb54e5a0f55455dce418c9d8d03267bb474f4375493ae3945",
+      "original_inputs": {
+        "original_archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+        "all_original_parameters_and_other_input_bytes_preserved": true,
+        "only_explicit_declared_selectors_changed": true
+      },
+      "days": 35,
+      "water_daily_max_cm": "6.2347E-14",
+      "cde_daily_max_mg_cm2": "8E-14",
+      "cde_every_prefix_max_mg_cm2": "8.000004E-14",
+      "native_samples": [
+        {
+          "day": 2,
+          "bytes": 1467892,
+          "sha256": "d8f29e3be5c825a3d46334dbd438e2fe0e65249bd5b7a4239de6ca553357879c"
+        },
+        {
+          "day": 4,
+          "bytes": 1467892,
+          "sha256": "326ededd46b6c04c6db71efedc030033d739aae45b4c056bc5f4bd199c248a37"
+        },
+        {
+          "day": 7,
+          "bytes": 1467892,
+          "sha256": "09077e91cc0ba5c272315a84d3f42d10aaed2ba7e11235e98ed26aba8f2b562f"
+        },
+        {
+          "day": 9,
+          "bytes": 1467892,
+          "sha256": "577c782e830d5f8eb1217f5009d5668b27dbe8ed8d6251085146f57bd2786124"
+        },
+        {
+          "day": 30,
+          "bytes": 1467892,
+          "sha256": "6a376826407462672f77a259d9dc02cc5a522d71c90ff039392a624fd3a310d5"
+        },
+        {
+          "day": 34,
+          "bytes": 1467892,
+          "sha256": "e1e3b7a1d97647e6ed4bd76122325f7fdf6fcac092f11a8199fb14b56b127a6a"
+        },
+        {
+          "day": 35,
+          "bytes": 1467892,
+          "sha256": "988150d4af46e7f52fb3fa2b1d2dece041278b65f21dc109549c5e7257dc9383"
+        }
+      ],
+      "exact_cold_windows": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 4,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_transaction_receipts_and_day5_native_replay_exact": true,
+      "compiled_native_refusals": 9,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "case": "closed-ordinary-implicit-h2-water",
+      "optimization": "O0",
+      "actual_producer_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_BUILD_sha256": "20a9f35b1c371bdea10bd0c737f87e516196bd0587a8df93bcc13170153081c3",
+      "original_inputs": {
+        "original_archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+        "all_original_parameters_and_other_input_bytes_preserved": true,
+        "only_explicit_declared_selectors_changed": true
+      },
+      "days": 35,
+      "water_daily_max_cm": "3.52E-14",
+      "cde_daily_max_mg_cm2": "0",
+      "cde_every_prefix_max_mg_cm2": "0",
+      "native_samples": [
+        {
+          "day": 2,
+          "bytes": 1466748,
+          "sha256": "aa4143eeb8f5b839d2d3303e322034441463a5006701a82696b00d46d98dcedd"
+        },
+        {
+          "day": 4,
+          "bytes": 1466748,
+          "sha256": "c087a5379732c4af2d4ac6bdc69b13057e2691c258fcbcd52c2b43d76a3e153a"
+        },
+        {
+          "day": 7,
+          "bytes": 1466748,
+          "sha256": "3430c3f24b93a59dd5531885e60e2300764e0ebea59919ffb929d2d199da89ae"
+        },
+        {
+          "day": 9,
+          "bytes": 1466748,
+          "sha256": "d12386e5f8a64591f00066e77c752929e28d83bfe88ef5f112f934d77e5be2bb"
+        },
+        {
+          "day": 30,
+          "bytes": 1466748,
+          "sha256": "84539954ac5e38dea940f32baa8c3b44fe471b6e4208b599992e169c7aa7ed33"
+        },
+        {
+          "day": 34,
+          "bytes": 1466748,
+          "sha256": "9de9d04ca6f9cd90d2eb07e504cdd83ffd88d1babb11fbdb01fdfec7e8d0ae69"
+        },
+        {
+          "day": 35,
+          "bytes": 1466748,
+          "sha256": "cca69df081971c9e1d1b42317485c74ab31b6fe57d0951908956ba8568837df2"
+        }
+      ],
+      "exact_cold_windows": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 4,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 4,
+          "end": 7,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 3,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_transaction_receipts_and_day5_native_replay_exact": true,
+      "compiled_native_refusals": 9,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "case": "gardner-snow-explicit-d0-b5-water",
+      "optimization": "O0",
+      "actual_producer_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_BUILD_sha256": "a29ff56636b460359acce5b48b537dd56badc261b172b85cd72229d79c725ffa",
+      "original_inputs": {
+        "original_archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+        "all_original_parameters_and_other_input_bytes_preserved": true,
+        "only_explicit_declared_selectors_changed": true
+      },
+      "days": 35,
+      "water_daily_max_cm": "1.223357E-12",
+      "cde_daily_max_mg_cm2": "0",
+      "cde_every_prefix_max_mg_cm2": "0",
+      "native_samples": [
+        {
+          "day": 2,
+          "bytes": 1466188,
+          "sha256": "2b577207c7fce6b0065c3947d6ae27a1f5b242a3e8ef7fbef4b535d7b8cff9a5"
+        },
+        {
+          "day": 4,
+          "bytes": 1466188,
+          "sha256": "98c1c12f100332e9c55a70aef532c54695e02d1e3ed58723093c166956a2da7f"
+        },
+        {
+          "day": 7,
+          "bytes": 1466188,
+          "sha256": "c32e60f4be5575468d921dd88e7afa42d69e6fbb253b1317ec8228fd4a962a80"
+        },
+        {
+          "day": 9,
+          "bytes": 1466188,
+          "sha256": "410aea2d7a692326a92ae333e1ec6711062a74afbc57d046b6198912dbbdcdab"
+        },
+        {
+          "day": 30,
+          "bytes": 1466188,
+          "sha256": "0b820fd9a9b3802d303e5bdd44e5e5094a66c009046a46dd01ed8e1a6e387453"
+        },
+        {
+          "day": 34,
+          "bytes": 1466188,
+          "sha256": "2e307c69fd72f4bd4c8210fa05c7b77273689a0cd6ae74783f251be939e9691c"
+        },
+        {
+          "day": 35,
+          "bytes": 1466188,
+          "sha256": "94df78153633419beb88910fb47c472f620fd4d34fc00276a94b7d9369f2fb42"
+        }
+      ],
+      "exact_cold_windows": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 4,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 4,
+          "end": 7,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 3,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_transaction_receipts_and_day5_native_replay_exact": true,
+      "compiled_native_refusals": 19,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "case": "gardner-mixed2-8-frost-explicit-inactive-vapor-slot",
+      "optimization": "O0",
+      "actual_producer_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_BUILD_sha256": "38beb6e46afab62660fb9d4ae53d8f3d11b9cfae888c8eeed1f307a7e2e4eeae",
+      "original_inputs": {
+        "original_archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+        "all_original_parameters_and_other_input_bytes_preserved": true,
+        "only_explicit_declared_selectors_changed": true
+      },
+      "days": 35,
+      "water_daily_max_cm": "4.333E-15",
+      "cde_daily_max_mg_cm2": "3.6446633027204E-14",
+      "cde_every_prefix_max_mg_cm2": "1.0953302037604382868231795896757E-13",
+      "native_samples": [
+        {
+          "day": 2,
+          "bytes": 1467276,
+          "sha256": "ec167e55c6907f5c3112e3539c77acf8bf50acae5f98be96fd8fc986fb7e8fc8"
+        },
+        {
+          "day": 4,
+          "bytes": 1467276,
+          "sha256": "bac2295bfd96ec292d1650b18f6563d553843260710d82734df7db6832868690"
+        },
+        {
+          "day": 7,
+          "bytes": 1467276,
+          "sha256": "8672892bcde9759a13a3b20155d19f2cc5304f7464ed8b11c68dd54293b547b1"
+        },
+        {
+          "day": 9,
+          "bytes": 1467276,
+          "sha256": "0f881e33e7f94e6971113abb1a6863af2a262fde88f03535b058a6c3bb849ddc"
+        },
+        {
+          "day": 30,
+          "bytes": 1467276,
+          "sha256": "f207b6c1e6e82d2c16a1a56d60f760778c96ad686702c310a727edf2c2915441"
+        },
+        {
+          "day": 34,
+          "bytes": 1467276,
+          "sha256": "1ecd155fad41d973b366fff0a57c8a063530714a85c1f214ff57ca8d8d6aa28b"
+        },
+        {
+          "day": 35,
+          "bytes": 1467276,
+          "sha256": "df1f453de6e429e86edf61611cffe4df2ca9bfe6fe964ecd691fe6cfd4f12d0c"
+        }
+      ],
+      "exact_cold_windows": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 4,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_transaction_receipts_and_day5_native_replay_exact": true,
+      "compiled_native_refusals": 22,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "case": "closed-frost-implicit-h2-water-dates",
+      "optimization": "O2",
+      "actual_producer_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_BUILD_sha256": "58b4fb7ffe0983a4c9db39a8fe016a81469bf4df1556c42362d0353f6cb29d9d",
+      "original_inputs": {
+        "original_archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+        "all_original_parameters_and_other_input_bytes_preserved": true,
+        "only_explicit_declared_selectors_changed": true
+      },
+      "days": 35,
+      "water_daily_max_cm": "6.835E-14",
+      "cde_daily_max_mg_cm2": "0",
+      "cde_every_prefix_max_mg_cm2": "0",
+      "native_samples": [
+        {
+          "day": 2,
+          "bytes": 1467532,
+          "sha256": "6548abfc139d0b83ded1fa9bdd15da21516a7240b8b24af0bbd7ed3ed85205e5"
+        },
+        {
+          "day": 4,
+          "bytes": 1467532,
+          "sha256": "46073640e8119709624138701e145b5691cb7563e39fb0dc10998d5b6d723dc7"
+        },
+        {
+          "day": 7,
+          "bytes": 1467532,
+          "sha256": "7ed0b05a1a73919e7154bd7a0e5df33dcf25e390e23b505340f94dcd1d691c61"
+        },
+        {
+          "day": 9,
+          "bytes": 1467532,
+          "sha256": "b40cd5dcf5d8bc21de541d10b2aef800cdbfc0219f7e31254c77059031efc913"
+        },
+        {
+          "day": 30,
+          "bytes": 1467532,
+          "sha256": "1c8038ae5126d7ed931f71b226b76c469a3fc7e46add6a8f47fa49f8a63f4b0c"
+        },
+        {
+          "day": 34,
+          "bytes": 1467532,
+          "sha256": "fc2fbd4aad9bf40707df2ad8563291146cbe6e3bee3f36ea7dca5e929bd3fb02"
+        },
+        {
+          "day": 35,
+          "bytes": 1467532,
+          "sha256": "6f1faa14aed5d118c5c27962ac70713fe5263ff9b72cf6a1e9aaeb07aa40bcf3"
+        }
+      ],
+      "exact_cold_windows": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 4,
+          "end": 7,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 1,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_transaction_receipts_and_day5_native_replay_exact": true,
+      "compiled_native_refusals": 24,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "case": "closed-ordinary-implicit-h0-water-profile",
+      "optimization": "O2",
+      "actual_producer_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_BUILD_sha256": "4e801d05dfc480c288167f9d9879e7539241226ed0dddef2a2c846637f2b6632",
+      "original_inputs": {
+        "original_archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+        "all_original_parameters_and_other_input_bytes_preserved": true,
+        "only_explicit_declared_selectors_changed": true
+      },
+      "days": 35,
+      "water_daily_max_cm": "2.66E-14",
+      "cde_daily_max_mg_cm2": "0",
+      "cde_every_prefix_max_mg_cm2": "0",
+      "native_samples": [
+        {
+          "day": 2,
+          "bytes": 1465176,
+          "sha256": "6d332b5549319451a6e732bc6e6fd0726bd80ea731a3ef5ea029b3578ae4e08d"
+        },
+        {
+          "day": 4,
+          "bytes": 1465176,
+          "sha256": "81b7221c75fdcf628e362e843f1dbcc011743aec7b8a2d933f3e06ebe72b377a"
+        },
+        {
+          "day": 7,
+          "bytes": 1465176,
+          "sha256": "f88343ea9a8790a8bb0ec62cd4e3435112a77c56f72c7e366036f0b98d31cfcf"
+        },
+        {
+          "day": 9,
+          "bytes": 1465176,
+          "sha256": "edeae3e657a3b1451502b8faff28439d1832b34da4345651253c6e953b8445c9"
+        },
+        {
+          "day": 30,
+          "bytes": 1465176,
+          "sha256": "4d1abb43f93d07be28b7fce7872198aaf45312bf340f11456faf0125c3351846"
+        },
+        {
+          "day": 34,
+          "bytes": 1465176,
+          "sha256": "1df4ef8e9feb755e1a43c275b0ebb3ed42f28aed40d4cb2b983f5021b02e9b6d"
+        },
+        {
+          "day": 35,
+          "bytes": 1465176,
+          "sha256": "3c40faaaef867edb1397fd7113d95c01e5c5fb77d83e4f493134150e3cf5ceac"
+        }
+      ],
+      "exact_cold_windows": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 4,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 4,
+          "end": 7,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 3,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_transaction_receipts_and_day5_native_replay_exact": true,
+      "compiled_native_refusals": 3,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "case": "closed-ordinary-implicit-h1-cde",
+      "optimization": "O2",
+      "actual_producer_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_BUILD_sha256": "5ce4664a9c265d4d1d72344a3bde8cabf1ce314644282ef5c51bab118cddb250",
+      "original_inputs": {
+        "original_archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+        "all_original_parameters_and_other_input_bytes_preserved": true,
+        "only_explicit_declared_selectors_changed": true
+      },
+      "days": 35,
+      "water_daily_max_cm": "6.2347E-14",
+      "cde_daily_max_mg_cm2": "8E-14",
+      "cde_every_prefix_max_mg_cm2": "8.000004E-14",
+      "native_samples": [
+        {
+          "day": 2,
+          "bytes": 1467892,
+          "sha256": "d8f29e3be5c825a3d46334dbd438e2fe0e65249bd5b7a4239de6ca553357879c"
+        },
+        {
+          "day": 4,
+          "bytes": 1467892,
+          "sha256": "326ededd46b6c04c6db71efedc030033d739aae45b4c056bc5f4bd199c248a37"
+        },
+        {
+          "day": 7,
+          "bytes": 1467892,
+          "sha256": "09077e91cc0ba5c272315a84d3f42d10aaed2ba7e11235e98ed26aba8f2b562f"
+        },
+        {
+          "day": 9,
+          "bytes": 1467892,
+          "sha256": "577c782e830d5f8eb1217f5009d5668b27dbe8ed8d6251085146f57bd2786124"
+        },
+        {
+          "day": 30,
+          "bytes": 1467892,
+          "sha256": "6a376826407462672f77a259d9dc02cc5a522d71c90ff039392a624fd3a310d5"
+        },
+        {
+          "day": 34,
+          "bytes": 1467892,
+          "sha256": "e1e3b7a1d97647e6ed4bd76122325f7fdf6fcac092f11a8199fb14b56b127a6a"
+        },
+        {
+          "day": 35,
+          "bytes": 1467892,
+          "sha256": "988150d4af46e7f52fb3fa2b1d2dece041278b65f21dc109549c5e7257dc9383"
+        }
+      ],
+      "exact_cold_windows": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 4,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_transaction_receipts_and_day5_native_replay_exact": true,
+      "compiled_native_refusals": 9,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "case": "closed-ordinary-implicit-h2-water",
+      "optimization": "O2",
+      "actual_producer_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_BUILD_sha256": "d9f9f2a2499cf8577c7c3842ae98e2d2ebc61c37a9e3a48620b2754e2388cad9",
+      "original_inputs": {
+        "original_archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+        "all_original_parameters_and_other_input_bytes_preserved": true,
+        "only_explicit_declared_selectors_changed": true
+      },
+      "days": 35,
+      "water_daily_max_cm": "3.52E-14",
+      "cde_daily_max_mg_cm2": "0",
+      "cde_every_prefix_max_mg_cm2": "0",
+      "native_samples": [
+        {
+          "day": 2,
+          "bytes": 1466748,
+          "sha256": "aa4143eeb8f5b839d2d3303e322034441463a5006701a82696b00d46d98dcedd"
+        },
+        {
+          "day": 4,
+          "bytes": 1466748,
+          "sha256": "c087a5379732c4af2d4ac6bdc69b13057e2691c258fcbcd52c2b43d76a3e153a"
+        },
+        {
+          "day": 7,
+          "bytes": 1466748,
+          "sha256": "3430c3f24b93a59dd5531885e60e2300764e0ebea59919ffb929d2d199da89ae"
+        },
+        {
+          "day": 9,
+          "bytes": 1466748,
+          "sha256": "d12386e5f8a64591f00066e77c752929e28d83bfe88ef5f112f934d77e5be2bb"
+        },
+        {
+          "day": 30,
+          "bytes": 1466748,
+          "sha256": "84539954ac5e38dea940f32baa8c3b44fe471b6e4208b599992e169c7aa7ed33"
+        },
+        {
+          "day": 34,
+          "bytes": 1466748,
+          "sha256": "9de9d04ca6f9cd90d2eb07e504cdd83ffd88d1babb11fbdb01fdfec7e8d0ae69"
+        },
+        {
+          "day": 35,
+          "bytes": 1466748,
+          "sha256": "cca69df081971c9e1d1b42317485c74ab31b6fe57d0951908956ba8568837df2"
+        }
+      ],
+      "exact_cold_windows": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 4,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 4,
+          "end": 7,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 3,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_transaction_receipts_and_day5_native_replay_exact": true,
+      "compiled_native_refusals": 9,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "case": "gardner-snow-explicit-d0-b5-water",
+      "optimization": "O2",
+      "actual_producer_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_BUILD_sha256": "249606265eb56d3c7863566bc57ce648aee14a73e36e8f7095388b43641a294a",
+      "original_inputs": {
+        "original_archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+        "all_original_parameters_and_other_input_bytes_preserved": true,
+        "only_explicit_declared_selectors_changed": true
+      },
+      "days": 35,
+      "water_daily_max_cm": "1.223357E-12",
+      "cde_daily_max_mg_cm2": "0",
+      "cde_every_prefix_max_mg_cm2": "0",
+      "native_samples": [
+        {
+          "day": 2,
+          "bytes": 1466188,
+          "sha256": "2b577207c7fce6b0065c3947d6ae27a1f5b242a3e8ef7fbef4b535d7b8cff9a5"
+        },
+        {
+          "day": 4,
+          "bytes": 1466188,
+          "sha256": "98c1c12f100332e9c55a70aef532c54695e02d1e3ed58723093c166956a2da7f"
+        },
+        {
+          "day": 7,
+          "bytes": 1466188,
+          "sha256": "c32e60f4be5575468d921dd88e7afa42d69e6fbb253b1317ec8228fd4a962a80"
+        },
+        {
+          "day": 9,
+          "bytes": 1466188,
+          "sha256": "410aea2d7a692326a92ae333e1ec6711062a74afbc57d046b6198912dbbdcdab"
+        },
+        {
+          "day": 30,
+          "bytes": 1466188,
+          "sha256": "0b820fd9a9b3802d303e5bdd44e5e5094a66c009046a46dd01ed8e1a6e387453"
+        },
+        {
+          "day": 34,
+          "bytes": 1466188,
+          "sha256": "2e307c69fd72f4bd4c8210fa05c7b77273689a0cd6ae74783f251be939e9691c"
+        },
+        {
+          "day": 35,
+          "bytes": 1466188,
+          "sha256": "94df78153633419beb88910fb47c472f620fd4d34fc00276a94b7d9369f2fb42"
+        }
+      ],
+      "exact_cold_windows": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 4,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 4,
+          "end": 7,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 3,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_transaction_receipts_and_day5_native_replay_exact": true,
+      "compiled_native_refusals": 19,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "case": "gardner-mixed2-8-frost-explicit-inactive-vapor-slot",
+      "optimization": "O2",
+      "actual_producer_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_BUILD_sha256": "87e141f98002cc7f08eb2c2cd86d1b11c3d75b4cc7e874b15d258e3d94d0e321",
+      "original_inputs": {
+        "original_archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+        "all_original_parameters_and_other_input_bytes_preserved": true,
+        "only_explicit_declared_selectors_changed": true
+      },
+      "days": 35,
+      "water_daily_max_cm": "4.333E-15",
+      "cde_daily_max_mg_cm2": "3.6446633027204E-14",
+      "cde_every_prefix_max_mg_cm2": "1.0953302037604382868231795896757E-13",
+      "native_samples": [
+        {
+          "day": 2,
+          "bytes": 1467276,
+          "sha256": "ec167e55c6907f5c3112e3539c77acf8bf50acae5f98be96fd8fc986fb7e8fc8"
+        },
+        {
+          "day": 4,
+          "bytes": 1467276,
+          "sha256": "bac2295bfd96ec292d1650b18f6563d553843260710d82734df7db6832868690"
+        },
+        {
+          "day": 7,
+          "bytes": 1467276,
+          "sha256": "8672892bcde9759a13a3b20155d19f2cc5304f7464ed8b11c68dd54293b547b1"
+        },
+        {
+          "day": 9,
+          "bytes": 1467276,
+          "sha256": "0f881e33e7f94e6971113abb1a6863af2a262fde88f03535b058a6c3bb849ddc"
+        },
+        {
+          "day": 30,
+          "bytes": 1467276,
+          "sha256": "f207b6c1e6e82d2c16a1a56d60f760778c96ad686702c310a727edf2c2915441"
+        },
+        {
+          "day": 34,
+          "bytes": 1467276,
+          "sha256": "1ecd155fad41d973b366fff0a57c8a063530714a85c1f214ff57ca8d8d6aa28b"
+        },
+        {
+          "day": 35,
+          "bytes": 1467276,
+          "sha256": "df1f453de6e429e86edf61611cffe4df2ca9bfe6fe964ecd691fe6cfd4f12d0c"
+        }
+      ],
+      "exact_cold_windows": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 4,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_transaction_receipts_and_day5_native_replay_exact": true,
+      "compiled_native_refusals": 22,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    }
+  ],
+  "whole_object_contexts": [
+    {
+      "case": "frost-mixed2-3-water-d0-b5",
+      "optimization": "O0",
+      "kind": "current",
+      "actual_original_producer": "3fb05b2827a5d298b558aa93581ec86f46a0390d",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 29,
+      "actual_complete_objects": 28,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "frost-mixed6-7-cde-d0-b8",
+      "optimization": "O0",
+      "kind": "current",
+      "actual_original_producer": "3fb05b2827a5d298b558aa93581ec86f46a0390d",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 33,
+      "actual_complete_objects": 32,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "frost-mixed8-9-water-d1-b8",
+      "optimization": "O0",
+      "kind": "current",
+      "actual_original_producer": "3fb05b2827a5d298b558aa93581ec86f46a0390d",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 29,
+      "actual_complete_objects": 28,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "ordinary-mixed1-7-cde",
+      "optimization": "O0",
+      "kind": "current",
+      "actual_original_producer": "3fb05b2827a5d298b558aa93581ec86f46a0390d",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 29,
+      "actual_complete_objects": 29,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "ordinary-mixed10-11-snow-water",
+      "optimization": "O0",
+      "kind": "current",
+      "actual_original_producer": "3fb05b2827a5d298b558aa93581ec86f46a0390d",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 26,
+      "actual_complete_objects": 25,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "ordinary-mixed8-9-water",
+      "optimization": "O0",
+      "kind": "current",
+      "actual_original_producer": "3fb05b2827a5d298b558aa93581ec86f46a0390d",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 22,
+      "actual_complete_objects": 22,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "ordinary-model3-water",
+      "optimization": "O0",
+      "kind": "current",
+      "actual_original_producer": "3fb05b2827a5d298b558aa93581ec86f46a0390d",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 22,
+      "actual_complete_objects": 22,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "ordinary-model4-snow-water",
+      "optimization": "O0",
+      "kind": "current",
+      "actual_original_producer": "3fb05b2827a5d298b558aa93581ec86f46a0390d",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 26,
+      "actual_complete_objects": 25,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "ordinary-model6-snow-cde-profile",
+      "optimization": "O0",
+      "kind": "current",
+      "actual_original_producer": "3fb05b2827a5d298b558aa93581ec86f46a0390d",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 32,
+      "actual_complete_objects": 31,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "ordinary-model7-snow-cde-fitted",
+      "optimization": "O0",
+      "kind": "current",
+      "actual_original_producer": "3fb05b2827a5d298b558aa93581ec86f46a0390d",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 33,
+      "actual_complete_objects": 32,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "frost-mixed10-11-water-d0-b5",
+      "optimization": "O0",
+      "kind": "current",
+      "actual_original_producer": "3fb05b2827a5d298b558aa93581ec86f46a0390d",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 29,
+      "actual_complete_objects": 28,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "ordinary-gardner-water",
+      "optimization": "O0",
+      "kind": "current",
+      "actual_original_producer": "05ab4f5bb7111f308bf2647673d9b73b48057274",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 22,
+      "actual_complete_objects": 22,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "ordinary-implicit-model1",
+      "optimization": "O0",
+      "kind": "parent",
+      "actual_original_producer": "22520105f5a3ccac2bd2ae1b726f27b7b0d67b1e",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 21,
+      "actual_complete_objects": 21,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "implicit-hys2-cde-d0-b5-i1-h2-p2-dense",
+      "optimization": "O0",
+      "kind": "parent",
+      "actual_original_producer": "656cd3ed25c91dc6ab8de12f2525fd30be8e358f",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 32,
+      "actual_complete_objects": 31,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "implicit-hys2-water-d0-b8-i1-h2-p1-dates-r0-year-seam",
+      "optimization": "O0",
+      "kind": "parent",
+      "actual_original_producer": "656cd3ed25c91dc6ab8de12f2525fd30be8e358f",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 27,
+      "actual_complete_objects": 26,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "explicit-default-model1-water-d0-b6-dense",
+      "optimization": "O0",
+      "kind": "parent",
+      "actual_original_producer": "07e3851392ac641ba8a55f41f85dfc8212b91c79",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 22,
+      "actual_complete_objects": 22,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "explicit-model7-cde-d1-b8-dense",
+      "optimization": "O0",
+      "kind": "parent",
+      "actual_original_producer": "07e3851392ac641ba8a55f41f85dfc8212b91c79",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 29,
+      "actual_complete_objects": 28,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "explicit-model8-water-d0-b6-periodic",
+      "optimization": "O0",
+      "kind": "parent",
+      "actual_original_producer": "b24cebc3993b0f350c7aef7fb773a177d00425ce",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 22,
+      "actual_complete_objects": 22,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "explicit-scalar-model11-water-d0-b6-dates-year",
+      "optimization": "O0",
+      "kind": "parent",
+      "actual_original_producer": "b24cebc3993b0f350c7aef7fb773a177d00425ce",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 22,
+      "actual_complete_objects": 22,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "explicit-model9-cde-d1-b6-monthly",
+      "optimization": "O0",
+      "kind": "parent",
+      "actual_original_producer": "b24cebc3993b0f350c7aef7fb773a177d00425ce",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 27,
+      "actual_complete_objects": 27,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "frost-mixed2-3-water-d0-b5",
+      "optimization": "O2",
+      "kind": "current",
+      "actual_original_producer": "3fb05b2827a5d298b558aa93581ec86f46a0390d",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 29,
+      "actual_complete_objects": 28,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "frost-mixed6-7-cde-d0-b8",
+      "optimization": "O2",
+      "kind": "current",
+      "actual_original_producer": "3fb05b2827a5d298b558aa93581ec86f46a0390d",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 33,
+      "actual_complete_objects": 32,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "frost-mixed8-9-water-d1-b8",
+      "optimization": "O2",
+      "kind": "current",
+      "actual_original_producer": "3fb05b2827a5d298b558aa93581ec86f46a0390d",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 29,
+      "actual_complete_objects": 28,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "ordinary-mixed1-7-cde",
+      "optimization": "O2",
+      "kind": "current",
+      "actual_original_producer": "3fb05b2827a5d298b558aa93581ec86f46a0390d",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 29,
+      "actual_complete_objects": 29,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "ordinary-mixed10-11-snow-water",
+      "optimization": "O2",
+      "kind": "current",
+      "actual_original_producer": "3fb05b2827a5d298b558aa93581ec86f46a0390d",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 26,
+      "actual_complete_objects": 25,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "ordinary-mixed8-9-water",
+      "optimization": "O2",
+      "kind": "current",
+      "actual_original_producer": "3fb05b2827a5d298b558aa93581ec86f46a0390d",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 22,
+      "actual_complete_objects": 22,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "ordinary-model3-water",
+      "optimization": "O2",
+      "kind": "current",
+      "actual_original_producer": "3fb05b2827a5d298b558aa93581ec86f46a0390d",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 22,
+      "actual_complete_objects": 22,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "ordinary-model4-snow-water",
+      "optimization": "O2",
+      "kind": "current",
+      "actual_original_producer": "3fb05b2827a5d298b558aa93581ec86f46a0390d",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 26,
+      "actual_complete_objects": 25,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "ordinary-model6-snow-cde-profile",
+      "optimization": "O2",
+      "kind": "current",
+      "actual_original_producer": "3fb05b2827a5d298b558aa93581ec86f46a0390d",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 32,
+      "actual_complete_objects": 31,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "ordinary-model7-snow-cde-fitted",
+      "optimization": "O2",
+      "kind": "current",
+      "actual_original_producer": "3fb05b2827a5d298b558aa93581ec86f46a0390d",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 33,
+      "actual_complete_objects": 32,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "frost-mixed10-11-water-d0-b5",
+      "optimization": "O2",
+      "kind": "current",
+      "actual_original_producer": "3fb05b2827a5d298b558aa93581ec86f46a0390d",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 29,
+      "actual_complete_objects": 28,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "ordinary-gardner-water",
+      "optimization": "O2",
+      "kind": "current",
+      "actual_original_producer": "05ab4f5bb7111f308bf2647673d9b73b48057274",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 22,
+      "actual_complete_objects": 22,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "ordinary-implicit-model1",
+      "optimization": "O2",
+      "kind": "parent",
+      "actual_original_producer": "22520105f5a3ccac2bd2ae1b726f27b7b0d67b1e",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 21,
+      "actual_complete_objects": 21,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "implicit-hys2-cde-d0-b5-i1-h2-p2-dense",
+      "optimization": "O2",
+      "kind": "parent",
+      "actual_original_producer": "656cd3ed25c91dc6ab8de12f2525fd30be8e358f",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 32,
+      "actual_complete_objects": 31,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "implicit-hys2-water-d0-b8-i1-h2-p1-dates-r0-year-seam",
+      "optimization": "O2",
+      "kind": "parent",
+      "actual_original_producer": "656cd3ed25c91dc6ab8de12f2525fd30be8e358f",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 27,
+      "actual_complete_objects": 26,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "explicit-default-model1-water-d0-b6-dense",
+      "optimization": "O2",
+      "kind": "parent",
+      "actual_original_producer": "07e3851392ac641ba8a55f41f85dfc8212b91c79",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 22,
+      "actual_complete_objects": 22,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "explicit-model7-cde-d1-b8-dense",
+      "optimization": "O2",
+      "kind": "parent",
+      "actual_original_producer": "07e3851392ac641ba8a55f41f85dfc8212b91c79",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 29,
+      "actual_complete_objects": 28,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "explicit-model8-water-d0-b6-periodic",
+      "optimization": "O2",
+      "kind": "parent",
+      "actual_original_producer": "b24cebc3993b0f350c7aef7fb773a177d00425ce",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 22,
+      "actual_complete_objects": 22,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "explicit-scalar-model11-water-d0-b6-dates-year",
+      "optimization": "O2",
+      "kind": "parent",
+      "actual_original_producer": "b24cebc3993b0f350c7aef7fb773a177d00425ce",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 22,
+      "actual_complete_objects": 22,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    },
+    {
+      "case": "explicit-model9-cde-d1-b6-monthly",
+      "optimization": "O2",
+      "kind": "parent",
+      "actual_original_producer": "b24cebc3993b0f350c7aef7fb773a177d00425ce",
+      "actual_compiler_source": "d143437f4d9d855f03c036a9db1b8a3f86ec63ef",
+      "actual_complete_generated_files": 27,
+      "actual_complete_objects": 27,
+      "whole_file_bytes_identical": true,
+      "compiler_and_original_SDK_identical": true,
+      "PE_links_separately_byte_verified_without_normalization": true
+    }
+  ],
+  "whole_objects": 1046,
+  "context_count": 12,
+  "primary_days": 420,
+  "native_samples": 84,
+  "exact_cold_windows": 44,
+  "compiled_native_refusals": 172,
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "old_periods_replayed": false,
+  "original_scientific_identities_rebound": false,
+  "additional_local_contexts_counted_again": false
+}
