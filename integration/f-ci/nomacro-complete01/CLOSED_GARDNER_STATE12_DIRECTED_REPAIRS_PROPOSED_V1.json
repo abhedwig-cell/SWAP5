@@ -1,0 +1,45 @@
+{
+  "status": "DIRECTED_EXACT_GUARD_AND_NATIVE_DESCRIPTOR_REPAIRS_PROPOSED_NOT_INSTALLED",
+  "actual_parent_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+  "files": {
+    "app/hybrid_water/frost_implicit_plate_calendar.py": {
+      "before_lf_sha256": "4857b64b6d468b58af682baaaa1e449d9854db896eb3a22cb1147302fdf4172f",
+      "after_lf_sha256": "6bac5e212a145e81ae60c5c0ee3497277bd34d2b3c6a1b30cc3855e562201a92",
+      "proposed_file": "CLOSED_GARDNER_STATE12_DIRECTED_PROPOSED_frost_implicit_plate_calendar.py",
+      "literal_edits": [
+        {
+          "before": "item['implicit']==1 and item['bottom'] in (5,8)",
+          "after": "item['implicit']==1 and item['bottom'] in (5,8) or item['implicit']==1 and item['bottom']==6 and item['swodat']==1"
+        }
+      ]
+    },
+    "app/hybrid_water/analytical_snow_undrained.py": {
+      "before_lf_sha256": "b0be164a98452f0b2ed6e88d93af8e2f6eb950f12f0091145686381330b6f0b5",
+      "after_lf_sha256": "c1a53fcc8605935d1c8cb2749cc04fd34824d0452ae6971aaf32afc3f0eb8e36",
+      "proposed_file": "CLOSED_GARDNER_STATE12_DIRECTED_PROPOSED_analytical_snow_undrained.py",
+      "literal_edits": [
+        {
+          "before": "  if _models_from_grid(active,models) is None:return None",
+          "after": "  expanded=_models_from_grid(active,models)\n  if expanded is None:return None\n  if 2 in models:models=expanded"
+        }
+      ]
+    },
+    "app/hybrid_water/ordinary_pond_source_guard.py": {
+      "before_lf_sha256": "953309b9d33cb544e3ed15617e489b92a1dad90e7df98b578006f3462a205537",
+      "after_lf_sha256": "dbbaeb8cfa6056940a8d734ac40d5e5dc5de9d430172686d8f4ecc7157778b03",
+      "proposed_file": "CLOSED_GARDNER_STATE12_DIRECTED_PROPOSED_ordinary_pond_source_guard.py",
+      "literal_edits": [
+        {
+          "before": "    if hashlib.sha256(source).hexdigest() != HEADS[form]:",
+          "after": "    if report['boundary']['SWBOTB']==6:\n        from closed_zero_boundary import input_domain as closed_domain\n        text=(Path(project.input_directory)/'swap.swp').read_text(encoding='cp1252')\n        if closed_domain(text,report['selectors'],project.original_output):\n            # The newly composed ordinary closed6 dense domains all retain\n            # the exact qualified water HeadCalc. Reconstruct only the known\n            # independent bottom8 receipt before comparing the WHOLE body.\n            from lower_boundary_receipt import render_headcalc\n            source=render_headcalc(source.decode('cp1252'),8).encode('cp1252')\n            form='water'\n    if hashlib.sha256(source).hexdigest() != HEADS[form]:"
+        }
+      ]
+    }
+  },
+  "physical_equations_changed": false,
+  "new_physical_state": false,
+  "new_numerical_policy": false,
+  "model_executions": 0,
+  "compiler_executions": 0,
+  "canonical_admission": false
+}

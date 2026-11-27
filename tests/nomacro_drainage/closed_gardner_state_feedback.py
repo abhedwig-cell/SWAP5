@@ -2,6 +2,7 @@
 import argparse,hashlib,io,json,re,subprocess,sys,time,zipfile
 from contextlib import ExitStack
 from decimal import Decimal,localcontext
+from datetime import date
 from pathlib import Path
 R=Path(__file__).resolve().parents[2]
 sys.path[:0]=[str(R/'app/hybrid_water'),str(R/'tests/nomacro_scheduled_subsurface')]
@@ -52,7 +53,18 @@ def prepare(spec,output,donor=None):
             path=output/n;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
         authority=dict(actual_git_source=PARENT,archive=name,archive_sha256=archive.record['sha256'],prefix=prefix,
                        original_members={n:dict(bytes=len(raw),sha256=SHA(raw)) for n,raw in original.items()})
+        extra_lines={};extra_authority=None
+        if any(v>=8 for v in spec['models']):
+            member='current/frost-mixed8-9-water-d1-b8/inputs/swap.swp'
+            raw=archive.get(member);donor_text=raw.decode('cp1252')
+            for key in ['HA','APAR','OMEGA_K','H0']:
+                if re.search(r'(?mi)^[ \t]*'+key+r'[ \t]*=',original['swap.swp'].decode('cp1252')):continue
+                rows=re.findall(r'(?mi)^[ \t]*'+key+r'[ \t]*=[^\r\n]*(?:\r?\n|$)',donor_text);assert len(rows)==1
+                extra_lines[key]=rows[0]
+            extra_authority=dict(actual_git_source=PARENT,archive=name,archive_sha256=archive.record['sha256'],member=member,
+                member_sha256=SHA(raw),literal_original_named_lines=extra_lines,existing_parameter_tables_unchanged=True)
     path=output/'swap.swp';text=original['swap.swp'].decode('cp1252')
+    for row in extra_lines.values():text+='\n'+row
     values=dict(SWSOLU=int(spec['kind']=='cde'),SWINCO=spec['initial'],SWKIMPL=spec['implicit'],
                 SWHYST=spec['hysteresis'],SWSNOW=spec['snow'],SWFROST=spec['frost'],SWDRA=spec['drainage'],
                 SWBOTB=spec['bottom'],IHWCKMODEL=' '.join(map(str,spec['models'])),NPRINTDAY=1,PERIOD=1,SWMONTH=0,SWODAT=0,SWRES=1)
@@ -65,7 +77,7 @@ def prepare(spec,output,donor=None):
     for key,value in values.items():
         text=assignment(text,key,value) if re.search(r'(?mi)^[ \t]*'+key+r'[ \t]*=',text) else text+'\n'+key+' = '+str(value)+'\n'
     path.write_bytes(text.encode('cp1252'))
-    return dict(authority=authority,declared_selectors=values,physical_parameter_tables_unchanged=True,
+    return dict(authority=authority,additional_original_parameter_authority=extra_authority,declared_selectors=values,physical_parameter_tables_unchanged=True,
                 current_swp_sha256=SHA(path.read_bytes()))
 
 
@@ -94,7 +106,7 @@ def main():
     p.add_argument('--case',required=True);p.add_argument('--optimization',choices=['O0','O2'],required=True)
     p.add_argument('--days',type=int,choices=[8,35],default=35);p.add_argument('--input-only',action='store_true')
     a=p.parse_args();head=git('rev-parse','HEAD').decode().strip();assert not git('status','--porcelain=v1','--untracked-files=all','--ignored')
-    plan=json.loads(git('show',head+':'+P+'CLOSED_GARDNER_STATE12_FINITE_CASE_PLAN_V2.json'))
+    plan=json.loads(git('show',head+':'+P+'CLOSED_GARDNER_STATE12_FINITE_CASE_PLAN_V3.json'))
     spec=next(v for v in plan['cases'] if v['name']==a.case);a.output.mkdir()
     q=dict(status='RUNNING_ACTUAL_CLOSED_GARDNER_FEEDBACK_NOT_QUALIFIED',actual_source=head,case=a.case,specification=spec,
            optimization=a.optimization,days=a.days,input_root=str(a.output/'inputs'),build_root=str(a.build_output/'bundle'),canonical_admission=False)
@@ -116,8 +128,25 @@ def main():
         meta,_=m.validate_bundle(build,a.reference_work,project);q['actual_BUILD_sha256']=SHA((build/'BUILD.json').read_bytes());save()
         windows=[(2,4),(7,8)] if a.days==8 else [(2,4),(7,9),(30,34)]
         cuts={a.days,*[d for pair in windows for d in pair]}
+        first=date.fromisoformat(meta['project']['start_date']);seam=(date(first.year+1,1,1)-first).days
+        if 2<seam<a.days:
+            pair=(max(v for v in cuts if v<seam),min(v for v in cuts if v>seam))
+            q['actual_calendar_derived_year_window']=dict(start_date=str(first),new_year_offset=seam,window=pair)
+            if pair not in windows:windows.append(pair)
         q['trajectory'],data=m.trajectory(build,a.reference_work,project,a.output/'trajectory',a.days,cuts,240);save()
         q['independent_budgets']=ledger(a.output/'trajectory',spec['kind'],a.days)
+        if spec['snow']:
+            q['actual_snow_maximum_stock_cm']=max(v['stock_end_cm'][2] for v in data)
+            assert q['actual_snow_maximum_stock_cm']>0
+        if spec['frost']:
+            from frost_undrained_state_controls import active_frost_start
+            q['actual_original_Frost_active_checkpoints']=[]
+            for day in sorted(cuts):
+                try:witness=active_frost_start(a.output/'trajectory'/f'accepted-column-1-day-{day}.zip',project)
+                except AssertionError as error:
+                    if str(error)!='Transaction start has no actual original Frost-active soil temperature':raise
+                else:q['actual_original_Frost_active_checkpoints'].append(dict(day=day,**witness))
+            assert q['actual_original_Frost_active_checkpoints']
         q['original_convergence']=require_convergence(a.output);q['native_samples']=[]
         for day in sorted(cuts):
             with zipfile.ZipFile(a.output/'trajectory'/f'accepted-column-1-day-{day}.zip') as z:

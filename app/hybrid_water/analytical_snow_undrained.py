@@ -22,7 +22,9 @@ def selection(directory,original_output=True):
   from implicit_hydraulic_state import _models_from_grid
   # Pure original grid/scalar replication and effective vapor flags;
   # no implicit selector or physical state is assigned by this reader.
-  if _models_from_grid(active,models) is None:return None
+  expanded=_models_from_grid(active,models)
+  if expanded is None:return None
+  if 2 in models:models=expanded
  from prescribed_snow_boundary import _validate_calendar
  try:_validate_calendar(text)
  except ValueError:return None

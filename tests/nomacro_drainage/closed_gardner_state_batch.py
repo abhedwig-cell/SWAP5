@@ -9,15 +9,16 @@ def main():
     p=argparse.ArgumentParser()
     for name in ['output','build-root','reference-work']:p.add_argument('--'+name,type=Path,required=True)
     p.add_argument('--optimization',choices=['O0','O2'],required=True)
-    p.add_argument('--case',action='append');a=p.parse_args()
+    p.add_argument('--case',action='append');p.add_argument('--scope',choices=['all','independent'],default='all');a=p.parse_args()
     head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=R,text=True).strip()
     assert not subprocess.check_output(['git','status','--porcelain=v1','--untracked-files=all','--ignored'],cwd=R)
-    cases=json.loads((P/'CLOSED_GARDNER_STATE12_FINITE_CASE_PLAN_V2.json').read_text())['cases']
+    plan=json.loads((P/'CLOSED_GARDNER_STATE12_FINITE_CASE_PLAN_V3.json').read_text());cases=plan['cases']
+    if a.scope=='independent':cases=[v for v in cases if v['name'] in plan['independent_qualification_cases']]
     if a.case:
         assert set(a.case)<=set(v['name'] for v in cases)
         cases=[v for v in cases if v['name'] in a.case]
     a.output.mkdir();a.build_root.mkdir()
-    q=dict(status='RUNNING_ACTUAL_CLOSED_GARDNER_FINITE_BATCH_NOT_QUALIFIED',actual_source=head,optimization=a.optimization,contexts=[],canonical_admission=False)
+    q=dict(status='RUNNING_ACTUAL_CLOSED_GARDNER_FINITE_BATCH_NOT_QUALIFIED',actual_source=head,optimization=a.optimization,scope=a.scope,deferred_numerical_cases=plan['deferred_numerical_cases'],contexts=[],canonical_admission=False)
     save=lambda:(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n',encoding='utf8')
     save()
     def run(command,name):

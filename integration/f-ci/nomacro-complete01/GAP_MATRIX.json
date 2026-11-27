@@ -3461,11 +3461,28 @@
   },
   "closed_gardner_state12": {
     "classification": "COMPOSITION_MISSING",
-    "status": "IMPLEMENTED_SOURCE_PENDING_QUALIFICATION",
+    "status": "DIRECTED_REPAIRS_IMPLEMENTED_FIRST38_ORIGINAL_ATTEMPTS_PRESERVED_NOT_QUALIFIED",
     "historical_support": "Actual original zero-day reader accepts four explicit Gardner configurations; original non1+hysteresis remains refused. Original Boundbottom sets qbot=0 for bottom6.",
     "scope": "Drainage-off Mualem implicit/hysteresis existing state owners and explicit Gardner Snow/Frost/paired9 with effective NoVap semantics",
     "planned_cases": 19,
     "new_admitted_contexts": 0,
-    "whole_family_closed": false
+    "whole_family_closed": false,
+    "first_local_passes": 22,
+    "first_local_failures": 16,
+    "additional_exact_year_cold_windows": 10,
+    "independent_qualification_cases": 17
+  },
+  "gardner_snow9_nonfinite": {
+    "classification": "NUMERICAL_DEFECT",
+    "actual_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+    "scope": [
+      "gardner-snow-paired9-explicit-water",
+      "gardner-mixed2-1-snow-paired9-explicit-cde"
+    ],
+    "observed": "Nonfinite pond availability during actual Snowmelt; original full-main reference positive control unresolved, no LEGACY_DEFECT assertion",
+    "raw_archive": "CLOSED_GARDNER_STATE12_FIRST_LOCAL_SUCCESSES_FAILURES_RAW_V1.json",
+    "scientific_choice_or_numerical_repair_not_invented": true,
+    "blocks_independent_closed_Mualem_Gardner58_qualification": false,
+    "still_a_historical_migration_gap": true
   }
 }

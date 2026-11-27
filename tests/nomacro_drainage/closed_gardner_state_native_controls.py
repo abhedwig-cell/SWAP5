@@ -1,5 +1,5 @@
 """Actual compiled closed/Gardner native startup attacks, zero accepted model days."""
-import argparse,json,struct,subprocess,sys,zipfile
+import argparse,json,re,struct,subprocess,sys,zipfile
 from pathlib import Path
 from closed_gardner_state_feedback import R,SHA,m
 
@@ -26,6 +26,20 @@ def controls(profile,reference,out):
         if models:domains.append(('gardner',[1,nodes,len(models),int(project.solute),*models]))
     elif spec['hysteresis']:domains.append(('hysteresis',[1,nodes,0,spec['hysteresis'],int(project.solute)]))
     attacks=[('foreign-magic',b'S5BAD999'+good[8:]),('truncated',good[:-1]),('trailing',good+b'x')]
+    text=(Path(q['input_root'])/'swap.swp').read_text(encoding='cp1252')
+    if spec['calendar']=='dates':
+        date_rows=re.findall(r'(?mis)^\s*OUTDATINT\s*=\s*\n\s*(\d{4}-\d{2}-\d{2})',text)
+        assert len(date_rows)==1
+        if date_rows[0]<meta['project']['start_date']:
+            positions=[]
+            for pos in range(8,len(good)-160):
+                if good[pos:pos+8]!=struct.pack('<2i',1,nodes):continue
+                header=struct.unpack_from('<20i',good,pos)
+                if header[3]>100 and header==struct.unpack_from('<20i',good,pos+80):positions.append((pos,header))
+            assert len(positions)==1;pos,header=positions[0];assert header[10]==1
+            bad=bytearray(good)
+            for offset in (pos,pos+80):struct.pack_into('<i',bad,offset+40,2)
+            attacks.append(('forged-advance-of-original-pending-date-pointer',bytes(bad)))
     for name,values in domains:
         header=struct.pack('<'+str(len(values))+'i',*values);assert good.count(header+header)==1,(name,values)
         pos=good.index(header+header);size=len(header)

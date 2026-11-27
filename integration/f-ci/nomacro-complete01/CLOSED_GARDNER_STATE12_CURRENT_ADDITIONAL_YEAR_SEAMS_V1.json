@@ -1,0 +1,345 @@
+{
+  "status": "CURRENT_ADDITIONAL_YEAR_SEAMS_FINISHED_AVAILABLE_CONTEXTS_ONLY",
+  "actual_observer": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+  "compiler_executions": 0,
+  "original_warm_model_periods_replayed": 0,
+  "contexts": [
+    {
+      "case": "closed-frost-implicit-h0-water",
+      "optimization": "O0",
+      "actual_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "primary_RESULT_sha256": "e6b25b82ff4d7a064103300b1effe6cc21d3609f525623aadb64162a90de4174",
+      "actual_BUILD_sha256": "65fe593516cf5c3e0c16317bd3660928691063c1f0b2ba594ed2b449160556f2",
+      "start_date": "2002-12-26",
+      "new_year_offset": 6,
+      "window": [
+        4,
+        7
+      ],
+      "original_primary_model_days_replayed": 0,
+      "cold": {
+        "start": 4,
+        "end": 7,
+        "exact_physical": true,
+        "exact_complete_native": true,
+        "exact_user_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 3,
+            "kind": "original_REAL4_binary"
+          }
+        },
+        "origin_unchanged": true,
+        "seconds": 1.0066547999158502
+      },
+      "actual_Frost_active_day30": {
+        "original_temperature_min_C": -0.47397196115476725,
+        "original_temperature_max_C": 5.588157358777488,
+        "actual_TFROSTSTA_C": 0.0,
+        "actual_original_Frost_active": true
+      },
+      "status": "ACTUAL_ORIGINAL_YEAR_SEAM_COMPLETE_NATIVE_COLD_AND_USER_OUTPUT_PASS"
+    },
+    {
+      "case": "closed-frost-explicit-h1-water-profile",
+      "optimization": "O0",
+      "actual_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "primary_RESULT_sha256": "c8960e347353c10ad5582f7a4fa254e5f6cc49496a445d1f738c3527e4ba0dae",
+      "actual_BUILD_sha256": "206f2f1779e175359641a0eb3e5f3c4aa430b008927f55081a4dcd6c8049ea6c",
+      "start_date": "2002-12-26",
+      "new_year_offset": 6,
+      "window": [
+        4,
+        7
+      ],
+      "original_primary_model_days_replayed": 0,
+      "cold": {
+        "start": 4,
+        "end": 7,
+        "exact_physical": true,
+        "exact_complete_native": true,
+        "exact_user_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 3,
+            "kind": "original_REAL4_binary"
+          }
+        },
+        "origin_unchanged": true,
+        "seconds": 1.612042499706149
+      },
+      "actual_Frost_active_day30": {
+        "original_temperature_min_C": -0.4740701280809826,
+        "original_temperature_max_C": 5.5680981871412705,
+        "actual_TFROSTSTA_C": 0.0,
+        "actual_original_Frost_active": true
+      },
+      "status": "ACTUAL_ORIGINAL_YEAR_SEAM_COMPLETE_NATIVE_COLD_AND_USER_OUTPUT_PASS"
+    },
+    {
+      "case": "closed-snow-implicit-h0-water",
+      "optimization": "O0",
+      "actual_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "primary_RESULT_sha256": "9b5aa61810b6925196c9693f2d667a8873c789324afcfd2a56b4edc3bc066662",
+      "actual_BUILD_sha256": "c4f2bbe4ee53504c754113d03ffebabdb2cc388269f65a41e1477e36409eea30",
+      "start_date": "2002-12-26",
+      "new_year_offset": 6,
+      "window": [
+        4,
+        7
+      ],
+      "original_primary_model_days_replayed": 0,
+      "cold": {
+        "start": 4,
+        "end": 7,
+        "exact_physical": true,
+        "exact_complete_native": true,
+        "exact_user_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 3,
+            "kind": "original_REAL4_binary"
+          }
+        },
+        "origin_unchanged": true,
+        "seconds": 0.855116699822247
+      },
+      "status": "ACTUAL_ORIGINAL_YEAR_SEAM_COMPLETE_NATIVE_COLD_AND_USER_OUTPUT_PASS"
+    },
+    {
+      "case": "gardner-frost-explicit-d1-b6-water-calendar",
+      "optimization": "O0",
+      "actual_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "primary_RESULT_sha256": "d01ec6316f89aeaabc56f830add6055e6e6d3132100f550cb158d4da385b4e33",
+      "actual_BUILD_sha256": "03ee3825b7e474a532f0b4e1b9dd600582c551f6bc4d5437f6a2edd2e1a49bd2",
+      "start_date": "2002-12-26",
+      "new_year_offset": 6,
+      "window": [
+        4,
+        7
+      ],
+      "original_primary_model_days_replayed": 0,
+      "cold": {
+        "start": 4,
+        "end": 7,
+        "exact_physical": true,
+        "exact_complete_native": true,
+        "exact_user_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 2,
+            "kind": "original_REAL4_binary"
+          }
+        },
+        "origin_unchanged": true,
+        "seconds": 2.505756499711424
+      },
+      "actual_Frost_active_day30": {
+        "original_temperature_min_C": -0.45635934532173633,
+        "original_temperature_max_C": 8.521575692032068,
+        "actual_TFROSTSTA_C": 0.0,
+        "actual_original_Frost_active": true
+      },
+      "status": "ACTUAL_ORIGINAL_YEAR_SEAM_COMPLETE_NATIVE_COLD_AND_USER_OUTPUT_PASS"
+    },
+    {
+      "case": "gardner-mixed2-3-snow-explicit-d0-b8-water",
+      "optimization": "O0",
+      "actual_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "primary_RESULT_sha256": "c59008b72ac3d548dc035b09944be1af268765b3d26e66a8eaa4452e85801552",
+      "actual_BUILD_sha256": "31e2e62bb04269b76388e5a777d8199893133d2edbc0d06129b6271580b5c9bd",
+      "start_date": "2002-12-26",
+      "new_year_offset": 6,
+      "window": [
+        4,
+        7
+      ],
+      "original_primary_model_days_replayed": 0,
+      "cold": {
+        "start": 4,
+        "end": 7,
+        "exact_physical": true,
+        "exact_complete_native": true,
+        "exact_user_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 3,
+            "kind": "original_REAL4_binary"
+          }
+        },
+        "origin_unchanged": true,
+        "seconds": 1.5692376997321844
+      },
+      "status": "ACTUAL_ORIGINAL_YEAR_SEAM_COMPLETE_NATIVE_COLD_AND_USER_OUTPUT_PASS"
+    },
+    {
+      "case": "closed-frost-implicit-h0-water",
+      "optimization": "O2",
+      "actual_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "primary_RESULT_sha256": "cdb3747607ff9845e5d6f10085fefc4f43568dcd1c83a258738609b23720930e",
+      "actual_BUILD_sha256": "df1fe5232a62e10a339d600a52f37649929c3e524c68338b65e95a3883632a18",
+      "start_date": "2002-12-26",
+      "new_year_offset": 6,
+      "window": [
+        4,
+        7
+      ],
+      "original_primary_model_days_replayed": 0,
+      "cold": {
+        "start": 4,
+        "end": 7,
+        "exact_physical": true,
+        "exact_complete_native": true,
+        "exact_user_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 3,
+            "kind": "original_REAL4_binary"
+          }
+        },
+        "origin_unchanged": true,
+        "seconds": 1.0581876002252102
+      },
+      "actual_Frost_active_day30": {
+        "original_temperature_min_C": -0.47397196115476725,
+        "original_temperature_max_C": 5.588157358777488,
+        "actual_TFROSTSTA_C": 0.0,
+        "actual_original_Frost_active": true
+      },
+      "status": "ACTUAL_ORIGINAL_YEAR_SEAM_COMPLETE_NATIVE_COLD_AND_USER_OUTPUT_PASS"
+    },
+    {
+      "case": "closed-frost-explicit-h1-water-profile",
+      "optimization": "O2",
+      "actual_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "primary_RESULT_sha256": "00cd748891575f310b127ff2537814c33a14405f398d19519ad22435bdcfea25",
+      "actual_BUILD_sha256": "5eaa2cc05a8bc72f9d0c4b53ca4f0d2625d2e7823864d01299f7ef7e89d04659",
+      "start_date": "2002-12-26",
+      "new_year_offset": 6,
+      "window": [
+        4,
+        7
+      ],
+      "original_primary_model_days_replayed": 0,
+      "cold": {
+        "start": 4,
+        "end": 7,
+        "exact_physical": true,
+        "exact_complete_native": true,
+        "exact_user_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 3,
+            "kind": "original_REAL4_binary"
+          }
+        },
+        "origin_unchanged": true,
+        "seconds": 1.5534958001226187
+      },
+      "actual_Frost_active_day30": {
+        "original_temperature_min_C": -0.4740701280809826,
+        "original_temperature_max_C": 5.5680981871412705,
+        "actual_TFROSTSTA_C": 0.0,
+        "actual_original_Frost_active": true
+      },
+      "status": "ACTUAL_ORIGINAL_YEAR_SEAM_COMPLETE_NATIVE_COLD_AND_USER_OUTPUT_PASS"
+    },
+    {
+      "case": "closed-snow-implicit-h0-water",
+      "optimization": "O2",
+      "actual_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "primary_RESULT_sha256": "6870a84d0322f01e1c978e36d340f39da9015f635dace037e9bd2043afded4d3",
+      "actual_BUILD_sha256": "1d4d6c04014785ff39165433d452ce2e2f33683712bb017f53a674e1624e1505",
+      "start_date": "2002-12-26",
+      "new_year_offset": 6,
+      "window": [
+        4,
+        7
+      ],
+      "original_primary_model_days_replayed": 0,
+      "cold": {
+        "start": 4,
+        "end": 7,
+        "exact_physical": true,
+        "exact_complete_native": true,
+        "exact_user_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 3,
+            "kind": "original_REAL4_binary"
+          }
+        },
+        "origin_unchanged": true,
+        "seconds": 0.8222856000065804
+      },
+      "status": "ACTUAL_ORIGINAL_YEAR_SEAM_COMPLETE_NATIVE_COLD_AND_USER_OUTPUT_PASS"
+    },
+    {
+      "case": "gardner-frost-explicit-d1-b6-water-calendar",
+      "optimization": "O2",
+      "actual_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "primary_RESULT_sha256": "979349038fc0bfcc4f4de228d9defd15614984330df3488f1efb4956bcb8b4f3",
+      "actual_BUILD_sha256": "41350ba1860e08117fd884ba3d80861b1096438fe694774c3c028b75a3f1d9f0",
+      "start_date": "2002-12-26",
+      "new_year_offset": 6,
+      "window": [
+        4,
+        7
+      ],
+      "original_primary_model_days_replayed": 0,
+      "cold": {
+        "start": 4,
+        "end": 7,
+        "exact_physical": true,
+        "exact_complete_native": true,
+        "exact_user_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 2,
+            "kind": "original_REAL4_binary"
+          }
+        },
+        "origin_unchanged": true,
+        "seconds": 2.091834300197661
+      },
+      "actual_Frost_active_day30": {
+        "original_temperature_min_C": -0.45635934532173633,
+        "original_temperature_max_C": 8.521575692032068,
+        "actual_TFROSTSTA_C": 0.0,
+        "actual_original_Frost_active": true
+      },
+      "status": "ACTUAL_ORIGINAL_YEAR_SEAM_COMPLETE_NATIVE_COLD_AND_USER_OUTPUT_PASS"
+    },
+    {
+      "case": "gardner-mixed2-3-snow-explicit-d0-b8-water",
+      "optimization": "O2",
+      "actual_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "primary_RESULT_sha256": "80ac9e17824fd1cf79fefe2027a663797fc8122bfd449b6f43e811f0ceac39ca",
+      "actual_BUILD_sha256": "03bdf6d1da7febf1a08c4052fba3b821ebb9831c349a1b7e537ce32dee049293",
+      "start_date": "2002-12-26",
+      "new_year_offset": 6,
+      "window": [
+        4,
+        7
+      ],
+      "original_primary_model_days_replayed": 0,
+      "cold": {
+        "start": 4,
+        "end": 7,
+        "exact_physical": true,
+        "exact_complete_native": true,
+        "exact_user_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 3,
+            "kind": "original_REAL4_binary"
+          }
+        },
+        "origin_unchanged": true,
+        "seconds": 1.3881732998415828
+      },
+      "status": "ACTUAL_ORIGINAL_YEAR_SEAM_COMPLETE_NATIVE_COLD_AND_USER_OUTPUT_PASS"
+    }
+  ],
+  "canonical_admission": false
+}
