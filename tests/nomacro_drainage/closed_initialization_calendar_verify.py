@@ -65,7 +65,13 @@ def verify():
     old_science=preservation(data);assert old_science==frozen('CLOSED_INITIALIZATION_STATE15_CURRENT_OLD_PRESERVATION_INDEPENDENT_V1')
     inherited=inherited40();original_inherited=frozen('CLOSED_INITIALIZATION_STATE15_FORTY_INHERITED_SOURCE_SELECTION_V1')
     # Preserve the original probe's actual observer; do not relabel it as HEAD.
-    expected=dict(original_inherited);expected.pop('actual_current_observer');assert inherited==expected
+    expected=dict(original_inherited);expected.pop('actual_current_observer')
+    # Original probe records a descriptor stem; the archive reader returns its exact filename.
+    # Bind both explicit identities and the accepted digest without altering either record.
+    stem='CLOSED_DEFAULT_CALENDAR_STATE14_FORTY_OLD_OBJECTS_AND_NATIVE_RAW_V4'
+    assert expected['original_archive']==stem and inherited['original_archive']==stem+'.zip'
+    assert expected['original_archive_sha256']==inherited['original_archive_sha256']=='5fb267e56a069a1dec1eaefec3840d9e2dfc39c9f9e0f57832506f6debbab114'
+    assert {k:v for k,v in inherited.items() if k!='original_archive'}=={k:v for k,v in expected.items() if k!='original_archive'}
     actual_non1=inherited56();original_non1=frozen('CLOSED_INITIALIZATION_STATE15_FIFTYSIX_INHERITED_DOMAINS_V1')
     assert actual_non1==original_non1['current_new_initialization_branch_exclusions']
     assert tuple(sum(v[k] for v in results) for k in ['context_count','primary_days','native_samples','exact_cold_windows','compiled_native_refusals','external_transaction_contexts'])==(20,700,140,60,584,20)
