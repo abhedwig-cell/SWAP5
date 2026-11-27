@@ -52,7 +52,9 @@ def render_trial_domain(source,project):
     old="if(swmacro/=0.or.swsnow/=0.or.swdra/=1)error stop 'Foreign original trial receipt domain'"
     new="if(swmacro/=0.or.swsnow/=0.or.swdra/=0.or.swbotb/=6)error stop 'Foreign original closed default trial receipt domain'"
     if source.count(old)!=1:raise ValueError('Changed complete original default trial domain')
-    return source.replace(old,new,1)
+    anchor='real(8) function hybrid_output_trial_residual() result(residual)\n'
+    if source.count(anchor)!=1:raise ValueError('Changed original default trial receipt function')
+    return source.replace(old,new,1).replace(anchor,anchor+'use variables,only:swbotb\n',1)
 
 
 def trial_head_parent_inverse(source):
