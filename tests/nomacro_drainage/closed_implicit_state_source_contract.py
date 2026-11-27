@@ -26,7 +26,8 @@ def source():
         for edit in item['ordered_literal_edits']:
             lo,hi=edit['base_start'],edit['base_end'];assert cursor<=lo<=hi and text[lo:hi]==edit['before']
             parts.extend([text[cursor:lo],edit['after']]);cursor=hi
-        parts.append(text[cursor:]);assert ''.join(parts).encode()==actual;ast.parse(actual)
+        parts.append(text[cursor:]);assert ''.join(parts).encode()==actual
+        if path.endswith('.py'):ast.parse(actual)
         observations.append(dict(path=path,actual_lf_sha256=SHA(actual),genuine_parent_lf_sha256=SHA(before),complete_literal_reconstruction=True))
     # Every old archived scientific member retains the actual original Git
     # blob. New local evidence never substitutes for a historical archive.
