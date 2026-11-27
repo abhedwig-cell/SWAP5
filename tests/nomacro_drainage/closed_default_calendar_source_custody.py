@@ -18,6 +18,25 @@ def tree(ref):
     return result
 
 
+def actual_eol_inventory(paths):
+    """Batch actual Git metadata for the same nonexact working text files."""
+    result={};batch=[];size=0;commands=0
+    def read(names):
+        for row in git('ls-files','--eol','-z','--',*names).split(b'\0'):
+            if not row:continue
+            meta,name=row.split(b'\t',1);name=name.decode();assert name not in result
+            result[name]=meta.decode().split()
+    for path in paths:
+        length=len(path.encode('utf-16-le'))//2+3
+        assert length<16000
+        if batch and size+length>16000:
+            read(batch);commands+=1;batch=[];size=0
+        batch.append(path);size+=length
+    if batch:read(batch);commands+=1
+    assert set(result)==set(paths)
+    return result,commands
+
+
 def source(anchor):
     head=git('rev-parse','HEAD');assert re.fullmatch('[0-9a-f]{40}',anchor)
     assert not git('for-each-ref','--format=%(refname)','refs/replace')
@@ -56,19 +75,23 @@ def source(anchor):
     raw=(ROOT/guard_path).read_bytes().replace(b'\r\n',b'\n');assert raw.count(hook.encode())==1
     assert raw.replace(hook.encode(),b'',1)==git('show',BASE+':'+guard_path)
     assert git('show','HEAD:tests/hupsel51/test_successor.py')==git('show',BASE+':tests/hupsel51/test_successor.py')
-    eols={};patterns=[':(glob)**/*.'+ext for ext in ['py','json','md','yml','yaml','f90','F90','f','F','txt','toml','ini','cfg','cmake','xml','sh','ps1','cpp','c','h']]
-    for row in git('ls-files','--eol','-z','--',*patterns).split(b'\0'):
-        if row:
-            meta,path=row.split(b'\t',1);eols[path.decode()]=meta.decode().split()
-    observed=[]
+    import hashlib
+    blob=lambda raw:hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
+    observed=[];pending=[]
     for path,(mode,kind,digest) in current.items():
         if not materialized(path,tracked):continue
         raw=(ROOT/path).read_bytes()
         if path==SELF:
             left,a=re.subn(pattern,b"SEALED='SOURCE_ANCHOR'",raw.replace(b'\r\n',b'\n'));right,b=re.subn(pattern,b"SEALED='SOURCE_ANCHOR'",git('show',anchor+':'+path));assert a==b==1 and left==right
-        else:original_git_payload(raw,path,digest,eols)
+        elif blob(raw)==digest:original_git_payload(raw,path,digest,{})
+        else:pending.append((path,digest,SHA(raw)))
         if path.startswith(('app/','src/','tools/','tests/','.github/')):observed.append(dict(path=path,actual_raw_sha256=SHA(raw)))
+    eols,eol_commands=actual_eol_inventory([path for path,_,_ in pending])
+    for path,digest,first_sha in pending:
+        raw=(ROOT/path).read_bytes();assert SHA(raw)==first_sha
+        original_git_payload(raw,path,digest,eols)
     assert git('rev-parse','HEAD')==head and tracked_working_files()==tracked
     return dict(status='REAL_CLOSED_DEFAULT_CALENDAR_CURRENT_HEAD_INDEX_WORKING_AND_COMPLETE_LITERAL_SOURCE_INVERSES_PASS',actual_head=head.decode().strip(),source_anchor=anchor,
                 actual_local_scientific_source=SCIENTIFIC,parent=BASE,files=observed,modified_inherited_files=sorted(expected),literal_source_proof=literal,
-                source_or_filesystem_identity_projected=False,compiler_executions=0,model_executions=0)
+                source_or_filesystem_identity_projected=False,actual_nonexact_working_files=len(pending),actual_Git_eol_batch_commands=eol_commands,
+                original_per_file_Git_payload_checks_unchanged=True,compiler_executions=0,model_executions=0)

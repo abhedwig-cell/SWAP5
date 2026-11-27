@@ -3744,7 +3744,7 @@
     "RC3_changed": false
   },
   "closed_default_calendar_state14": {
-    "status": "FIRST_PR_ADMISSION_GUARD_REFUSAL_RETAINED_EXACT_TWO_CHECKOUT_INVERSE_IMPLEMENTED_REQUALIFICATION_PENDING",
+    "status": "STRICT_CHECKOUT_BODY_INVERSE_AND_ALL_ELEVEN_ORIGINAL_TESTS_PASS_REQUALIFICATION_PENDING",
     "classification": "EVIDENCE_ONLY",
     "baseline": "ae54d7d621a07e54dd8f9fdb758585b2a2cc754d",
     "original_initializations_accepted": 5,
@@ -3774,6 +3774,10 @@
     "first_PR_failed_job": 140679910663,
     "first_PR_guard_failure_raw": "CLOSED_DEFAULT_CALENDAR_STATE14_FIRST_PR_CHECKOUT_GUARD_REFUSAL_RAW_V6.json",
     "physical_or_native_source_changed_for_CI_guard_repair": false,
-    "model_periods_replayed_for_CI_guard_repair": 0
+    "model_periods_replayed_for_CI_guard_repair": 0,
+    "original_protected_test_file_unchanged": true,
+    "actual_current_checkout_body_mutant_refusals": 5,
+    "actual_original_successor_tests_pass": 11,
+    "batched_actual_Git_EOL_queries_keep_original_payload_validation": true
   }
 }
