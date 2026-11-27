@@ -87,7 +87,7 @@ def observe(folder,reference,build=None,inputs=None,controls=None,store=None):
             assert raw==(inputs/name).read_bytes() and SHA(raw)==meta['inputs'][name]
     text=(inputs/'swap.swp').read_text(encoding='cp1252');active='\n'.join(v.split('!',1)[0] for v in text.splitlines() if not v.lstrip().startswith('*'))
     scalar=lambda key:int(re.findall(r'(?mi)^[ \t]*'+key+r'[ \t]*=[ \t]*([+-]?\d+)[ \t]*$',active)[0])
-    assert all(scalar(key)==value for key,value in dict(SWINCO=1,SWDRA=0,SWBOTB=6,SWMACRO=0,SWFROST=0,SWSNOW=0,SWHYST=spec['hysteresis'],SWKIMPL=spec['implicit'],SWSOLU=int(spec['kind']=='cde')).items())
+    assert all(scalar(key)==value for key,value in dict(SWINCO=1,SWDRA=0,SWBOTB=6,SWMACRO=0,SWFROST=0,SWSNOW=0,SWHYST=spec['history'],SWKIMPL=spec['implicit'],SWSOLU=int(spec['kind']=='cde')).items())
     models=re.findall(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[ \t]*([^\r\n]*)',active)
     assert not models or len(models)==1 and set(map(int,models[0].split()))=={1}
     rows=[json.loads(line) for line in (folder/'trajectory/daily.jsonl').read_text().splitlines()];assert len(rows)==35
@@ -109,12 +109,12 @@ def observe(folder,reference,build=None,inputs=None,controls=None,store=None):
         assert struct.unpack_from('<i',raw['macro.bin'],8)[0]==n
         calendar=output_calendar(raw['macro.bin'],n,rows[day-1],selected,meta['project']['start_date'],spec['kind']=='cde')
         sequential_records(raw['result.end'])
-        if spec['hysteresis']:
-            observed=history(raw['result.end']);assert observed['mode']==spec['hysteresis']
-            active_history|=any(v!=(1 if spec['hysteresis']==1 else -1) for v in observed['index']) or any(v!=1. for v in observed['fhyst'])
-            domain=struct.pack('<5i',1,n,0,spec['hysteresis'],int(spec['kind']=='cde'));assert raw['macro.bin'].count(domain+domain)==1
+        if spec['history']:
+            observed=history(raw['result.end']);assert observed['mode']==spec['history']
+            active_history|=any(v!=(1 if spec['history']==1 else -1) for v in observed['index']) or any(v!=1. for v in observed['fhyst'])
+            domain=struct.pack('<5i',1,n,0,spec['history'],int(spec['kind']=='cde'));assert raw['macro.bin'].count(domain+domain)==1
         samples.append(dict(day=day,sha256=SHA(raw['macro.bin']),calendar=calendar))
-    if spec['hysteresis']:assert active_history
+    if spec['history']:assert active_history
     cold=[]
     for lo,hi in windows:
         _,warm=payload(folder/'trajectory'/f'accepted-column-1-day-{hi}.zip');_,restarted=payload(folder/f'own-{lo}'/f'accepted-column-1-day-{hi}.zip');assert warm==restarted
