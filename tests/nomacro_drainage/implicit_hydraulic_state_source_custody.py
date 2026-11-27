@@ -37,6 +37,8 @@ def source(anchor):
     left,a=re.subn(pattern,b"SEALED='SOURCE_ANCHOR'",git('show','HEAD:'+SELF))
     right,b=re.subn(pattern,b"SEALED='SOURCE_ANCHOR'",git('show',anchor+':'+SELF))
     assert a==b==1 and left==right
+    from implicit_hydraulic_state_ci_checkout_custody import source as checkout_custody
+    operations=checkout_custody()
     complete_inverse()
     contract=json.loads(git('show','HEAD:'+PREFIX+'IMPLICIT_HYDRAULIC_STATE11_SOURCE_PROPOSAL_V9.json'))
     documentation=json.loads(git('show','HEAD:'+PREFIX+'IMPLICIT_HYDRAULIC_STATE11_PARENT_DOCUMENTATION_WITNESSES_V1.json'))
@@ -50,7 +52,7 @@ def source(anchor):
             assert cursor<=edit['base_start']<=edit['base_end'] and text[edit['base_start']:edit['base_end']]==edit['before']
             parts.extend((text[cursor:edit['base_start']],edit['after']));cursor=edit['base_end']
         parts.append(text[cursor:]);assert ''.join(parts).encode()==actual
-    expected={p for p,item in contract['files'].items() if not item['new_file']}|{JOINT}|metadata|set(documentation['files'])
+    expected={p for p,item in contract['files'].items() if not item['new_file']}|{JOINT}|metadata|set(documentation['files'])|set(operations['files'])
     assert {p for p in old if old[p]!=current[p]}==expected
     actual=(ROOT/JOINT).read_bytes().replace(b'\r\n',b'\n')
     for name in ['guard_previous_source','verify','strip_current_evidence','publication_dependencies_unchanged']:
