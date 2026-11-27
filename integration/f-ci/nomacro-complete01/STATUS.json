@@ -37770,7 +37770,7 @@
     "batched_actual_Git_EOL_queries_keep_original_payload_validation": true
   },
   "closed_initialization_state15": {
-    "status": "IMPLEMENTED_PENDING_QUALIFICATION",
+    "status": "IMPLEMENTED_TEN_ACTUAL_OUTPUT_METADATA_SELECTIONS_PASS_PHYSICAL_QUALIFICATION_PENDING",
     "baseline": "fa77380ecce3317775bd1129b5de007fcbcf2e1f",
     "classification": "COMPOSITION_MISSING",
     "original_initial2_zero_day_controls": 5,
@@ -37782,6 +37782,12 @@
     "required_parent_admission": "CLOSED_DEFAULT_CALENDAR_STATE14_MERGE_RECEIPT_V1.json pending final canonical CI",
     "discovery": "CLOSED_INITIALIZATION_STATE15_ORIGINAL_DISCOVERY_RAW_V1.json",
     "source_proposal": "CLOSED_INITIALIZATION_STATE15_SOURCE_PROPOSAL_V1.json",
-    "next_action": "Check actual current initial1/2 output metadata; complete parent admission; select changed output/native/cold/transaction and unchanged-owner gates."
+    "next_action": "Check actual current initial1/2 output metadata; complete parent admission; select changed output/native/cold/transaction and unchanged-owner gates.",
+    "implemented_source": "a3d35ab871ad01c189cd96b4ab8146aba648cf45",
+    "actual_current_metadata_feedback": "CLOSED_INITIALIZATION_STATE15_ACTUAL_METADATA_FEEDBACK_V1.json",
+    "actual_complete_source_inverse": true,
+    "fast_feedback_contexts": 10,
+    "model_periods_executed": 0,
+    "compiler_executions": 0
   }
 }
