@@ -46,6 +46,10 @@ def main():
         with ExitStack() as stack:
             data=GitArchiveSource(R,PARENT);store=Archive(data,'CLOSED_DEFAULT_CALENDAR_STATE14_ALL_LOCAL_FAILURES_AND_SUCCESSES_RAW_V2',stack)
             assert store.record['sha256']=='736057de6b483eb42bb3e36e57b6277d0cc3136c15f35fce625f98d693c8106a'
+            canonical=Archive(data,'CLOSED_DEFAULT_CALENDAR_STATE14_FIRST_WINDOWS_'+a.optimization+'_ORIGINAL_V1',stack)
+            assert canonical.record['actual_producer_source']=='94c86c2918278ffd9595b9960eb8e1522652277a'
+            assert not git('diff','94c86c2918278ffd9595b9960eb8e1522652277a',PARENT,'--','app','src','tools/solute','tools/vq','reference')
+            projection=json.loads(canonical.get('COMPILED_PROJECTION_V1.json'))
             plan=json.loads((data/'CLOSED_DEFAULT_CALENDAR_STATE14_FINITE_CASE_PLAN_V1.json').read_text())
             for spec in plan['cases']:
                 name=spec['name'];version='v3' if name in ['implicit-perstep-water','hys1-clock-water'] else 'v1'
@@ -59,9 +63,16 @@ def main():
                 started=time.perf_counter()
                 with (folder/'build.stdout').open('xb') as out,(folder/'build.stderr').open('xb') as err:child=subprocess.run(command,cwd=R,stdout=out,stderr=err,timeout=240)
                 child.check_returncode();meta,_=m.validate_bundle(build,a.reference_work,project)
-                assert meta['identity']['original_output']==old['identity']['original_output']
+                canonical_profile='current/'+name
+                canonical_result=json.loads(canonical.get(canonical_profile+'/RESULT.json'))
+                assert canonical_result['actual_source']=='94c86c2918278ffd9595b9960eb8e1522652277a'
+                canonical_build=ReadView(canonical,projection[canonical_result['build_root']]['archive_prefix'])
+                canonical_meta=json.loads((canonical_build/'BUILD.json').read_text())
+                assert SHA((canonical_build/'BUILD.json').read_bytes())==canonical_result['actual_BUILD_sha256']
+                assert meta['inputs']==canonical_meta['inputs'] and meta['identity']['original_output']==canonical_meta['identity']['original_output']
                 proof=compare(before,build,old_result['actual_BUILD_sha256'],SHA((build/'BUILD.json').read_bytes()))
-                controls=native(store.get(prefix+'/trajectory/accepted-column-1-day-4.zip'),build,project,folder/'native-controls')
+                controls=native(canonical.get(canonical_profile+'/trajectory/accepted-column-1-day-4.zip'),build,project,folder/'native-controls')
+                controls.update(actual_original_scientific_producer=canonical_result['actual_source'],actual_original_artifact_sha256=canonical.record['sha256'],actual_original_profile=canonical_profile,actual_original_BUILD_sha256=canonical_result['actual_BUILD_sha256'],compiler_bytes_claimed_identical=False,canonical_metadata_compared_complete=True)
                 result['contexts'].append(dict(case=name,actual_original_scientific_producer=old_result['actual_source'],actual_original_archive_sha256=store.record['sha256'],actual_original_profile=prefix,actual_original_build_prefix=before.path,actual_original_BUILD_sha256=old_result['actual_BUILD_sha256'],actual_current_BUILD_sha256=SHA((build/'BUILD.json').read_bytes()),build_root=str(build),input_root=str(inputs),actual_input_authority=authority,whole_object_proof=proof,compiled_original_native=controls,seconds=time.perf_counter()-started,actual_command=command));save()
                 print('CURRENT_ORIGINAL_INITIAL1_COMPLETE_OBJECTS_AND_NATIVE_PASS',a.optimization,name,proof['actual_complete_objects'],flush=True)
             assert len(result['contexts'])==5
