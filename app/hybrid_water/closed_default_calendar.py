@@ -1,12 +1,14 @@
-"""Select real original default-Mualem closed pressure/calendar state owners."""
+"""Select real original default-Mualem closed pressure/groundwater calendar state owners."""
 from pathlib import Path
 import re
 POLICY='original-closed-default-pressure-nondaily-calendar-composition-v1'
+GROUNDWATER_POLICY='original-closed-default-groundwater-nondaily-calendar-composition-v1'
 
 
 def input_domain(text,selectors,original_output=True):
     if original_output is False:return None
-    fixed=dict(SWINCO=1,SWMACRO=0,SWDRA=0,SWBOTB=6,SWFROST=0,SWSNOW=0,
+    if selectors.get('SWINCO') not in (1,2):return None
+    fixed=dict(SWMACRO=0,SWDRA=0,SWBOTB=6,SWFROST=0,SWSNOW=0,
                SWHEA=1,SWCALT=2,SWSOPHY=0,SWBBCFILE=0,SWMETDETAIL=0,SWBR=0)
     if any(selectors.get(k)!=v for k,v in fixed.items()):return None
     if selectors.get('SWSOLU') not in (0,1) or selectors.get('SWHYST') not in (0,1,2) or selectors.get('SWKIMPL') not in (0,1):return None
@@ -31,7 +33,7 @@ def input_domain(text,selectors,original_output=True):
     perstep=token in ('.TRUE.','TRUE','.T.','T');clock=perstep or npd>1
     if monthly and dates or clock and (monthly or dates) or perstep and reset:return None
     if not clock and not monthly and not dates and period==1:return None
-    return dict(policy=POLICY,hydraulic_model=1,initial=1,drainage=0,bottom=6,
+    return dict(policy=POLICY if selectors['SWINCO']==1 else GROUNDWATER_POLICY,hydraulic_model=1,initial=selectors['SWINCO'],drainage=0,bottom=6,
                 kind='cde' if selectors['SWSOLU'] else 'water',history=selectors['SWHYST'],
                 implicit=selectors['SWKIMPL'],clock=clock,perstep=perstep,
                 original_parameter_and_calendar_bytes_preserved=True,

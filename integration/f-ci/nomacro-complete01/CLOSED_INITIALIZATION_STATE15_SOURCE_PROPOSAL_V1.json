@@ -1,0 +1,41 @@
+{
+  "status": "IMPLEMENTED_PENDING_QUALIFICATION",
+  "actual_parent": "fa77380ecce3317775bd1129b5de007fcbcf2e1f",
+  "path": "app/hybrid_water/closed_default_calendar.py",
+  "original_sha256": "b006512bd4588236cd3ce7d071167726e840af03e723202d396137c0bf9f4581",
+  "draft_sha256": "daffd08b4d10072aae145d7e56f11bbc201c0e96b9762aa5eabac7e3a3795ac3",
+  "edits": [
+    {
+      "before": "original default-Mualem closed pressure/calendar state owners.",
+      "after": "original default-Mualem closed pressure/groundwater calendar state owners."
+    },
+    {
+      "before": "POLICY='original-closed-default-pressure-nondaily-calendar-composition-v1'",
+      "after": "POLICY='original-closed-default-pressure-nondaily-calendar-composition-v1'\nGROUNDWATER_POLICY='original-closed-default-groundwater-nondaily-calendar-composition-v1'"
+    },
+    {
+      "before": "    if original_output is False:return None\n",
+      "after": "    if original_output is False:return None\n    if selectors.get('SWINCO') not in (1,2):return None\n"
+    },
+    {
+      "before": "fixed=dict(SWINCO=1,SWMACRO=0",
+      "after": "fixed=dict(SWMACRO=0"
+    },
+    {
+      "before": "return dict(policy=POLICY,hydraulic_model=1,initial=1,drainage=0",
+      "after": "return dict(policy=POLICY if selectors['SWINCO']==1 else GROUNDWATER_POLICY,hydraulic_model=1,initial=selectors['SWINCO'],drainage=0"
+    }
+  ],
+  "supersedes_draft": "CLOSED_INITIALIZATION_STATE15_SOURCE_PROPOSAL_DRAFT_V1.json",
+  "preserves_original_initial1_policy_identity": true,
+  "new_initial3_claimed": false,
+  "new_numerical_policy": false,
+  "model_executions": 0,
+  "compiler_executions": 0,
+  "classification": "COMPOSITION_MISSING",
+  "draft_sha256_representation": "actual canonical LF source text",
+  "actual_uninstalled_working_draft_sha256": "47f60094b4186fa7792be2658d58e6cdd5755018a231d0e22e3bd15e9d053521",
+  "actual_installed_source_bytes_sha256": "daffd08b4d10072aae145d7e56f11bbc201c0e96b9762aa5eabac7e3a3795ac3",
+  "original_discovery": "CLOSED_INITIALIZATION_STATE15_ORIGINAL_DISCOVERY_RAW_V1.json",
+  "original_initial1_policy_and_complete_selected_metadata_preserved": true
+}
