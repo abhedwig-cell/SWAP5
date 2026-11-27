@@ -1,0 +1,50 @@
+{
+  "status": "OWN_RELEASED_REPRODUCIBLE_BUILDS_CLEANED_AFTER_EXACT_GIT_RAW_READBACK",
+  "accepted_source": "e8da5a5e30d28c74a41d57ddbfe3c44390a2a8af",
+  "deleted": [
+    {
+      "resource": "c7aebfe67aab48db-95b6e7b9",
+      "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\closure15-preservation-O0-v2",
+      "kind": "build",
+      "status": "deleted"
+    },
+    {
+      "resource": "f6615164c6d45e26-9c9dbe3b",
+      "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\closure15-preservation-O2-v2",
+      "kind": "build",
+      "status": "deleted"
+    },
+    {
+      "resource": "a96ce0f38ec3a5c6-b80b1a7e",
+      "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\closure16-feedback-O0-v1",
+      "kind": "build",
+      "status": "deleted"
+    },
+    {
+      "resource": "5ca412af5b019b31-a134b7b4",
+      "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\closure16-feedback-O2-v1",
+      "kind": "build",
+      "status": "deleted"
+    }
+  ],
+  "blocked": [
+    {
+      "resource": "faefee9ad020eff9ff603077",
+      "path": "C:\\Users\\Veldh012\\swap5-implicit-conductivity-canonical01",
+      "kind": "worktree",
+      "status": "blocked",
+      "reason": "Resource is absent; no deletion attempted"
+    },
+    {
+      "resource": "e4cbecf145a311e53fb1501a",
+      "path": "C:\\Users\\Veldh012\\swap5-groundwater-composition-negative01",
+      "kind": "worktree",
+      "status": "blocked",
+      "reason": "Resource is absent; no deletion attempted"
+    }
+  ],
+  "net_free_change": 119898112,
+  "free_after": 151405375488,
+  "newest_released_O0_O2_retained": true,
+  "original_inputs_raw_SDKs_and_other_tasks_preserved": true
+}
