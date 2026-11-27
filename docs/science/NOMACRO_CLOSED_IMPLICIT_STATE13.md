@@ -86,3 +86,21 @@ Real compiled consumers must read the exact original native state and refuse
 every corrupted static field before READY; original checkpoint bindings and
 producer roles remain unchanged. No original physical period is repeated.
 The unaffected parent controller keeps its stricter whole-object equality.
+
+Actual 62cf6eef portable producer completes all fourteen original-input couplings
+on Windows and Ubuntu at O0 and O2. All four independent archive audits pass:
+56 contexts,1960 primary days,392 native samples,176 exact cold windows,1608
+compiled native refusals and56 external transaction contexts. Original CI ZIP
+bytes match official GitHub artifact digests; source capsules and original SDK
+bytes are independently read. Earlier preflight failures remain RAW V7.
+
+Forty current preservation builds pass:1022 whole objects remain byte-identical;
+24 static native guard objects change exactly with their literal source proposal.
+All24 compiled consumers accept original native states with exact physical
+receipts and refuse480 independently reconstructed corruptions before READY.
+No old model period is repeated. RAW V8 retains every actual build/input/control
+byte. A first archive observer ambiguously selected a native-control receipt as
+a primary trajectory; selecting the actual day4 trajectory resolves this
+read-only observer failure, retained in RAW V9. Formal candidate PUBLIC, ordinary
+Python publication, CI admission and real merge receipt remain pending.
+Whole migration PARTIAL; global counts UNKNOWN; fixed RC3 unchanged.

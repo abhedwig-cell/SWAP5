@@ -1,0 +1,396 @@
+{
+  "status": "FOUR_ACTUAL_REPAIRED_CLOSED_IMPLICIT_LOCAL_CONTEXTS_STRICT_NATIVE_ARCHIVE_INDEPENDENT_PASS",
+  "actual_scientific_producer": "ae8ddfbb9e029190baa0d4f42f9002cc3bce8b30",
+  "raw_sha256": "bb345b239044957f390efd1bb193bff3cb89d36b9162aebe6fdc9ade67117f6f",
+  "contexts": [
+    {
+      "case": "closed-frost-mixed4-5-cde",
+      "optimization": "O0",
+      "actual_producer_source": "ae8ddfbb9e029190baa0d4f42f9002cc3bce8b30",
+      "actual_BUILD_sha256": "dda61efa62414b4122f5b3e68cc130b6fad043c0893bcd83788e049c4cb47a3c",
+      "original_inputs": {
+        "original_archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+        "all_original_parameters_and_other_input_bytes_preserved": true,
+        "only_explicit_declared_selectors_changed": true
+      },
+      "days": 35,
+      "water_daily_max_cm": "8.9786125E-11",
+      "cde_daily_max_mg_cm2": "1E-14",
+      "cde_every_prefix_max_mg_cm2": "2.000181E-14",
+      "native_samples": [
+        {
+          "day": 2,
+          "bytes": 1467444,
+          "sha256": "bcfb40b0a1ab8a8f55234ad54c95da164ead9a6811412ba9336641bbae3a0430"
+        },
+        {
+          "day": 4,
+          "bytes": 1467444,
+          "sha256": "f5f0fcb18fdc6e65a2ac6eb0aad77f55847090d11519c108dfb35eb4683ebe6c"
+        },
+        {
+          "day": 7,
+          "bytes": 1467444,
+          "sha256": "ea25ca86b22c56fdb35f7c5eaa60c313f0353ba95d38018688faed0890a87e1f"
+        },
+        {
+          "day": 9,
+          "bytes": 1467444,
+          "sha256": "439b77e6e4eec8d5fe0ad299e0c4a9bf6c0f5fb98eb7bf2bea792c84cd092fb9"
+        },
+        {
+          "day": 30,
+          "bytes": 1467444,
+          "sha256": "c8c07d60c7bb6c0baa227afeed0acf7557c9fbd2cc209d18294ce30d76cb13e3"
+        },
+        {
+          "day": 34,
+          "bytes": 1467444,
+          "sha256": "890b9ca559bdb02ec98d415dd7440bdb99c876f3c533d0a7604a8c4f7ab80013"
+        },
+        {
+          "day": 35,
+          "bytes": 1467444,
+          "sha256": "842c7aae2afde9d8aff94860ad21df1ed556cc53506043756166d88e02639cbc"
+        }
+      ],
+      "exact_cold_windows": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_transaction_receipts_and_day5_native_replay_exact": true,
+      "compiled_native_refusals": 39,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "case": "closed-ordinary-model6-snow-cde-profile",
+      "optimization": "O0",
+      "actual_producer_source": "ae8ddfbb9e029190baa0d4f42f9002cc3bce8b30",
+      "actual_BUILD_sha256": "29dbb0d27e48e85742e870f5206619dc400eb963f60c83fc9e5c65f6b662f08f",
+      "original_inputs": {
+        "original_archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+        "all_original_parameters_and_other_input_bytes_preserved": true,
+        "only_explicit_declared_selectors_changed": true
+      },
+      "days": 35,
+      "water_daily_max_cm": "8.50790027E-11",
+      "cde_daily_max_mg_cm2": "0",
+      "cde_every_prefix_max_mg_cm2": "0",
+      "native_samples": [
+        {
+          "day": 2,
+          "bytes": 1467444,
+          "sha256": "fb0e22f5c2b634c6f78a9881bd7839152f2223431a48c5381752c3132f1de9e2"
+        },
+        {
+          "day": 4,
+          "bytes": 1467444,
+          "sha256": "c4cf8211f6ca409b10fe087568c9e150841764317381e772b6ec5aebdf3483e0"
+        },
+        {
+          "day": 7,
+          "bytes": 1467444,
+          "sha256": "cd947e7e9f1c0eb2b4fda590d0dae471e2b2dd5b06842cfd933d5834346879eb"
+        },
+        {
+          "day": 9,
+          "bytes": 1467444,
+          "sha256": "fe6b54b54a0bd0b7a11ab989310bf90988c394f7bfb253fc09d0acb76f461bc3"
+        },
+        {
+          "day": 30,
+          "bytes": 1467444,
+          "sha256": "659fb0ed7bbdedb4fba9287df82789de064bd0a8efb5d58cb5b29b1902740443"
+        },
+        {
+          "day": 34,
+          "bytes": 1467444,
+          "sha256": "c2ae9f78cac6ccb2b82e96a864bd8381606e000a57b1f39b689f51c35695beee"
+        },
+        {
+          "day": 35,
+          "bytes": 1467444,
+          "sha256": "c7b6dcdcd5b8e29bc9256671c9505c478adca8b2fd5002ce994af27912362e8a"
+        }
+      ],
+      "exact_cold_windows": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 1,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_transaction_receipts_and_day5_native_replay_exact": true,
+      "compiled_native_refusals": 28,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "case": "closed-frost-mixed8-9-water",
+      "optimization": "O2",
+      "actual_producer_source": "ae8ddfbb9e029190baa0d4f42f9002cc3bce8b30",
+      "actual_BUILD_sha256": "5d65321e247e5e1c4d15c7954e8ed4ef91c396793cffe9636286d266c5ea307e",
+      "original_inputs": {
+        "original_archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+        "all_original_parameters_and_other_input_bytes_preserved": true,
+        "only_explicit_declared_selectors_changed": true
+      },
+      "days": 35,
+      "water_daily_max_cm": "9.986E-11",
+      "cde_daily_max_mg_cm2": "0",
+      "cde_every_prefix_max_mg_cm2": "0",
+      "native_samples": [
+        {
+          "day": 2,
+          "bytes": 1466268,
+          "sha256": "c4f495b37ffc02a7bb180e90224c6bca81047b58e8827406b31c057571ba70bc"
+        },
+        {
+          "day": 4,
+          "bytes": 1466268,
+          "sha256": "e56df3a60c1c63d6a6769d7f00defd1764481f56109aed32a08b807566dfd51f"
+        },
+        {
+          "day": 7,
+          "bytes": 1466268,
+          "sha256": "8f886cfb5d27f30b2979e4805afe887d62cd707f1100c87bc0561fb389d1f61e"
+        },
+        {
+          "day": 9,
+          "bytes": 1466268,
+          "sha256": "b3deab3a9ddd848a10499620610f493b7f8005a75261ef2ba63a58ffb3a4c2a7"
+        },
+        {
+          "day": 30,
+          "bytes": 1466268,
+          "sha256": "c1f210791bae83da6903671a92d8abf9b5557bc65cda79f9aed5053456f37a98"
+        },
+        {
+          "day": 34,
+          "bytes": 1466268,
+          "sha256": "ba6efa9ce49ec70d3c93eeceab912eacc840573121daa8e39bd9962178e58902"
+        },
+        {
+          "day": 35,
+          "bytes": 1466268,
+          "sha256": "8001edf68d7a7c4c9a1bd2f1c0ce4101484a975543321ecdbff7a8db1f13e151"
+        }
+      ],
+      "exact_cold_windows": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_transaction_receipts_and_day5_native_replay_exact": true,
+      "compiled_native_refusals": 39,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "case": "closed-ordinary-model5-cde-profile",
+      "optimization": "O2",
+      "actual_producer_source": "ae8ddfbb9e029190baa0d4f42f9002cc3bce8b30",
+      "actual_BUILD_sha256": "4cd44a95ff52593c2e657dfe1dc5884447b6df131b492ab563447e1c40bbd808",
+      "original_inputs": {
+        "original_archive_sha256": "a907ae6b22e797aa3409a63b75af2845ab3106644b803cab326310f8e15b4796",
+        "all_original_parameters_and_other_input_bytes_preserved": true,
+        "only_explicit_declared_selectors_changed": true
+      },
+      "days": 35,
+      "water_daily_max_cm": "9.425992420730906301479E-11",
+      "cde_daily_max_mg_cm2": "0",
+      "cde_every_prefix_max_mg_cm2": "0",
+      "native_samples": [
+        {
+          "day": 2,
+          "bytes": 1466480,
+          "sha256": "9a6909f54053202f27647cf62d827efd5733845c611f5f34a5c551a1bb40621b"
+        },
+        {
+          "day": 4,
+          "bytes": 1466480,
+          "sha256": "ddbeaca56ff845cff6aaa4af02073f58ee5e087448aa213814679689f30aab28"
+        },
+        {
+          "day": 7,
+          "bytes": 1466480,
+          "sha256": "6e0957a4b9fcd1113d99cef0294dff33465a268145750e2f060b4ef22078705b"
+        },
+        {
+          "day": 9,
+          "bytes": 1466480,
+          "sha256": "ac62809937a8d1004cbe4b067560b82e49347f37c0900f8085dbf4c8947aa710"
+        },
+        {
+          "day": 30,
+          "bytes": 1466480,
+          "sha256": "b4a2df36043620545d7ef12dc0bd6ad5a7998f8fe9b9cb0b745f9b77ec374ce7"
+        },
+        {
+          "day": 34,
+          "bytes": 1466480,
+          "sha256": "5e16aa7319eadc3b242109ce5139ae875d828c9cf028977f4ba5b8fcee5d89ae"
+        },
+        {
+          "day": 35,
+          "bytes": 1466480,
+          "sha256": "e71fd6bf6dcaa0f10697ec7e2085ec28fff9c5c7f59db76bd085c6f028180326"
+        }
+      ],
+      "exact_cold_windows": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 1,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_native_and_original_end_bytes_equal": true,
+          "exact_original_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_transaction_receipts_and_day5_native_replay_exact": true,
+      "compiled_native_refusals": 19,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    }
+  ],
+  "context_count": 4,
+  "primary_days": 140,
+  "native_samples": 28,
+  "exact_cold_windows": 12,
+  "compiled_native_refusals": 125,
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "additional_local_contexts_counted_again": false,
+  "canonical_admission": false
+}
