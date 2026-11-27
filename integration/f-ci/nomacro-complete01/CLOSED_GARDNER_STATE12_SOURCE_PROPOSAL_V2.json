@@ -1,0 +1,376 @@
+{
+  "status": "ACTUAL_COMPLETE_LITERAL_CLOSED_GARDNER_APP_SOURCE_DELTA_PENDING_QUALIFICATION",
+  "actual_source": "86b9ee6892d202a4b276a1e132536613fb6beafa",
+  "actual_canonical_parent": "105b9a8e6ca9e846f214d69a71afe73ed18be11d",
+  "files": {
+    "app/hybrid_water/analytical_snow_undrained.py": {
+      "new_file": false,
+      "before_lf_sha256": "40f52d11264133cdf1c2599f52bd02f3bad9364c3e09a6ae5a4c14c2988746e8",
+      "after_lf_sha256": "b0be164a98452f0b2ed6e88d93af8e2f6eb950f12f0091145686381330b6f0b5",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1019,
+          "base_end": 1019,
+          "before": "",
+          "after": "range"
+        },
+        {
+          "base_start": 1022,
+          "base_end": 1036,
+          "before": "3,4,5,6,7,8,9,",
+          "after": ""
+        },
+        {
+          "base_start": 1037,
+          "base_end": 1041,
+          "before": "0,11",
+          "after": "2"
+        },
+        {
+          "base_start": 1313,
+          "base_end": 1315,
+          "before": "!=",
+          "after": " not in ("
+        },
+        {
+          "base_start": 1316,
+          "base_end": 1316,
+          "before": "",
+          "after": ",1)"
+        },
+        {
+          "base_start": 1343,
+          "base_end": 1343,
+          "before": "",
+          "after": ":return None\n if 2 in models or any(x>=8 for x in models):\n  from implicit_hydraulic_state import _models_from_grid\n  # Pure original grid/scalar replication and effective vapor flags;\n  # no implicit selector or physical state is assigned by this reader.\n  if _models_from_grid(active,models) is None"
+        }
+      ]
+    },
+    "app/hybrid_water/closed_zero_boundary.py": {
+      "new_file": true,
+      "before_lf_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_lf_sha256": "64978e3ceb2c0c17796ad536badba270e24ffd8d3dd722234324b3dbf3a9bb51",
+      "ordered_literal_edits": [
+        {
+          "base_start": 0,
+          "base_end": 0,
+          "before": "",
+          "after": "\"\"\"Select existing default-Mualem no-drainage original zero boundary owners.\"\"\"\nimport re\n\ndef input_domain(text,selectors,original_output=True):\n    if original_output is False:return False\n    fixed=dict(SWMACRO=0,SWDRA=0,SWBOTB=6,SWBR=0,SWSOPHY=0,SWFROST=0,\n               SWHEA=1,SWCALT=2,SWMETDETAIL=0)\n    if any(selectors.get(k)!=v for k,v in fixed.items()):return False\n    if any(selectors.get(k) not in values for k,values in\n           [('SWSOLU',(0,1)),('SWSNOW',(0,1)),('SWHYST',(0,1,2)),('SWKIMPL',(0,1)),('SWINCO',(1,2))]):return False\n    active='\\n'.join(line.split('!',1)[0] for line in text.splitlines() if not line.lstrip().startswith('*'))\n    rows=re.findall(r'(?mi)^[ \\t]*IHWCKMODEL[ \\t]*=[ \\t]*([^\\r\\n]*)',active)\n    rest=re.sub(r'(?mi)^[ \\t]*IHWCKMODEL[ \\t]*=[^\\r\\n]*','',active)\n    if len(rows)>1 or re.search(r'(?i)\\b(?:IHWCKMODEL|SWAP_SOILS_DB)\\b',rest):return False\n    if rows and re.fullmatch(r'\\+?0*1(?:[ \\t]+\\+?0*1)*[ \\t]*',rows[0]) is None:return False\n    if selectors['SWSNOW']==0:\n        # Ordinary non-daily initialization needs its own complete output-owner\n        # qualification; this predicate does not claim that remaining gap.\n        dense=dict(NPRINTDAY=1,PERIOD=1,SWMONTH=0,SWODAT=0,SWRES=1)\n        for key,value in dense.items():\n            rows=re.findall(r'(?mi)^[ \\t]*'+key+r'[ \\t]*=[ \\t]*([^\\r\\n]*)',active)\n            if len(rows)!=1 or re.fullmatch(r'[+-]?[0-9]+[ \\t]*',rows[0]) is None or int(rows[0])!=value:return False\n        step=re.findall(r'(?mi)^[ \\t]*FLPRINTDT[ \\t]*=[ \\t]*([^\\r\\n]*)',active)\n        if len(step)>1 or step and step[0].strip().upper() not in ('.FALSE.','FALSE','.F.','F'):return False\n    return True\n"
+        }
+      ]
+    },
+    "app/hybrid_water/experimental_project.py": {
+      "new_file": false,
+      "before_lf_sha256": "a08d1428ab1481039278b6db5379395adcddc456971945029abab673f9317e8b",
+      "after_lf_sha256": "240625ab36e1dca4154b4253ab9dd5961c9b7b6fcaa1f26c5e514cef972e192c",
+      "ordered_literal_edits": [
+        {
+          "base_start": 10145,
+          "base_end": 10145,
+          "before": "",
+          "after": "\n        from closed_zero_boundary import input_domain as closed_initial_domain\n        state_supported=state_supported or closed_initial_domain(text,selected,original_output)"
+        }
+      ]
+    },
+    "app/hybrid_water/frost_analytical_composition.py": {
+      "new_file": false,
+      "before_lf_sha256": "0ba3172e7998cfa7f0fdb3761b953091431810b76d39f1583c6fb927d6efa06f",
+      "after_lf_sha256": "2214136abb304ace7ebd395b03703762b8d340b359efe10a574e5b5c44bf3a7d",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1132,
+          "base_end": 1132,
+          "before": "",
+          "after": "range"
+        },
+        {
+          "base_start": 1135,
+          "base_end": 1149,
+          "before": "3,4,5,6,7,8,9,",
+          "after": ""
+        },
+        {
+          "base_start": 1150,
+          "base_end": 1154,
+          "before": "0,11",
+          "after": "2"
+        },
+        {
+          "base_start": 2285,
+          "base_end": 2287,
+          "before": "!=",
+          "after": " not in ("
+        },
+        {
+          "base_start": 2288,
+          "base_end": 2288,
+          "before": "",
+          "after": ",1)"
+        },
+        {
+          "base_start": 2355,
+          "base_end": 2355,
+          "before": "",
+          "after": ":return None\n        if any(x>=8 for x in models) and any(flag!=0 for model,flag in zip(models,flags) if model>=8)"
+        },
+        {
+          "base_start": 3565,
+          "base_end": 3565,
+          "before": "",
+          "after": ")\n    # The original Gardner branches already own the physical constitutive\n    # calculations. Relax only their previously excluded static native witness,\n    # selected by the actual per-layer input models. All admitted old model\n    # native renderings remain byte-for-byte unchanged.\n    if 2 in item['analytical_frost_models']:\n        if boundary_domain(item):\n            before=('    if(any(iHWCKmodel(1:numlay)<1).or.any(iHWCKmodel(1:numlay)>11).or. &\\n'\n                    \"       any(iHWCKmodel(1:numlay)==2))error stop 'Foreign analytical Frost boundary constitutive models'\")\n            after=\"    if(any(iHWCKmodel(1:numlay)<1).or.any(iHWCKmodel(1:numlay)>11))error stop 'Foreign analytical Frost boundary constitutive models'\"\n        else:\n            before='       any(iHWCKmodel(1:numlay)==2).or.all(iHWCKmodel(1:numlay)==1)) &'\n            after='       all(iHWCKmodel(1:numlay)==1)) &'\n        if text.count(before)!=1:raise ValueError('Foreign original Gardner Frost native witness anchor')\n        text=text.replace(before,after,1)\n        if not boundary_domain(item):\n            before_vapor=('    if(any((iHWCKmodel(1:numlay)>=8).and.(.not.NoVap(1:numlay)))) &\\n'\n                          \"       error stop 'Active vapor cannot use analytical Frost native'\")\n            after_vapor=('    do i=1,numlay\\n'\n                         '      if(iHWCKmodel(i)>=8)then\\n'\n                         \"        if(.not.NoVap(i))error stop 'Active vapor cannot use analytical Frost native'\\n\"\n                         '      end if\\n    end do')\n            for left,right in [('    integer::n,ios','    integer::n,ios,i'),(before_vapor,after_vapor)]:\n                if text.count(left)!=1:raise ValueError('Foreign Gardner inactive native vapor anchor')\n                text=text.replace(left,right,1"
+        }
+      ]
+    },
+    "app/hybrid_water/frost_undrained_state.py": {
+      "new_file": false,
+      "before_lf_sha256": "b56f574ceef56003113eefc647fa88a17086c439a440a1a24302aaaaa2e52c13",
+      "after_lf_sha256": "53450d691a4c97ac3d9733d9bfd3b429483ebb0be4fc08abcbe75610de69a71f",
+      "ordered_literal_edits": [
+        {
+          "base_start": 463,
+          "base_end": 567,
+          "before": ")\n                and (boundary.get('SWBOTB')!=6 or selectors.get('SWKIMPL')==selectors.get('SWHYST')==0",
+          "after": ""
+        },
+        {
+          "base_start": 2369,
+          "base_end": 2369,
+          "before": "",
+          "after": "if values['SWKIMPL']==values['SWHYST']==0:\n            "
+        },
+        {
+          "base_start": 2423,
+          "base_end": 2423,
+          "before": "",
+          "after": "    "
+        },
+        {
+          "base_start": 2496,
+          "base_end": 2496,
+          "before": "",
+          "after": "    "
+        },
+        {
+          "base_start": 2518,
+          "base_end": 2518,
+          "before": "",
+          "after": "return None\n        elif models and re.fullmatch(r'\\+?0*1(?:[ \\t]+\\+?0*1)*[ \\t]*',models[0]) is None:\n            # Original non1+hysteresis is invalid. Implicit closed non1 still\n            # requires its separate explicit per-layer native admission.\n            "
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_conductivity.py": {
+      "new_file": false,
+      "before_lf_sha256": "1938a8598846bb472452d800b31c6d1bba647e61d8a4ca00b7d8defb50042a99",
+      "after_lf_sha256": "2d0f5c6f6697b3d0a4677e711e3d0baed476ec6cb72a7af173276fa9d2a09575",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1026,
+          "base_end": 1026,
+          "before": "",
+          "after": "0,"
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_frost_source_guard.py": {
+      "new_file": false,
+      "before_lf_sha256": "bba121005038a4eaae136389800a84dbd591e0a5ed7ab2397699611f68cb24fe",
+      "after_lf_sha256": "b7a98d977e0abc78dd266f08fdbe0633b5d9150c2511d2ce5df25e5a4403e894",
+      "ordered_literal_edits": [
+        {
+          "base_start": 777,
+          "base_end": 777,
+          "before": "",
+          "after": " or boundary==6"
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_snow_composition.py": {
+      "new_file": false,
+      "before_lf_sha256": "fde022ea9b97a124d91d28bda3562e8d4936ee3418d978d623f8a42ec14d50a2",
+      "after_lf_sha256": "507ba5002cf6fca748e2bb9db5cc01171def264d5cd021f651aeedb8f7789141",
+      "ordered_literal_edits": [
+        {
+          "base_start": 488,
+          "base_end": 488,
+          "before": "",
+          "after": "(("
+        },
+        {
+          "base_start": 523,
+          "base_end": 523,
+          "before": "",
+          "after": ")) or (bottom==6 and drain==0)"
+        }
+      ]
+    },
+    "app/hybrid_water/initial_profile_calendar.py": {
+      "new_file": false,
+      "before_lf_sha256": "258bb8fab0aec201041e79d9559253b677c9089e32ae1c854f228d6be1b81039",
+      "after_lf_sha256": "76ea1cab6b642cb81aedba0196f9654e6d4e4928f4ee0b041f9ebc8517276519",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1825,
+          "base_end": 1825,
+          "before": "",
+          "after": "from closed_zero_boundary import input_domain as closed_domain\n if snow and closed_domain(text,s,original_output):pass\n el"
+        }
+      ]
+    },
+    "app/hybrid_water/original_output.py": {
+      "new_file": false,
+      "before_lf_sha256": "6836d18ea114a26f4f275a9fa5f5d747a4d19d2f43757b9f112bdb925736514d",
+      "after_lf_sha256": "8ede54bea920b09f5d4c760ffaef040ba6ef53f0da49d1c6bd99c000137466f6",
+      "ordered_literal_edits": [
+        {
+          "base_start": 2647,
+          "base_end": 2647,
+          "before": "",
+          "after": "\n        if key=='SWDRA':\n            from closed_zero_boundary import input_domain as closed_domain\n            from experimental_project import switches\n            if closed_domain(text,switches(text),project.original_output):continue"
+        }
+      ]
+    },
+    "app/hybrid_water/original_output_hysteresis.py": {
+      "new_file": false,
+      "before_lf_sha256": "e686bc59cb108b3a48012d31e285dae272ea5d9678398dbbba0e6133d2cbb0f3",
+      "after_lf_sha256": "dcb8519cd497dcfd23e5e543c99aba77ba583d764cd0d3177006bf8c6a4fd535",
+      "ordered_literal_edits": [
+        {
+          "base_start": 2700,
+          "base_end": 2700,
+          "before": "",
+          "after": "\n            from closed_zero_boundary import input_domain as closed_domain\n            from experimental_project import switches\n            if closed_domain(text,switches(text),project.original_output):continue"
+        }
+      ]
+    },
+    "app/hybrid_water/prescribed_head_flux_boundary.py": {
+      "new_file": false,
+      "before_lf_sha256": "9448349f37457347db05f8524ede5046a25e838ec40720c8204bbe1183237efc",
+      "after_lf_sha256": "b4bbf6c8076f16931cd5c685a88ea9b7dd2d5a9167b1a1f33c665eba11aa1606",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1933,
+          "base_end": 1933,
+          "before": "",
+          "after": " or value==2 and snow and hysteresis==0"
+        }
+      ]
+    },
+    "app/hybrid_water/prescribed_snow_boundary.py": {
+      "new_file": false,
+      "before_lf_sha256": "253dd6763af609816d65423b0aecfa67fb9dc1f32293a6d72a5d68b09183b6be",
+      "after_lf_sha256": "9b09b4993bff9d4956ed41d64e0742d1e9136e131000877308a66d3a2636eee0",
+      "ordered_literal_edits": [
+        {
+          "base_start": 2247,
+          "base_end": 2247,
+          "before": "",
+          "after": "range"
+        },
+        {
+          "base_start": 2250,
+          "base_end": 2264,
+          "before": "3,4,5,6,7,8,9,",
+          "after": ""
+        },
+        {
+          "base_start": 2265,
+          "base_end": 2269,
+          "before": "0,11",
+          "after": "2"
+        },
+        {
+          "base_start": 2302,
+          "base_end": 2302,
+          "before": "",
+          "after": ":return None\n  if 2 in list(map(int,models[0].split())):\n   from implicit_hydraulic_state import _models_from_grid\n   if _models_from_grid(active,list(map(int,models[0].split()))) is None"
+        }
+      ]
+    },
+    "app/hybrid_water/snow_undrained.py": {
+      "new_file": false,
+      "before_lf_sha256": "25283120b0600ae12e0155ea5c12e20b45067ba54c287a64d6632462543e05c5",
+      "after_lf_sha256": "88c9f4fd583bc73babd9b09428eae961f030f61780ec37147dd140b92985898a",
+      "ordered_literal_edits": [
+        {
+          "base_start": 680,
+          "base_end": 680,
+          "before": "",
+          "after": ",6"
+        }
+      ]
+    },
+    "app/hybrid_water/snow_undrained_build.py": {
+      "new_file": false,
+      "before_lf_sha256": "46503ff3587142905b0b8a4084a10de6ddd4c68183a2cad4f3b0c961e5e308f4",
+      "after_lf_sha256": "dd6aa3e9d108a9dc64b682d7daedc611e03a138fcdc114d7bafc147922de5c85",
+      "ordered_literal_edits": [
+        {
+          "base_start": 646,
+          "base_end": 646,
+          "before": "",
+          "after": "if selected['swbotb']==6:\n        result=native.replace(result,'(swbotb/=5.and.swbotb/=8)','swbotb/=6')\n    el"
+        },
+        {
+          "base_start": 10184,
+          "base_end": 10184,
+          "before": "",
+          "after": "6:\n        # Literal original Boundbottom assigns qbot=0 for bottom6. This is an\n        # independent candidate receipt, not a substituted accepted flux/store.\n        guard='\\n         hybrid_snow_trial_guard=hybrid_snow_soil_trial_residual(0d0)\\n         if(abs(hybrid_snow_trial_guard)>1d-10)flnonconv=.true.'\n    elif selected is not None and selected['swbotb']=="
+        }
+      ]
+    },
+    "app/hybrid_water/snow_undrained_source_guard.py": {
+      "new_file": false,
+      "before_lf_sha256": "5e9ca43bce00181bfd242692a795650255cf4d925b412b6a9f5e9e80f6c8c66a",
+      "after_lf_sha256": "67ed6606bd03f0433bd7512020fe6c4b618f7597d13bced15b4d0f56e62aaaab",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1637,
+          "base_end": 1639,
+          "before": "==",
+          "after": " in (6,"
+        },
+        {
+          "base_start": 1640,
+          "base_end": 1640,
+          "before": "",
+          "after": ")"
+        },
+        {
+          "base_start": 6752,
+          "base_end": 6752,
+          "before": "",
+          "after": ",8)\n        elif selected['swbotb']==6:\n            from lower_boundary_receipt import render_headcalc\n            source=render_headcalc(source"
+        }
+      ]
+    },
+    "app/hybrid_water/snow_undrained_state.py": {
+      "new_file": false,
+      "before_lf_sha256": "f98f2dc62b811c79a8a049f765cacf7108194e09594a5bd31a50a8a51638cbc6",
+      "after_lf_sha256": "9e021cdc70e71a20eef21e1d04fecbd62f34069b324ef353b0cdc65a59857b1a",
+      "ordered_literal_edits": [
+        {
+          "base_start": 999,
+          "base_end": 999,
+          "before": "",
+          "after": "6:\n        text=replace(text,'(swbotb/=5.and.swbotb/=8)','swbotb/=6')\n    elif selected['swbotb']=="
+        },
+        {
+          "base_start": 1212,
+          "base_end": 1212,
+          "before": "",
+          "after": ")\n        if 2 in selected['analytical_snow_models']:\n            before='       any(iHWCKmodel(1:numlay)==2).or.all(iHWCKmodel(1:numlay)==1)) &'\n            after='       all(iHWCKmodel(1:numlay)==1)) &'\n            extra=replace(extra,before,after)\n            extra=replace(extra,'    integer::n,ios','    integer::n,ios,i')\n            before_vapor=('    if(any((iHWCKmodel(1:numlay)>=8).and.(.not.NoVap(1:numlay)))) &\\n'\n                          \"       error stop 'Active vapor cannot use analytical Snow native'\")\n            after_vapor=('    do i=1,numlay\\n'\n                         '      if(iHWCKmodel(i)>=8)then\\n'\n                         \"        if(.not.NoVap(i))error stop 'Active vapor cannot use analytical Snow native'\\n\"\n                         '      end if\\n    end do')\n            extra=replace(extra,before_vapor,after_vapor"
+        },
+        {
+          "base_start": 1947,
+          "base_end": 1947,
+          "before": "",
+          "after": " and selected['swbotb']!=6"
+        }
+      ]
+    }
+  },
+  "physical_equations_changed": false,
+  "new_physical_state": false,
+  "new_numerical_policy": false,
+  "canonical_admission": false
+}
