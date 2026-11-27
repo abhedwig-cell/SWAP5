@@ -2,7 +2,7 @@
 from contextlib import ExitStack
 from decimal import Decimal,localcontext
 from pathlib import Path
-import argparse,io,json,math,re,struct,sys,zipfile
+import argparse,ast,io,json,math,re,struct,sys,zipfile
 from datetime import date
 from closed_implicit_state_feedback import R,P,PARENT,SHA,git
 from original_output_baseline import assignment
@@ -56,6 +56,14 @@ def observe(folder,build=None,inputs=None,controls=None,original_store=None):
     for role in ['donor','kernel']:
         names=[n for n in ['day_'+role,'day_'+role+'.exe'] if (build/n).is_file()];assert len(names)==1 and SHA((build/names[0]).read_bytes())==meta['executable_sha256'][role]
     assert dict(q['input_inventory'])==meta['inputs']
+    trial=meta['identity']['implicit_hydraulic_state'].get('closed_desaturation_trial_start')
+    if trial is not None:
+        owner=git('show',q['actual_source']+':app/hybrid_water/implicit_closed_desaturation.py')
+        tree=ast.parse(owner);policy=next(ast.literal_eval(v.value) for v in tree.body if isinstance(v,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='POLICY' for t in v.targets))
+        assert trial['policy']==policy and trial['new_numerical_policy'] is True
+        assert not trial['accepted_state_added'] and not trial['physical_equations_changed'] and not trial['tolerances_changed']
+        assert trial['original_full_residual_and_budget_acceptance_required'] is True
+        assert trial['providers']=={name:SHA(git('show',q['actual_source']+':app/hybrid_water/'+name)) for name in ['implicit_closed_desaturation.py','implicit_closed_desaturation_trial.f90']}
     for name,digest in q['input_inventory']:assert SHA((inputs/name).read_bytes())==digest
     input_proof=original_inputs(q,inputs,original_store)
     plan=json.loads(git('show',q['actual_source']+':'+P+'CLOSED_IMPLICIT_STATE13_FINITE_CASE_PLAN_V1.json'))
@@ -123,9 +131,46 @@ def observe(folder,build=None,inputs=None,controls=None,original_store=None):
     if controls is not None:
         c=json.loads((controls/'RESULT.json').read_text());assert c['status']=='ACTUAL_COMPILED_CLOSED_IMPLICIT_OWN_POSITIVE_AND_NATIVE_REFUSALS_PASS_ZERO_MODEL_DAYS' and c['actual_producer_source']==q['actual_source'] and c['actual_BUILD_sha256']==q['actual_BUILD_sha256'] and c['genuine_own_positive_ready'] and c['model_days']==0
         assert b'HYBRID_READY' in (controls/'genuine-own-positive/donor.stdout').read_bytes() and not (controls/'genuine-own-positive/donor.stderr').read_bytes()
+        original_receipt,original_payload=payload(folder/'trajectory/accepted-column-1-day-4.zip')
+        good=original_payload['macro.bin'];assert c['original_checkpoint_sha256']==SHA((folder/'trajectory/accepted-column-1-day-4.zip').read_bytes())
+        positive=(controls/'genuine-own-positive/donor.stdout').read_text().splitlines()
+        states=[line.split()[1:] for line in positive if line.startswith('HYBRID_STOCK_FLUX ')]
+        heads=[line.split()[1:] for line in positive if line.startswith('HYBRID_HYDRAULIC ')]
+        assert len(states)==len(heads)==1 and list(map(float,states[0][:6]))==original_receipt['receipt']['stock_end_cm']
+        assert list(map(float,heads[0][2:]))==original_receipt['receipt']['pressure_head_cm']
+        domains=[]
+        if spec['frost']:
+            domains.append(['thermal',[1,nodes,0,int(spec['kind']=='cde'),spec['hysteresis'],1,1,0,1,2]])
+            domains.append(['root',[5,nodes,int(spec['kind']=='cde'),1,spec['hysteresis'],6,1,0]])
+        elif spec['snow']:
+            domains.append(['root',[3,nodes,int(spec['kind']=='cde'),1,spec['hysteresis'],6,1,0]])
+        domains.append(['implicit-per-layer',header]);assert c['domains']==domains
+        expected_attacks={'foreign-magic':b'S5BAD999'+good[8:],'truncated':good[:-1],'trailing':good+b'x'}
+        for label,values in domains:
+            packed=struct.pack('<'+str(len(values))+'i',*values);assert good.count(packed+packed)==1
+            pos=good.index(packed+packed);size=len(packed)
+            for index,value in enumerate(values):
+                bad=bytearray(good)
+                for offset in [pos,pos+size]:struct.pack_into('<i',bad,offset+4*index,value+1)
+                expected_attacks[label+'-field-'+str(index)]=bytes(bad)
+            bad=bytearray(good);struct.pack_into('<i',bad,pos+size,values[0]+1);expected_attacks[label+'-single-witness']=bytes(bad)
+        if scalar('SWODAT')==1 and scalar('SWMONTH')==0:
+            dates=re.findall(r'(?mis)^\s*OUTDATINT\s*=\s*\n\s*(\d{4}-\d{2}-\d{2})',text);assert len(dates)==1
+            if dates[0]<meta['project']['start_date']:
+                positions=[]
+                for pos in range(8,len(good)-160):
+                    if good[pos:pos+8]!=struct.pack('<2i',1,nodes):continue
+                    values=struct.unpack_from('<20i',good,pos)
+                    if values[3]>100 and values==struct.unpack_from('<20i',good,pos+80):positions.append((pos,values))
+                assert len(positions)==1;pos,values=positions[0];assert values[10]==1
+                bad=bytearray(good)
+                for offset in [pos,pos+80]:struct.pack_into('<i',bad,offset+40,2)
+                expected_attacks['forged-advance-of-original-pending-date-pointer']=bytes(bad)
+        assert len(c['refusals'])==len({v['attack'] for v in c['refusals']})==len(expected_attacks)
+        assert {v['attack'] for v in c['refusals']}==set(expected_attacks)
         for check in c['refusals']:
-            root=controls/check['attack'];assert SHA((root/'origin/macro.bin').read_bytes())==check['actual_mutant_sha256'];out=(root/'donor.stdout').read_bytes();err=(root/'donor.stderr').read_bytes();assert b'ERROR STOP' in err and b'HYBRID_READY' not in out and b'HYBRID_DAY_RETURN' not in out;refusals+=1
-        assert refusals>=3
+            root=controls/check['attack'];assert (root/'origin/macro.bin').read_bytes()==expected_attacks[check['attack']];assert SHA((root/'origin/macro.bin').read_bytes())==check['actual_mutant_sha256'];out=(root/'donor.stdout').read_bytes();err=(root/'donor.stderr').read_bytes();assert b'ERROR STOP' in err and b'HYBRID_READY' not in out and b'HYBRID_DAY_RETURN' not in out;refusals+=1
+        assert refusals==len(expected_attacks)
     return dict(case=q['case'],optimization=q['optimization'],actual_producer_source=q['actual_source'],actual_BUILD_sha256=q['actual_BUILD_sha256'],original_inputs=input_proof,days=35,water_daily_max_cm=str(water),cde_daily_max_mg_cm2=str(chemical),cde_every_prefix_max_mg_cm2=str(prefix),native_samples=samples,exact_cold_windows=cold,actual_transaction_receipts_and_day5_native_replay_exact=True,compiled_native_refusals=refusals,compiler_executions=0,model_executions=0,canonical_admission=False)
 
 

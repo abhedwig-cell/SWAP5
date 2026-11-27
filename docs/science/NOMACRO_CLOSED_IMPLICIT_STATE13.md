@@ -69,3 +69,20 @@ No physical/native state or clock counter is assigned; original loop bounds,
 complete head/pond/soil/budget criteria and rollback still own acceptance.
 Four actual previous generated forms pass exact new literal seams/inverses.
 Actual production V3 coupled qualification is pending.
+
+Actual ae8ddfbb production V3 completes all four previous failure regressions:
+140 primary days,28 native samples,12 exact cold windows,125 compiled native
+refusals and4 transaction contexts. Independent audit passes; raw bb345b23.
+This is local feedback; portable14 on Windows/Ubuntu O0/O2 remains selected.
+Independent raw auditing now reconstructs every expected native attack byte,
+checks the full attack-name set and exact positive initial physical receipts,
+and binds each numerical provider to its genuine actual producer Git bytes.
+
+Native preservation accounts explicitly for the changed static guard code:
+only implicit_hydraulic_state_native or implicit_frost_hydraulic_state_native
+may differ, exactly from canonical948 source to the committed literal proposal.
+All other complete generated numerical source/object bytes must be identical.
+Real compiled consumers must read the exact original native state and refuse
+every corrupted static field before READY; original checkpoint bindings and
+producer roles remain unchanged. No original physical period is repeated.
+The unaffected parent controller keeps its stricter whole-object equality.
