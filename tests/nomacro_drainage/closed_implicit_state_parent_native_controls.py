@@ -25,9 +25,10 @@ def native_controls(archive,original,oldmeta,build,project,output):
         return child,receipt
     positive,receipt=start('exact-original-native-positive',good)
     assert positive.returncode in (0,100) and b'HYBRID_READY' in positive.stdout and not positive.stderr
-    lines=positive.stdout.decode().splitlines();stocks=[v.split()[1:] for v in lines if v.startswith('HYBRID_STOCK_FLUX ')];heads=[v.split()[1:] for v in lines if v.startswith('HYBRID_HYDRAULIC ')]
-    assert len(stocks)==len(heads)==1 and list(map(float,stocks[0][:6]))==receipt['stock_end_cm']
-    assert list(map(float,heads[0][2:]))==receipt['pressure_head_cm'] and float(heads[0][0])==receipt['groundwater_cm']
+    lines=positive.stdout.decode().splitlines();ready=next(index for index,line in enumerate(lines) if line.startswith('HYBRID_READY '));lines=lines[:ready]
+    stocks=[v.split()[1:] for v in lines if v.startswith('HYBRID_STOCK_FLUX ')];heads=[v.split()[1:] for v in lines if v.startswith('HYBRID_HYDRAULIC ')]
+    assert stocks and heads and list(map(float,stocks[-1][:6]))==receipt['stock_end_cm']
+    assert list(map(float,heads[-1][2:]))==receipt['pressure_head_cm'] and float(heads[-1][0])==receipt['groundwater_cm']
     result['exact_original_native_positive']=dict(returncode=positive.returncode,initial_physical_stock_and_head_receipt_exact=True);save()
     attacks=[('missing-extension',good[:-len(suffix)]),('truncated-extension',good[:-1]),('foreign-tag',good[:-len(suffix)]+b'S5BAD999'+good[-len(suffix)+8:]),('trailing-byte',good+b'x')]
     pos=len(good)-len(suffix)+8;size=len(packed)

@@ -134,10 +134,13 @@ def observe(folder,build=None,inputs=None,controls=None,original_store=None):
         original_receipt,original_payload=payload(folder/'trajectory/accepted-column-1-day-4.zip')
         good=original_payload['macro.bin'];assert c['original_checkpoint_sha256']==SHA((folder/'trajectory/accepted-column-1-day-4.zip').read_bytes())
         positive=(controls/'genuine-own-positive/donor.stdout').read_text().splitlines()
+        ready=next(index for index,line in enumerate(positive) if line.startswith('HYBRID_READY '));positive=positive[:ready]
         states=[line.split()[1:] for line in positive if line.startswith('HYBRID_STOCK_FLUX ')]
         heads=[line.split()[1:] for line in positive if line.startswith('HYBRID_HYDRAULIC ')]
-        assert len(states)==len(heads)==1 and list(map(float,states[0][:6]))==original_receipt['receipt']['stock_end_cm']
-        assert list(map(float,heads[0][2:]))==original_receipt['receipt']['pressure_head_cm']
+        # The actual worker protocol selects the latest value before READY;
+        # restart initialization may emit a preliminary stock record first.
+        assert states and heads and list(map(float,states[-1][:6]))==original_receipt['receipt']['stock_end_cm']
+        assert list(map(float,heads[-1][2:]))==original_receipt['receipt']['pressure_head_cm']
         domains=[]
         if spec['frost']:
             domains.append(['thermal',[1,nodes,0,int(spec['kind']=='cde'),spec['hysteresis'],1,1,0,1,2]])
