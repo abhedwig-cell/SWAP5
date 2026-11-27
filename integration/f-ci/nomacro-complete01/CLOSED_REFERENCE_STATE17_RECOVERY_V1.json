@@ -21,5 +21,15 @@
   "no_completion_percentage": true,
   "functional_completion": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
-  "RC3_changed": false
+  "RC3_changed": false,
+  "actual_new_component_source": "338eda4aa5",
+  "new_component_raw": "ORIGINAL_TILLAGE_POST_EVENT_PRIVATE_STATE_RAW_V2.json",
+  "new_component_qualification": "Private post-event technical O0/O2 state seam and stream only; two real cold positives and sixteen cold corruption refusals. Full SWTILL process admission remains open.",
+  "cleanup_record": "CLOSED_REFERENCE_STATE17_FINAL_STORAGE_COMPACT_V1.json",
+  "newest_released_O0_O2_builds_retained": true,
+  "all_required_raw_read_back_from_actual_Git": true,
+  "old_reference_and_state_only_builds_cleaned": true,
+  "never_repeat_completed_periods_without_new_source_or_acceptance_criterion": true,
+  "removed_paths_must_not_be_used_as_inputs": true,
+  "old_build_recovery": "Use explicit immutable GitArchiveSource/ReadView for CLOSED_REFERENCE_STATE17_ORIGINAL_CSV_AND_FULL_CAUSAL_RAW_V1 and ORIGINAL_TILLAGE_POST_EVENT_PRIVATE_STATE_RAW_V2. Reconstruct only selected reproducible files in a newly allocated resource; keep original identities."
 }
