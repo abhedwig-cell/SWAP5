@@ -1,6 +1,6 @@
 """Real original private module seam; technical states are not scientific inputs."""
 from pathlib import Path
-import argparse,hashlib,json,os,subprocess,sys,time
+import argparse,hashlib,json,os,struct,subprocess,sys,time
 R=Path(__file__).resolve().parents[2];sys.path.insert(0,str(R/'app/hybrid_water'))
 import original_tillage_checkpoint as seam
 J=Path('C:/Users/Veldh012/swap5-coverage-evidence/J_windows_provider')
@@ -10,14 +10,29 @@ SHA=lambda b:hashlib.sha256(b).hexdigest()
 def driver():
  lines=['program test_original_tillage_state','use MOD_tillage','use MOD_swap_base, only: swtill',
         'use MOD_grid, only: NumLay, NumNod','use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan',
-        'implicit none','type('+seam.TYPE+') :: a,b,c,bad','logical :: ok','integer :: i,model',
+        'implicit none','type('+seam.TYPE+') :: a,b,c,bad','logical :: ok','integer :: i,model,unit',
+        'character(len=20) :: mode','character(len=1024) :: filename',
         '! Technical state vectors only: no project, weather, physical timestep or density input.',
         'NumLay=2; NumNod=2; swtill=1','a%Ntill=2; a%iTill=2; a%Ntypes=2; a%i_n_model=3; a%iRedist=2',
         'a%MaxNumSoilHo=2; a%MaxNumSoilCP=2; a%Max_Z_tillage=2d0']
  for name,size in seam.INTEGER_ARRAYS.items():lines.append('a%'+name+' = [1,2]')
  for name,size in {**seam.REAL_ARRAYS,**seam.MATCH_ARRAYS}.items():
   lines.append('a%'+name+' = [(dble(i),i=1,a%'+size+')]')
- lines += ['call hybrid_tillage_restore_post_event(a,ok)','if(.not.ok)error stop "Valid technical post-event state refused"',
+ lines += ['call get_command_argument(1,mode)','call get_command_argument(2,filename)',
+           "if(trim(mode)=='cold')then",
+           "open(newunit=unit,file=trim(filename),access='stream',form='unformatted',status='old')",
+           "call hybrid_tillage_read_post_event(unit,repeat('a',64),bad,ok)",
+           'close(unit)','if(.not.ok)error stop "Cold native read refused"',
+           'call hybrid_tillage_restore_post_event(bad,ok)','if(.not.ok)error stop "Cold restore refused"',
+           'call hybrid_tillage_capture_post_event(c,ok)','if(.not.ok)error stop "Cold capture refused"',
+           'call identical(a,c)',"write(*,'(a)')'ORIGINAL_PRIVATE_TILLAGE_COLD_STATE_EXACT'",'stop','end if',
+           'call hybrid_tillage_restore_post_event(a,ok)','if(.not.ok)error stop "Valid technical post-event state refused"',
+           "if(trim(mode)=='cold_reject')then",
+           "open(newunit=unit,file=trim(filename),access='stream',form='unformatted',status='old')",
+           "call hybrid_tillage_read_post_event(unit,repeat('a',64),bad,ok)",
+           'close(unit)','if(ok)error stop "Corrupt native read accepted"',
+           'call hybrid_tillage_capture_post_event(c,ok)','if(.not.ok)error stop "Rejected read damaged private state"',
+           'call identical(a,c)',"write(*,'(a)')'ORIGINAL_PRIVATE_TILLAGE_COLD_CORRUPTION_REFUSED_NO_MUTATION'",'stop','end if',
            'a%Date_tillage(1)=99d0',
            'call hybrid_tillage_capture_post_event(b,ok)','if(.not.ok.or.b%Date_tillage(1)/=1d0)error stop "Caller aliases private saved state"',
            'a=b','a%Rho_cons(1)=123d0',
@@ -36,6 +51,9 @@ def driver():
  for name in seam.MATCH_ARRAYS:lines.append('if(allocated(c%'+name+'))error stop "Undefined inactive matching state serialized"')
  lines += ['end do','call hybrid_tillage_restore_post_event(b,ok)','if(.not.ok)error stop "Rollback refused"',
            'call hybrid_tillage_capture_post_event(c,ok)','if(.not.ok)error stop "Rollback capture refused"','call identical(b,c)',
+           "open(newunit=unit,file='state.bin',access='stream',form='unformatted',status='new')",
+           "call hybrid_tillage_write_post_event(unit,repeat('a',64),b,ok)",
+           'close(unit)','if(.not.ok)error stop "Native write refused"',
            'write(*,\'(a)\')"ORIGINAL_PRIVATE_TILLAGE_POST_EVENT_TECHNICAL_STATE_PASS"','contains',
            'subroutine refuse_without_mutation(incoming,previous)','type('+seam.TYPE+'),intent(in)::incoming,previous',
            'type('+seam.TYPE+')::actual','logical::accepted',
@@ -70,7 +88,12 @@ def main():
   objects=[build/'tillage.o' if f.name=='tillage.o' else f for f in sorted((J/'build/swap-obj').glob('*.o')) if f.name!='swap_main.o']
   exe=build/'technical-state.exe';run([compiler,'-fcheck=all','-o',exe,build/'technical_driver.o',*objects,J/'build/ttutil-obj/libttutil.a'],'link')
   child=run([exe],'technical_process');assert b'ORIGINAL_PRIVATE_TILLAGE_POST_EVENT_TECHNICAL_STATE_PASS' in child.stdout
-  q['contexts'].append(dict(optimization=opt,commands=commands,actual_source=head,original_source_sha256=SHA(original),generated_source_sha256=SHA(patched),executable_sha256=SHA(exe.read_bytes()),unchanged_original_objects={f.name:SHA(f.read_bytes()) for f in objects if f.parent!=build},deep_copy_and_failed_restore_no_mutation=True,undefined_inactive_matching_arrays_not_read_or_serialized=True,original_physical_timestep_calls=0));save();print(opt,'ORIGINAL_PRIVATE_STATE_COMPONENT_PASS_NO_PHYSICAL_TRAJECTORY',flush=True)
+  child=run([exe,'cold',build/'state.bin'],'technical_cold_process');assert b'ORIGINAL_PRIVATE_TILLAGE_COLD_STATE_EXACT' in child.stdout
+  raw=(build/'state.bin').read_bytes();assert raw[:8]==b'SW5TIL01' and raw[8:72].decode()==seam.ORIGINAL_SHA and raw[72:136]==b'a'*64
+  controls={'magic':b'X'+raw[1:],'source':raw[:8]+b'0'+raw[9:],'binding':raw[:72]+b'b'+raw[73:],'schema':raw[:136]+struct.pack('<i',2)+raw[140:],'allocation_bound':raw[:140]+struct.pack('<i',2147483647)+raw[144:],'nonfinite':raw[:168]+struct.pack('<d',float('nan'))+raw[176:],'truncated':raw[:-1],'trailer':raw+b'X'}
+  for name,poison in controls.items():
+   path=build/(name+'.bin');path.write_bytes(poison);child=run([exe,'cold_reject',path],'technical_negative_process');assert b'ORIGINAL_PRIVATE_TILLAGE_COLD_CORRUPTION_REFUSED_NO_MUTATION' in child.stdout
+  q['contexts'].append(dict(optimization=opt,commands=commands,actual_source=head,original_source_sha256=SHA(original),generated_source_sha256=SHA(patched),executable_sha256=SHA(exe.read_bytes()),unchanged_original_objects={f.name:SHA(f.read_bytes()) for f in objects if f.parent!=build},deep_copy_and_failed_restore_no_mutation=True,undefined_inactive_matching_arrays_not_read_or_serialized=True,exact_cold_technical_state=True,actual_original_native_sha256=SHA(raw),actual_cold_corruption_refusals={name:SHA(value) for name,value in controls.items()},original_physical_timestep_calls=0));save();print(opt,'ORIGINAL_PRIVATE_STATE_COMPONENT_PASS_NO_PHYSICAL_TRAJECTORY',flush=True)
  q['status']='TWO_REAL_ORIGINAL_PRIVATE_TILLAGE_POST_EVENT_COMPONENTS_PASS_PHYSICAL_QUALIFICATION_PENDING';save()
 
 

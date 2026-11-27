@@ -21,7 +21,8 @@ def declarations():
            '      real(8) :: Max_Z_tillage = 0d0']
     for kind,names in [('integer',INTEGER_ARRAYS),('real(8)',{**REAL_ARRAYS,**MATCH_ARRAYS})]:
         for name in names:lines.append('      '+kind+', allocatable :: '+name+'(:)')
-    return '\n'.join(lines+['   end type '+TYPE,'   public :: hybrid_tillage_capture_post_event, hybrid_tillage_restore_post_event',''])
+    return '\n'.join(lines+['   end type '+TYPE,'   public :: hybrid_tillage_capture_post_event, hybrid_tillage_restore_post_event',
+        '   public :: hybrid_tillage_write_post_event, hybrid_tillage_read_post_event',''])
 
 
 def routines():
@@ -70,7 +71,60 @@ def routines():
     for name in {**INTEGER_ARRAYS,**REAL_ARRAYS}:lines.append('      call move_alloc(staged%'+name+', '+name+')')
     lines.append('      if (i_n_model == 3) then')
     for name in MATCH_ARRAYS:lines.append('         call move_alloc(staged%'+name+', '+name+')')
-    return '\n'.join(lines+['      end if','      ok = .true.','   end subroutine hybrid_tillage_restore_post_event',''])
+    lines += ['      end if','      ok = .true.','   end subroutine hybrid_tillage_restore_post_event','']
+    lines += codec()
+    return '\n'.join(lines)+ '\n'
+
+
+def codec():
+    """Whole owned stream only; host still owns integrity and physical binding."""
+    header=['s%schema',*( 's%'+name for name in INTEGERS),'s%Max_Z_tillage']
+    lines=['   subroutine hybrid_tillage_write_post_event(unit, binding, s, ok)',
+        '      integer, intent(in) :: unit','      character(len=64), intent(in) :: binding',
+        '      type('+TYPE+'), intent(in) :: s','      logical, intent(out) :: ok','      integer :: io',
+        '      ok = .false.','      if (.not.hybrid_tillage_valid(s)) return',
+        "      if (verify(binding,'0123456789abcdef') /= 0) return",
+        '      if (storage_size(s%Ntill) /= 32 .or. storage_size(s%Max_Z_tillage) /= 64) return',
+        "      write(unit,iostat=io) 'SW5TIL01', '"+ORIGINAL_SHA+"', binding, "+', '.join(header),
+        '      if (io /= 0) return']
+    for name in {**INTEGER_ARRAYS,**REAL_ARRAYS}:
+        lines += ['      write(unit,iostat=io) s%'+name,'      if (io /= 0) return']
+    lines.append('      if (s%i_n_model == 3) then')
+    for name in MATCH_ARRAYS:lines+=['         write(unit,iostat=io) s%'+name,'         if (io /= 0) return']
+    lines += ['      end if','      ok = .true.','   end subroutine hybrid_tillage_write_post_event','',
+        '   subroutine hybrid_tillage_read_post_event(unit, expected_binding, s, ok)',
+        '      use, intrinsic :: ieee_arithmetic, only: ieee_is_finite',
+        '      use, intrinsic :: iso_fortran_env, only: iostat_end',
+        '      integer, intent(in) :: unit','      character(len=64), intent(in) :: expected_binding',
+        '      type('+TYPE+'), intent(out) :: s','      logical, intent(out) :: ok',
+        '      type('+TYPE+') :: staged','      character(len=8) :: magic',
+        '      character(len=64) :: source_hash, binding','      character(len=1) :: trailer','      integer :: io',
+        '      ok = .false.',
+        '      read(unit,iostat=io) magic, source_hash, binding, '+', '.join(h.replace('s%','staged%') for h in header),
+        '      if (io /= 0) return',"      if (magic /= 'SW5TIL01') return",
+        "      if (source_hash /= '"+ORIGINAL_SHA+"') return",
+        '      if (binding /= expected_binding) return',
+        "      if (verify(expected_binding,'0123456789abcdef') /= 0) return",
+        '      if (storage_size(staged%Ntill) /= 32 .or. storage_size(staged%Max_Z_tillage) /= 64) return',
+        '      if (staged%schema /= 1) return',
+        '      if (staged%Ntill < 1 .or. staged%Ntill > 100000 .or. staged%Ntypes < 1 .or. staged%Ntypes > 100000) return',
+        '      if (staged%iTill < 2 .or. staged%iTill > staged%Ntill+1) return',
+        '      if (staged%i_n_model < 1 .or. staged%i_n_model > 3) return',
+        '      if (staged%iRedist < 0 .or. staged%iRedist > 2) return',
+        '      if (staged%MaxNumSoilHo < 1 .or. staged%MaxNumSoilHo > NumLay) return',
+        '      if (staged%MaxNumSoilCP < 1 .or. staged%MaxNumSoilCP > NumNod) return',
+        '      if (.not.ieee_is_finite(staged%Max_Z_tillage)) return']
+    for name,size in {**INTEGER_ARRAYS,**REAL_ARRAYS}.items():
+        lines += ['      allocate(staged%'+name+'(staged%'+size+'),stat=io)','      if (io /= 0) return',
+                  '      read(unit,iostat=io) staged%'+name,'      if (io /= 0) return']
+    lines.append('      if (staged%i_n_model == 3) then')
+    for name,size in MATCH_ARRAYS.items():
+        lines += ['         allocate(staged%'+name+'(staged%'+size+'),stat=io)','         if (io /= 0) return',
+                  '         read(unit,iostat=io) staged%'+name,'         if (io /= 0) return']
+    lines += ['      end if','      if (.not.hybrid_tillage_valid(staged)) return',
+        '      read(unit,iostat=io) trailer','      if (io /= iostat_end) return',
+        '      s = staged','      ok = .true.','   end subroutine hybrid_tillage_read_post_event','']
+    return lines
 
 
 def source(original):

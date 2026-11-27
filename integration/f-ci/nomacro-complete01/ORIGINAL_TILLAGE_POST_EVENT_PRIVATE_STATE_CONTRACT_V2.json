@@ -1,0 +1,62 @@
+{
+  "status": "PROPOSED_POST_EVENT_PRIVATE_COLD_STREAM_COMPONENT_NOT_FULL_ACTIVATION",
+  "baseline": "bd9b3b2e74e93fccb8bbcc8b06822efcd740f349",
+  "original_source_sha256": "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486",
+  "implementation": "app/hybrid_water/original_tillage_checkpoint.py",
+  "source_contract": "Two literal insertions add a public snapshot type and capture/restore routines. Removing those two complete insertions returns every byte of original tillage.f90. No original statement is edited.",
+  "architecture_invariants": [
+    "Explicit state/parameter separation",
+    "Rejected snapshot restoration must not mutate original private state",
+    "Deep copies prevent column or caller aliasing",
+    "No serialization of undefined allocation tails"
+  ],
+  "scope": "Original source only, post-event initialized private live prefixes. Models1/2 omit unused matching arrays; model3 retains matching arrays. No B1 patch silently applied.",
+  "persistent_state": [
+    "Event cursor and initialized counters",
+    "Original event/type tables",
+    "Current Rho_tillage/Rho_cons/K_R_cons active horizon prefixes",
+    "Model3 matching tables, active values and slopes",
+    "Original maximum active geometry"
+  ],
+  "excluded_scratch": {
+    "Rho_last": "Overwritten from BDENS at the beginning of every original DoTillage(2), before physical use.",
+    "sumDWC/sumAvail1/sumAvail2": "Assigned inside Adapt_WC_H before use; not continuation state. Diagnostic TEST is literal FALSE.",
+    "uninitialized_pre_event_Rho_arrays": "Not read. This component explicitly refuses iTill<2; pre-first-event initialization/reader composition remains an open requirement.",
+    "unused_matching_values_models1or2": "Not read or serialized; selected original physical branch does not consume these matching fields."
+  },
+  "host_dependencies": [
+    "Original initialization/geometry must already exist",
+    "Host owns complete physical BDENS/MvG/water state and trusted immutable input/source binding; this private seam alone is not a native checkpoint admission boundary",
+    "Full pre-event, trial, output and restart composition still requires active scientific input and owning acceptance gates"
+  ],
+  "planned_technical_controls": [
+    "Restore real original private module through new explicit seam, then capture every live field",
+    "Mutating caller arrays cannot mutate original private state",
+    "Wrong schema/cursor/shape/NaN refusals leave private state exact",
+    "Inactive capture/restore refuse without accessing live state",
+    "Models1/2 do not read or allocate undefined matching state",
+    "Rollback restores all selected private fields"
+  ],
+  "physical_tillage_input_available": false,
+  "physical_management_or_density_parameters_invented": false,
+  "technical_vectors_are_not_scientific_inputs": true,
+  "frontend_activation": false,
+  "new_scientific_contexts_admitted": 0,
+  "expected_compilers": 4,
+  "expected_links": 2,
+  "expected_seconds": 20,
+  "full_model_periods_selected": 0,
+  "remaining_classification": "COMPOSITION_MISSING",
+  "global_functional_completion": "PARTIAL",
+  "scientific_equivalence": "NOT_QUALIFIED",
+  "global_counts": "UNKNOWN",
+  "RC3_changed": false,
+  "prior_component_controls": "ORIGINAL_TILLAGE_POST_EVENT_PRIVATE_STATE_RESULT_V1.json",
+  "native_stream": "Owned complete stream: explicit SW5TIL01 magic, exact original source hash, trusted expected input binding, schema, bounded counts, selected live arrays; read stages all data and requires exact EOF before restore.",
+  "wire_scope": "GNU native integer32/real64 little-endian Windows component only; portable physical or wire admission not claimed.",
+  "new_controls": [
+    "Exact state restored by a genuinely new process",
+    "Eight actual wrong magic/source/binding/schema/count/NaN/truncation/trailer streams refused by new processes with unchanged prior private state"
+  ],
+  "integrity_boundary": "Host must independently validate complete capsule integrity, immutable table identity and coupled physical state. Header binding and structural validation alone do not qualify a physical native checkpoint."
+}
