@@ -9,6 +9,11 @@ git=lambda *a,**kw:subprocess.check_output(['git',*a],cwd=R,**kw)
 
 def historical_workflow(path,text):
     """Invert only a complete exact current checkout file for a legacy assertion."""
+    if path=='.github/workflows/fci-canonical.yml' and SHA(text.encode())=='2b64bdc8dad6c021f5dc46ce3d3ba4ea427e4005f76f912edc9b099485938863':
+        import importlib.util
+        spec=importlib.util.spec_from_file_location('actual_closed_default_checkout',Path(__file__).with_name('closed_default_calendar_checkout.py'))
+        current=importlib.util.module_from_spec(spec);spec.loader.exec_module(current)
+        text=current.historical_parent(path,text)
     contract=json.loads(git('show','HEAD:integration/f-ci/nomacro-complete01/CI_CHECKOUT_SCOPE07_CONTRACT_V1.json'))
     item=contract['files'].get(path)
     if path in contract.get('read_only_workflow_selection_paths',[]):

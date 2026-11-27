@@ -1,0 +1,227 @@
+{
+  "status": "PROPOSED_ACTUAL_DEFAULT_MODEL1_CLOSED_PRESSURE_NONDAILY_STATE_COMPOSITION",
+  "actual_canonical_parent": "ae54d7d621a07e54dd8f9fdb758585b2a2cc754d",
+  "files": {
+    "app/hybrid_water/cde_clock_output.py": {
+      "new_file": false,
+      "before_lf_sha256": "d4abd01bcb5d2b6bddf47ee40b27cf4c4e62bbd1f1c9580b82e7da20aa22e2c5",
+      "after_lf_sha256": "468542b35a5c343be258c07b39004a3e48b906f671d131bfc17feb3eb516afae",
+      "ordered_literal_edits": [
+        {
+          "base_start": 2776,
+          "base_end": 2776,
+          "before": "",
+          "after": "from closed_default_calendar import selection as closed_default_selection\n    closed_default=closed_default_selection(project) is not None\n    "
+        },
+        {
+          "base_start": 2831,
+          "base_end": 2831,
+          "before": "",
+          "after": "("
+        },
+        {
+          "base_start": 2846,
+          "base_end": 2846,
+          "before": "",
+          "after": " or closed_default)"
+        },
+        {
+          "base_start": 3105,
+          "base_end": 3105,
+          "before": "",
+          "after": "("
+        },
+        {
+          "base_start": 3120,
+          "base_end": 3120,
+          "before": "",
+          "after": " or closed_default)"
+        },
+        {
+          "base_start": 4311,
+          "base_end": 4311,
+          "before": "",
+          "after": "t else {}),\n        **({'closed_default_calendar':True} if closed_defaul"
+        },
+        {
+          "base_start": 12001,
+          "base_end": 12001,
+          "before": "",
+          "after": "("
+        },
+        {
+          "base_start": 12040,
+          "base_end": 12040,
+          "before": "",
+          "after": ") or selected.get('closed_default_calendar')"
+        }
+      ]
+    },
+    "app/hybrid_water/cde_interval_output.py": {
+      "new_file": false,
+      "before_lf_sha256": "94282921c9b3a0c33c0d445dc85c1c832e1023a1b9b1a8dd1b625148a1752158",
+      "after_lf_sha256": "ed9206a476e6f58e3b649c921cabe85f69b4225272717d35286fc6cf5525caf3",
+      "ordered_literal_edits": [
+        {
+          "base_start": 2633,
+          "base_end": 2633,
+          "before": "",
+          "after": "from closed_default_calendar import selection as closed_default_selection\n    closed_default=closed_default_selection(project) is not None\n    "
+        },
+        {
+          "base_start": 2688,
+          "base_end": 2688,
+          "before": "",
+          "after": "("
+        },
+        {
+          "base_start": 2703,
+          "base_end": 2703,
+          "before": "",
+          "after": " or closed_default)"
+        },
+        {
+          "base_start": 2962,
+          "base_end": 2962,
+          "before": "",
+          "after": "("
+        },
+        {
+          "base_start": 2977,
+          "base_end": 2977,
+          "before": "",
+          "after": " or closed_default)"
+        },
+        {
+          "base_start": 3782,
+          "base_end": 3782,
+          "before": "",
+          "after": "t else {}),\n        **({'closed_default_calendar':True} if closed_defaul"
+        }
+      ]
+    },
+    "app/hybrid_water/closed_default_calendar.py": {
+      "new_file": true,
+      "after_lf_sha256": "b006512bd4588236cd3ce7d071167726e840af03e723202d396137c0bf9f4581",
+      "complete_source": "\"\"\"Select real original default-Mualem closed pressure/calendar state owners.\"\"\"\nfrom pathlib import Path\nimport re\nPOLICY='original-closed-default-pressure-nondaily-calendar-composition-v1'\n\n\ndef input_domain(text,selectors,original_output=True):\n    if original_output is False:return None\n    fixed=dict(SWINCO=1,SWMACRO=0,SWDRA=0,SWBOTB=6,SWFROST=0,SWSNOW=0,\n               SWHEA=1,SWCALT=2,SWSOPHY=0,SWBBCFILE=0,SWMETDETAIL=0,SWBR=0)\n    if any(selectors.get(k)!=v for k,v in fixed.items()):return None\n    if selectors.get('SWSOLU') not in (0,1) or selectors.get('SWHYST') not in (0,1,2) or selectors.get('SWKIMPL') not in (0,1):return None\n    # The existing qualified non-daily state classes retain their original\n    # hysteresis/implicit ownership. Their simultaneous composition is separate.\n    if selectors['SWKIMPL'] and selectors['SWHYST']:return None\n    active='\\n'.join(v.split('!',1)[0] for v in text.splitlines() if not v.lstrip().startswith('*'))\n    rows=re.findall(r'(?mi)^[ \\t]*IHWCKMODEL[ \\t]*=[ \\t]*([^\\r\\n]*)',active)\n    rest=re.sub(r'(?mi)^[ \\t]*IHWCKMODEL[ \\t]*=[^\\r\\n]*','',active)\n    if len(rows)>1 or re.search(r'(?i)\\b(?:IHWCKMODEL|SWAP_SOILS_DB)\\b',rest):return None\n    if rows and re.fullmatch(r'\\+?0*1(?:[ \\t]+\\+?0*1)*[ \\t]*',rows[0]) is None:return None\n    def integer(key):\n        values=re.findall(r'(?mi)^[ \\t]*'+key+r'[ \\t]*=[ \\t]*([^\\r\\n]*)',active)\n        if len(values)!=1 or re.fullmatch(r'[+-]?[0-9]+[ \\t]*',values[0]) is None:return None\n        return int(values[0])\n    npd,period,monthly,dates,reset=(integer(k) for k in ['NPRINTDAY','PERIOD','SWMONTH','SWODAT','SWRES'])\n    if npd is None or not 1<=npd<=1440 or period is None or not 0<=period<=366 or monthly not in (0,1) or dates not in (0,1) or reset not in (0,1):return None\n    rows=re.findall(r'(?mi)^[ \\t]*FLPRINTDT[ \\t]*=[ \\t]*([^\\r\\n]*)',active)\n    if len(rows)>1:return None\n    token=rows[0].strip().upper() if rows else '.FALSE.'\n    if token not in ('.FALSE.','FALSE','.F.','F','.TRUE.','TRUE','.T.','T'):return None\n    perstep=token in ('.TRUE.','TRUE','.T.','T');clock=perstep or npd>1\n    if monthly and dates or clock and (monthly or dates) or perstep and reset:return None\n    if not clock and not monthly and not dates and period==1:return None\n    return dict(policy=POLICY,hydraulic_model=1,initial=1,drainage=0,bottom=6,\n                kind='cde' if selectors['SWSOLU'] else 'water',history=selectors['SWHYST'],\n                implicit=selectors['SWKIMPL'],clock=clock,perstep=perstep,\n                original_parameter_and_calendar_bytes_preserved=True,\n                new_native_codec=False,new_physical_state=False,physical_equations_changed=False)\n\n\ndef selection(project):\n    if not project.input_directory or not project.original_output or project.macro or project.age or project.time_step_policy!='original-adaptive-day-seed-v1':return None\n    from experimental_project import switches\n    text=(Path(project.input_directory)/'swap.swp').read_text(encoding='cp1252')\n    return input_domain(text,switches(text),project.original_output)\n\n\ndef render_trial_domain(source,project):\n    \"\"\"Compose only the real closed boundary with the original trial receipt.\"\"\"\n    selected=selection(project)\n    if selected is None or not selected['clock'] or project.solute:return source\n    old=\"if(swmacro/=0.or.swsnow/=0.or.swdra/=1)error stop 'Foreign original trial receipt domain'\"\n    new=\"if(swmacro/=0.or.swsnow/=0.or.swdra/=0.or.swbotb/=6)error stop 'Foreign original closed default trial receipt domain'\"\n    if source.count(old)!=1:raise ValueError('Changed complete original default trial domain')\n    anchor='real(8) function hybrid_output_trial_residual() result(residual)\\n'\n    if source.count(anchor)!=1:raise ValueError('Changed original default trial receipt function')\n    return source.replace(old,new,1).replace(anchor,anchor+'use variables,only:swbotb\\n',1)\n\n\ndef trial_head_parent_inverse(source):\n    \"\"\"Invert the two exact original observer statements, preserving the body.\"\"\"\n    parts=('   use MOD_integral,only:hybrid_output_trial_residual\\n',\n           '\\n         if(abs(hybrid_output_trial_residual())>1d-10)flnonconv=.true.')\n    original=source\n    for part in parts:\n        if source.count(part)!=1:raise ValueError('Foreign complete default clock trial source')\n        source=source.replace(part,'',1)\n    anchors=('   use hybrid_implicit_pond_event_state,only:request_implicit_pond_event,assert_no_implicit_pond_event',\n             '         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.')\n    if any(source.count(a)!=1 for a in anchors):raise ValueError('Changed original default trial assembly')\n    replay=source.replace(anchors[0],parts[0]+anchors[0],1).replace(anchors[1],anchors[1]+parts[1],1)\n    if replay!=original:raise ValueError('Incomplete complete default clock trial inverse')\n    return source\n"
+    },
+    "app/hybrid_water/closed_zero_boundary.py": {
+      "new_file": false,
+      "before_lf_sha256": "ba03943a37271450a2499a474a607b222facdc56499786a9e0a7ef814e1f8026",
+      "after_lf_sha256": "73f74295eafcb77985a85eeb367aeb955f37e23efa97294c6dbcad2e54805900",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1263,
+          "base_end": 1263,
+          "before": "",
+          "after": "from closed_default_calendar import input_domain as default_calendar_domain\n    if default_calendar_domain(text,selectors,original_output) is not None:return True\n    "
+        }
+      ]
+    },
+    "app/hybrid_water/initial_profile_calendar.py": {
+      "new_file": false,
+      "before_lf_sha256": "76ea1cab6b642cb81aedba0196f9654e6d4e4928f4ee0b041f9ebc8517276519",
+      "after_lf_sha256": "c7175e4e0e5ea8a623521c17f74423a397cd992430d607513430d02b3da5b6e4",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1889,
+          "base_end": 1889,
+          "before": "",
+          "after": "from closed_default_calendar import input_domain as default_calendar_domain\n closed_default=default_calendar_domain(text,s,original_output)\n if closed_default is not None:pass\n el"
+        }
+      ]
+    },
+    "app/hybrid_water/ordinary_pond_source_guard.py": {
+      "new_file": false,
+      "before_lf_sha256": "771a85586c972d8650db01797c3ab190e1577cbc707239ffffe842188021bea8",
+      "after_lf_sha256": "6764bda7bd8636377995b49e0949a0d7f4f9ae5f36d8552fa42181f59ed185c9",
+      "ordered_literal_edits": [
+        {
+          "base_start": 5695,
+          "base_end": 5695,
+          "before": "",
+          "after": "losed_default_calendar import selection as default_selection,trial_head_parent_inverse\n            default=default_selection(project)\n            if default is not None and default['clock'] and not project.solute:\n                source=trial_head_parent_inverse(source.decode('cp1252')).encode('cp1252')\n            from c"
+        },
+        {
+          "base_start": 5876,
+          "base_end": 5876,
+          "before": "",
+          "after": "("
+        },
+        {
+          "base_start": 5912,
+          "base_end": 5912,
+          "before": "",
+          "after": ") or clock.get('closed_default_calendar')"
+        }
+      ]
+    },
+    "app/hybrid_water/original_output.py": {
+      "new_file": false,
+      "before_lf_sha256": "8ede54bea920b09f5d4c760ffaef040ba6ef53f0da49d1c6bd99c000137466f6",
+      "after_lf_sha256": "c8ba89c5972180499dcf15e5ba5d263c9738fab6d70e19fb3a7ee2e474f5f800",
+      "ordered_literal_edits": [
+        {
+          "base_start": 13955,
+          "base_end": 13955,
+          "before": "",
+          "after": "from closed_default_calendar import render_trial_domain\n    "
+        },
+        {
+          "base_start": 13997,
+          "base_end": 13997,
+          "before": "",
+          "after": "trial_domain(render_"
+        },
+        {
+          "base_start": 14031,
+          "base_end": 14031,
+          "before": "",
+          "after": "),project"
+        }
+      ]
+    },
+    "app/hybrid_water/original_output_hysteresis.py": {
+      "new_file": false,
+      "before_lf_sha256": "dcb8519cd497dcfd23e5e543c99aba77ba583d764cd0d3177006bf8c6a4fd535",
+      "after_lf_sha256": "f441eaf421ebff434ac59afa541893acfb72fec20eac052504680f3aabaec2b5",
+      "ordered_literal_edits": [
+        {
+          "base_start": 10277,
+          "base_end": 10277,
+          "before": "",
+          "after": "from closed_default_calendar import render_trial_domain\n    "
+        },
+        {
+          "base_start": 10311,
+          "base_end": 10311,
+          "before": "",
+          "after": "(render_trial_domain"
+        },
+        {
+          "base_start": 10362,
+          "base_end": 10362,
+          "before": "",
+          "after": "),project"
+        }
+      ]
+    }
+  },
+  "default_model1_not_mislabelled_as_non1_implicit_state": true,
+  "new_native_codec": false,
+  "new_physical_state": false,
+  "physical_equations_changed": false,
+  "new_numerical_policy": false,
+  "tolerances_or_iteration_limits_changed": false,
+  "parameters_or_output_controls_or_dates_normalized": false,
+  "canonical_admission": false,
+  "previous_proposal": "CLOSED_DEFAULT_CALENDAR_STATE14_SOURCE_PROPOSAL_V2",
+  "actual_first_feedback_source": "f08f31c3450bc1a765c4379479e91654d45d92ec",
+  "first_feedback_contexts_pass_failed": [
+    6,
+    4
+  ],
+  "first_feedback_model_days_in_failed_contexts": 0,
+  "actual_trial_compile_failure_source": "8b440e415150ddd44ec8ece78085fc15c364bafc",
+  "trial_compile_failure": "The exact closed trial guard lacked its explicit original variables.swbotb import; four builds refused, zero model days."
+}

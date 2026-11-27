@@ -1,0 +1,113 @@
+# Actual selection anchored after the complete gap-record update.
+name: Independent closed default model1 pressure calendar state Ubuntu full35 and native state
+on:
+  push:
+    branches: [codex/nomacro-closed-default-calendar14]
+    paths: ['.github/workflows/nomacro-closed-default-calendar-state14-ubuntu.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: nomacro-closed-default-calendar-state14-ubuntu-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  qualify:
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        optimization: [O0, O2]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 60
+    env:
+      OMP_NUM_THREADS: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+      GFORTRAN_UNBUFFERED_ALL: '1'
+      SWAP5_TEST_SELECTION_RECORD: integration/f-ci/nomacro-complete01/STATUS.json
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /app/**
+            /src/**
+            /tools/solute/**
+            /tools/vq/**
+            /tests/nomacro_mixtures/**
+            /tests/nomacro_scheduled_subsurface/**
+            /tests/nomacro_drainage/**
+            /tests/saltfarm_newton/**
+            /tests/modularity/run_modular_tests.py
+            /tests/support/augment_bartholomeus_backend_sources.py
+            /docs/development/workstream-execution-protocol.md
+            /docs/science/NOMACRO_CLOSED_DEFAULT_CALENDAR_STATE14.md
+            /.github/workflows/**
+            /reference/swap-4.3.1/projects/**
+            /reference/swap-4.3.1/source-archives/**
+            /reference/swap-4.3.1/patches/**
+            /reference/swap-4.3.1/frost-corrections/**
+            /reference/swap-4.3.1/hydraulic-corrections/**
+            /integration/f-ci/nomacro-complete01/*.json
+      - name: Preserve real source and prepare original provider
+        env:
+          PYTHONPATH: app/hybrid_water
+        run: |
+          proof="$RUNNER_TEMP/proof"
+          mkdir -p "$proof"
+          git fetch --no-tags --depth=64 --filter=blob:none origin "$GITHUB_SHA"
+          python3 -B tests/modularity/run_modular_tests.py --check-selection closed_default_calendar_feedback > "$proof/actual-test-selection.json"
+          python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$proof/source"
+          python3 -B tests/nomacro_drainage/controller_source_capsule.py --output "$proof/controller-source.tar"
+          cp .github/workflows/nomacro-closed-default-calendar-state14-ubuntu.yml "$proof/actual-workflow.yml"
+          git rev-parse HEAD:.github/workflows/nomacro-closed-default-calendar-state14-ubuntu.yml > "$proof/actual-workflow-git-blob.txt"
+          python3 -B tests/nomacro_drainage/closed_default_calendar_source_contract.py --output "$proof/actual-source-contract.json"
+          python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
+      - name: Run five actual original closed default pressure calendar cases and compiled native refusals
+        run: |
+          python3 -B tests/nomacro_drainage/closed_default_calendar_batch.py --scope independent --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds" --output "$RUNNER_TEMP/proof/current" --optimization '${{ matrix.optimization }}'
+      - name: Independently read exact physical native cold and transaction evidence
+        run: |
+          python3 -B - <<'PYCODE'
+          import os,subprocess,sys
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])/'proof/current'
+          import json
+          cohort=json.loads((root/'RESULT.json').read_text())
+          assert len(cohort['contexts'])==5
+          observations=[]
+          for item in cohort['contexts']:
+              folder=root/item['case']
+              target=root.parent/(item['case']+'-INDEPENDENT.json')
+              subprocess.run([sys.executable,'-B','tests/nomacro_drainage/closed_default_calendar_science.py','--profile',str(folder),'--reference-work',str(root.parent.parent/'provider'),'--controls',str(root/(item['case']+'-native-controls')),'--output',str(target)],check=True)
+              observations.append(json.loads(target.read_text()))
+          (root.parent/'INDEPENDENT_SCIENCE.json').write_text(json.dumps(dict(status='FIVE_ACTUAL_DEFAULT_CALENDAR_CONTEXTS_INDEPENDENTLY_PASS',contexts=observations),indent=2)+'\n')
+          PYCODE
+      - name: Preserve every original generated compiled and provider byte
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import os,shutil,json,hashlib
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP']);proof=root/'proof';proof.mkdir(exist_ok=True)
+          provider=root/'provider/PREPARED.json'
+          if provider.is_file():shutil.copyfile(provider,proof/'provider-PREPARED.json')
+          projection={}
+          for source,stem in ((root/'builds','compiled'),(root/'builds-inherited','compiled-inherited'),(root/'provider/build','original-provider-build')):
+              for path in sorted(source.rglob('*')):
+                  if not path.is_file():continue
+                  target=proof/stem/path.relative_to(source);target.parent.mkdir(parents=True,exist_ok=True)
+                  shutil.copyfile(path,target)
+                  if path.name=='BUILD.json':projection[str(path.parent)]=dict(archive_prefix=target.parent.relative_to(proof).as_posix(),actual_BUILD_sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+          (proof/'COMPILED_PROJECTION_V1.json').write_text(json.dumps(projection,indent=2)+'\n')
+          PY
+      - name: Preserve raw inputs native source controls and failures
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: closed-default-calendar-state14-${{ matrix.optimization }}-${{ github.sha }}
+          path: ${{ runner.temp }}/proof
+          retention-days: 30
