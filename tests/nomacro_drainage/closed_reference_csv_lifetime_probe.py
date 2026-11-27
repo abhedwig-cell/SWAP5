@@ -13,7 +13,7 @@ SHA=lambda raw:hashlib.sha256(raw).hexdigest()
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--build-O0',type=Path,required=True);p.add_argument('--build-O2',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--build-O0',type=Path,required=True);p.add_argument('--build-O2',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--reuse-builds-from',type=Path);a=p.parse_args()
     assert not a.output.exists();a.output.mkdir()
     head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=R,text=True).strip()
     assert not subprocess.check_output(['git','status','--porcelain=v1','--untracked-files=all','--ignored'],cwd=R)
@@ -72,30 +72,42 @@ end program swap_main
         tag=str(len(report['commands']));(cwd/(tag+'.stdout')).write_bytes(child.stdout);(cwd/(tag+'.stderr')).write_bytes(child.stderr)
         report['commands'].append(dict(command=list(map(str,cmd)),returncode=child.returncode,seconds=time.perf_counter()-start,kind=kind));report[kind+'_executions']+=1;save();child.check_returncode()
     executables=[]
+    previous=json.loads(a.reuse_builds_from.read_text()) if a.reuse_builds_from else None
+    if previous:
+        assert len(previous['commands'])==8 and all(v['returncode']==0 for v in previous['commands'])
+        report['reused_actual_compiler_source']=previous['actual_controller_source']
+        report['original_controller_incomplete_IRG_input_copy_failure_preserved']=str(a.reuse_builds_from)
+        report['actual_prior_compile_and_link_commands']=previous['commands']
     for opt,build in [('O0',a.build_O0),('O2',a.build_O2)]:
-        build.mkdir(exist_ok=True);assert not list(build.iterdir())
-        (build/'reference_task1.f90').write_text(driver,encoding='cp1252');(build/'swap_csv_output.f90').write_bytes(corrected)
+        build.mkdir(exist_ok=True)
+        if previous:
+            assert (build/'reference_task1.f90').read_text(encoding='cp1252')==driver and (build/'swap_csv_output.f90').read_bytes()==corrected
+        else:
+            assert not list(build.iterdir())
+            (build/'reference_task1.f90').write_text(driver,encoding='cp1252');(build/'swap_csv_output.f90').write_bytes(corrected)
         flags=['-'+opt,'-cpp','-Dlinux','-finit-local-zero','-ffree-line-length-none','-fallow-argument-mismatch',*prepared['floating_point_profile']['flags'],'-I'+str(obj),'-I'+str(J/'build/ttutil-obj')]
-        for name in ['reference_task1','swap_csv_output']:command([str(compiler),*flags,'-c',name+'.f90'],build,'compiler')
+        if not previous:
+            for name in ['reference_task1','swap_csv_output']:command([str(compiler),*flags,'-c',name+'.f90'],build,'compiler')
         baseline=build/'original-buffer.exe';candidate=build/'candidate-buffer.exe'
         for mode,exe in [('original',baseline),('candidate',candidate)]:
             closure=[str(build/'reference_task1.o')]+[str(build/'swap_csv_output.o') if mode=='candidate' and x.name=='swap_csv_output.o' else str(x) for x in objects if x.name!='swap_main.o']
-            command([str(compiler),'-o',str(exe),*closure,str(lib)],build,'link')
+            if not previous:command([str(compiler),'-o',str(exe),*closure,str(lib)],build,'link')
+            else:assert exe.is_file() and any(v['kind']=='link' and v['command']==[str(compiler),'-o',str(exe),*closure,str(lib)] for v in previous['commands'])
             executables.append((opt,mode,exe))
     with ExitStack() as stack:
         store=Archive(GitArchiveSource(R,CANONICAL),'CLOSED_GARDNER_STATE12_REPAIRED_LOCAL_AND_POSTIMAGES_RAW_V1',stack)
         assert store.record['sha256']=='280f57ca5554a5bcd746fa3cb56460da35c668952b52f64e267d6c7aba6a8089'
+        original_observation=json.loads(store.get('actual/closure12-original-causal-v1/RESULT.json'))
+        original_inputs={v['case']:v['identical_input_inventory'] for v in original_observation['cases']}
         for opt,mode,exe in executables:
             for case in CASES:
                 root=a.output/(opt+'-'+mode+'-'+case);root.mkdir();prefix='actual/closure12-original-causal-v1/'+case+'/'
                 inventory={}
-                # The original failed observation's input inventory is explicit for Gardner;
-                # all four accepted input file extensions are copied for the positive control.
-                for name in store.names:
-                    if not name.startswith(prefix):continue
-                    relative=name[len(prefix):]
-                    if Path(relative).suffix.lower() not in ['.swp','.met','.crp','.bbc','.dra','.inp']:continue
-                    raw=store.get(name);dest=root/relative;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(raw);inventory[relative]=SHA(raw)
+                expected=original_inputs.get(case,original_inputs['gardner-snow-paired9-explicit-water'])
+                for relative,digest in expected.items():
+                    raw=store.get(prefix+relative)
+                    if case!='original-model3-snow9-control-stack64-v1' or relative!='swap.swp':assert SHA(raw)==digest
+                    dest=root/relative;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(raw);inventory[relative]=SHA(raw)
                 assert 'swap.swp' in inventory
                 start=time.perf_counter();child=subprocess.run([str(exe),'./swap.swp'],cwd=root,capture_output=True,timeout=15)
                 (root/'stdout.txt').write_bytes(child.stdout);(root/'stderr.txt').write_bytes(child.stderr)
