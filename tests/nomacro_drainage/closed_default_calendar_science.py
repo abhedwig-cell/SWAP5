@@ -52,7 +52,7 @@ def source_contract(producer):
     return dict(actual_producer=producer,complete_literal_inverses=len(names),source_proposal_sha256=SHA(json.dumps(proposal,sort_keys=True).encode()))
 
 
-def observe(folder,reference,build=None,inputs=None,controls=None,store=None):
+def observe(folder,reference,build=None,inputs=None,controls=None,store=None,original_sdk=None):
     for name in FROZEN:assert (R/name).read_bytes().replace(b'\r\n',b'\n')==git('show',PARENT+':'+name),'Changed complete inherited observer '+name
     q=json.loads((folder/'RESULT.json').read_text());assert q['status']=='ACTUAL_CLOSED_DEFAULT_CALENDAR_BUDGET_NATIVE_COLD_AND_TRANSACTION_FEEDBACK_PASS_NOT_QUALIFIED' and q['days']==35
     spec=q['specification'];assert q['case'] in CODECS
@@ -64,8 +64,12 @@ def observe(folder,reference,build=None,inputs=None,controls=None,store=None):
     assert SHA((build/'BUILD.json').read_bytes())==q['actual_BUILD_sha256']
     assert selected['native_codec']==CODECS[q['case']] and not identity.get('implicit_hydraulic_state')
     for name,digest in identity['donor_generated'].items():assert SHA((build/name).read_bytes())==digest
-    for name,digest in identity['donor_objects'].items():assert SHA((reference/'build/swap-obj'/name).read_bytes())==digest
-    for name,digest in PROVIDER.items():assert SHA((reference/'build/swap-selected'/name).read_bytes().replace(b'\r\n',b'\n'))==digest
+    sdk=reference/'build' if original_sdk is None else original_sdk
+    if original_sdk is not None:
+        from explicit_bottom9_archive_science import ReadView
+        assert isinstance(original_sdk,ReadView) and original_sdk.path=='original-provider-build'
+    for name,digest in identity['donor_objects'].items():assert SHA((sdk/'swap-obj'/name).read_bytes())==digest
+    for name,digest in PROVIDER.items():assert SHA((sdk/'swap-selected'/name).read_bytes().replace(b'\r\n',b'\n'))==digest
     for field in ['donor_flags','kernel_flags']:assert '-'+q['optimization'] in identity[field]
     for role,digest in meta['executable_sha256'].items():
         paths=[v for v in [build/('day_'+role),build/('day_'+role+'.exe')] if v.is_file()];assert len(paths)==1 and SHA(paths[0].read_bytes())==digest
