@@ -1,0 +1,44 @@
+{
+  "status": "ACTUAL_CURRENT_NATIVE_GENERATED_SOURCE_DELTA_INVENTORY",
+  "actual_original_runtime_source": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+  "actual_current_compiler_source": "38eb3fa35db913ed6b4df20e3bc9dc1b178702a3",
+  "changed_generated_files": [
+    {
+      "file": "integral.f90",
+      "original_bytes": 34807,
+      "current_bytes": 35441,
+      "original_sha256": "34f11e21dab1a568bb273215ebb2808d1d9b5227d4fe2709cebfd5a5717e038a",
+      "current_sha256": "6fedc22749a8c1075682d955fea7c7b01b9df2c9b75a1659ca2cc9b23a00f3e7",
+      "diff": [
+        "--- \n",
+        "+++ \n",
+        "@@ -524,4 +524,7 @@\n",
+        " logical,intent(in)::restoring",
+        " integer::header(20),witness_header(20),ios,nreal",
+        "+integer::joint_expected,joint_date(6)",
+        "+real(4)::joint_seconds",
+        "+real(8)::joint_day,joint_jan1",
+        " real(8),allocatable::values(:),witness(:)",
+        " nreal=(numnod)+(numnod+1)+(numnod)+(numnod)+(numnod)+(numnod+1)+(numnod+1)+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+(nrlevs)+(nrlevs)+(nrlevs)+(nrlevs)*(numnod)+(nrlevs)*(numnod)+(nrlevs)*(numnod)+1+(numnod)+(numnod)+1+1+1+1+1+1+1+1+1+1+1+1+(numnod)+(maout)+(maout)+1+1+1+1+1+1+1+1",
+        "@@ -532,4 +535,15 @@\n",
+        "  if(any(header(1:6)/=[1,numnod,nrlevs,nreal,period,nprintday]))error stop 'Foreign original output calendar shape/policy'",
+        "  if(header(12)/=swres.or.minval(header(7:11))<0)error stop 'Invalid original output calendar counters'",
+        "+ ! Read only: original TimeControl count modulo PERIOD, including its SWRES1 year reset.",
+        "+ joint_expected=header(7)",
+        "+ if(swres==1.and.header(7)>0)then",
+        "+  joint_day=original_output_start_clock+dble(header(7))-1d0",
+        "+  call dtdpar(joint_day+0.1d0,joint_date,joint_seconds)",
+        "+  joint_date(2:6)=0;joint_date(2)=1;joint_date(3)=1",
+        "+  call dtardp(joint_date,0.0,joint_jan1)",
+        "+  joint_expected=min(header(7),nint(joint_day-joint_jan1)+1)",
+        "+ end if",
+        "+ if(header(8)/=mod(joint_expected,period))error stop 'Foreign original joint regular output counter'",
+        "+",
+        "  if(nprintday>1)then",
+        "   if(int(header(9),int64)/=int(header(7),int64)*int(nprintday,int64)+1_int64) &"
+      ]
+    }
+  ],
+  "compiler_executions": 0,
+  "model_executions": 0
+}
