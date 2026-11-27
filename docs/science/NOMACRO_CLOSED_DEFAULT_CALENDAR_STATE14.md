@@ -15,11 +15,25 @@ model1 owner uses its real existing calendar/hysteresis/CDE state, and does not
 invent non1 implicit metadata, a new native codec or physical state. Simultaneous
 implicit+hysteretic non-daily crosses remain a separate dependency scope.
 
-Current frontend acceptance passes for all five; actual compiled physical,
-native, cold and external transaction qualification is pending. Complete source
+All five locally pass in O0/O2:350 primary days, original pressure initialization,
+daily water/CDE budgets, complete native calendar/private state, exact cold
+continuations and external discard/replay/accept/recovery. Independent readers
+verify every context;292 native corruptions refuse before any model day, while
+ten exact own positives reach READY. Portable qualification remains pending.
+Complete source
 literal inverses must preserve every original physical equation, parameter,
 tolerance, iteration limit and native calendar/counter. No numerical policy is
 proposed. Any numerical failure remains a gap until diagnosed and qualified.
+
+Initial source f08f31c345 passed six contexts and refused four before accepted
+model progress: the original per-step HeadCalc receipt was not inverted by the
+closed source guard, and the original clock receipt still excluded no-drainage.
+The exact two original observer statements now reconstruct the whole qualified
+HeadCalc parent. The actual closed trial domain imports the original swbotb
+selector and admits only macro0/Snow0/drain0/bottom6; the complete remaining
+trial arithmetic is unchanged. The first attempted import was missing and all
+four compilers refused before any model day. Those failures, earlier controller
+metadata/field-name refusals and original sources retain separate identities.
 
 The real M13 baseline using three actual sparse patterns produces byte-identical
 complete PUBLIC and ordinary-Python publication outputs, with the same source
