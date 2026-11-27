@@ -1,0 +1,75 @@
+{
+  "scope": "Runtime-only preparedpublisher on exact fixedV27 physicalcode from own26. Originalday27 passes; oldcappedroute remains censored. No prefix relabel or full481claim.",
+  "results": [
+    {
+      "opt": "O0",
+      "profile_route_seconds": 17.953999400138855,
+      "prepared_route_seconds": 7.302634799852967,
+      "observed_solver_rows": 1293,
+      "capped_parent_trace_exact_rows": 976,
+      "full_profile_prepared_trace_receipt_native_exact": true,
+      "independent_residual_cm": -9.015457170997478e-07,
+      "budget_step_retries": 0,
+      "profile_last_observation": {
+        "count": 1280.0,
+        "time": 35821.990858277975,
+        "wall_span": 6.3946215,
+        "terms": 1.1114562000000001,
+        "solve": 0.05631129999999994,
+        "logging": 0.21433449999999957,
+        "outside": 4.984659699999995,
+        "cpu": 6.21875
+      },
+      "no_library_compiled_in_model_output": true
+    },
+    {
+      "opt": "O2",
+      "profile_route_seconds": 16.53773820027709,
+      "prepared_route_seconds": 6.039629399776459,
+      "observed_solver_rows": 1293,
+      "capped_parent_trace_exact_rows": 1288,
+      "full_profile_prepared_trace_receipt_native_exact": true,
+      "independent_residual_cm": -9.015457170997478e-07,
+      "budget_step_retries": 0,
+      "profile_last_observation": {
+        "count": 1280.0,
+        "time": 35821.990858277975,
+        "wall_span": 4.9385691,
+        "terms": 1.0986348000000004,
+        "solve": 0.0330985,
+        "logging": 0.1880891000000001,
+        "outside": 3.598029799999998,
+        "cpu": 4.75
+      },
+      "no_library_compiled_in_model_output": true
+    }
+  ],
+  "negative_controls": [
+    {
+      "opt": "O0",
+      "field": "source_sha256",
+      "rejected": true
+    },
+    {
+      "opt": "O0",
+      "field": "library_sha256",
+      "rejected": true
+    },
+    {
+      "opt": "O2",
+      "field": "source_sha256",
+      "rejected": true
+    },
+    {
+      "opt": "O2",
+      "field": "library_sha256",
+      "rejected": true
+    }
+  ],
+  "native_sha256": {
+    "macro.bin": "d85fb5a7529e448f0e0ce60dae9539c9e9e0d844abf571388e6de91aa0673966",
+    "result.end": "02e6a637877d2ce50059c352abb41b75309290879317ff208ef57c6869dc89c3"
+  },
+  "models_launched": 0,
+  "physics_tolerances_and_20s_route_budget_unchanged": true
+}

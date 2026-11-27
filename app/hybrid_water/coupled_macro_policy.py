@@ -15,7 +15,7 @@ from macro_contact_history import render_rate as render_contact_rate,render_macr
 from macro_stock_rank2 import render_rate as render_rank2_rate,render_head as render_rank2_head
 from macro_stock_jacobian import render_rate as render_stock_rate,render_head as render_stock_head
 from macro_trial_origin import render as render_trial_origin,PHYSICAL_FIELDS
-POLICY='fresh-coupled-unreduced-field-coupled-current-all-domain-contact-ordinary-absorption-gradient-v27'
+POLICY='fresh-coupled-unreduced-field-coupled-current-all-domain-contact-ordinary-absorption-gradient-v27-prepared-publisher-v31'
 
 def render_headcalc(source):
     source=source.replace('\r\n','\n')
@@ -107,6 +107,11 @@ def build_bundle(base,reference,target,*,owner_optimization='O2'):
     identity['original_macro_policy_parent']=identity.pop('macro_policy')
     identity['coupled_macro']={'policy':POLICY,'generator_sha256':h.sha(Path(__file__)),'trial_origin_generator_sha256':h.sha(Path(__file__).with_name('macro_trial_origin.py')),'stock_gradient_generator_sha256':h.sha(Path(__file__).with_name('macro_stock_jacobian.py')),'rank2_generator_sha256':h.sha(Path(__file__).with_name('macro_stock_rank2.py')),'rank2_source_sha256':h.sha(Path(__file__).with_name('macro_stock_rank2.f90')),'contact_generator_sha256':h.sha(Path(__file__).with_name('macro_contact_history.py')),'local_absorption_generator_sha256':h.sha(Path(__file__).with_name('macro_local_absorption_gradient.py')),'contact_gradient_source_sha256':h.sha(Path(__file__).with_name('macro_contact_gradient.f90')),'surface_generator_sha256':h.sha(Path(__file__).with_name('macro_surface_gradient.py')),'perched_generator_sha256':h.sha(Path(__file__).with_name('macro_perched_classification.py')),'complete_generator_sha256':h.sha(Path(__file__).with_name('macro_complete_jacobian.py')),'complete_source_sha256':h.sha(Path(__file__).with_name('macro_stock_complete.f90')),'field_contract':'CONTRACT06: remove redundant air-entry exclusion only; original Andelst scope','physical_origin_fields':list(PHYSICAL_FIELDS),'owner_flags':flags,'unmodified_original_pool_flags':identity['donor_flags'],'owner_objects_sha256':{n:h.sha(target/n) for n in ['boundtop.o','calcgwl.o','headcalc.o','macropore.o','macrorate.o','macro_stock_rank2.o','macro_stock_complete.o','swap_main.o']},'native_codec':'UNCHANGED_S5MAC006; new policy/build receipt refuses foreign origins'}
     identity['macro_policy']={'name':POLICY,'generator_sha256':h.sha(Path(__file__)),'native_macro_format':'S5MAC006-complete-physical-trial-origin','objects_sha256':identity['coupled_macro']['owner_objects_sha256']}
+    # Reuse the existing host's durable publication ABI; never compile in a model route.
+    library=h.compile_restart_publisher(target)
+    identity['restart_publisher']={'source_sha256':h.sha(h.ROOT/'app/support/restart_publish.c'),
+        'library_sha256':h.sha(library),'gcc_sha256':h.sha(Path(shutil.which('gcc')))}
+    h.validate_restart_publisher(target,identity['restart_publisher'])
     meta['identity']=identity;meta['binding']={**meta['binding'],'build':identity,'macro_policy':POLICY}
     meta['executable_sha256']['donor']=h.sha(h.executable(target,'day_donor'))
     (target/'BUILD.json').write_text(json.dumps(meta,indent=2)+'\n');return target
@@ -131,4 +136,5 @@ def validate_bundle(bundle,reference):
     for name,digest in meta['identity']['donor_objects'].items():
         if h.sha(reference/'build/swap-obj'/name)!=digest:raise ValueError('Original physical provider differs: '+name)
     if h.sha(reference/'build/ttutil-obj/libttutil.a')!=meta['identity']['ttutil_library']:raise ValueError('Original TTUTIL differs')
+    h.validate_restart_publisher(bundle,meta['identity']['restart_publisher'])
     return meta,case
