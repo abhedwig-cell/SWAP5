@@ -210,7 +210,8 @@ def apply_build(output,donor_build,project,patched):
     original=(donor_build/'swap-selected/integral.f90').read_text(encoding='cp1252')
     trial=selected['nprintday']>1 or selected['flprintdt']
     watstor=(donor_build/'swap-selected/watstor.f90').read_text(encoding='cp1252') if trial else None
-    (output/'integral.f90').write_text(render_integral(original,watstor,selected),encoding='cp1252')
+    from closed_default_calendar import render_trial_domain
+    (output/'integral.f90').write_text(render_trial_domain(render_integral(original,watstor,selected),project),encoding='cp1252')
     probe=PROBE
     if project.age:
         probe=PROBE[:PROBE.index('subroutine hybrid_age_output_day_emit()')]+regular.PROBE

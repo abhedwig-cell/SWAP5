@@ -94,6 +94,10 @@ def validate(bundle, project, identity):
             from lower_boundary_receipt import render_headcalc
             source=render_headcalc(source.decode('cp1252'),8).encode('cp1252')
             form='water'
+            from closed_default_calendar import selection as default_selection,trial_head_parent_inverse
+            default=default_selection(project)
+            if default is not None and default['clock'] and not project.solute:
+                source=trial_head_parent_inverse(source.decode('cp1252')).encode('cp1252')
             from cde_clock_output import active_selection as actual_clock_selection
             clock=actual_clock_selection(project) if project.solute else None
             if clock is not None and (clock.get('closed_implicit_calendar') or clock.get('closed_default_calendar')):

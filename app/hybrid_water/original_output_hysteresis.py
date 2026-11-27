@@ -138,7 +138,8 @@ def apply_build(output,donor_build,project,patched):
     (output/(DOMAIN+'.f90')).write_bytes(paired_history_domain(Path(__file__).with_name(DOMAIN+'.f90').read_bytes(),project))
     original=(donor_build/'swap-selected/integral.f90').read_text(encoding='cp1252');trial=selected['nprintday']>1 or selected['flprintdt']
     watstor=(donor_build/'swap-selected/watstor.f90').read_text(encoding='cp1252') if trial else None
-    (output/'integral.f90').write_text(ordinary.render_integral(original,watstor,selected),encoding='cp1252')
+    from closed_default_calendar import render_trial_domain
+    (output/'integral.f90').write_text(render_trial_domain(ordinary.render_integral(original,watstor,selected),project),encoding='cp1252')
     (output/'age_output_calendar_probe.f90').write_text(probe_source(project),encoding='cp1252')
     if project.age:
         path=output/'solute.f90';path.write_bytes(regular.render_solute(path.read_bytes()))

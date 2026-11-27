@@ -43,3 +43,29 @@ def selection(project):
     from experimental_project import switches
     text=(Path(project.input_directory)/'swap.swp').read_text(encoding='cp1252')
     return input_domain(text,switches(text),project.original_output)
+
+
+def render_trial_domain(source,project):
+    """Compose only the real closed boundary with the original trial receipt."""
+    selected=selection(project)
+    if selected is None or not selected['clock'] or project.solute:return source
+    old="if(swmacro/=0.or.swsnow/=0.or.swdra/=1)error stop 'Foreign original trial receipt domain'"
+    new="if(swmacro/=0.or.swsnow/=0.or.swdra/=0.or.swbotb/=6)error stop 'Foreign original closed default trial receipt domain'"
+    if source.count(old)!=1:raise ValueError('Changed complete original default trial domain')
+    return source.replace(old,new,1)
+
+
+def trial_head_parent_inverse(source):
+    """Invert the two exact original observer statements, preserving the body."""
+    parts=('   use MOD_integral,only:hybrid_output_trial_residual\n',
+           '\n         if(abs(hybrid_output_trial_residual())>1d-10)flnonconv=.true.')
+    original=source
+    for part in parts:
+        if source.count(part)!=1:raise ValueError('Foreign complete default clock trial source')
+        source=source.replace(part,'',1)
+    anchors=('   use hybrid_implicit_pond_event_state,only:request_implicit_pond_event,assert_no_implicit_pond_event',
+             '         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.')
+    if any(source.count(a)!=1 for a in anchors):raise ValueError('Changed original default trial assembly')
+    replay=source.replace(anchors[0],parts[0]+anchors[0],1).replace(anchors[1],anchors[1]+parts[1],1)
+    if replay!=original:raise ValueError('Incomplete complete default clock trial inverse')
+    return source
