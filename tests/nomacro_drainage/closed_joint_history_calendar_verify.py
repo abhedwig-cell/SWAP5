@@ -13,7 +13,7 @@ from closed_initialization_calendar_inherited_selection import audit as inherite
 from closed_default_calendar_inherited_domains import audit as inherited56
 from closed_joint_history_calendar_ci_custody import audit as ci_custody
 import closed_initialization_calendar_verify as previous
-SEALED='e8da5a5e30d28c74a41d57ddbfe3c44390a2a8af'
+SEALED='420b142921be6829b51c7af86dc859977d33d3e5'
 
 
 def data_source():return GitArchiveSource(ROOT,git('rev-parse','HEAD').decode().strip())
