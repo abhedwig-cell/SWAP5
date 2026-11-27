@@ -2,7 +2,7 @@
 import ast,argparse,json,re
 from pathlib import Path
 from closed_implicit_state_feedback import R,P,PARENT,SHA,git
-PROPOSAL='CLOSED_IMPLICIT_STATE13_SOURCE_PROPOSAL_V4.json'
+PROPOSAL='CLOSED_IMPLICIT_STATE13_SOURCE_PROPOSAL_V5.json'
 
 
 def source():
@@ -10,7 +10,8 @@ def source():
     assert not git('for-each-ref','--format=%(refname)','refs/replace')
     assert not git('status','--porcelain=v1','--untracked-files=all','--ignored')
     contract=json.loads(git('show','HEAD:'+P+PROPOSAL))
-    assert contract['actual_canonical_parent']==PARENT and not contract['physical_equations_changed'] and not contract['new_physical_state'] and not contract['new_numerical_policy']
+    assert contract['actual_canonical_parent']==PARENT and not contract['physical_equations_changed'] and not contract['new_physical_state'] and contract['new_numerical_policy'] is True
+    assert contract['numerical_policy']=='original-closed-implicit-saturated-residual-initial-iterate-v1' and not contract['tolerances_or_iteration_limits_changed'] and not contract['accepted_stock_flux_or_parameter_corrections']
     expected=contract['files'];changed=set(git('diff','--name-only',PARENT,'HEAD','--','app').decode().splitlines());assert changed==set(expected)
     assert not git('diff',PARENT,'HEAD','--','src','tools','reference')
     observations=[]
@@ -43,7 +44,7 @@ def source():
     assert git('rev-parse','HEAD').decode().strip()==before_head
     return dict(status='ACTUAL_CURRENT_COMPLETE_APP_LITERAL_PARENT_INVERSES_AND_ALL_ORIGINAL_EVIDENCE_GIT_BLOBS_PRESERVED',actual_source=before_head,
                 actual_canonical_parent=PARENT,APP_files=observations,original_evidence_blobs=len(old)-len(changed_evidence),
-                physical_equations_changed=False,new_physical_state=False,new_numerical_policy=False,
+                physical_equations_changed=False,new_physical_state=False,new_numerical_policy=True,numerical_policy=contract['numerical_policy'],
                 source_or_filesystem_identity_projected=False,compiler_executions=0,model_executions=0)
 
 

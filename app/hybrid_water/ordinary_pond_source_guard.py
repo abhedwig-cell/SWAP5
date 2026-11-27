@@ -53,6 +53,8 @@ def validate(bundle, project, identity):
                 raise ValueError('Foreign actual ordinary CDE interval source form')
             form='water'
     source = (Path(bundle)/'headcalc.f90').read_bytes().replace(b'\r\n', b'\n')
+    from implicit_closed_desaturation import restore as restore_desaturation
+    source=restore_desaturation(source.decode('cp1252')).encode('cp1252')
     if not project.solute:
         from perstep_output_domain import active_selection as perstep_selection
         perstep=perstep_selection(project)
