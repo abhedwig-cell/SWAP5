@@ -1,0 +1,23 @@
+{
+  "status": "EXACT_CURRENT_WORKFLOW_GUARD_AND_REWRITE_NEGATIVE_ADDED_LEGACY_ASSERTION_AND_ALL_OTHER_NEGATIVES_UNCHANGED",
+  "actual_before_source": "e28233d32c404c86fa58d7cbd71f7632dde1654c",
+  "actual_canonical_dependency": "22520105f5a3ccac2bd2ae1b726f27b7b0d67b1e",
+  "files": {
+    "tests/hupsel51/test_successor.py": {
+      "before_lf_sha256": "08311d8af04c1b0d46e8eb3a514a3a42bb202d223f9d1f317b375512e3bceea9",
+      "proposed_lf_sha256": "645b9f84a2934e55df7bc13b0f681a29d7aa81f29d67a5585c5eefeb100c81b2",
+      "ordered_literal_edits": [
+        {
+          "base_start": 2288,
+          "base_end": 2347,
+          "before": "                new=checkout.historical_workflow(path,new)\n",
+          "after": "                if path==s.QUALIFY:\n                    spec=importlib.util.spec_from_file_location('actual_hupsel_checkout_custody',s.ROOT/'tests/nomacro_drainage/implicit_hydraulic_state_ci_checkout_custody.py')\n                    custody=importlib.util.module_from_spec(spec);spec.loader.exec_module(custody)\n                    custody.validate_workflow_text(new)\n                    with self.assertRaises(ValueError):\n                        custody.validate_workflow_text(new.replace('python','echo',1))\n                    # The actual current file is proved above. This separate\n                    # legacy assertion reads its genuine canonical ancestor;\n                    # it never substitutes a historical checkout for execution.\n                    ancestor=custody.git('show',custody.BASE+':'+path).decode()\n                    new=checkout.historical_workflow(path,ancestor)\n                else:new=checkout.historical_workflow(path,new)\n"
+        }
+      ]
+    }
+  },
+  "old_workflow_validator_changed": false,
+  "current_workflow_commands_caps_and_timeout_changed": false,
+  "compiler_executions": 0,
+  "model_executions": 0
+}

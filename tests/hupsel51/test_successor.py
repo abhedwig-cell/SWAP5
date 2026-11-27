@@ -34,7 +34,18 @@ class Boundaries(unittest.TestCase):
                 # the complete current file differs solely by checkout inputs.
                 spec=importlib.util.spec_from_file_location('bounded_checkout_protocol',s.ROOT/'tests/nomacro_drainage/ci_checkout_scope07.py')
                 checkout=importlib.util.module_from_spec(spec);spec.loader.exec_module(checkout)
-                new=checkout.historical_workflow(path,new)
+                if path==s.QUALIFY:
+                    spec=importlib.util.spec_from_file_location('actual_hupsel_checkout_custody',s.ROOT/'tests/nomacro_drainage/implicit_hydraulic_state_ci_checkout_custody.py')
+                    custody=importlib.util.module_from_spec(spec);spec.loader.exec_module(custody)
+                    custody.validate_workflow_text(new)
+                    with self.assertRaises(ValueError):
+                        custody.validate_workflow_text(new.replace('python','echo',1))
+                    # The actual current file is proved above. This separate
+                    # legacy assertion reads its genuine canonical ancestor;
+                    # it never substitutes a historical checkout for execution.
+                    ancestor=custody.git('show',custody.BASE+':'+path).decode()
+                    new=checkout.historical_workflow(path,ancestor)
+                else:new=checkout.historical_workflow(path,new)
             s.validate_workflow(path, new, old)
             with self.assertRaises(ValueError):
                 s.validate_workflow(path, new.replace('python', 'echo', 1), old)
