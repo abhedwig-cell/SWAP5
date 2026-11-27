@@ -104,3 +104,14 @@ a primary trajectory; selecting the actual day4 trajectory resolves this
 read-only observer failure, retained in RAW V9. Formal candidate PUBLIC, ordinary
 Python publication, CI admission and real merge receipt remain pending.
 Whole migration PARTIAL; global counts UNKNOWN; fixed RC3 unchanged.
+
+The first actual current PUBLIC execution on aa43c6d refuses after all new
+independent physical/native/archive audits pass: the new owner incorrectly
+expected two deferred cases inside the current fourteen-case plan, which has
+none. The two genuine explicit Gardner/Snow9 failures belong to the unchanged
+canonical948 plan. The corrected owner independently reads that exact parent
+Git blob and reports both scopes, preserving both unresolved numerical gaps.
+RAW V10 retains the failed PUBLIC, successful ordinary publication, complete
+source preflight and genuine signed first synthetic object. No model periods
+are repeated for this evidence-owner correction. A new stable candidate needs
+fresh current PUBLIC/publication admission and required CI.
