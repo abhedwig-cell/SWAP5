@@ -13,13 +13,19 @@ The per-layer implicit EOF extension has a complete literal inverse; parent
 procedure validation and independent compiled extension checks remain required.
 
 The new numerical policy is
-`original-closed-implicit-saturated-residual-initial-iterate-v1`. It selects only
+`original-closed-implicit-residual-start-and-convergence-order-v2`. It selects only
 the new analytical closed6/no-drainage implicit scope. At the first Newton iterate,
-zero trial pond, all-zero moisture capacities and an unresolved positive original
-residual identify the saturated plateau. A uniform trial-head shift brackets and
+zero trial pond and an unresolved nonzero original total residual select the
+initial trial search. A signed uniform trial-head shift brackets and
 bisects the sum of the ORIGINAL vector_F, recomputing original watcon/hconduc,
 conductivity means and root extraction. The existing MaxIt1 bounds the search.
-This changes the starting trial iterate, then returns to the unchanged full
+This changes the starting trial iterate for wetting and drying. When a current
+iterate already meets the original compartment and total residual criteria, the
+complete original convergence block is evaluated before a potentially ill-
+conditioned linear solve. The actual head step is zero because no Newton move
+has been made; no head, residual, physical stock or flux is assigned. All original
+pond, head-change, strict budget and extra-polish checks still run. Otherwise
+the original linear solve/backtracking executes. Both paths retain the unchanged full
 Newton/backtracking, original rollback and every original/strict budget criterion.
 No accepted stock, flux, moment, pressure, date, parameter or tolerance is fixed.
 No physical equation or accepted/native state is added. The full generated body
@@ -41,3 +47,13 @@ causality remains UNKNOWN; this establishes no LEGACY_DEFECT or equivalence.
 Whole migration PARTIAL; scientific equivalence NOT_QUALIFIED; global family/gap
 counts UNKNOWN; fixed RC3 unchanged. Explicit Gardner/Snow9 numerical gaps,
 AGE dry-pond moments and paired9 active-vapor thermal semantics remain separate.
+
+Actual84452: both earlier Frost failures complete35 days and independent audits;
+ordinary model5 CDE still fails at day26; Snow model6 CDE remains censored after33
+days. Diagnostics expose near-zero physical residuals but large spurious Newton
+head directions on the saturated closed column. The signed-residual prototype
+completes26 resumed model5 days; the complete-convergence-precheck prototype
+completes5 resumed Snow days. Exact analytical K derivative probes separately
+pass but do not remove the Snow censor, so that derivative change is not
+installed. RAW V4 cacdaae6 preserves all source/binary/positive/failure/censor
+roles. New production V2 qualification remains pending.
