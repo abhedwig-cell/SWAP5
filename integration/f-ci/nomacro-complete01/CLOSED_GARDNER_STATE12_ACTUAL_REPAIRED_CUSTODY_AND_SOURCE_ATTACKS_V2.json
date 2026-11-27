@@ -1,0 +1,86 @@
+{
+  "status": "ACTUAL_REPAIRED_SIX_POSITIVE_WHOLE_SOURCE_AND_SIX_TOLERANCE_MUTANT_REFUSALS_AND_EXACT_FIRST_RAW_GIT_BYTES_PASS",
+  "actual_observer": "eb4198bed4ad7480bf2048204a7f368052607e16",
+  "original_first_cohort_producer": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+  "actual_retained_archive_sha256": "8acadb26f64f33f3836719af90341aeaf1de80dae37ab2bebe81be7dcc6aed6b",
+  "actual_retained_archive_bytes": 145682512,
+  "actual_retained_members": 20236,
+  "parts": [
+    {
+      "file": "CLOSED_GARDNER_STATE12_FIRST_LOCAL_SUCCESSES_FAILURES_RAW_V1.zip.part001",
+      "bytes": 100663296,
+      "sha256": "deca094b4531f71f21f3495c4a3ebea0c44acfd73ba34fdcbd1b855748bf9285"
+    },
+    {
+      "file": "CLOSED_GARDNER_STATE12_FIRST_LOCAL_SUCCESSES_FAILURES_RAW_V1.zip.part002",
+      "bytes": 45019216,
+      "sha256": "bd4a4e146939a6697ef97197682ba132e9cc714f63177d230913365995f0314b"
+    }
+  ],
+  "archive_CRC_not_repeated_because_whole_bytes_equal_to_previously_full_verified_seal": true,
+  "model_executions": 0,
+  "compiler_executions": 0,
+  "source_attacks": [
+    {
+      "case": "closed-ordinary-implicit-h0-water-profile",
+      "optimization": "O0",
+      "actual_original_compiler_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "actual_original_BUILD_sha256": "a0231ee39576e3b373db12e0b0fe6d65374ebd76b9275a24651963da6bfc61f6",
+      "positive_whole_source_accepted": true,
+      "actual_mutant_lf_sha256": "ea9230876529bc6386c9a5aecda2d336b88e862be7ca4ea54017d1994404aefa",
+      "changed_actual_pond_tolerance_source_refused": true,
+      "error": "Foreign actual ordinary implicit coupled HeadCalc provider"
+    },
+    {
+      "case": "closed-ordinary-implicit-h1-cde",
+      "optimization": "O0",
+      "actual_original_compiler_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "actual_original_BUILD_sha256": "33528098801e7d91dd4917a26467a06d0cde4b4db320bac030a2a90a84ed8559",
+      "positive_whole_source_accepted": true,
+      "actual_mutant_lf_sha256": "ea9230876529bc6386c9a5aecda2d336b88e862be7ca4ea54017d1994404aefa",
+      "changed_actual_pond_tolerance_source_refused": true,
+      "error": "Foreign actual ordinary implicit coupled HeadCalc provider"
+    },
+    {
+      "case": "closed-ordinary-implicit-h2-water",
+      "optimization": "O0",
+      "actual_original_compiler_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "actual_original_BUILD_sha256": "f1f57974d6fa52a0031de4abb91a9348fab9b4cfd956f8ca89c502a7bb238d83",
+      "positive_whole_source_accepted": true,
+      "actual_mutant_lf_sha256": "ea9230876529bc6386c9a5aecda2d336b88e862be7ca4ea54017d1994404aefa",
+      "changed_actual_pond_tolerance_source_refused": true,
+      "error": "Foreign actual ordinary implicit coupled HeadCalc provider"
+    },
+    {
+      "case": "closed-ordinary-implicit-h0-water-profile",
+      "optimization": "O2",
+      "actual_original_compiler_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "actual_original_BUILD_sha256": "2ac4579b0af795a86c2b2b841717d256a070504a74cb6093e3fb6d388c3a7e70",
+      "positive_whole_source_accepted": true,
+      "actual_mutant_lf_sha256": "ea9230876529bc6386c9a5aecda2d336b88e862be7ca4ea54017d1994404aefa",
+      "changed_actual_pond_tolerance_source_refused": true,
+      "error": "Foreign actual ordinary implicit coupled HeadCalc provider"
+    },
+    {
+      "case": "closed-ordinary-implicit-h1-cde",
+      "optimization": "O2",
+      "actual_original_compiler_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "actual_original_BUILD_sha256": "a05ef3f0a0a074748ed162dbc0573db9abf946242dc98d9ac3406232511faded",
+      "positive_whole_source_accepted": true,
+      "actual_mutant_lf_sha256": "ea9230876529bc6386c9a5aecda2d336b88e862be7ca4ea54017d1994404aefa",
+      "changed_actual_pond_tolerance_source_refused": true,
+      "error": "Foreign actual ordinary implicit coupled HeadCalc provider"
+    },
+    {
+      "case": "closed-ordinary-implicit-h2-water",
+      "optimization": "O2",
+      "actual_original_compiler_source": "3be78ad24d2bce348f38a26e289af0f4846c5883",
+      "actual_original_BUILD_sha256": "ed65b7327ea98c5071ad7edfd43e8c6cd516ea71acf5deaf890ccdbd29e26fd4",
+      "positive_whole_source_accepted": true,
+      "actual_mutant_lf_sha256": "ea9230876529bc6386c9a5aecda2d336b88e862be7ca4ea54017d1994404aefa",
+      "changed_actual_pond_tolerance_source_refused": true,
+      "error": "Foreign actual ordinary implicit coupled HeadCalc provider"
+    }
+  ],
+  "canonical_admission": false
+}
