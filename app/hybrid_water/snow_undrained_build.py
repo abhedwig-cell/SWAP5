@@ -18,7 +18,9 @@ def owner(selected):return reset if selected['flprintdt'] and selected['swres'] 
 def trial_source(original,watstor,selected):
     result=clock.soil_trial_source(original,watstor)
     result=native.replace(result,'swdra/=1.or.','swdra/=0.or.')
-    if selected['swbotb']==9:
+    if selected['swbotb']==6:
+        result=native.replace(result,'(swbotb/=5.and.swbotb/=8)','swbotb/=6')
+    elif selected['swbotb']==9:
         result=native.replace(result,'(swbotb/=5.and.swbotb/=8)','swbotb/=9')
     return native.replace(result,'nprintday<2','(nprintday<1.or.nprintday>1440)')
 
@@ -150,7 +152,11 @@ def head_trial(text,selected=None):
             hybrid_snow_trial_guard=hybrid_snow_soil_trial_residual(-kmean(NN+1)*hgrad(NN+1))
          end if
          if(abs(hybrid_snow_trial_guard)>1d-10)flnonconv=.true."""
-    if selected is not None and selected['swbotb']==9:
+    if selected is not None and selected['swbotb']==6:
+        # Literal original Boundbottom assigns qbot=0 for bottom6. This is an
+        # independent candidate receipt, not a substituted accepted flux/store.
+        guard='\n         hybrid_snow_trial_guard=hybrid_snow_soil_trial_residual(0d0)\n         if(abs(hybrid_snow_trial_guard)>1d-10)flnonconv=.true.'
+    elif selected is not None and selected['swbotb']==9:
         guard='\n         hybrid_snow_trial_guard=hybrid_snow_soil_trial_residual(qbot)\n         if(abs(hybrid_snow_trial_guard)>1d-10)flnonconv=.true.'
     return native.replace(text,anchor,anchor+guard)
 

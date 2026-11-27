@@ -12,7 +12,7 @@ def selection(project):
     if not project.original_output or not project.input_directory or project.macro or project.age:return None
     from experimental_project import inspect
     report=inspect(project.input_directory,original_output=True);s=report['selectors']
-    if s['SWSNOW']!=1 or s['SWDRA']!=0 or report['boundary']['SWBOTB'] not in (5,8,9):return None
+    if s['SWSNOW']!=1 or s['SWDRA']!=0 or report['boundary']['SWBOTB'] not in (5,6,8,9):return None
     if report['boundary']['SWBOTB']==9:
         from prescribed_snow_boundary import enabled
         if not enabled(project):return None

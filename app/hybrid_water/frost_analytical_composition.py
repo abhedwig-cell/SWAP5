@@ -18,7 +18,7 @@ def model_domain(active,values,allow_model1=False):
     else:
         if len(rows)!=1 or re.fullmatch(r'[+-]?[0-9]+(?:[ \t]+[+-]?[0-9]+)*[ \t]*',rows[0]) is None:return None
         models=list(map(int,rows[0].split()))
-    if not models or (all(x==1 for x in models) and not allow_model1) or any(x not in (1,3,4,5,6,7,8,9,10,11) for x in models):return None
+    if not models or (all(x==1 for x in models) and not allow_model1) or any(x not in range(1,12) for x in models):return None
     tables=list(re.finditer(r'(?mi)^[ \t]*ISUBLAY[ \t]+ISOILLAY[ \t]+HSUBLAY[ \t]+NCOMP[ \t]*\n',active))
     if len(tables)!=1:return None
     layers=[]
@@ -39,7 +39,8 @@ def model_domain(active,values,allow_model1=False):
     if vapor:
         if re.fullmatch(r'[+-]?[0-9]+(?:[ \t]+[+-]?[0-9]+)*[ \t]*',vapor[0]) is None:return None
         flags=list(map(int,vapor[0].split()))
-        if any(x!=0 for x in flags) or any(x>=8 for x in models) and len(flags)!=count:return None
+        if any(x not in (0,1) for x in flags) or any(x>=8 for x in models) and len(flags)!=count:return None
+        if any(x>=8 for x in models) and any(flag!=0 for model,flag in zip(models,flags) if model>=8):return None
     return models
 
 def selected(project):
@@ -58,6 +59,30 @@ def native_source(item):
     if item['bottom'] not in (5,6,8) or item.get('drainage') not in (0,1) or item['implicit']!=0 or item['hysteresis']!=0:raise ValueError('Foreign analytical Frost native source domain')
     text=Path(__file__).with_name(native_provider(item)+'.f90').read_text(encoding='cp1252')
     if text.count('swbotb/=5')!=1:raise ValueError('Foreign analytical Frost native boundary anchor')
+    # The original Gardner branches already own the physical constitutive
+    # calculations. Relax only their previously excluded static native witness,
+    # selected by the actual per-layer input models. All admitted old model
+    # native renderings remain byte-for-byte unchanged.
+    if 2 in item['analytical_frost_models']:
+        if boundary_domain(item):
+            before=('    if(any(iHWCKmodel(1:numlay)<1).or.any(iHWCKmodel(1:numlay)>11).or. &\n'
+                    "       any(iHWCKmodel(1:numlay)==2))error stop 'Foreign analytical Frost boundary constitutive models'")
+            after="    if(any(iHWCKmodel(1:numlay)<1).or.any(iHWCKmodel(1:numlay)>11))error stop 'Foreign analytical Frost boundary constitutive models'"
+        else:
+            before='       any(iHWCKmodel(1:numlay)==2).or.all(iHWCKmodel(1:numlay)==1)) &'
+            after='       all(iHWCKmodel(1:numlay)==1)) &'
+        if text.count(before)!=1:raise ValueError('Foreign original Gardner Frost native witness anchor')
+        text=text.replace(before,after,1)
+        if not boundary_domain(item):
+            before_vapor=('    if(any((iHWCKmodel(1:numlay)>=8).and.(.not.NoVap(1:numlay)))) &\n'
+                          "       error stop 'Active vapor cannot use analytical Frost native'")
+            after_vapor=('    do i=1,numlay\n'
+                         '      if(iHWCKmodel(i)>=8)then\n'
+                         "        if(.not.NoVap(i))error stop 'Active vapor cannot use analytical Frost native'\n"
+                         '      end if\n    end do')
+            for left,right in [('    integer::n,ios','    integer::n,ios,i'),(before_vapor,after_vapor)]:
+                if text.count(left)!=1:raise ValueError('Foreign Gardner inactive native vapor anchor')
+                text=text.replace(left,right,1)
     return text.replace('swbotb/=5','swbotb/='+str(item['bottom']),1)
 
 def native_domain(raw,item,nodes):

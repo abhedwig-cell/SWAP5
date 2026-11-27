@@ -1,0 +1,353 @@
+{
+  "status": "FINITE19_AFFECTED_STATE_AND_EFFECTIVE_FLAG_COUPLINGS_PLANNED_NOT_EXECUTED_NOT_QUALIFIED",
+  "cases": [
+    {
+      "days": 35,
+      "kind": "water",
+      "snow": 1,
+      "frost": 1,
+      "drainage": 0,
+      "bottom": 6,
+      "implicit": 1,
+      "hysteresis": 0,
+      "initial": 2,
+      "models": [
+        1
+      ],
+      "calendar": "dense",
+      "name": "closed-frost-implicit-h0-water"
+    },
+    {
+      "days": 35,
+      "kind": "cde",
+      "snow": 1,
+      "frost": 1,
+      "drainage": 0,
+      "bottom": 6,
+      "implicit": 1,
+      "hysteresis": 1,
+      "initial": 1,
+      "models": [
+        1
+      ],
+      "calendar": "monthly",
+      "name": "closed-frost-implicit-h1-cde-profile-monthly"
+    },
+    {
+      "days": 35,
+      "kind": "water",
+      "snow": 1,
+      "frost": 1,
+      "drainage": 0,
+      "bottom": 6,
+      "implicit": 1,
+      "hysteresis": 2,
+      "initial": 2,
+      "models": [
+        1
+      ],
+      "calendar": "dates",
+      "name": "closed-frost-implicit-h2-water-dates"
+    },
+    {
+      "days": 35,
+      "kind": "water",
+      "snow": 1,
+      "frost": 1,
+      "drainage": 0,
+      "bottom": 6,
+      "implicit": 0,
+      "hysteresis": 1,
+      "initial": 1,
+      "models": [
+        1
+      ],
+      "calendar": "dense",
+      "name": "closed-frost-explicit-h1-water-profile"
+    },
+    {
+      "days": 35,
+      "kind": "cde",
+      "snow": 1,
+      "frost": 1,
+      "drainage": 0,
+      "bottom": 6,
+      "implicit": 0,
+      "hysteresis": 2,
+      "initial": 2,
+      "models": [
+        1
+      ],
+      "calendar": "period-reset",
+      "name": "closed-frost-explicit-h2-cde-calendar"
+    },
+    {
+      "days": 35,
+      "kind": "water",
+      "snow": 1,
+      "frost": 0,
+      "drainage": 0,
+      "bottom": 6,
+      "implicit": 1,
+      "hysteresis": 0,
+      "initial": 2,
+      "models": [
+        1
+      ],
+      "calendar": "dense",
+      "name": "closed-snow-implicit-h0-water"
+    },
+    {
+      "days": 35,
+      "kind": "cde",
+      "snow": 1,
+      "frost": 0,
+      "drainage": 0,
+      "bottom": 6,
+      "implicit": 0,
+      "hysteresis": 1,
+      "initial": 2,
+      "models": [
+        1
+      ],
+      "calendar": "subdaily",
+      "name": "closed-snow-explicit-h1-cde-clock"
+    },
+    {
+      "days": 35,
+      "kind": "cde",
+      "snow": 1,
+      "frost": 0,
+      "drainage": 0,
+      "bottom": 6,
+      "implicit": 1,
+      "hysteresis": 2,
+      "initial": 1,
+      "models": [
+        1
+      ],
+      "calendar": "monthly",
+      "name": "closed-snow-implicit-h2-cde-profile-monthly"
+    },
+    {
+      "days": 35,
+      "kind": "water",
+      "snow": 0,
+      "frost": 0,
+      "drainage": 0,
+      "bottom": 6,
+      "implicit": 1,
+      "hysteresis": 0,
+      "initial": 1,
+      "models": [
+        1
+      ],
+      "calendar": "dense",
+      "name": "closed-ordinary-implicit-h0-water-profile"
+    },
+    {
+      "days": 35,
+      "kind": "cde",
+      "snow": 0,
+      "frost": 0,
+      "drainage": 0,
+      "bottom": 6,
+      "implicit": 1,
+      "hysteresis": 1,
+      "initial": 2,
+      "models": [
+        1
+      ],
+      "calendar": "dense",
+      "name": "closed-ordinary-implicit-h1-cde"
+    },
+    {
+      "days": 35,
+      "kind": "water",
+      "snow": 0,
+      "frost": 0,
+      "drainage": 0,
+      "bottom": 6,
+      "implicit": 1,
+      "hysteresis": 2,
+      "initial": 2,
+      "models": [
+        1
+      ],
+      "calendar": "dense",
+      "name": "closed-ordinary-implicit-h2-water"
+    },
+    {
+      "days": 35,
+      "kind": "water",
+      "snow": 1,
+      "frost": 0,
+      "drainage": 0,
+      "bottom": 5,
+      "implicit": 0,
+      "hysteresis": 0,
+      "initial": 2,
+      "models": [
+        2
+      ],
+      "calendar": "dense",
+      "name": "gardner-snow-explicit-d0-b5-water"
+    },
+    {
+      "days": 35,
+      "kind": "cde",
+      "snow": 1,
+      "frost": 1,
+      "drainage": 0,
+      "bottom": 8,
+      "implicit": 0,
+      "hysteresis": 0,
+      "initial": 1,
+      "models": [
+        2
+      ],
+      "calendar": "dense",
+      "name": "gardner-frost-explicit-d0-b8-cde-profile"
+    },
+    {
+      "days": 35,
+      "kind": "water",
+      "snow": 1,
+      "frost": 1,
+      "drainage": 1,
+      "bottom": 6,
+      "implicit": 0,
+      "hysteresis": 0,
+      "initial": 2,
+      "models": [
+        2
+      ],
+      "calendar": "period-reset",
+      "name": "gardner-frost-explicit-d1-b6-water-calendar"
+    },
+    {
+      "days": 35,
+      "kind": "cde",
+      "snow": 1,
+      "frost": 1,
+      "drainage": 1,
+      "bottom": 5,
+      "implicit": 0,
+      "hysteresis": 0,
+      "initial": 2,
+      "models": [
+        2,
+        1
+      ],
+      "calendar": "dense",
+      "name": "gardner-mixed2-1-frost-explicit-d1-b5-cde"
+    },
+    {
+      "days": 35,
+      "kind": "water",
+      "snow": 1,
+      "frost": 0,
+      "drainage": 0,
+      "bottom": 8,
+      "implicit": 0,
+      "hysteresis": 0,
+      "initial": 2,
+      "models": [
+        2,
+        3
+      ],
+      "calendar": "dense",
+      "name": "gardner-mixed2-3-snow-explicit-d0-b8-water"
+    },
+    {
+      "days": 35,
+      "kind": "cde",
+      "snow": 1,
+      "frost": 1,
+      "drainage": 0,
+      "bottom": 5,
+      "implicit": 0,
+      "hysteresis": 0,
+      "initial": 2,
+      "models": [
+        2,
+        8
+      ],
+      "calendar": "dense",
+      "name": "gardner-mixed2-8-frost-explicit-inactive-vapor-slot",
+      "effective_original_vapor_flags": [
+        1,
+        0
+      ]
+    },
+    {
+      "days": 35,
+      "kind": "water",
+      "snow": 1,
+      "frost": 0,
+      "drainage": 0,
+      "bottom": 9,
+      "implicit": 0,
+      "hysteresis": 0,
+      "initial": 2,
+      "models": [
+        2
+      ],
+      "calendar": "dense",
+      "name": "gardner-snow-paired9-explicit-water"
+    },
+    {
+      "days": 35,
+      "kind": "cde",
+      "snow": 1,
+      "frost": 0,
+      "drainage": 0,
+      "bottom": 9,
+      "implicit": 0,
+      "hysteresis": 0,
+      "initial": 2,
+      "models": [
+        2,
+        1
+      ],
+      "calendar": "dense",
+      "name": "gardner-mixed2-1-snow-paired9-explicit-cde"
+    }
+  ],
+  "platforms": [
+    "Windows",
+    "Ubuntu"
+  ],
+  "compiler_profiles": [
+    "O0",
+    "O2"
+  ],
+  "primary_days_if_all_executed": 2660,
+  "actual_model_and_compiler_executions": 0,
+  "new_scientific_contexts_claimed": 0,
+  "extra_original_year_seams": "Only where the changed selected calendar/state owner requires them; reuse immutable prior calendar implementations otherwise",
+  "original_parameter_policy": "No tuning or invented tables; exact accepted original parameter bytes and declared valid selectors only",
+  "controls": [
+    "Current independent 1e-10 water and CDE daily/prefix closure",
+    "Whole native payload and original user-output exact cold identity",
+    "Actual compiled one-field refusal before models for each new state domain",
+    "Rollback, replay and accept/recover transactions",
+    "Current before/after whole-object postimages for unchanged selected prior families"
+  ],
+  "does_not_claim": [
+    "All historic process combinations",
+    "Missing original Szymkiewicz physical table",
+    "RIA12 implicit compositions",
+    "Ordinary non-Snow closed-boundary nondaily initialization",
+    "AGE dryout moment decision",
+    "Prescribed head/flux9 vapor/thermal decision"
+  ],
+  "independent_original_reader_observation": "CLOSED_GARDNER_STATE12_ORIGINAL_INACTIVE_VAPOR_READER_V1.json",
+  "original_zero_day_reader_accepts": 4,
+  "original_non1_hysteresis_reader_refusals": 1,
+  "selected_source_proposals": [
+    "CLOSED_GARDNER_STATE12_GARDNER_SOURCE_PROPOSAL_V2.json",
+    "CLOSED_GARDNER_STATE12_CLOSED_SOURCE_PROPOSAL_V1.json",
+    "CLOSED_GARDNER_STATE12_INITIAL_SOURCE_PROPOSAL_V1.json"
+  ]
+}

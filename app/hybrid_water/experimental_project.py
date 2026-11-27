@@ -166,6 +166,8 @@ def inspect(directory, *, original_output=None):
         elif snow:state_supported=boundary_pair==((1,5) if implicit else (1,6))
         elif implicit:state_supported=boundary_pair==(1,5)
         else:state_supported=True
+        from closed_zero_boundary import input_domain as closed_initial_domain
+        state_supported=state_supported or closed_initial_domain(text,selected,original_output)
         from initial_profile_calendar import selection as initial_calendar_selection
         initial_calendar=initial_calendar_selection(directory,original_output)
         from analytical_snow_undrained import selection as initial_analytical_snow_selection

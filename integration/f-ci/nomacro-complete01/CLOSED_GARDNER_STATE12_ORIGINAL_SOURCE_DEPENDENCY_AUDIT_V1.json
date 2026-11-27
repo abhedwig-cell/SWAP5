@@ -1,0 +1,2586 @@
+{
+  "status": "NEXT_FINITE_HYDRAULIC_THERMAL_STATE_DEPENDENCY_SURFACE_AUDITED_NOT_IMPLEMENTED_OR_QUALIFIED",
+  "actual_observer": "fdea74b3914fe37c05a6a5301af6661773e1e5e3",
+  "original_archive": {
+    "file": "reference/swap-4.3.1/source-archives/SWAP.ZIP",
+    "sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+  },
+  "original_source": {
+    "SWAP/readswap.f90": {
+      "bytes": 61300,
+      "sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+      "original_lines": [
+        {
+          "line": 10,
+          "text": "      use MOD_grid,                 only: zbotcp, numlay"
+        },
+        {
+          "line": 11,
+          "text": "      use MOD_swap_base,            only: iun_min2, iun_max2, swpfilnam, project, pathwork, unit_swp, unit_log, unit_err, fl_initialize, swinco, swcrop, swcropsnm,      &"
+        },
+        {
+          "line": 12,
+          "text": "                                          swhea, swsnow, swfrost, swdra, swmacro, swrunon, swirfix, swpondmx, swhyst, sw_multi_swap"
+        },
+        {
+          "line": 13,
+          "text": "      use plant_interface,          only: albedo, rsc, rsw"
+        },
+        {
+          "line": 14,
+          "text": "      use MOD_MvG,                  only: swsophy, ihwckmodel, paramvg, sw_use_elas, numtab, numtablay, ientrytab, ientrytablay, sptab, sptablay, h_enpr_global"
+        },
+        {
+          "line": 15,
+          "text": "      use MOD_MvG,                  only: fl_use_tables, wc_intercept, wc_slope, cap_intercept, cap_slope, con_intercept, con_slope, n_entries, fl_use_kh_power"
+        },
+        {
+          "line": 16,
+          "text": "      use MOD_snow,                 only: swsublim, snowinco, teprrain, teprsnow, snowcoef"
+        },
+        {
+          "line": 17,
+          "text": "      use MOD_frost,                only: tfroststa, tfrostend"
+        },
+        {
+          "line": 28,
+          "text": "                                          outdatint, period, swres, swodat, swheader, swafo, swaun, critdevmasbal, swbal, swsba, swblc, htb, nhead, gwli, rsro,   &"
+        },
+        {
+          "line": 29,
+          "text": "                                          rsroexp, pondmxtab, pondmx, swcfbs, cfbs, rsoil, swredu, rsigni, cofred, tau, fhyst, flksatexm, ksatfit, ksatexm, dtmin,&"
+        },
+        {
+          "line": 30,
+          "text": "                                          dtmax, gwlconv, critdevponddt, critdevh1cp, critdevh2cp, maxit, maxbacktr, msteps, swkmean, swkimpl, gwltab, hbotab,    &"
+        },
+        {
+          "line": 31,
+          "text": "                                          qbotab, haqtab, swbotb, sw2, sinave, sinamp, sinmax, swbotb3impl, shape_3, hdrain, rimlay, swbotb3resvert, sw3, aqave,  &"
+        },
+        {
+          "line": 32,
+          "text": "                                          aqamp, aqtmax, aqper, sw4, swqhbot, cofqha, cofqhb, indeks"
+        },
+        {
+          "line": 33,
+          "text": "      use WC_K_models_04_11,        only: bimodal, novap"
+        },
+        {
+          "line": 362,
+          "text": "      end if "
+        },
+        {
+          "line": 363,
+          "text": ""
+        },
+        {
+          "line": 364,
+          "text": "      iHWCKmodel(1:numlay) = 1    ! default MvG analytical functions"
+        },
+        {
+          "line": 365,
+          "text": "   if (sw_multi_swap == 0) then"
+        },
+        {
+          "line": 366,
+          "text": "! --- Soil Hydraulic relation: as MVG-functions or as Tables"
+        },
+        {
+          "line": 367,
+          "text": "      swsophy = 0"
+        },
+        {
+          "line": 368,
+          "text": "      iHWCKmodel(1:numlay) = 1    ! default MvG analytical functions"
+        },
+        {
+          "line": 369,
+          "text": "      if (rdinqr('iHWCKmodel')) then"
+        },
+        {
+          "line": 370,
+          "text": "         if (rdinar('iHWCKmodel')) then"
+        },
+        {
+          "line": 371,
+          "text": "            call rdfinr ('iHWCKmodel',1,12,iHWCKmodel,maho,numlay)"
+        },
+        {
+          "line": 372,
+          "text": "         else"
+        },
+        {
+          "line": 373,
+          "text": "            call rdsinr ('iHWCKmodel',1,12,iHWCKmodel(1))"
+        },
+        {
+          "line": 374,
+          "text": "            iHWCKmodel(2:numlay) = iHWCKmodel(1)"
+        },
+        {
+          "line": 375,
+          "text": "         end if"
+        },
+        {
+          "line": 376,
+          "text": "         ! 1 = uni-modal MvG (default)"
+        },
+        {
+          "line": 377,
+          "text": "         ! 2 = exponential wc(h) and K(h) relationships for testing"
+        },
+        {
+          "line": 381,
+          "text": "      end if"
+        },
+        {
+          "line": 382,
+          "text": "! -   Tables for each soil layer"
+        },
+        {
+          "line": 383,
+          "text": "      if (rdinqr('swsophy')) then"
+        },
+        {
+          "line": 384,
+          "text": "        call rdsinr ('swsophy',-1,1,swsophy)"
+        },
+        {
+          "line": 385,
+          "text": "        if (swsophy == 1) then"
+        },
+        {
+          "line": 386,
+          "text": "!         not allowed: table-option combined with output with adjusted vertical discrectization (swdiscrvert=1)"
+        },
+        {
+          "line": 387,
+          "text": "          if (swdiscrvert == 1) call swap_error ('readswap', 'combi of sophys-tables (swsophy=1) and swdiscrvert=1 not allowed')"
+        },
+        {
+          "line": 388,
+          "text": "          if (numlay > 1) then"
+        },
+        {
+          "line": 389,
+          "text": "            call rdacha ('filenamesophy',filenamesophy,maho,numlay)"
+        },
+        {
+          "line": 390,
+          "text": "          else"
+        },
+        {
+          "line": 397,
+          "text": "   "
+        },
+        {
+          "line": 398,
+          "text": "! --- hysteresis"
+        },
+        {
+          "line": 399,
+          "text": "      call rdsinr ('swhyst',0,2,swhyst)"
+        },
+        {
+          "line": 400,
+          "text": "      if (swhyst > 0) then"
+        },
+        {
+          "line": 401,
+          "text": "        call rdsdor ('tau',0.0d0,1.0d0,tau)"
+        },
+        {
+          "line": 402,
+          "text": "        fhyst = 1.0d0"
+        },
+        {
+          "line": 403,
+          "text": "        if (swhyst == 1) then"
+        },
+        {
+          "line": 404,
+          "text": "           ! start on main wetting curve"
+        },
+        {
+          "line": 405,
+          "text": "           indeks = 1"
+        },
+        {
+          "line": 406,
+          "text": "        else "
+        },
+        {
+          "line": 411,
+          "text": ""
+        },
+        {
+          "line": 412,
+          "text": "!     combination of soilphysical tables and hysteresis is not possible"
+        },
+        {
+          "line": 413,
+          "text": "      if (swhyst >= 1 .AND. swsophy /= 0) call swap_error ('readswap', 'Combination of hysteresis (swhyst=1) and tabulated soil physics (swsophy=1) is not possible !')"
+        },
+        {
+          "line": 414,
+          "text": "      "
+        },
+        {
+          "line": 415,
+          "text": "! --- MVG-functions: parameters of functions of each soil layer"
+        },
+        {
+          "line": 416,
+          "text": "      alfa_2(1:maho) = 0.0d0"
+        },
+        {
+          "line": 426,
+          "text": "      fl_use_kh_power = .false."
+        },
+        {
+          "line": 427,
+          "text": "   if (sw_multi_swap == 0) then"
+        },
+        {
+          "line": 428,
+          "text": "      if (swsophy == -1) then"
+        },
+        {
+          "line": 429,
+          "text": "         if (numlay > 1) then"
+        },
+        {
+          "line": 430,
+          "text": "            call RDfcha('tabnames', tabnames, maho, numlay)"
+        },
+        {
+          "line": 431,
+          "text": "         else"
+        },
+        {
+          "line": 486,
+          "text": "            paramvg(6,lay) = npar(lay)"
+        },
+        {
+          "line": 487,
+          "text": "            paramvg(7,lay) = 1.d0 - (1.d0 / paramvg(6,lay))"
+        },
+        {
+          "line": 488,
+          "text": "            if (swhyst == 0) then"
+        },
+        {
+          "line": 489,
+          "text": "              paramvg(8,lay) = alfa(lay)"
+        },
+        {
+          "line": 490,
+          "text": "            else"
+        },
+        {
+          "line": 491,
+          "text": "              paramvg(8,lay) = alfaw(lay)"
+        },
+        {
+          "line": 521,
+          "text": "            paramvg(21,lay) = omega_K(lay)"
+        },
+        {
+          "line": 522,
+          "text": "         end do"
+        },
+        {
+          "line": 523,
+          "text": "         swsophy = 0"
+        },
+        {
+          "line": 524,
+          "text": "         fl_use_tables = .TRUE."
+        },
+        {
+          "line": 525,
+          "text": ""
+        },
+        {
+          "line": 526,
+          "text": "         "
+        },
+        {
+          "line": 527,
+          "text": "      else if (swsophy == 0) then"
+        },
+        {
+          "line": 528,
+          "text": "!##: MH start"
+        },
+        {
+          "line": 529,
+          "text": "         if (rdinqr('SWAP_SOILS_DB')) then"
+        },
+        {
+          "line": 530,
+          "text": "            call rdscha ('SWAP_SOILS_DB', SWAP_SOILS_DB)          ! name of the soils database"
+        },
+        {
+          "line": 554,
+          "text": ""
+        },
+        {
+          "line": 555,
+          "text": "         else"
+        },
+        {
+          "line": 556,
+          "text": "            if (maxval(iHWCKmodel(1:numlay)) == 12) then"
+        },
+        {
+          "line": 557,
+          "text": "               ! use MOD_RIA"
+        },
+        {
+          "line": 558,
+          "text": "               if (swhyst > 0) call swap_error('readswap', 'Combination of MOD_RIA and hysteresis (SWHYST = 1) is not possible.')"
+        },
+        {
+          "line": 559,
+          "text": "               call RIA_Reader()"
+        },
+        {
+          "line": 560,
+          "text": "               call swap_warning ('readswap', 'Using RIA model (by Gerrit de Rooij) for soil physical properties')"
+        },
+        {
+          "line": 561,
+          "text": "            else"
+        },
+        {
+          "line": 563,
+          "text": "               call rdfdor ('ores',0.d0,1.0d0,ores,maho,numlay)"
+        },
+        {
+          "line": 564,
+          "text": "               call rdfdor ('alfa',1.d-4,100.d0,alfa,maho,numlay)"
+        },
+        {
+          "line": 565,
+          "text": "               if (swhyst > 0) then"
+        },
+        {
+          "line": 566,
+          "text": "                 call rdfdor ('alfaw',1.d-4,100.d0,alfaw,maho,numlay)"
+        },
+        {
+          "line": 567,
+          "text": "               end if"
+        },
+        {
+          "line": 568,
+          "text": "               call rdfdor ('npar',1.001d0,9.d0,npar,maho,numlay)"
+        },
+        {
+          "line": 592,
+          "text": "                  sw_use_elas = 0"
+        },
+        {
+          "line": 593,
+          "text": "               end if"
+        },
+        {
+          "line": 594,
+          "text": "   !            if (iHWCKmodel == 3) then"
+        },
+        {
+          "line": 595,
+          "text": "               if (any(iHWCKmodel(1:numlay) ==  3) .OR. any(iHWCKmodel(1:numlay) ==  6) .OR. &"
+        },
+        {
+          "line": 596,
+          "text": "                   any(iHWCKmodel(1:numlay) ==  7) .OR. any(iHWCKmodel(1:numlay) == 10) .OR. &"
+        },
+        {
+          "line": 597,
+          "text": "                   any(iHWCKmodel(1:numlay) == 11)) then"
+        },
+        {
+          "line": 598,
+          "text": "                  call rdfdor ('alfa_2',1.d-4,100.d0,alfa_2,maho,numlay)"
+        },
+        {
+          "line": 599,
+          "text": "                  call rdfdor ('npar_2',1.001d0,9.d0,npar_2,maho,numlay)"
+        },
+        {
+          "line": 600,
+          "text": "                  call rdfdor ('omega_1',1.0d-4,0.9999d0,omega_1,maho,numlay)"
+        },
+        {
+          "line": 601,
+          "text": "               end if"
+        },
+        {
+          "line": 602,
+          "text": "               if (any(iHWCKmodel(1:numlay) == 5) .OR. any(iHWCKmodel(1:numlay) == 7)) then"
+        },
+        {
+          "line": 603,
+          "text": "                  call rdfdor ('h0',-5.0d7,-1.0d5,h0,maho,numlay); h0(1:numlay) = -h0(1:numlay)"
+        },
+        {
+          "line": 604,
+          "text": "               end if"
+        },
+        {
+          "line": 605,
+          "text": "               if (any(iHWCKmodel(1:numlay) ==  8) .OR. any(iHWCKmodel(1:numlay) ==  9) .OR. &"
+        },
+        {
+          "line": 606,
+          "text": "                   any(iHWCKmodel(1:numlay) == 10) .OR. any(iHWCKmodel(1:numlay) == 11)) then"
+        },
+        {
+          "line": 607,
+          "text": "                  call rdfdor ('h0',-5.0d7,-1.0d5,h0,maho,numlay); h0(1:numlay) = -h0(1:numlay)"
+        },
+        {
+          "line": 608,
+          "text": "                  call rdfdor ('ha',-1.0d5,0.0d0,ha,maho,numlay);  ha(1:numlay) = -ha(1:numlay)"
+        },
+        {
+          "line": 609,
+          "text": "                  call rdfdor ('apar',-5.0d0,0.0d0,apar,maho,numlay)"
+        },
+        {
+          "line": 626,
+          "text": "         end if"
+        },
+        {
+          "line": 627,
+          "text": "         "
+        },
+        {
+          "line": 628,
+          "text": "         if (maxval(iHWCKmodel(1:numlay)) == 12) then"
+        },
+        {
+          "line": 629,
+          "text": "            ! set some van Gencuhten parameters erqual to MOD_RIA equivalents (for safety)"
+        },
+        {
+          "line": 630,
+          "text": "            ores(1:numlay)          = 0.0d0"
+        },
+        {
+          "line": 631,
+          "text": "            osat(1:numlay)          = dble(SWRCpars(1:numlay, 1))"
+        },
+        {
+          "line": 667,
+          "text": "            paramvg(6,lay) = npar(lay)"
+        },
+        {
+          "line": 668,
+          "text": "            paramvg(7,lay) = 1.d0 - (1.d0 / paramvg(6,lay))"
+        },
+        {
+          "line": 669,
+          "text": "            if (swhyst == 0) then"
+        },
+        {
+          "line": 670,
+          "text": "              paramvg(8,lay) = alfa(lay)"
+        },
+        {
+          "line": 671,
+          "text": "            else"
+        },
+        {
+          "line": 672,
+          "text": "              paramvg(8,lay) = alfaw(lay)"
+        },
+        {
+          "line": 711,
+          "text": "      do i = 1, numlay"
+        },
+        {
+          "line": 712,
+          "text": "         BiModal(i) = .FALSE."
+        },
+        {
+          "line": 713,
+          "text": "         if (iHWCKmodel(i) ==  3 .OR. iHWCKmodel(i) ==  6 .OR. iHWCKmodel(i) ==  7 .OR.   &"
+        },
+        {
+          "line": 714,
+          "text": "             iHWCKmodel(i) == 10 .OR. iHWCKmodel(i) == 11 ) BiModal(i) = .TRUE."
+        },
+        {
+          "line": 715,
+          "text": "         NoVap(i) = .TRUE."
+        },
+        {
+          "line": 716,
+          "text": "         if (iHWCKmodel(i) ==  8 .OR. iHWCKmodel(i) ==  9 .OR. iHWCKmodel(i) == 10 .OR. iHWCKmodel(i) == 11 ) then"
+        },
+        {
+          "line": 717,
+          "text": "            if (swvapor(i) == 0) then"
+        },
+        {
+          "line": 718,
+          "text": "               NoVap(i) = .TRUE."
+        },
+        {
+          "line": 719,
+          "text": "            else"
+        },
+        {
+          "line": 783,
+          "text": "      if (swkmean == 7) call sub_Kavg_Szym(1, 0, 0.0d0, 0.0d0, dum)      "
+        },
+        {
+          "line": 784,
+          "text": "!     Switch for implicit solution with hydraulic conductivity: 0 = explicit, 1 = implicit"
+        },
+        {
+          "line": 785,
+          "text": "      call rdsinr ('SwkImpl',0,1,SwkImpl)"
+        },
+        {
+          "line": 786,
+          "text": "      if (swkmean == 7 .AND. swkimpl == 1) call swap_error('readwsap', 'not allowed: swkmean = 7 .AND. swkimpl = 1')      "
+        },
+        {
+          "line": 787,
+          "text": "!     Maximum cputime, introduced to be able to interrupt (near) endless iterations"
+        },
+        {
+          "line": 788,
+          "text": "      flMaxIterTime = .FALSE."
+        },
+        {
+          "line": 789,
+          "text": "      if (rdinqr('flMaxIterTime')) then"
+        },
+        {
+          "line": 1023,
+          "text": ""
+        },
+        {
+          "line": 1024,
+          "text": "! -   Tables for each soil layer"
+        },
+        {
+          "line": 1025,
+          "text": "      if (swsophy == 1) then"
+        },
+        {
+          "line": 1026,
+          "text": "         "
+        },
+        {
+          "line": 1027,
+          "text": "         ! allocate memory"
+        },
+        {
+          "line": 1028,
+          "text": "         if (.not. allocated(numtablay))    allocate(numtablay(maho));                   numtablay = 0"
+        },
+        {
+          "line": 1169,
+          "text": ""
+        },
+        {
+          "line": 1170,
+          "text": "!     final checks (typically for bi-modal situation"
+        },
+        {
+          "line": 1171,
+          "text": "      if (any(iHWCKmodel(1:numlay) > 1)) then"
+        },
+        {
+          "line": 1172,
+          "text": "         if (swhyst >= 1)                   call swap_error ('readswap', 'Combination of hysteresis (swhyst=1 or 2) and iHWCKmodel > 1 is not possible!')"
+        },
+        {
+          "line": 1173,
+          "text": "         if (swsophy == 1)                  call swap_error ('readswap', 'Combination of tabulated input (swsophy=1) and iHWCKmodel > 1 is impossible!')"
+        },
+        {
+          "line": 1174,
+          "text": "         if (swdiscrvert == 1)              call swap_error ('readswap', 'Combination of output coarse discretization (swdiscrvert=1) and iHWCKmodel > 1 is not (yet) possible!')"
+        },
+        {
+          "line": 1175,
+          "text": "         if (swmacro == 1)                  call swap_error ('readswap', 'Combination of macro-pore option (swmacro == 1) and iHWCKmodel > 1 is impossible!')"
+        },
+        {
+          "line": 1176,
+          "text": "         if (minval(h_enpr_global) < 0.0d0) call swap_warning ('readswap', 'User-input of h_enpr_global < 0 not used in combination with iHWCKmodel > 1.')"
+        },
+        {
+          "line": 1177,
+          "text": "      end if"
+        },
+        {
+          "line": 1178,
+          "text": ""
+        },
+        {
+          "line": 1179,
+          "text": "      return"
+        }
+      ]
+    },
+    "SWAP/MOD_MvG_functions.f90": {
+      "bytes": 38408,
+      "sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
+      "original_lines": [
+        {
+          "line": 271,
+          "text": "         if (fl_use_tables) then"
+        },
+        {
+          "line": 272,
+          "text": "            if (head >= 0.0d0) then"
+        },
+        {
+          "line": 273,
+          "text": "               watcon = wcs(node)"
+        },
+        {
+          "line": 274,
+          "text": "            else if (head > h_crit) then"
+        },
+        {
+          "line": 275,
+          "text": "               watcon = wc_crit(node) + c_crit(node)*(head-h_crit) "
+        },
+        {
+          "line": 276,
+          "text": "               watcon = min(watcon,wcs(node)) "
+        },
+        {
+          "line": 277,
+          "text": "            else"
+        },
+        {
+          "line": 278,
+          "text": "              if (head > -1.0d0) then"
+        },
+        {
+          "line": 279,
+          "text": "                i_entry = min(n_entries, 1 + int(fact_100*dabs(head)))"
+        },
+        {
+          "line": 281,
+          "text": "                i_entry = min(n_entries, 101 + int(fact_100*log10(dabs(head))))"
+        },
+        {
+          "line": 282,
+          "text": "              end if"
+        },
+        {
+          "line": 283,
+          "text": "              watcon = wc_intercept(i_entry, layer(node)) + wc_slope(i_entry, layer(node)) * dabs(head)"
+        },
+        {
+          "line": 284,
+          "text": "            end if"
+        },
+        {
+          "line": 285,
+          "text": "            return  ! ready"
+        },
+        {
+          "line": 286,
+          "text": "         end if"
+        },
+        {
+          "line": 287,
+          "text": ""
+        },
+        {
+          "line": 288,
+          "text": "         imod = iHWCKmodel(layer(node))"
+        },
+        {
+          "line": 289,
+          "text": "         if (imod == 2) then"
+        },
+        {
+          "line": 290,
+          "text": "            ! exponential relationships; special for testing against analytical solutions"
+        },
+        {
+          "line": 291,
+          "text": "            watcon = dmax1(1.0000001*wcr(node), wcr(node) + wcsMINwcr(node)*dexp(alfamg(node)*head))"
+        },
+        {
+          "line": 292,
+          "text": "            "
+        },
+        {
+          "line": 293,
+          "text": "         else if (imod == 3) then"
+        },
+        {
+          "line": 294,
+          "text": "            ! bi-modal MvG relationships; basic form without air-entry h_enpr or h_crit"
+        },
+        {
+          "line": 295,
+          "text": "            if (head < 0.0d0) then"
+        },
+        {
+          "line": 296,
+          "text": "               watcon = omega_1(node)/(1.0d0+(dabs(alfamg(node)*head))**n(node))**m(node)"
+        },
+        {
+          "line": 297,
+          "text": "               watcon = watcon + (1.0d0-omega_1(node))/(1.0d0+(dabs(alfa_2(node)*head))**n_2(node))**m_2(node)"
+        },
+        {
+          "line": 298,
+          "text": "               watcon = wcr(node) + wcsMINwcr(node)*watcon"
+        },
+        {
+          "line": 299,
+          "text": "            else"
+        },
+        {
+          "line": 300,
+          "text": "               watcon = wcs(node)"
+        },
+        {
+          "line": 301,
+          "text": "            end if"
+        },
+        {
+          "line": 302,
+          "text": ""
+        },
+        {
+          "line": 303,
+          "text": "         else if (imod > 3 .AND. imod < 12) then"
+        },
+        {
+          "line": 304,
+          "text": "            watcon = functionvalue_04_11 (1, node, iHWCKmodel, cofgen, head)    ! 1st arg means wc; 4th + 5th args not needed)"
+        },
+        {
+          "line": 305,
+          "text": "         else if (imod == 12) then"
+        },
+        {
+          "line": 306,
+          "text": "            iLayer = layer(node)"
+        },
+        {
+          "line": 307,
+          "text": "            watcon = dble(WCRIA(head*1.0_dp))"
+        },
+        {
+          "line": 308,
+          "text": "            "
+        },
+        {
+          "line": 309,
+          "text": "         else  ! use default MvG"
+        },
+        {
+          "line": 310,
+          "text": "         "
+        },
+        {
+          "line": 312,
+          "text": "! ---   saturated moisture content"
+        },
+        {
+          "line": 313,
+          "text": "              if (sw_use_elas == 1) then"
+        },
+        {
+          "line": 314,
+          "text": "                watcon = wcs(node) + head * elas(node)"
+        },
+        {
+          "line": 315,
+          "text": "              else"
+        },
+        {
+          "line": 316,
+          "text": "                watcon = wcs(node)"
+        },
+        {
+          "line": 317,
+          "text": "              end if"
+        },
+        {
+          "line": 318,
+          "text": "            else"
+        },
+        {
+          "line": 319,
+          "text": "              if (indeks(node) == 1) then"
+        },
+        {
+          "line": 325,
+          "text": "              if (h_enpr(node) > h_crit) then"
+        },
+        {
+          "line": 326,
+          "text": "                if (head > h_crit) then"
+        },
+        {
+          "line": 327,
+          "text": "                  watcon = wc_crit(node) + c_crit(node)*(head-h_crit) "
+        },
+        {
+          "line": 328,
+          "text": "                  watcon = min(watcon,wcs(node))  "
+        },
+        {
+          "line": 329,
+          "text": "                else "
+        },
+        {
+          "line": 330,
+          "text": "                  help = dabs(alfa*head)**n(node)"
+        },
+        {
+          "line": 331,
+          "text": "                  help = (1.0d0 + help)**m(node)"
+        },
+        {
+          "line": 332,
+          "text": "                  watcon = wcr(node) + wcsMINwcr(node)/help "
+        },
+        {
+          "line": 333,
+          "text": "                end if"
+        },
+        {
+          "line": 334,
+          "text": "              else"
+        },
+        {
+          "line": 335,
+          "text": "                h105 = 1.05d0 * h_enpr(node)"
+        },
+        {
+          "line": 336,
+          "text": "                if (head >= h105) then"
+        },
+        {
+          "line": 337,
+          "text": "                  watcon = wcs(node) + term_105_ab(node)*head/(1.0d0+term_105_a(node)*head)"
+        },
+        {
+          "line": 338,
+          "text": "                else "
+        },
+        {
+          "line": 339,
+          "text": "                  help = dabs(alfa*head)**n(node)"
+        },
+        {
+          "line": 340,
+          "text": "                  help = (1.0d0 + help)**m(node)"
+        },
+        {
+          "line": 341,
+          "text": "                  watcon = wcr(node)+wcsMINwcr(node)/(help * s_enpr(node))"
+        },
+        {
+          "line": 342,
+          "text": "                end if"
+        },
+        {
+          "line": 343,
+          "text": "              end if"
+        },
+        {
+          "line": 344,
+          "text": "            end if"
+        },
+        {
+          "line": 345,
+          "text": "            if (swhyst /= 0) then"
+        },
+        {
+          "line": 346,
+          "text": "              if (indeks(node) == 1) then"
+        },
+        {
+          "line": 347,
+          "text": "                watcon = wcs(node) + fhyst(node) * (watcon - wcs(node))"
+        },
+        {
+          "line": 348,
+          "text": "              else"
+        },
+        {
+          "line": 349,
+          "text": "                watcon = wcr(node) + fhyst(node) * (watcon - wcr(node))"
+        },
+        {
+          "line": 350,
+          "text": "              end if              "
+        },
+        {
+          "line": 351,
+          "text": "            end if"
+        },
+        {
+          "line": 352,
+          "text": "         end if"
+        },
+        {
+          "line": 357,
+          "text": "         if (do_ln_trans .AND. head < 0.0d0) dum = -dlog(-head+1.0d0)"
+        },
+        {
+          "line": 358,
+          "text": "         if (head >= -1.0d-9) then"
+        },
+        {
+          "line": 359,
+          "text": "            watcon = sptab(2,node,numtab(node))"
+        },
+        {
+          "line": 360,
+          "text": "         else if (dum < sptab(1,node,1)) then"
+        },
+        {
+          "line": 361,
+          "text": "            watcon = sptab(2,node,1)"
+        },
+        {
+          "line": 362,
+          "text": "         else"
+        },
+        {
+          "line": 363,
+          "text": "           lochead = head"
+        },
+        {
+          "line": 364,
+          "text": "            call EvalTabulatedFunction(0,numtab(node),1,2,4,node,sptab,ientrytab,lochead,watcon,moiscap,1)"
+        },
+        {
+          "line": 401,
+          "text": "         if (fl_use_tables) then"
+        },
+        {
+          "line": 402,
+          "text": "            if (head >= 0.0d0) then"
+        },
+        {
+          "line": 403,
+          "text": "              moiscap = dt * 1.0d-7"
+        },
+        {
+          "line": 404,
+          "text": "            elseif  (head > h_crit) then"
+        },
+        {
+          "line": 405,
+          "text": "              moiscap = max(c_crit(node), dt * 1.0d-7)"
+        },
+        {
+          "line": 406,
+          "text": "            else "
+        },
+        {
+          "line": 407,
+          "text": "              if (head > -1.0d0) then"
+        },
+        {
+          "line": 408,
+          "text": "                i_entry = min(n_entries, 1 + int(fact_100*dabs(head)))"
+        },
+        {
+          "line": 410,
+          "text": "                i_entry = min(n_entries, 101 + int(fact_100*log10(dabs(head))))"
+        },
+        {
+          "line": 411,
+          "text": "              end if"
+        },
+        {
+          "line": 412,
+          "text": "              moiscap = cap_intercept(i_entry, layer(node)) + cap_slope(i_entry, layer(node)) * dabs(head)"
+        },
+        {
+          "line": 413,
+          "text": "              if (head > -1.0d0 .AND. moiscap < (dt * 1.0d-7)) moiscap = dt * 1.0d-7"
+        },
+        {
+          "line": 414,
+          "text": "            end if"
+        },
+        {
+          "line": 415,
+          "text": "            return  ! ready"
+        },
+        {
+          "line": 416,
+          "text": "         end if"
+        },
+        {
+          "line": 417,
+          "text": ""
+        },
+        {
+          "line": 418,
+          "text": "         imod = iHWCKmodel(layer(node))"
+        },
+        {
+          "line": 419,
+          "text": "         if (imod == 2) then"
+        },
+        {
+          "line": 420,
+          "text": "            ! exponential relationships; special for testing against analytical solutions"
+        },
+        {
+          "line": 421,
+          "text": "            moiscap = alfamg(node)*wcsMINwcr(node)*dexp(alfamg(node)*head)"
+        },
+        {
+          "line": 422,
+          "text": "            "
+        },
+        {
+          "line": 423,
+          "text": "         else if (imod == 3) then"
+        },
+        {
+          "line": 424,
+          "text": "            ! bi-modal MvG relationships; basic form without air-entry h_enpr or h_crit"
+        },
+        {
+          "line": 425,
+          "text": "            if (head < 0.0d0) then"
+        },
+        {
+          "line": 426,
+          "text": "               moiscap = omega_1(node)*alfanm(node)*(dabs(alfamg(node)*head))**nMIN1(node) * (1.0d0+(dabs(alfamg(node)*head))**n(node))**(-mPLUS1(node))"
+        },
+        {
+          "line": 427,
+          "text": "               moiscap = moiscap + (1.0d0-omega_1(node))*alfanm_2(node)*(dabs(alfa_2(node)*head))**nMIN1_2(node) * (1.0d0+(dabs(alfa_2(node)*head))**n_2(node))**(-mPLUS1_2(node))"
+        },
+        {
+          "line": 428,
+          "text": "               moiscap = wcsMINwcr(node) * moiscap"
+        },
+        {
+          "line": 429,
+          "text": "            else"
+        },
+        {
+          "line": 430,
+          "text": "               moiscap = 0.0d0"
+        },
+        {
+          "line": 431,
+          "text": "            end if"
+        },
+        {
+          "line": 432,
+          "text": ""
+        },
+        {
+          "line": 433,
+          "text": "         else if (imod > 3 .AND. imod < 12) then"
+        },
+        {
+          "line": 434,
+          "text": "            moiscap = functionvalue_04_11 (3, node, iHWCKmodel, cofgen, head)    ! 1st arg means c; 4th + 5th args not needed)"
+        },
+        {
+          "line": 435,
+          "text": "         else if (imod == 12) then"
+        },
+        {
+          "line": 436,
+          "text": "            iLayer = layer(node)"
+        },
+        {
+          "line": 437,
+          "text": "            moiscap = dble(RIAderivative(head*1.0_dp))"
+        },
+        {
+          "line": 438,
+          "text": ""
+        },
+        {
+          "line": 439,
+          "text": "         else  ! use default MvG"
+        },
+        {
+          "line": 440,
+          "text": ""
+        },
+        {
+          "line": 441,
+          "text": "            if (head >=  0.0d0) then"
+        },
+        {
+          "line": 442,
+          "text": "              if (sw_use_elas == 1) then"
+        },
+        {
+          "line": 443,
+          "text": "                  moiscap = elas(node)"
+        },
+        {
+          "line": 444,
+          "text": "              else"
+        },
+        {
+          "line": 445,
+          "text": "                  moiscap = dt * 1.0d-7"
+        },
+        {
+          "line": 446,
+          "text": "              end if"
+        },
+        {
+          "line": 447,
+          "text": "            else "
+        },
+        {
+          "line": 448,
+          "text": "              if (indeks(node) == 1) then"
+        },
+        {
+          "line": 453,
+          "text": "              if (h_enpr(node) > h_crit) then"
+        },
+        {
+          "line": 454,
+          "text": "                if (head > h_crit) then"
+        },
+        {
+          "line": 455,
+          "text": "                  moiscap = c_crit(node)"
+        },
+        {
+          "line": 456,
+          "text": "                else"
+        },
+        {
+          "line": 457,
+          "text": "                  term1 = alphah**nMIN1(node)"
+        },
+        {
+          "line": 458,
+          "text": "                  term2 = wcsMINwcr(node) / ((1.0d0 + term1 * alphah)**mPLUS1(node))"
+        },
+        {
+          "line": 459,
+          "text": "                  moiscap = alfanm(node) * term2 * term1"
+        },
+        {
+          "line": 460,
+          "text": "                end if"
+        },
+        {
+          "line": 461,
+          "text": "              else"
+        },
+        {
+          "line": 462,
+          "text": "                h105 = 1.05d0 * h_enpr(node)"
+        },
+        {
+          "line": 463,
+          "text": "                if (head >= h105) then"
+        },
+        {
+          "line": 464,
+          "text": "                  moiscap = term_105_ab(node)/((1.0d0+term_105_a(node)*head)**2)"
+        },
+        {
+          "line": 465,
+          "text": "                else"
+        },
+        {
+          "line": 466,
+          "text": "                  term1 = alphah**nMIN1(node)"
+        },
+        {
+          "line": 467,
+          "text": "                  term2 = (1.0d0 + term1 * alphah)**mPLUS1(node)"
+        },
+        {
+          "line": 468,
+          "text": "                  term2 = wcsMINwcr(node) / term2"
+        },
+        {
+          "line": 469,
+          "text": "! --- For modified VanGenuchten model:"
+        },
+        {
+          "line": 470,
+          "text": "                  moiscap = alfanm(node)*term2*term1/s_enpr(node)"
+        },
+        {
+          "line": 471,
+          "text": "                end if "
+        },
+        {
+          "line": 472,
+          "text": "              end if  "
+        },
+        {
+          "line": 473,
+          "text": "              if (head > -1.0d0 .AND. moiscap < (dt * 1.0d-7)) moiscap = dt * 1.0d-7"
+        },
+        {
+          "line": 474,
+          "text": "            end if"
+        },
+        {
+          "line": 475,
+          "text": "         end if"
+        },
+        {
+          "line": 476,
+          "text": ""
+        },
+        {
+          "line": 480,
+          "text": "         if (do_ln_trans .AND. head < 0.0d0) dum = -dlog(-head+1.0d0)"
+        },
+        {
+          "line": 481,
+          "text": "         if (head >= -1.0d-9) then"
+        },
+        {
+          "line": 482,
+          "text": "            moiscap = dt*1.0d-7"
+        },
+        {
+          "line": 483,
+          "text": "         else if (dum < sptab(1,node,1)) then"
+        },
+        {
+          "line": 484,
+          "text": "            moiscap = 0.0d0"
+        },
+        {
+          "line": 485,
+          "text": "         else"
+        },
+        {
+          "line": 486,
+          "text": "           lochead = head"
+        },
+        {
+          "line": 487,
+          "text": "            call EvalTabulatedFunction(0,numtab(node),1,2,4,node,sptab,ientrytab,lochead,dummy,moiscap,3)"
+        },
+        {
+          "line": 491,
+          "text": " !    In case of hysteresis multiply with fhyst     "
+        },
+        {
+          "line": 492,
+          "text": "      if (swhyst /= 0) then"
+        },
+        {
+          "line": 493,
+          "text": "        moiscap = fhyst(node) * moiscap"
+        },
+        {
+          "line": 494,
+          "text": "      end if"
+        },
+        {
+          "line": 495,
+          "text": ""
+        },
+        {
+          "line": 496,
+          "text": "      return"
+        },
+        {
+          "line": 532,
+          "text": "            relsat = (theta - wcr(node)) / wcsMINwcr(node)"
+        },
+        {
+          "line": 533,
+          "text": "            if (head < -1.0d14) then"
+        },
+        {
+          "line": 534,
+          "text": "               hconduc = hconode_vsmall"
+        },
+        {
+          "line": 535,
+          "text": "               return"
+        },
+        {
+          "line": 536,
+          "text": "            end if"
+        },
+        {
+          "line": 537,
+          "text": "            if (relsat > (1.0d0-1.0d-6)) then"
+        },
+        {
+          "line": 538,
+          "text": "               hconduc = ksatfit(node)"
+        },
+        {
+          "line": 539,
+          "text": "               return ! ready"
+        },
+        {
+          "line": 540,
+          "text": "            end if"
+        },
+        {
+          "line": 541,
+          "text": "            if (head > -1.0d0) then"
+        },
+        {
+          "line": 544,
+          "text": "               i_entry = min(n_entries, 101 + int(fact_100*log10(dabs(head))))"
+        },
+        {
+          "line": 545,
+          "text": "            end if"
+        },
+        {
+          "line": 546,
+          "text": "            hconduc = con_intercept(i_entry, layer(node)) + con_slope(i_entry, layer(node)) * dabs(head)"
+        },
+        {
+          "line": 547,
+          "text": "            return  ! ready"
+        },
+        {
+          "line": 548,
+          "text": "         end if"
+        },
+        {
+          "line": 549,
+          "text": ""
+        },
+        {
+          "line": 550,
+          "text": "         imod = iHWCKmodel(layer(node))"
+        },
+        {
+          "line": 551,
+          "text": "         "
+        },
+        {
+          "line": 552,
+          "text": "         if (imod == 2) then"
+        },
+        {
+          "line": 553,
+          "text": "            ! exponential relationships; special for testing against analytical solutions"
+        },
+        {
+          "line": 554,
+          "text": "            relsat  = (theta-wcr(node))/wcsMINwcr(node)"
+        },
+        {
+          "line": 555,
+          "text": "            hconduc = ksatfit(node)*relsat"
+        },
+        {
+          "line": 556,
+          "text": ""
+        },
+        {
+          "line": 557,
+          "text": "         else if (imod == 3) then"
+        },
+        {
+          "line": 558,
+          "text": "            ! bi-modal MvG relationships; basic form without air-entry h_enpr or h_crit"
+        },
+        {
+          "line": 563,
+          "text": "               term1 = omega_1(node)*alfamg(node)*(1.0d0-s1**oneOVERm(node))**m(node)"
+        },
+        {
+          "line": 564,
+          "text": "               term2 = (1.0d0-omega_1(node))*alfa_2(node)*(1.0d0-s2**oneOVERm_2(node))**m_2(node)"
+        },
+        {
+          "line": 565,
+          "text": "               hconduc = ksatfit(node) * (omega_1(node)*s1+(1.0d0-omega_1(node))*s2)**lambda(node)"
+        },
+        {
+          "line": 566,
+          "text": "               hconduc = hconduc * (1.0d0 - (term1+term2)/(omega_1(node)*alfamg(node)+(1.0d0-omega_1(node))*alfa_2(node)))**2"
+        },
+        {
+          "line": 567,
+          "text": "            else"
+        },
+        {
+          "line": 568,
+          "text": "               hconduc = ksatfit(node)"
+        },
+        {
+          "line": 569,
+          "text": "            end if"
+        },
+        {
+          "line": 570,
+          "text": "            "
+        },
+        {
+          "line": 571,
+          "text": "         else if (imod > 3 .AND. imod < 12) then"
+        },
+        {
+          "line": 572,
+          "text": "            hconduc = functionvalue_04_11 (2, node, iHWCKmodel, cofgen, head, wc=theta,temp=tsoil(node))    ! 1st arg means k)"
+        },
+        {
+          "line": 573,
+          "text": "         else if (imod == 12) then"
+        },
+        {
+          "line": 574,
+          "text": "            iLayer = layer(node)"
+        },
+        {
+          "line": 575,
+          "text": "            call SingleKcomponents(head*1.0_dp, tsoil(node)*1.0_dp, K)"
+        },
+        {
+          "line": 576,
+          "text": "            hconduc = dble(K)"
+        },
+        {
+          "line": 577,
+          "text": "            "
+        },
+        {
+          "line": 578,
+          "text": "         else  ! use default MvG"
+        },
+        {
+          "line": 579,
+          "text": ""
+        },
+        {
+          "line": 589,
+          "text": ""
+        },
+        {
+          "line": 590,
+          "text": "               term1   = (relsat-relsatthr(node))/(1.0d0-relsatthr(node))"
+        },
+        {
+          "line": 591,
+          "text": "               hconduc = term1 * ksatexm(node) + (1.0d0-term1) * ksatthr(node)"
+        },
+        {
+          "line": 592,
+          "text": "            else"
+        },
+        {
+          "line": 593,
+          "text": "               if (h_enpr(node) > h_crit) then"
+        },
+        {
+          "line": 594,
+          "text": ""
+        },
+        {
+          "line": 597,
+          "text": ""
+        },
+        {
+          "line": 598,
+          "text": "                  if (head < -1.0d14) then"
+        },
+        {
+          "line": 599,
+          "text": "                     hconduc = hconode_vsmall"
+        },
+        {
+          "line": 600,
+          "text": "                  else if (relsat > (1.0d0-1.0d-6)) then"
+        },
+        {
+          "line": 601,
+          "text": "                     hconduc = ksatfit(node)"
+        },
+        {
+          "line": 602,
+          "text": "                  else"
+        },
+        {
+          "line": 603,
+          "text": "                     if (head > h_power(node) .OR. .NOT.fl_use_kh_power) then"
+        },
+        {
+          "line": 604,
+          "text": "                        term1   = ( 1.0d0-relsat**oneOVERm(node) )**m(node)"
+        },
+        {
+          "line": 605,
+          "text": "                        hconduc = ksatfit(node) * (relsat**lambda(node)) * (1.0d0-term1)**2"
+        },
+        {
+          "line": 606,
+          "text": "                     else"
+        },
+        {
+          "line": 607,
+          "text": "                        hconduc = k_power(node) * (dabs(h_power(node))/dabs(head))**n2mlambda(node)"
+        },
+        {
+          "line": 608,
+          "text": "                     end if"
+        },
+        {
+          "line": 609,
+          "text": "                  end if"
+        },
+        {
+          "line": 610,
+          "text": ""
+        },
+        {
+          "line": 612,
+          "text": "! --- For modified VanGenuchten model "
+        },
+        {
+          "line": 613,
+          "text": "                  if (head < -1.0d14) then"
+        },
+        {
+          "line": 614,
+          "text": "                     hconduc = hconode_vsmall"
+        },
+        {
+          "line": 615,
+          "text": "                  else"
+        },
+        {
+          "line": 616,
+          "text": "                     if (head >= h_enpr(node)) then"
+        },
+        {
+          "line": 617,
+          "text": "                        hconduc = ksatfit(node)"
+        },
+        {
+          "line": 618,
+          "text": "                     else"
+        },
+        {
+          "line": 619,
+          "text": "                        if (head > h_power(node) .OR. .NOT.fl_use_kh_power) then"
+        },
+        {
+          "line": 620,
+          "text": "                           if (indeks(node) == 1) then"
+        },
+        {
+          "line": 625,
+          "text": "                           term1   = (1.0d0 - (se * s_enpr(node))**oneOVERm(node))**m(node)"
+        },
+        {
+          "line": 626,
+          "text": "                           term2   = (1.0d0 - s_enpr(node)**oneOVERm(node))**m(node)"
+        },
+        {
+          "line": 627,
+          "text": "                           hconduc = ksatfit(node) * se**lambda(node) * ((1.0d0 - term1) / (1.0d0 - term2))**2"
+        },
+        {
+          "line": 628,
+          "text": "                        else"
+        },
+        {
+          "line": 629,
+          "text": "                           hconduc = k_power(node) * (dabs(h_power(node)) / dabs(head))**n2mlambda(node)"
+        },
+        {
+          "line": 630,
+          "text": "                        end if"
+        },
+        {
+          "line": 631,
+          "text": "                     end if"
+        },
+        {
+          "line": 632,
+          "text": "                  end if"
+        },
+        {
+          "line": 633,
+          "text": ""
+        },
+        {
+          "line": 634,
+          "text": "               end if"
+        },
+        {
+          "line": 635,
+          "text": "               hconduc = min(hconduc,ksatfit(node))"
+        },
+        {
+          "line": 636,
+          "text": "            end if"
+        },
+        {
+          "line": 637,
+          "text": "         end if"
+        },
+        {
+          "line": 638,
+          "text": ""
+        },
+        {
+          "line": 640,
+          "text": "      else if (swsophy == 1) then"
+        },
+        {
+          "line": 641,
+          "text": "         if (theta >= sptab(2,node,numtab(node))-1.0d-9) then"
+        },
+        {
+          "line": 642,
+          "text": "            hconduc = sptab(3,node,numtab(node))"
+        },
+        {
+          "line": 643,
+          "text": "            if (do_ln_trans) hconduc = dexp(hconduc)"
+        },
+        {
+          "line": 644,
+          "text": "         else if (theta <= sptab(2,node,1)+1.0d-9) then"
+        },
+        {
+          "line": 645,
+          "text": "            hconduc = sptab(3,node,1)            "
+        },
+        {
+          "line": 646,
+          "text": "            if (do_ln_trans) hconduc = dexp(hconduc)"
+        },
+        {
+          "line": 647,
+          "text": "         else"
+        },
+        {
+          "line": 648,
+          "text": "           lochead = head"
+        },
+        {
+          "line": 649,
+          "text": "            call EvalTabulatedFunction(0,numtab(node),1,3,5,node,sptab,ientrytab,lochead,hconduc,dummy,2)"
+        },
+        {
+          "line": 653,
+          "text": "! --- in case of frost conditions"
+        },
+        {
+          "line": 654,
+          "text": "      if (swfrost == 1) then"
+        },
+        {
+          "line": 655,
+          "text": "         hconduc = hconduc * rfcp + hconode_vsmall * (1.0d0 - rfcp)"
+        },
+        {
+          "line": 656,
+          "text": "      end if"
+        },
+        {
+          "line": 657,
+          "text": ""
+        },
+        {
+          "line": 658,
+          "text": "      return"
+        },
+        {
+          "line": 713,
+          "text": "      if (swsophy == 0) then"
+        },
+        {
+          "line": 714,
+          "text": "         imod = iHWCKmodel(layer(node))"
+        },
+        {
+          "line": 715,
+          "text": "         if (imod == 2) then"
+        },
+        {
+          "line": 716,
+          "text": "            dhconduc = alfamg(node)*ksatfit(node)*dexp(alfamg(node)*head)"
+        },
+        {
+          "line": 717,
+          "text": ""
+        },
+        {
+          "line": 718,
+          "text": "         else  ! use default MvG"
+        },
+        {
+          "line": 719,
+          "text": ""
+        },
+        {
+          "line": 726,
+          "text": ""
+        },
+        {
+          "line": 727,
+          "text": "            if (relsat < 0.001d0) then"
+        },
+        {
+          "line": 728,
+          "text": "               dhconduc = 0.0d0"
+        },
+        {
+          "line": 729,
+          "text": "            else if (head >= 0.0d0 .OR. relsat > s_enpr(node)) then"
+        },
+        {
+          "line": 730,
+          "text": "               dhconduc = 1.0d-12"
+        },
+        {
+          "line": 731,
+          "text": "            else"
+        },
+        {
+          "line": 732,
+          "text": "! checked with Mathematica; note that Senpr = (wcs-wcr)/(thetam-wcr), consistent with K(S) in hconduc"
+        },
+        {
+          "line": 733,
+          "text": "! Mathematica result differentily expressed, but equal to expression given here"
+        },
+        {
+          "line": 734,
+          "text": "! TO DO: some constants could be computed only once and stored for later use (s_enpr [per layer]; term4^2 [per layer])"
+        },
+        {
+          "line": 735,
+          "text": "               if (head > h_power(node) .OR. .NOT.fl_use_kh_power) then"
+        },
+        {
+          "line": 736,
+          "text": "                  dhconduc = dimocap / wcsMINwcr(node)"
+        },
+        {
+          "line": 737,
+          "text": "                  term0    = (s_enpr(node)*relsat)**oneOVERm(node)"
+        },
+        {
+          "line": 738,
+          "text": "                  term1    = 1.0d0 - term0"
+        },
+        {
+          "line": 739,
+          "text": "                  term2    = lambdaPLUS2(node)*term0 - lambda(node)"
+        },
+        {
+          "line": 740,
+          "text": "                  term3    = term1**mMIN1(node)"
+        },
+        {
+          "line": 741,
+          "text": "                  term4    = 1.d0 - (1.d0 - s_enpr(node)**oneOVERm(node))**m(node)"
+        },
+        {
+          "line": 742,
+          "text": "                  dhconduc = dhconduc * ksatfit(node) * relsat**lambdaMIN1(node)"
+        },
+        {
+          "line": 743,
+          "text": "                  dhconduc = dhconduc * (1.0d0 - term1**m(node))"
+        },
+        {
+          "line": 744,
+          "text": "                  dhconduc = dhconduc * (lambda(node) + term2 * term3)"
+        },
+        {
+          "line": 745,
+          "text": "                  dhconduc = dhconduc / (term4**2)"
+        },
+        {
+          "line": 746,
+          "text": "               else"
+        },
+        {
+          "line": 747,
+          "text": "                  dhconduc = k_power(node) * (dabs(h_power(node))/dabs(head))**n2mlambda(node) * n2mlambda(node) / dabs(head)"
+        },
+        {
+          "line": 748,
+          "text": "               end if"
+        },
+        {
+          "line": 749,
+          "text": "            end if"
+        },
+        {
+          "line": 750,
+          "text": "         end if"
+        },
+        {
+          "line": 753,
+          "text": "      else if (swsophy == 1) then"
+        },
+        {
+          "line": 754,
+          "text": "         if (theta >= sptab(2,node,numtab(node))-1.0d-9) then"
+        },
+        {
+          "line": 755,
+          "text": "            dhconduc = 1.0d+08"
+        },
+        {
+          "line": 756,
+          "text": "         else"
+        },
+        {
+          "line": 757,
+          "text": "           lochead = head"
+        },
+        {
+          "line": 758,
+          "text": "            call EvalTabulatedFunction(0,numtab(node),1,3,5,node,sptab,ientrytab,lochead,dummy,dhconduc,4)"
+        },
+        {
+          "line": 762,
+          "text": "! --- in case of frost conditions"
+        },
+        {
+          "line": 763,
+          "text": "      if (swfrost == 1) then"
+        },
+        {
+          "line": 764,
+          "text": "         dhconduc = dhconduc * rfcp"
+        },
+        {
+          "line": 765,
+          "text": "      end if  "
+        },
+        {
+          "line": 766,
+          "text": ""
+        },
+        {
+          "line": 767,
+          "text": "      return"
+        },
+        {
+          "line": 822,
+          "text": "         imod = iHWCKmodel(layer(node))"
+        },
+        {
+          "line": 823,
+          "text": ""
+        },
+        {
+          "line": 824,
+          "text": "         if (imod == 2) then"
+        },
+        {
+          "line": 825,
+          "text": "            ! exponential relationships; special for testing against analytical solutions"
+        },
+        {
+          "line": 826,
+          "text": "            relsat = (wcon-thetar)/(thetas-thetar)"
+        },
+        {
+          "line": 827,
+          "text": "            prhead = dlog(relsat)/alfamg"
+        }
+      ]
+    },
+    "SWAP/headcalc.f90": {
+      "bytes": 26096,
+      "sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+      "original_lines": [
+        {
+          "line": 29,
+          "text": "   use MOD_irrigation,     only: qssdi, nird"
+        },
+        {
+          "line": 30,
+          "text": "   use variables,          only: fldaystart, swbotb, runon, epd, reva, pondm1, dt, runots, t1900, thetm1, qrot,      &"
+        },
+        {
+          "line": 31,
+          "text": "                                 swkimpl, swkmean, hplate, swbotb3impl, swbotb3resvert, deepgw, rimlay,              &"
+        },
+        {
+          "line": 32,
+          "text": "                                 sw4, qbotab, fldtmin, maxit, maxbacktr, critdevh2cp, critdevh1cp, critdevponddt,    &"
+        },
+        {
+          "line": 33,
+          "text": "                                 dtmin, nodgwl, gwlm1, hm1, CritDevBalCp, CritDevBalTot"
+        },
+        {
+          "line": 34,
+          "text": "   ! inout"
+        },
+        {
+          "line": 48,
+          "text": "   real(8), dimension(macp)         :: difh, F                 ! arrays in solution procedure"
+        },
+        {
+          "line": 49,
+          "text": "   real(8), dimension(macp)         :: sink, source            ! sink/source terms in Richards equation"
+        },
+        {
+          "line": 50,
+          "text": "   real(8), dimension(macp), save   :: dkdh = 0.0d0"
+        },
+        {
+          "line": 51,
+          "text": "   real(8), dimension(macp)         :: hold"
+        },
+        {
+          "line": 52,
+          "text": "   real(8), dimension(macp+1)       :: qv, hgrad"
+        },
+        {
+          "line": 53,
+          "text": "   real(8)                          :: factor, Fmax"
+        },
+        {
+          "line": 114,
+          "text": "         end do"
+        },
+        {
+          "line": 115,
+          "text": ""
+        },
+        {
+          "line": 116,
+          "text": "!        special case: SwKimpl = 1"
+        },
+        {
+          "line": 117,
+          "text": "         if (SwKimpl == 1) then"
+        },
+        {
+          "line": 118,
+          "text": "            do i = 1, numnod"
+        },
+        {
+          "line": 119,
+          "text": "               k(i) = hconduc(i,h(i),theta(i),rfcp(i))"
+        },
+        {
+          "line": 120,
+          "text": "               if (swmacro == 1)  k(i) = FrArMtrx(i) * k(i)"
+        },
+        {
+          "line": 164,
+          "text": ""
+        },
+        {
+          "line": 165,
+          "text": "!  lower and upper diagnal elements"
+        },
+        {
+          "line": 166,
+          "text": "   if (SwKimpl == 0) then"
+        },
+        {
+          "line": 167,
+          "text": "      dFdhU = 0.0d0"
+        },
+        {
+          "line": 168,
+          "text": "      dFdhL = 0.0d0"
+        },
+        {
+          "line": 169,
+          "text": "      do i = 2, numnod"
+        },
+        {
+          "line": 197,
+          "text": "      end do"
+        },
+        {
+          "line": 198,
+          "text": ""
+        },
+        {
+          "line": 199,
+          "text": "!     special case: SwKimpl = 1"
+        },
+        {
+          "line": 200,
+          "text": "      if (SwKimpl == 1) then"
+        },
+        {
+          "line": 201,
+          "text": "         do i = 1, NN"
+        },
+        {
+          "line": 202,
+          "text": "            dkdh(i)= dhconduc(i,h(i),theta(i),dimoca(i),rfcp(i))"
+        },
+        {
+          "line": 203,
+          "text": "            if (swmacro == 1) dkdh(i) = FrArMtrx(i) * dkdh(i)"
+        },
+        {
+          "line": 204,
+          "text": "         end do"
+        },
+        {
+          "line": 205,
+          "text": "         do i = 2, NN"
+        },
+        {
+          "line": 206,
+          "text": "            dFdhU(i)   = - kmean(i) / disnod(i)"
+        },
+        {
+          "line": 260,
+          "text": "         end do"
+        },
+        {
+          "line": 261,
+          "text": ""
+        },
+        {
+          "line": 262,
+          "text": "!        special case: update k and kmean if SwKimpl = 1"
+        },
+        {
+          "line": 263,
+          "text": "         if (SwKimpl == 1) then"
+        },
+        {
+          "line": 264,
+          "text": "            call Rootextraction(2)"
+        },
+        {
+          "line": 265,
+          "text": "            do i = 1, NN"
+        },
+        {
+          "line": 266,
+          "text": "               k(i) = hconduc(i,h(i),theta(i),rfcp(i))"
+        },
+        {
+          "line": 656,
+          "text": "      dFdhM(NN) = dFdhM(NN) + kmean(NN+1)/disnod(NN+1)         "
+        },
+        {
+          "line": 657,
+          "text": "   else if (swbotb == 7 .OR. swbotb == -2) then ! implicitly: kmean(NN+1)"
+        },
+        {
+          "line": 658,
+          "text": "      dFdhM(NN) = dFdhM(NN) + dkdh(NN) * 0.5d0"
+        },
+        {
+          "line": 659,
+          "text": "   else if (swbotb == 8 .AND. flboth) then"
+        },
+        {
+          "line": 660,
+          "text": "      dFdhM(NN) = dFdhM(NN) + kmean(NN+1)/disnod(NN+1)"
+        },
+        {
+          "line": 661,
+          "text": "   end if"
+        },
+        {
+          "line": 662,
+          "text": ""
+        },
+        {
+          "line": 663,
+          "text": "!  special case when SwKimpl = 1"
+        },
+        {
+          "line": 664,
+          "text": "   if (SwKimpl == 1) then"
+        },
+        {
+          "line": 665,
+          "text": "      if (swbotb == 9) call swap_error ('headcalc', 'swbotb = 9 AND swkimpl = 1 not yet implemented')"
+        },
+        {
+          "line": 666,
+          "text": "!     first layer"
+        },
+        {
+          "line": 667,
+          "text": "      dFdhM(1) = dFdhM(1) + dkdh(1) * hgrad(2) * dkmean(swkmean,k(1),k(2),dz(1),dz(2))"
+        },
+        {
+          "line": 668,
+          "text": "      if (ftoph) dFdhM(1) = dFdhM(1) - dkdh(1) * hgrad(1) * 0.5d0"
+        },
+        {
+          "line": 669,
+          "text": "      dFdhL(1) = dFdhL(1) + dkdh(2) * hgrad(2) * dkmean(swkmean,k(2),k(1),dz(2),dz(1)) "
+        },
+        {
+          "line": 670,
+          "text": "!     layers 2 to (NN-1)"
+        },
+        {
+          "line": 671,
+          "text": "      do i = 2, NN-1"
+        },
+        {
+          "line": 672,
+          "text": "         dFdhU(i) = dFdhU(i) - dkdh(i-1) * hgrad(i) * dkmean(swkmean,k(i-1),k(i),dz(i-1),dz(i)) "
+        },
+        {
+          "line": 673,
+          "text": "         dFdhM(i) = dFdhM(i) - dkdh(i) * hgrad(i) * dkmean(swkmean,k(i),k(i-1),dz(i),dz(i-1)) + dkdh(i) * hgrad(i+1) * dkmean(swkmean,k(i),k(i+1),dz(i),dz(i+1))"
+        },
+        {
+          "line": 674,
+          "text": "         dFdhL(i) = dFdhL(i) + dkdh(i+1) * hgrad(i+1) * dkmean(swkmean,k(i+1),k(i),dz(i+1),dz(i)) "
+        },
+        {
+          "line": 675,
+          "text": "      end do"
+        },
+        {
+          "line": 676,
+          "text": "!     last layer"
+        },
+        {
+          "line": 677,
+          "text": "      dFdhU(NN) = dFdhU(NN) - dkdh(NN-1) * hgrad(NN) * dkmean(swkmean,k(NN-1),k(NN),dz(NN-1),dz(NN)) "
+        },
+        {
+          "line": 678,
+          "text": "      dFdhM(NN) = dFdhM(NN) - dkdh(NN) * hgrad(NN) * dkmean(swkmean,k(NN),k(NN-1),dz(NN),dz(NN-1))"
+        },
+        {
+          "line": 679,
+          "text": ""
+        },
+        {
+          "line": 680,
+          "text": "      if (swbotb == 1 .OR. swbotb == 5 .OR. swbotb == 8 .AND. flboth) then"
+        },
+        {
+          "line": 681,
+          "text": "         dFdhM(NN) = dFdhM(NN) + 0.5d0 * dkdh(NN) * hgrad(NN+1)"
+        },
+        {
+          "line": 682,
+          "text": "      end if"
+        },
+        {
+          "line": 683,
+          "text": "   end if"
+        },
+        {
+          "line": 684,
+          "text": ""
+        }
+      ]
+    },
+    "SWAP/boundbottom.f90": {
+      "bytes": 6054,
+      "sha256": "5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e",
+      "original_lines": [
+        {
+          "line": 12,
+          "text": "      use MOD_frost,     only: rfcp"
+        },
+        {
+          "line": 13,
+          "text": "      use MOD_swap_mp,   only: frarmtrx"
+        },
+        {
+          "line": 14,
+          "text": "      use variables,     only: shape_3, swbotb, gwlinp, gwltab, dt, h, date, sw2, qbot, sinave, sinamp, t, sinmax, qbotab,                 &"
+        },
+        {
+          "line": 15,
+          "text": "                               kmean, hdrain, gwl, sw3, deepgw, aqave, aqamp, aqper, aqtmax, haqtab, swbotb3resvert, t1900,                &"
+        },
+        {
+          "line": 16,
+          "text": "                               rimlay, sw4, swqhbot, cofqha, cofqhb, swcofqhc, cofqhc, hbot, hbotab, qbot_nonfrozen, kbot, theta, k"
+        },
+        {
+          "line": 17,
+          "text": "      use MOD_arrays,     only: mabbc"
+        },
+        {
+          "line": 18,
+          "text": "      use MOD_MvG,        only: watcon, hconduc, cofgen"
+        },
+        {
+          "line": 19,
+          "text": ""
+        },
+        {
+          "line": 61,
+          "text": "           if (sw2 == 1) then"
+        },
+        {
+          "line": 62,
+          "text": "! ---     sine function is used"
+        },
+        {
+          "line": 63,
+          "text": "             qbot = sinave + sinamp * dcos( freq * (t-sinmax))        "
+        },
+        {
+          "line": 64,
+          "text": "           else"
+        },
+        {
+          "line": 65,
+          "text": "! ---     table is used"
+        },
+        {
+          "line": 66,
+          "text": "             qbot = afgen (qbotab,mabbc*2,t1900+dt)"
+        },
+        {
+          "line": 67,
+          "text": "           end if"
+        },
+        {
+          "line": 68,
+          "text": "        end if"
+        },
+        {
+          "line": 69,
+          "text": ""
+        },
+        {
+          "line": 70,
+          "text": "! ---   free drainage assumed in case of h(numnod) < -1.0E7"
+        },
+        {
+          "line": 71,
+          "text": "        if (swbotb == -2) qbot = -1.0d0 * kmean(numnod+1)"
+        },
+        {
+          "line": 72,
+          "text": ""
+        },
+        {
+          "line": 73,
+          "text": "      end if"
+        },
+        {
+          "line": 74,
+          "text": ""
+        },
+        {
+          "line": 100,
+          "text": "        end if"
+        },
+        {
+          "line": 101,
+          "text": "!"
+        },
+        {
+          "line": 102,
+          "text": "        qbot   = (deepgw - gwlmean)/(rimlay+cvalprof)"
+        },
+        {
+          "line": 103,
+          "text": ""
+        },
+        {
+          "line": 104,
+          "text": "! ---   extra groundwater flux might be added"
+        },
+        {
+          "line": 105,
+          "text": "        if (sw4 == 1) qbot = qbot + afgen (qbotab,mabbc*2,t1900+dt)"
+        },
+        {
+          "line": 106,
+          "text": "      end if"
+        },
+        {
+          "line": 107,
+          "text": ""
+        },
+        {
+          "line": 108,
+          "text": "! --- flux calculated as function of h"
+        },
+        {
+          "line": 109,
+          "text": "      if (swbotb == 4 ) then"
+        },
+        {
+          "line": 110,
+          "text": "        if (swqhbot == 1) then"
+        },
+        {
+          "line": 111,
+          "text": "          qbot = cofqha * dexp(cofqhb * dabs(gwl))"
+        },
+        {
+          "line": 112,
+          "text": "          if (swcofqhc == 1) qbot = qbot + cofqhc"
+        },
+        {
+          "line": 113,
+          "text": "        else if (swqhbot == 2) then"
+        },
+        {
+          "line": 114,
+          "text": "          dabsgwl = dabs(gwl)"
+        },
+        {
+          "line": 115,
+          "text": "          qbot = afgen(qbotab,mabbc*2,dabsgwl)"
+        },
+        {
+          "line": 116,
+          "text": "        end if"
+        },
+        {
+          "line": 117,
+          "text": "      end if"
+        },
+        {
+          "line": 118,
+          "text": ""
+        },
+        {
+          "line": 129,
+          "text": ""
+        },
+        {
+          "line": 130,
+          "text": "! --- zero flux at the bottom"
+        },
+        {
+          "line": 131,
+          "text": "      if (swbotb == 6) qbot = 0.0d0"
+        },
+        {
+          "line": 132,
+          "text": ""
+        },
+        {
+          "line": 133,
+          "text": "! --- free drainage"
+        },
+        {
+          "line": 134,
+          "text": "      if (swbotb == 7) then"
+        },
+        {
+          "line": 135,
+          "text": "         thetabot = watcon(numnod,h(numnod))"
+        },
+        {
+          "line": 136,
+          "text": "         kmean(numnod+1) = hconduc(numnod,h(numnod),thetabot,rfcp(numnod))"
+        },
+        {
+          "line": 137,
+          "text": "         qbot = -1.0d0 * kmean(numnod+1)"
+        },
+        {
+          "line": 138,
+          "text": "      end if"
+        },
+        {
+          "line": 139,
+          "text": ""
+        },
+        {
+          "line": 140,
+          "text": "! --- lysimeter with free drainage"
+        },
+        {
+          "line": 141,
+          "text": "      if (swbotb == 8) qbot = 0.0d0"
+        },
+        {
+          "line": 142,
+          "text": ""
+        },
+        {
+          "line": 143,
+          "text": "      ! simultaneously: fixed h and fixed q at bottom"
+        },
+        {
+          "line": 144,
+          "text": "      if (swbotb == 9) then"
+        },
+        {
+          "line": 145,
+          "text": "         qbot            = afgen (qbotab,mabbc*2,t1900+dt)"
+        },
+        {
+          "line": 146,
+          "text": "         hbot            = afgen (hbotab,mabbc*2,t1900+dt)"
+        },
+        {
+          "line": 147,
+          "text": "         thetabot        = watcon(numnod,hbot)"
+        },
+        {
+          "line": 148,
+          "text": "         kbot            = hconduc(numnod,hbot,thetabot,rfcp(numnod))"
+        },
+        {
+          "line": 149,
+          "text": "         kmean(numnod+1) = kbot"
+        },
+        {
+          "line": 150,
+          "text": "         h(numnod)       = hbot - (qbot/kbot + 1.0d0) * disnod(numnod+1)"
+        },
+        {
+          "line": 151,
+          "text": "         theta(numnod)   = watcon(numnod,h(numnod))"
+        },
+        {
+          "line": 152,
+          "text": "         k(numnod)       = hconduc(numnod,h(numnod),theta(numnod),rfcp(numnod))"
+        },
+        {
+          "line": 153,
+          "text": "      end if"
+        },
+        {
+          "line": 154,
+          "text": ""
+        },
+        {
+          "line": 155,
+          "text": "      qbot_nonfrozen = qbot"
+        },
+        {
+          "line": 156,
+          "text": ""
+        },
+        {
+          "line": 157,
+          "text": "      return"
+        },
+        {
+          "line": 158,
+          "text": "      end subroutine BoundBottom"
+        }
+      ]
+    }
+  },
+  "current_source_blobs": {
+    "app/hybrid_water/frost_undrained_state.py": {
+      "bytes": 8101,
+      "sha256": "b56f574ceef56003113eefc647fa88a17086c439a440a1a24302aaaaa2e52c13"
+    },
+    "app/hybrid_water/frost_boundary_state_calendar.py": {
+      "bytes": 5192,
+      "sha256": "716e01e380db39598ed6ea37371a3f13973a496b8e91b520377138e24936b454"
+    },
+    "app/hybrid_water/frost_boundary_composition.py": {
+      "bytes": 4088,
+      "sha256": "fb18e307fa14911cbed948491472750190799e950aee1bf70831586621a2b1ed"
+    },
+    "app/hybrid_water/frost_analytical_composition.py": {
+      "bytes": 7290,
+      "sha256": "0ba3172e7998cfa7f0fdb3761b953091431810b76d39f1583c6fb927d6efa06f"
+    },
+    "app/hybrid_water/frost_analytical_native.f90": {
+      "bytes": 1679,
+      "sha256": "9cfb1223e0e09c41fc4039d914843aebcab3d2ef06bc4a5cac7fd752a8f8a97d"
+    },
+    "app/hybrid_water/frost_analytical_boundary_native.f90": {
+      "bytes": 2186,
+      "sha256": "16b299a23f6e87d541239e9bd2dffce8137a5ef3356abe6ab26dc8b67ffd2c21"
+    },
+    "app/hybrid_water/implicit_conductivity.py": {
+      "bytes": 5712,
+      "sha256": "1938a8598846bb472452d800b31c6d1bba647e61d8a4ca00b7d8defb50042a99"
+    },
+    "app/hybrid_water/implicit_frost_composition.py": {
+      "bytes": 5034,
+      "sha256": "4826afd1bf7a3eb3b9f7c6a253aa01bb71426b2e1cdb06df257e9d6f2ba7bb16"
+    },
+    "app/hybrid_water/implicit_snow_composition.py": {
+      "bytes": 784,
+      "sha256": "fde022ea9b97a124d91d28bda3562e8d4936ee3418d978d623f8a42ec14d50a2"
+    },
+    "app/hybrid_water/implicit_frost_source_guard.py": {
+      "bytes": 6367,
+      "sha256": "bba121005038a4eaae136389800a84dbd591e0a5ed7ab2397699611f68cb24fe"
+    },
+    "app/hybrid_water/implicit_snow_source_guard.py": {
+      "bytes": 8696,
+      "sha256": "c10b50ca24c7884708725ac42dbdab92197646496446761bc41059fd8e250095"
+    },
+    "app/hybrid_water/frost_boundary_terminal_trial.py": {
+      "bytes": 4035,
+      "sha256": "75188acf90e28666ffecc64dcd4394a31933752acfdd8223c7b3b449901c47b2"
+    },
+    "app/hybrid_water/analytical_snow_undrained.py": {
+      "bytes": 1722,
+      "sha256": "40f52d11264133cdf1c2599f52bd02f3bad9364c3e09a6ae5a4c14c2988746e8"
+    },
+    "app/hybrid_water/implicit_hydraulic_state.py": {
+      "bytes": 9003,
+      "sha256": "3193d10a8ae33e55571df74f8f23e4715c3f1f9979a07a996ae6bf07e6fcfde5"
+    }
+  },
+  "next_coherent_batch": [
+    {
+      "family": "Drainage-off original closed zero-flux bottom6 with implicit default-Mualem and hys0/1/2",
+      "classification": "COMPOSITION_MISSING",
+      "scope": "Ordinary/Snow/Frost water and CDE, original initialization1/2 and state/calendar owners",
+      "physical_boundary": "Use literal original zero-flux boundary, without replacing measured qbot or inventory",
+      "source_proof_required": "Exact head/time/trial-receipt composition and original original native/state owner; no authority hash bypass"
+    },
+    {
+      "family": "Explicit Gardner model2 and originally valid mixed layers",
+      "classification": "COMPOSITION_MISSING",
+      "scope": "Ordinary/Snow/Frost and previously admitted explicit analytical boundary/drainage/calendars",
+      "prior_guard": "model_domain and static native domain exclude model2 although original watcon/moiscap/hconduc/dhconduc include it",
+      "physical_equations": "Reuse actual original Gardner bodies and original physical parameters"
+    }
+  ],
+  "preserve": {
+    "existing_drained_bottom6_model1": "ALREADY_ADMITTED_DO_NOT_REOPEN",
+    "original_non1_hysteresis": "INVALID_ORIGINAL_READER",
+    "original_non1_tabulated": "INVALID_ORIGINAL_READER",
+    "active_macropores": "EXCLUDED_MACRO",
+    "scientific_decisions": [
+      "Prescribed head/flux9 vapor/thermal residual",
+      "AGE dryout retained moment"
+    ],
+    "explicit_Szymkiewicz": "Requires actual original physical Kavg table; never invent"
+  },
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "canonical_admission": false
+}

@@ -1,0 +1,42 @@
+{
+  "status": "PROPOSED_ORIGINAL_PROFILE_INITIALIZATION_OWNER_COMPOSITION_NOT_INSTALLED_OR_QUALIFIED",
+  "actual_preparation_source": "e28233d32c404c86fa58d7cbd71f7632dde1654c",
+  "files": {
+    "app/hybrid_water/experimental_project.py": {
+      "actual_before_git_source": "e28233d32c404c86fa58d7cbd71f7632dde1654c",
+      "before_lf_sha256": "a08d1428ab1481039278b6db5379395adcddc456971945029abab673f9317e8b",
+      "proposed_lf_sha256": "240625ab36e1dca4154b4253ab9dd5961c9b7b6fcaa1f26c5e514cef972e192c",
+      "proposed_file": "CLOSED_GARDNER_STATE12_PROPOSED_INITIAL_experimental_project.py",
+      "ordered_literal_replacements": [
+        {
+          "before": "        else:state_supported=True\n",
+          "after": "        else:state_supported=True\n        from closed_zero_boundary import input_domain as closed_initial_domain\n        state_supported=state_supported or closed_initial_domain(text,selected,original_output)\n"
+        }
+      ]
+    },
+    "app/hybrid_water/initial_profile_calendar.py": {
+      "actual_before_git_source": "e28233d32c404c86fa58d7cbd71f7632dde1654c",
+      "before_lf_sha256": "258bb8fab0aec201041e79d9559253b677c9089e32ae1c854f228d6be1b81039",
+      "proposed_lf_sha256": "76ea1cab6b642cb81aedba0196f9654e6d4e4928f4ee0b041f9ebc8517276519",
+      "proposed_file": "CLOSED_GARDNER_STATE12_PROPOSED_INITIAL_initial_profile_calendar.py",
+      "ordered_literal_replacements": [
+        {
+          "before": " if history:\n",
+          "after": " from closed_zero_boundary import input_domain as closed_domain\n if snow and closed_domain(text,s,original_output):pass\n elif history:\n"
+        }
+      ]
+    },
+    "app/hybrid_water/closed_zero_boundary.py": {
+      "actual_before_git_source": "e28233d32c404c86fa58d7cbd71f7632dde1654c",
+      "new_file": true,
+      "proposed_lf_sha256": "338a7cd3a5b9155b1b75cf5c30487689eeb855cdd33887af1f8cbac9e4a867c9",
+      "proposed_file": "closed_zero_boundary.PROPOSED_V1.py"
+    }
+  },
+  "original_physical_initialization_unchanged": true,
+  "new_physical_state": false,
+  "ordinary_nonsnow_nondaily_gap_claimed_closed": false,
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "canonical_admission": false
+}

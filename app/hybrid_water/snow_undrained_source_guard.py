@@ -28,7 +28,7 @@ def explicit_head_parent(reference,project):
     exec(compile(module,'<original-explicit-head-read-only-prefix>','exec'),namespace)
     # Paired Snow uses this exact original HeadCalc prefix. Its existing Snow
     # rollback/pond-event owner is checked separately by the complete inverse.
-    if selection(project)['swbotb']==9:return namespace['source']
+    if selection(project)['swbotb'] in (6,9):return namespace['source']
     from lower_boundary_receipt import render_headcalc
     return render_headcalc(namespace['source'],selection(project)['swbotb'])
 
@@ -106,6 +106,9 @@ def validate_source(bundle,project,identity,reference):
                 '         budget_step=projected_water_residual()\n'
                 '            budget_step = projected_water_residual()\n')
             source=render_headcalc(inverse(source,lambda text:render_headcalc(text,5),template),8)
+        elif selected['swbotb']==6:
+            from lower_boundary_receipt import render_headcalc
+            source=render_headcalc(source,8)
         if hashlib.sha256(source.encode('cp1252')).hexdigest()!=HEADS['water']:
             raise ValueError('Foreign qualified implicit ordinary Snow HeadCalc parent')
     elif source!=explicit_head_parent(reference,project):

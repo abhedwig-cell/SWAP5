@@ -1,0 +1,7 @@
+# Canonical implicit analytical hydraulic state11
+
+Actual signed canonical `105b9a8e6ca9e846f214d69a71afe73ed18be11d` (PR1810) has ordered parents `22520105f5a3ccac2bd2ae1b726f27b7b0d67b1e` and `e4d9a56143d85550ee272fbac55f1d4a08173195`, and tree `a5e95a0420e7ae330926c41e256392fc8c52cadc`. The exact source anchor, current positive/negative observations, complete original CI and retained original failures are in `IMPLICIT_HYDRAULIC_STATE11_MERGE_RECEIPT_V1.json` and its admission RAW descriptor.
+
+The bounded cohort adds56 portable Windows/Ubuntu O0/O2 contexts to880. Its1960 primary days,392 native samples,176 exact cold/output windows,320 compiled refusals and56 transactions retain producer `c40ca084d8e5eb638e0b4ac5c471463d9aad01c3`. The28 additional local contexts are not counted again. The model-specific nonconstant derivative and exact selected model5 chain rule are explicit numerical policies; physical equations, parameters and1e-10 limits are unchanged. The original Ubuntu producer observer failure and corrected observer-only outcomes retain their original roles.
+
+Functional migration remains PARTIAL and whole scientific equivalence NOT_QUALIFIED. Closed zero-flux Mualem state couplings and explicit Gardner native domains proceed in coherent batch12. RIA12/tabulated compositions, other source-valid families and the separate AGE dryout/head-flux scientific decisions remain open. RC3 is unchanged.

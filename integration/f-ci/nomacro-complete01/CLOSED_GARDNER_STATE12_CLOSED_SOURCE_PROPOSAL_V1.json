@@ -1,0 +1,134 @@
+{
+  "status": "PROPOSED_EXISTING_MUALEM_CLOSED_ZERO_BOUNDARY_STATE_COUPLING_NOT_INSTALLED_OR_QUALIFIED",
+  "actual_preparation_source": "e28233d32c404c86fa58d7cbd71f7632dde1654c",
+  "files": {
+    "app/hybrid_water/frost_undrained_state.py": {
+      "actual_before_git_source": "e28233d32c404c86fa58d7cbd71f7632dde1654c",
+      "before_lf_sha256": "b56f574ceef56003113eefc647fa88a17086c439a440a1a24302aaaaa2e52c13",
+      "proposed_lf_sha256": "53450d691a4c97ac3d9733d9bfd3b429483ebb0be4fc08abcbe75610de69a71f",
+      "proposed_file": "CLOSED_GARDNER_STATE12_PROPOSED_CLOSED_frost_undrained_state.py",
+      "ordered_literal_replacements": [
+        {
+          "before": "                and (boundary.get('SWBOTB')!=6 or selectors.get('SWKIMPL')==selectors.get('SWHYST')==0)\n",
+          "after": ""
+        },
+        {
+          "before": "    if values['SWBOTB']==6:\n        from frost_analytical_composition import model_domain\n        analytical=model_domain(active,values,allow_model1=True)\n        if analytical is None:return None",
+          "after": "    if values['SWBOTB']==6:\n        if values['SWKIMPL']==values['SWHYST']==0:\n            from frost_analytical_composition import model_domain\n            analytical=model_domain(active,values,allow_model1=True)\n            if analytical is None:return None\n        elif models and re.fullmatch(r'\\+?0*1(?:[ \\t]+\\+?0*1)*[ \\t]*',models[0]) is None:\n            # Original non1+hysteresis is invalid. Implicit closed non1 still\n            # requires its separate explicit per-layer native admission.\n            return None"
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_conductivity.py": {
+      "actual_before_git_source": "e28233d32c404c86fa58d7cbd71f7632dde1654c",
+      "before_lf_sha256": "1938a8598846bb472452d800b31c6d1bba647e61d8a4ca00b7d8defb50042a99",
+      "proposed_lf_sha256": "2d0f5c6f6697b3d0a4677e711e3d0baed476ec6cb72a7af173276fa9d2a09575",
+      "proposed_file": "CLOSED_GARDNER_STATE12_PROPOSED_CLOSED_implicit_conductivity.py",
+      "ordered_literal_replacements": [
+        {
+          "before": "or boundary['SWBOTB']==6 and selectors.get('SWDRA') in (1,2)",
+          "after": "or boundary['SWBOTB']==6 and selectors.get('SWDRA') in (0,1,2)"
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_snow_composition.py": {
+      "actual_before_git_source": "e28233d32c404c86fa58d7cbd71f7632dde1654c",
+      "before_lf_sha256": "fde022ea9b97a124d91d28bda3562e8d4936ee3418d978d623f8a42ec14d50a2",
+      "proposed_lf_sha256": "507ba5002cf6fca748e2bb9db5cc01171def264d5cd021f651aeedb8f7789141",
+      "proposed_file": "CLOSED_GARDNER_STATE12_PROPOSED_CLOSED_implicit_snow_composition.py",
+      "ordered_literal_replacements": [
+        {
+          "before": "bottom in (1,5,8) and drain in (0,1))",
+          "after": "((bottom in (1,5,8) and drain in (0,1)) or (bottom==6 and drain==0)))"
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_frost_source_guard.py": {
+      "actual_before_git_source": "e28233d32c404c86fa58d7cbd71f7632dde1654c",
+      "before_lf_sha256": "bba121005038a4eaae136389800a84dbd591e0a5ed7ab2397699611f68cb24fe",
+      "proposed_lf_sha256": "b7a98d977e0abc78dd266f08fdbe0633b5d9150c2511d2ce5df25e5a4403e894",
+      "proposed_file": "CLOSED_GARDNER_STATE12_PROPOSED_CLOSED_implicit_frost_source_guard.py",
+      "ordered_literal_replacements": [
+        {
+          "before": "    if boundary is None:\n",
+          "after": "    if boundary is None or boundary==6:\n"
+        }
+      ]
+    },
+    "app/hybrid_water/snow_undrained.py": {
+      "actual_before_git_source": "e28233d32c404c86fa58d7cbd71f7632dde1654c",
+      "before_lf_sha256": "25283120b0600ae12e0155ea5c12e20b45067ba54c287a64d6632462543e05c5",
+      "proposed_lf_sha256": "88c9f4fd583bc73babd9b09428eae961f030f61780ec37147dd140b92985898a",
+      "proposed_file": "CLOSED_GARDNER_STATE12_PROPOSED_CLOSED_snow_undrained.py",
+      "ordered_literal_replacements": [
+        {
+          "before": "report['boundary']['SWBOTB'] not in (5,8,9)",
+          "after": "report['boundary']['SWBOTB'] not in (5,6,8,9)"
+        }
+      ]
+    },
+    "app/hybrid_water/snow_undrained_state.py": {
+      "actual_before_git_source": "e28233d32c404c86fa58d7cbd71f7632dde1654c",
+      "before_lf_sha256": "f98f2dc62b811c79a8a049f765cacf7108194e09594a5bd31a50a8a51638cbc6",
+      "proposed_lf_sha256": "dfc4fd7cfa8f3631252bb0e415fb80f4ee77f01bf15251a6c638fa86765761bd",
+      "proposed_file": "CLOSED_GARDNER_STATE12_PROPOSED_CLOSED_snow_undrained_state.py",
+      "ordered_literal_replacements": [
+        {
+          "before": "    if selected['swbotb']==9:\n        text=replace(text,'(swbotb/=5.and.swbotb/=8)','swbotb/=9')",
+          "after": "    if selected['swbotb']==6:\n        text=replace(text,'(swbotb/=5.and.swbotb/=8)','swbotb/=6')\n    elif selected['swbotb']==9:\n        text=replace(text,'(swbotb/=5.and.swbotb/=8)','swbotb/=9')"
+        },
+        {
+          "before": "    if selected['swkimpl'] and not project.solute:\n",
+          "after": "    if selected['swkimpl'] and not project.solute and selected['swbotb']!=6:\n"
+        }
+      ]
+    },
+    "app/hybrid_water/snow_undrained_build.py": {
+      "actual_before_git_source": "e28233d32c404c86fa58d7cbd71f7632dde1654c",
+      "before_lf_sha256": "46503ff3587142905b0b8a4084a10de6ddd4c68183a2cad4f3b0c961e5e308f4",
+      "proposed_lf_sha256": "dd6aa3e9d108a9dc64b682d7daedc611e03a138fcdc114d7bafc147922de5c85",
+      "proposed_file": "CLOSED_GARDNER_STATE12_PROPOSED_CLOSED_snow_undrained_build.py",
+      "ordered_literal_replacements": [
+        {
+          "before": "    if selected['swbotb']==9:\n        result=native.replace(result,'(swbotb/=5.and.swbotb/=8)','swbotb/=9')",
+          "after": "    if selected['swbotb']==6:\n        result=native.replace(result,'(swbotb/=5.and.swbotb/=8)','swbotb/=6')\n    elif selected['swbotb']==9:\n        result=native.replace(result,'(swbotb/=5.and.swbotb/=8)','swbotb/=9')"
+        },
+        {
+          "before": "    if selected is not None and selected['swbotb']==9:\n",
+          "after": "    if selected is not None and selected['swbotb']==6:\n        # Literal original Boundbottom assigns qbot=0 for bottom6. This is an\n        # independent candidate receipt, not a substituted accepted flux/store.\n        guard='\\n         hybrid_snow_trial_guard=hybrid_snow_soil_trial_residual(0d0)\\n         if(abs(hybrid_snow_trial_guard)>1d-10)flnonconv=.true.'\n    elif selected is not None and selected['swbotb']==9:\n"
+        }
+      ]
+    },
+    "app/hybrid_water/snow_undrained_source_guard.py": {
+      "actual_before_git_source": "e28233d32c404c86fa58d7cbd71f7632dde1654c",
+      "before_lf_sha256": "5e9ca43bce00181bfd242692a795650255cf4d925b412b6a9f5e9e80f6c8c66a",
+      "proposed_lf_sha256": "67ed6606bd03f0433bd7512020fe6c4b618f7597d13bced15b4d0f56e62aaaab",
+      "proposed_file": "CLOSED_GARDNER_STATE12_PROPOSED_CLOSED_snow_undrained_source_guard.py",
+      "ordered_literal_replacements": [
+        {
+          "before": "    if selection(project)['swbotb']==9:return namespace['source']",
+          "after": "    if selection(project)['swbotb'] in (6,9):return namespace['source']"
+        },
+        {
+          "before": "        if hashlib.sha256(source.encode('cp1252')).hexdigest()!=HEADS['water']:",
+          "after": "        elif selected['swbotb']==6:\n            from lower_boundary_receipt import render_headcalc\n            source=render_headcalc(source,8)\n        if hashlib.sha256(source.encode('cp1252')).hexdigest()!=HEADS['water']:"
+        }
+      ]
+    }
+  },
+  "original_equations_changed": false,
+  "new_physical_state": false,
+  "original_qbot_rule": "SWAP/boundbottom.f90: if (swbotb == 6) qbot = 0.0d0",
+  "conservation_limits_changed": false,
+  "candidate_receipt": "Actual original zero boundary, never inferred or corrected from final storage",
+  "required_followup": [
+    "Original profile initialization guard composition before SWINCO1 tests",
+    "Real public original-input reader and O0/O2 physical water/CDE windows",
+    "Complete native/header refusals, exact cold output and rollback/restart",
+    "Independent 1e-10 physical receipts and prior unchanged whole-object postimages",
+    "Combine with selected explicit Gardner in the same coherent batch12"
+  ],
+  "prior_ordinary_nonsnow_calendar_gaps_not_claimed_closed": true,
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "canonical_admission": false
+}

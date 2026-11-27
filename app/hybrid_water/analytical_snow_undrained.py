@@ -14,10 +14,15 @@ def selection(directory,original_output=True):
  rows=re.findall(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[ \t]*([^\r\n]*)',active)
  if len(rows)!=1 or re.fullmatch(r'[+-]?[0-9]+(?:[ \t]+[+-]?[0-9]+)*[ \t]*',rows[0]) is None:return None
  models=list(map(int,rows[0].split()))
- if not models or all(x==1 for x in models) or any(x not in (1,3,4,5,6,7,8,9,10,11) for x in models):return None
+ if not models or all(x==1 for x in models) or any(x not in range(1,12) for x in models):return None
  rows=re.findall(r'(?mi)^[ \t]*SWVAPOR[ \t]*=[ \t]*([^\r\n]*)',active)
  if len(rows)>1 or any(x>=8 for x in models) and not rows:return None
- if rows and (re.fullmatch(r'[+-]?[0-9]+(?:[ \t]+[+-]?[0-9]+)*[ \t]*',rows[0]) is None or any(int(x)!=0 for x in rows[0].split())):return None
+ if rows and (re.fullmatch(r'[+-]?[0-9]+(?:[ \t]+[+-]?[0-9]+)*[ \t]*',rows[0]) is None or any(int(x) not in (0,1) for x in rows[0].split())):return None
+ if 2 in models or any(x>=8 for x in models):
+  from implicit_hydraulic_state import _models_from_grid
+  # Pure original grid/scalar replication and effective vapor flags;
+  # no implicit selector or physical state is assigned by this reader.
+  if _models_from_grid(active,models) is None:return None
  from prescribed_snow_boundary import _validate_calendar
  try:_validate_calendar(text)
  except ValueError:return None
