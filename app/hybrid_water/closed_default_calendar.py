@@ -3,6 +3,7 @@ from pathlib import Path
 import re
 POLICY='original-closed-default-pressure-nondaily-calendar-composition-v1'
 GROUNDWATER_POLICY='original-closed-default-groundwater-nondaily-calendar-composition-v1'
+COUPLED_POLICY='original-closed-default-implicit-hysteresis-nondaily-calendar-composition-v1'
 
 
 def input_domain(text,selectors,original_output=True):
@@ -12,9 +13,8 @@ def input_domain(text,selectors,original_output=True):
                SWHEA=1,SWCALT=2,SWSOPHY=0,SWBBCFILE=0,SWMETDETAIL=0,SWBR=0)
     if any(selectors.get(k)!=v for k,v in fixed.items()):return None
     if selectors.get('SWSOLU') not in (0,1) or selectors.get('SWHYST') not in (0,1,2) or selectors.get('SWKIMPL') not in (0,1):return None
-    # The existing qualified non-daily state classes retain their original
-    # hysteresis/implicit ownership. Their simultaneous composition is separate.
-    if selectors['SWKIMPL'] and selectors['SWHYST']:return None
+    # Compose the existing original implicit and hysteresis state owners.
+    # Dense output and every older separate-owner policy remain unchanged.
     active='\n'.join(v.split('!',1)[0] for v in text.splitlines() if not v.lstrip().startswith('*'))
     rows=re.findall(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[ \t]*([^\r\n]*)',active)
     rest=re.sub(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[^\r\n]*','',active)
@@ -33,7 +33,7 @@ def input_domain(text,selectors,original_output=True):
     perstep=token in ('.TRUE.','TRUE','.T.','T');clock=perstep or npd>1
     if monthly and dates or clock and (monthly or dates) or perstep and reset:return None
     if not clock and not monthly and not dates and period==1:return None
-    return dict(policy=POLICY if selectors['SWINCO']==1 else GROUNDWATER_POLICY,hydraulic_model=1,initial=selectors['SWINCO'],drainage=0,bottom=6,
+    return dict(policy=COUPLED_POLICY if selectors['SWKIMPL'] and selectors['SWHYST'] else POLICY if selectors['SWINCO']==1 else GROUNDWATER_POLICY,hydraulic_model=1,initial=selectors['SWINCO'],drainage=0,bottom=6,
                 kind='cde' if selectors['SWSOLU'] else 'water',history=selectors['SWHYST'],
                 implicit=selectors['SWKIMPL'],clock=clock,perstep=perstep,
                 original_parameter_and_calendar_bytes_preserved=True,

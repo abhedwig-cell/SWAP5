@@ -1,0 +1,30 @@
+{
+  "status": "ONE_ACTUAL_APP_OWNER_COMPOSITION_COMPLETE_LITERAL_PARENT_INVERSE",
+  "actual_parent": "857b25a81c88626075b91f46a3fb42e9fce801f3",
+  "path": "app/hybrid_water/closed_default_calendar.py",
+  "original_sha256": "daffd08b4d10072aae145d7e56f11bbc201c0e96b9762aa5eabac7e3a3795ac3",
+  "actual_installed_source_bytes_sha256": "1eae865da26eb1b94e140fe09af8cf5da482568d888e47e9dc34faf74eb7c3aa",
+  "source_representation": "actual installed canonical LF bytes; complete original Git parent bytes",
+  "edits": [
+    {
+      "before": "GROUNDWATER_POLICY='original-closed-default-groundwater-nondaily-calendar-composition-v1'",
+      "after": "GROUNDWATER_POLICY='original-closed-default-groundwater-nondaily-calendar-composition-v1'\nCOUPLED_POLICY='original-closed-default-implicit-hysteresis-nondaily-calendar-composition-v1'"
+    },
+    {
+      "before": "    # The existing qualified non-daily state classes retain their original\n    # hysteresis/implicit ownership. Their simultaneous composition is separate.\n    if selectors['SWKIMPL'] and selectors['SWHYST']:return None",
+      "after": "    # Compose the existing original implicit and hysteresis state owners.\n    # Dense output and every older separate-owner policy remain unchanged."
+    },
+    {
+      "before": "policy=POLICY if selectors['SWINCO']==1 else GROUNDWATER_POLICY",
+      "after": "policy=COUPLED_POLICY if selectors['SWKIMPL'] and selectors['SWHYST'] else POLICY if selectors['SWINCO']==1 else GROUNDWATER_POLICY"
+    }
+  ],
+  "preserves_original_initial1_policy_identity": true,
+  "preserves_original_initial2_policy_identity": true,
+  "new_initial3_claimed": false,
+  "new_numerical_policy": false,
+  "physical_equations_changed": false,
+  "new_physical_state": false,
+  "new_native_codec": false,
+  "parameter_tables_or_tolerances_changed": false
+}
