@@ -1,5 +1,5 @@
 """Actual closed/Gardner source feedback with immutable original inputs and cold state."""
-import argparse,hashlib,json,re,subprocess,sys,time,zipfile
+import argparse,hashlib,io,json,re,subprocess,sys,time,zipfile
 from contextlib import ExitStack
 from decimal import Decimal,localcontext
 from pathlib import Path
@@ -16,15 +16,36 @@ SHA=lambda raw:hashlib.sha256(raw).hexdigest()
 git=lambda *args:subprocess.check_output(['git',*args],cwd=R)
 
 
-def prepare(spec,output):
+def input_donor(spec,stack):
+    source=GitArchiveSource(R,PARENT)
+    name=('EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_INPUTS_V1' if spec['bottom']==9 else
+          'IMPLICIT_HYDRAULIC_STATE11_FIRST_WINDOWS_O0_ORIGINAL_V1')
+    descriptor=json.loads((source/(name+'.json')).read_bytes())
+    if 'parts' in descriptor:return name,Archive(source,name,stack)
+    # This accepted older input archive predates parts. Verify its genuine
+    # descriptor explicitly; the generic multipart authority stays unchanged.
+    raw=(source/descriptor['archive']).read_bytes()
+    assert len(raw)==descriptor['bytes'] and SHA(raw)==descriptor['sha256']
+    z=stack.enter_context(zipfile.ZipFile(io.BytesIO(raw)))
+    assert z.testzip() is None and len(z.namelist())==len(set(z.namelist()))==len(descriptor['members'])
+    assert set(z.namelist())==set(descriptor['members'])
+    class Donor:
+        record=descriptor
+        names=descriptor['members']
+        def get(self,n):
+            value=z.read(n);item=self.names[n]
+            assert len(value)==item['bytes'] and SHA(value)==item['sha256'];return value
+    return name,Donor()
+
+
+def prepare(spec,output,donor=None):
     """Only explicit selectors change; original hydraulic/thermal parameter bytes stay."""
-    assert spec['bottom']!=9,'Paired9 requires its own immutable accepted input donor'
-    prefix=('current/frost-mixed4-5-cde-d1-b5/inputs/' if spec['kind']=='cde' else
+    prefix=('model3-'+spec['kind']+'-initial2/' if spec['bottom']==9 else
+            'current/frost-mixed4-5-cde-d1-b5/inputs/' if spec['kind']=='cde' else
             'current/frost-mixed2-3-water-d0-b5/inputs/')
-    name='IMPLICIT_HYDRAULIC_STATE11_FIRST_WINDOWS_O0_ORIGINAL_V1'
     output.mkdir()
     with ExitStack() as stack:
-        archive=Archive(GitArchiveSource(R,PARENT),name,stack)
+        name,archive=input_donor(spec,stack) if donor is None else donor
         original={n[len(prefix):]:archive.get(n) for n in archive.names if n.startswith(prefix)}
         assert original and 'swap.swp' in original
         for n,raw in original.items():
