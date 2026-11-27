@@ -39,7 +39,7 @@ def raw_custody():
                 value=z.read(key);assert len(value)==item['bytes'] and SHA(value)==item['sha256']
             count=len(z.namelist())
         observed.append(dict(archive=q['archive'],bytes=q['bytes'],sha256=q['sha256'],members=count))
-    assert len(observed)==10
+    assert len(observed)==11
     return observed
 
 

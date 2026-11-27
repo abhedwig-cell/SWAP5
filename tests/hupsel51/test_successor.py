@@ -45,10 +45,7 @@ class Boundaries(unittest.TestCase):
                     # it never substitutes a historical checkout for execution.
                     ancestor=custody.git('show',custody.BASE+':'+path).decode()
                     new=checkout.historical_workflow(path,ancestor)
-                else:
-                    spec=importlib.util.spec_from_file_location('actual_closed_default_checkout_custody',s.ROOT/'tests/nomacro_drainage/closed_default_calendar_checkout.py')
-                    custody=importlib.util.module_from_spec(spec);spec.loader.exec_module(custody)
-                    new=checkout.historical_workflow(path,custody.historical_parent(path,new))
+                else:new=checkout.historical_workflow(path,new)
             s.validate_workflow(path, new, old)
             with self.assertRaises(ValueError):
                 s.validate_workflow(path, new.replace('python', 'echo', 1), old)
