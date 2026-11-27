@@ -56,6 +56,12 @@ def publication_dependencies_unchanged():
 
 def verify():
     current=source(SEALED);parent=parent_admission();data=data_source();raw=raw_custody();ci=ci_custody(data);checkout=checkout_custody()
+    checkout_before=frozen('CLOSED_DEFAULT_CALENDAR_STATE14_CHECKOUT_COMPLETE_BODY_INDEPENDENT_V1')
+    assert not git('diff',checkout_before['actual_source'],'HEAD','--','tests/nomacro_drainage/closed_default_calendar_checkout.py')
+    expected=dict(checkout_before);actual=dict(checkout);expected.pop('actual_source');actual.pop('actual_source');assert expected==actual
+    eol=frozen('CLOSED_DEFAULT_CALENDAR_STATE14_ACTUAL_GIT_EOL_BATCH_EQUIVALENCE_V1')
+    assert eol['actual_files']==145 and eol['actual_batch_commands']>=1 and eol['original_per_file_payload_validator_unchanged'] and eol['source_content_modified'] is False
+    assert eol['compiler_executions']==eol['model_executions']==0 and not git('diff',eol['actual_source'],'HEAD','--','tests/nomacro_drainage/closed_default_calendar_source_custody.py')
     assert ci==frozen('CLOSED_DEFAULT_CALENDAR_STATE14_ORIGINAL_CI_INDEPENDENT_V1')
     results=[]
     for platform in ['Ubuntu','Windows']:
@@ -77,7 +83,7 @@ def verify():
     coadmission.update(contexts=1024,short35_contexts=coadmission['short35_contexts']+20,native_calendar_samples=coadmission['native_calendar_samples']+140,exact_cold_windows=coadmission['exact_cold_windows']+60,
         new_closed_default_calendar_contexts=20,new_closed_default_calendar_primary_days=700,new_closed_default_calendar_compiled_refusals=584,new_closed_default_calendar_external_transactions=20,previous_canonical=BASE)
     return dict(status='BOUNDED_ORIGINAL_CLOSED_DEFAULT_MODEL1_PRESSURE_CALENDAR_NATIVE_COLD_AND_TRANSACTIONS_SOURCE_PASS',actual_current_source=current,parent_historical_admission=parent,
-        actual_raw_custody=raw,actual_original_portable_CI_custody=ci,actual_two_checkout_body_custody=checkout,new_original_portable_science=results,additional_actual_local_science=actual_local,
+        actual_raw_custody=raw,actual_original_portable_CI_custody=ci,actual_two_checkout_body_custody=checkout,actual_prior_Git_eol_batch_equivalence=eol,new_original_portable_science=results,additional_actual_local_science=actual_local,
         actual_old_numerical_and_native_preservation=actual_preservation,actual_non1_closed_domains_preserved=actual_inherited,unchanged_MCSOL_selection=mcsol,coadmission=coadmission,
         deferred_numerical_cases=deferred,current_finite_batch_deferred_numerical_cases=[],scientific_change_class='EXISTING_DEFAULT_HYDRAULIC_PROCESS_STATE_AND_OUTPUT_COMPOSITION',
         additional_local_contexts_counted_again=False,unchanged_periods_replayed=False,original_scientific_producers_rebound=False,original_scientific_water_limit_cm='1e-10',original_scientific_cde_limit_mg_cm2='1e-10',
