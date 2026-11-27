@@ -13,7 +13,7 @@ The per-layer implicit EOF extension has a complete literal inverse; parent
 procedure validation and independent compiled extension checks remain required.
 
 The new numerical policy is
-`original-closed-implicit-residual-start-and-convergence-order-v2`. It selects only
+`original-closed-implicit-residual-start-and-conditional-convergence-v3`. It selects only
 the new analytical closed6/no-drainage implicit scope. At the first Newton iterate,
 zero trial pond and an unresolved nonzero original total residual select the
 initial trial search. A signed uniform trial-head shift brackets and
@@ -57,3 +57,15 @@ completes5 resumed Snow days. Exact analytical K derivative probes separately
 pass but do not remove the Snow censor, so that derivative change is not
 installed. RAW V4 cacdaae6 preserves all source/binary/positive/failure/censor
 roles. New production V2 qualification remains pending.
+
+Actual3ee4 V2 full regressions expose four early failures (7 total partial days),
+because a failed strict budget check could return to the same residual-only
+precheck indefinitely without Newton progress. RAW V5 d6cf52bf retains every
+actual source/input/build/stdout/native byte and failure identity. V3 adds only
+a transient HeadCalc-local iterate-check flag. A current candidate is checked
+once; failed full acceptance then requires an actual Newton vector evaluation.
+The unchanged mandatory original polish may recheck an already feasible point.
+No physical/native state or clock counter is assigned; original loop bounds,
+complete head/pond/soil/budget criteria and rollback still own acceptance.
+Four actual previous generated forms pass exact new literal seams/inverses.
+Actual production V3 coupled qualification is pending.

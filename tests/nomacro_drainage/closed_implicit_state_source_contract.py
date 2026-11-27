@@ -2,7 +2,7 @@
 import ast,argparse,json,re
 from pathlib import Path
 from closed_implicit_state_feedback import R,P,PARENT,SHA,git
-PROPOSAL='CLOSED_IMPLICIT_STATE13_SOURCE_PROPOSAL_V6.json'
+PROPOSAL='CLOSED_IMPLICIT_STATE13_SOURCE_PROPOSAL_V7.json'
 
 
 def source():
@@ -11,7 +11,7 @@ def source():
     assert not git('status','--porcelain=v1','--untracked-files=all','--ignored')
     contract=json.loads(git('show','HEAD:'+P+PROPOSAL))
     assert contract['actual_canonical_parent']==PARENT and not contract['physical_equations_changed'] and not contract['new_physical_state'] and contract['new_numerical_policy'] is True
-    assert contract['numerical_policy']=='original-closed-implicit-residual-start-and-convergence-order-v2' and not contract['tolerances_or_iteration_limits_changed'] and not contract['accepted_stock_flux_or_parameter_corrections']
+    assert contract['numerical_policy']=='original-closed-implicit-residual-start-and-conditional-convergence-v3' and not contract['tolerances_or_iteration_limits_changed'] and not contract['accepted_stock_flux_or_parameter_corrections']
     expected=contract['files'];changed=set(git('diff','--name-only',PARENT,'HEAD','--','app').decode().splitlines());assert changed==set(expected)
     assert not git('diff',PARENT,'HEAD','--','src','tools','reference')
     observations=[]

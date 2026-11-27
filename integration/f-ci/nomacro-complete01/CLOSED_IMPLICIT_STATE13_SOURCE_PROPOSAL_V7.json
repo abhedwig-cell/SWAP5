@@ -1,0 +1,523 @@
+{
+  "status": "IMPLEMENTED_SIGNED_ORIGINAL_RESIDUAL_START_AND_ONCE_PER_CURRENT_ITERATE_COMPLETE_CONVERGENCE_CHECK_NOT_QUALIFIED",
+  "actual_canonical_parent": "2e98506b4fb469bbf5995a8ab0b49c88ead0972c",
+  "physical_equations_changed": false,
+  "new_physical_state": false,
+  "new_numerical_policy": true,
+  "numerical_policy": "original-closed-implicit-residual-start-and-conditional-convergence-v3",
+  "accepted_stock_flux_or_parameter_corrections": false,
+  "tolerances_or_iteration_limits_changed": false,
+  "files": {
+    "app/hybrid_water/cde_clock_output.py": {
+      "new_file": false,
+      "before_lf_sha256": "0854b104d7cab6a14f0527718898e4833554e573e09dc1df2a08c9a5f5c28cf4",
+      "after_lf_sha256": "d4abd01bcb5d2b6bddf47ee40b27cf4c4e62bbd1f1c9580b82e7da20aa22e2c5",
+      "ordered_literal_edits": [
+        {
+          "base_start": 2624,
+          "base_end": 2624,
+          "before": "",
+          "after": "from closed_zero_boundary import implicit_selection as closed_implicit_selection\n    closed_implicit=closed_implicit_selection(project) is not None\n    "
+        },
+        {
+          "base_start": 2670,
+          "base_end": 2670,
+          "before": "",
+          "after": " and not closed_implicit"
+        },
+        {
+          "base_start": 2920,
+          "base_end": 2920,
+          "before": "",
+          "after": " and not closed_implicit"
+        },
+        {
+          "base_start": 4038,
+          "base_end": 4038,
+          "before": "",
+          "after": " else {}),\n        **({'closed_implicit_calendar':True} if closed_implicit"
+        },
+        {
+          "base_start": 11681,
+          "base_end": 11681,
+          "before": "",
+          "after": "("
+        },
+        {
+          "base_start": 11721,
+          "base_end": 11721,
+          "before": "",
+          "after": ") or selected.get('closed_implicit_calendar') and not selected['swsnow']"
+        }
+      ]
+    },
+    "app/hybrid_water/cde_interval_output.py": {
+      "new_file": false,
+      "before_lf_sha256": "7ae55997c88e76eb7e9e0ca65e2cb84c4a08552ad6ef2c52f598f8bcd126fd7b",
+      "after_lf_sha256": "94282921c9b3a0c33c0d445dc85c1c832e1023a1b9b1a8dd1b625148a1752158",
+      "ordered_literal_edits": [
+        {
+          "base_start": 2481,
+          "base_end": 2481,
+          "before": "",
+          "after": "from closed_zero_boundary import implicit_selection as closed_implicit_selection\n    closed_implicit=closed_implicit_selection(project) is not None\n    "
+        },
+        {
+          "base_start": 2527,
+          "base_end": 2527,
+          "before": "",
+          "after": " and not closed_implicit"
+        },
+        {
+          "base_start": 2777,
+          "base_end": 2777,
+          "before": "",
+          "after": " and not closed_implicit"
+        },
+        {
+          "base_start": 3518,
+          "base_end": 3518,
+          "before": "",
+          "after": ",\n        **({'closed_implicit_calendar':True} if closed_implicit else {})"
+        }
+      ]
+    },
+    "app/hybrid_water/closed_zero_boundary.py": {
+      "new_file": false,
+      "before_lf_sha256": "64978e3ceb2c0c17796ad536badba270e24ffd8d3dd722234324b3dbf3a9bb51",
+      "after_lf_sha256": "ba03943a37271450a2499a474a607b222facdc56499786a9e0a7ef814e1f8026",
+      "ordered_literal_edits": [
+        {
+          "base_start": 902,
+          "base_end": 902,
+          "before": "",
+          "after": "mplicit_analytical=False\n    i"
+        },
+        {
+          "base_start": 976,
+          "base_end": 976,
+          "before": "",
+          "after": "\n        if selectors['SWKIMPL']!=1 or selectors['SWHYST']!=0:"
+        },
+        {
+          "base_start": 987,
+          "base_end": 987,
+          "before": "",
+          "after": "e\n        from implicit_hydraulic_state import input_models\n        if input_models(text,selectors,selectors,original_output) is None:return False\n        implicit_analytical=Tru"
+        },
+        {
+          "base_start": 1018,
+          "base_end": 1018,
+          "before": "",
+          "after": " and not implicit_analytical"
+        },
+        {
+          "base_start": 1689,
+          "base_end": 1689,
+          "before": "",
+          "after": "\n\ndef implicit_selection(project):\n    \"\"\"Select the actual existing per-layer closed implicit state, never an input projection.\"\"\"\n    from implicit_hydraulic_state import selected\n    item=selected(project)\n    if item is None or item.get('frost',0)!=0 or item['bottom']!=6 or item.get('drainage',1)!=0:return None\n    return item\n"
+        }
+      ]
+    },
+    "app/hybrid_water/frost_undrained_state.py": {
+      "new_file": false,
+      "before_lf_sha256": "53450d691a4c97ac3d9733d9bfd3b429483ebb0be4fc08abcbe75610de69a71f",
+      "after_lf_sha256": "d990856595e8cf4d1b941f43dd9ff862f75b3b1fd0d7b4db14bec8b8a84d3950",
+      "ordered_literal_edits": [
+        {
+          "base_start": 2591,
+          "base_end": 2592,
+          "before": "#",
+          "after": "if"
+        },
+        {
+          "base_start": 2593,
+          "base_end": 2623,
+          "before": "Original non1+hysteresis is in",
+          "after": ""
+        },
+        {
+          "base_start": 2626,
+          "base_end": 2629,
+          "before": "id.",
+          "after": "ues['SWKIMPL']!=1"
+        },
+        {
+          "base_start": 2630,
+          "base_end": 2633,
+          "before": "Imp",
+          "after": "or va"
+        },
+        {
+          "base_start": 2634,
+          "base_end": 2637,
+          "before": "ici",
+          "after": "ues['SWHYST']!=0:re"
+        },
+        {
+          "base_start": 2638,
+          "base_end": 2638,
+          "before": "",
+          "after": "urn"
+        },
+        {
+          "base_start": 2639,
+          "base_end": 2647,
+          "before": "closed n",
+          "after": "N"
+        },
+        {
+          "base_start": 2649,
+          "base_end": 2656,
+          "before": "1 still",
+          "after": "e"
+        },
+        {
+          "base_start": 2669,
+          "base_end": 2671,
+          "before": "# ",
+          "after": "f"
+        },
+        {
+          "base_start": 2672,
+          "base_end": 2679,
+          "before": "equires",
+          "after": "om"
+        },
+        {
+          "base_start": 2681,
+          "base_end": 2695,
+          "before": "ts separate ex",
+          "after": "m"
+        },
+        {
+          "base_start": 2701,
+          "base_end": 2704,
+          "before": " pe",
+          "after": "_hyd"
+        },
+        {
+          "base_start": 2705,
+          "base_end": 2706,
+          "before": "-",
+          "after": "au"
+        },
+        {
+          "base_start": 2707,
+          "base_end": 2713,
+          "before": "ayer n",
+          "after": "ic_st"
+        },
+        {
+          "base_start": 2715,
+          "base_end": 2717,
+          "before": "iv",
+          "after": ""
+        },
+        {
+          "base_start": 2719,
+          "base_end": 2720,
+          "before": "a",
+          "after": "import input_mo"
+        },
+        {
+          "base_start": 2721,
+          "base_end": 2723,
+          "before": "mi",
+          "after": "el"
+        },
+        {
+          "base_start": 2724,
+          "base_end": 2729,
+          "before": "sion.",
+          "after": ""
+        },
+        {
+          "base_start": 2742,
+          "base_end": 2742,
+          "before": "",
+          "after": "implicit_analytical=input_models(text,values,values,original_output)\n            if implicit_analytical is None:"
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_closed_desaturation.py": {
+      "new_file": true,
+      "before_lf_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_lf_sha256": "4b26c1483b2b8e5381517f0ab6364f2a963d7e99c517827746549e8ba452f6ed",
+      "ordered_literal_edits": [
+        {
+          "base_start": 0,
+          "base_end": 0,
+          "before": "",
+          "after": "\"\"\"Start closed implicit Newton trials and check the original convergence block.\n\nThe trial start and convergence evaluation order change. Original watcon/hconduc, root extraction,\nsurface equations, rejected-step rollback and every convergence/mass criterion\ncontinue to own acceptance. No accepted state, parameter, flux or clock is fixed.\n\"\"\"\nfrom pathlib import Path\nimport hashlib\n\nPOLICY='original-closed-implicit-residual-start-and-conditional-convergence-v3'\nTRIGGER='      if(numbit==1.and.swmacro==0.and.swbotb==6.and.swkimpl==1.and.pond==0d0)then\\n         if(sum(F(1:NN))/=0d0.and.maxval(abs(F(1:NN)))>CritDevBalCp)then\\n            call closed_desaturation_trial()\\n            sumold=0.5d0*dot_product(F(1:NN),F(1:NN))\\n            cycle\\n         end if\\n      end if\\n'\nPRECHECK='      if(.not.closed_current_iterate_checked.and.swmacro==0.and.swbotb==6.and.swkimpl==1)then\\n         if(maxval(abs(F(1:NN)))<=CritDevBalCp.and.abs(sum(F(1:NN)))<=CritDevBalTot)then\\n            closed_current_iterate_checked=.true.\\n            sump=0.5d0*dot_product(F(1:NN),F(1:NN))\\n            sum1=sum(F(1:NN))\\n            Fmax=maxval(abs(F(1:NN)))\\n            goto 1\\n         end if\\n      end if\\n'\nANCHOR='!     special case: SwKimpl = 1'\nROUTINE_ANCHOR='   subroutine alternative_solver()'\nITERATE_EDITS=(\n    ('   logical::implicit_pond_event_requested',\n     '   logical::implicit_pond_event_requested\\n   logical::closed_current_iterate_checked'),\n    ('   call assert_no_implicit_pond_event()',\n     '   call assert_no_implicit_pond_event()\\n   closed_current_iterate_checked=.false.'),\n    ('         call vector_F(2, hgrad)',\n     '         call vector_F(2, hgrad)\\n         closed_current_iterate_checked=.false.'),\n    ('               call vector_F(2,hgrad)',\n     '               call vector_F(2,hgrad)\\n               closed_current_iterate_checked=.false.'),\n    ('            mass_polish_at=numbit',\n     '            mass_polish_at=numbit\\n            closed_current_iterate_checked=.false.'))\n\n\ndef routine():\n    return Path(__file__).with_name('implicit_closed_desaturation_trial.f90').read_text(encoding='utf8')\n\n\ndef selected(item):\n    return item is not None and item['bottom']==6 and item.get('drainage',1)==0\n\n\ndef source(text):\n    if text.count(ANCHOR)!=1 or text.count(ROUTINE_ANCHOR)!=1 or 'subroutine closed_desaturation_trial' in text:\n        raise ValueError('Foreign complete original closed implicit initial-iterate seam')\n    result=text\n    for before,after in ITERATE_EDITS:\n        if result.count(before)!=1 or after in result:\n            raise ValueError('Foreign complete original closed implicit iterate ownership seam')\n        result=result.replace(before,after,1)\n    result=result.replace(ANCHOR,TRIGGER+PRECHECK+ANCHOR,1).replace(ROUTINE_ANCHOR,routine()+'\\n'+ROUTINE_ANCHOR,1)\n    if restore(result)!=text:raise ValueError('Incomplete original closed implicit initial-iterate inverse')\n    return result\n\n\ndef restore(text):\n    if 'closed_desaturation_trial' not in text:return text\n    body=routine()+'\\n'\n    if text.count(TRIGGER)!=1 or text.count(PRECHECK)!=1 or text.count(body)!=1:\n        raise ValueError('Foreign original-residual initial-iterate body')\n    text=text.replace(TRIGGER,'',1).replace(PRECHECK,'',1).replace(body,'',1)\n    for before,after in reversed(ITERATE_EDITS):\n        if text.count(after)!=1:\n            raise ValueError('Foreign complete closed implicit iterate ownership')\n        text=text.replace(after,before,1)\n    return text\n\n\ndef metadata(item):\n    if not selected(item):return None\n    sha=lambda p:hashlib.sha256(p.read_bytes().replace(b'\\r\\n',b'\\n')).hexdigest()\n    return dict(policy=POLICY,new_numerical_policy=True,\n        providers={p.name:sha(p) for p in [Path(__file__),Path(__file__).with_name('implicit_closed_desaturation_trial.f90')]},\n        trigger='actual first Newton iterate; closed bottom6, implicit1, zero trial pond, nonzero original total residual and original compartment criterion exceeded',\n        search='signed uniform trial-head shift, bracket/bisect original vector_F sum for wetting or drying; original watcon/hconduc, conductivity means and root extraction on every probe',\n        search_iteration_bound='existing MaxIt1; no changed original Newton/backtracking limits',\n        accepted_state_added=False,physical_equations_changed=False,tolerances_changed=False,\n        original_full_residual_and_budget_acceptance_required=True,\n        convergence_order='evaluate unchanged complete convergence/pond/strict-budget block once per current iterate before an ill-conditioned Newton solve; a failed full check requires Newton progress, while the unchanged mandatory polish may recheck an already feasible iterate; no physical state or tolerance is assigned',\n        transient_iterate_check_flag='HeadCalc local only; initialized on every call; reset only after actual vector_F reevaluation or the original mandatory polish; no accepted/native state')\n\n\ndef validate(bundle,item):\n    path=Path(bundle)/'headcalc.f90';text=path.read_text(encoding='cp1252')\n    if selected(item):\n        parent=restore(text)\n        if parent==text or source(parent)!=text:raise ValueError('Missing complete closed implicit initial-iterate provider')\n    elif 'closed_desaturation_trial' in text:\n        raise ValueError('Closed implicit initial iterate outside its actual selected domain')\n"
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_closed_desaturation_trial.f90": {
+      "new_file": true,
+      "before_lf_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_lf_sha256": "44e29535c627938333be8a8dea0ad23f74272c00cdb5bfe4071854580c33e64d",
+      "ordered_literal_edits": [
+        {
+          "base_start": 0,
+          "base_end": 0,
+          "before": "",
+          "after": "   subroutine closed_desaturation_trial()\n      real(8)::initial_head(macp),lower,upper,middle,left_value,right_value,value,shift,direction\n      integer::trial,node\n      initial_head(1:NN)=h(1:NN)\n      lower=0d0\n      direction=sign(1d0,sum(F(1:NN)))\n      left_value=direction*sum(F(1:NN))\n      upper=maxval(abs(initial_head(1:NN)))\n      if(upper<=0d0)return\n      do trial=1,MaxIt1\n         shift=upper\n      h(1:NN)=initial_head(1:NN)-direction*shift\n      do node=1,NN\n         theta(node)=watcon(node,h(node))\n      end do\n      do node=2,NN\n         hgrad(node)=(h(node-1)-h(node))/disnod(node)+1d0\n      end do\n      call RootExtraction(2)\n      do node=1,NN\n         k(node)=hconduc(node,h(node),theta(node),rfcp(node))\n         if(node>1)kmean(node)=hcomean(swkmean,k(node-1),k(node),dz(node-1),dz(node),node,h(node-1),h(node))\n      end do\n      kmean(NN+1)=k(NN)\n      call vector_F(2,hgrad)\n      value=direction*sum(F(1:NN))\n         if(.not.ieee_is_finite(value))exit\n         if(value<0d0)goto 100\n         upper=2d0*upper\n         if(.not.ieee_is_finite(upper))exit\n      end do\n      shift=0d0\n      h(1:NN)=initial_head(1:NN)-direction*shift\n      do node=1,NN\n         theta(node)=watcon(node,h(node))\n      end do\n      do node=2,NN\n         hgrad(node)=(h(node-1)-h(node))/disnod(node)+1d0\n      end do\n      call RootExtraction(2)\n      do node=1,NN\n         k(node)=hconduc(node,h(node),theta(node),rfcp(node))\n         if(node>1)kmean(node)=hcomean(swkmean,k(node-1),k(node),dz(node-1),dz(node),node,h(node-1),h(node))\n      end do\n      kmean(NN+1)=k(NN)\n      call vector_F(2,hgrad)\n      value=direction*sum(F(1:NN))\n      return\n100   right_value=value\n      do trial=1,MaxIt1\n         middle=0.5d0*lower+0.5d0*upper\n         if(middle==lower.or.middle==upper)exit\n         shift=middle\n      h(1:NN)=initial_head(1:NN)-direction*shift\n      do node=1,NN\n         theta(node)=watcon(node,h(node))\n      end do\n      do node=2,NN\n         hgrad(node)=(h(node-1)-h(node))/disnod(node)+1d0\n      end do\n      call RootExtraction(2)\n      do node=1,NN\n         k(node)=hconduc(node,h(node),theta(node),rfcp(node))\n         if(node>1)kmean(node)=hcomean(swkmean,k(node-1),k(node),dz(node-1),dz(node),node,h(node-1),h(node))\n      end do\n      kmean(NN+1)=k(NN)\n      call vector_F(2,hgrad)\n      value=direction*sum(F(1:NN))\n         if(.not.ieee_is_finite(value))exit\n         if(value>0d0)then\n            lower=middle\n            left_value=value\n         else\n            upper=middle\n            right_value=value\n         end if\n      end do\n      shift=upper\n      if(abs(left_value)<abs(right_value))shift=lower\n      h(1:NN)=initial_head(1:NN)-direction*shift\n      do node=1,NN\n         theta(node)=watcon(node,h(node))\n      end do\n      do node=2,NN\n         hgrad(node)=(h(node-1)-h(node))/disnod(node)+1d0\n      end do\n      call RootExtraction(2)\n      do node=1,NN\n         k(node)=hconduc(node,h(node),theta(node),rfcp(node))\n         if(node>1)kmean(node)=hcomean(swkmean,k(node-1),k(node),dz(node-1),dz(node),node,h(node-1),h(node))\n      end do\n      kmean(NN+1)=k(NN)\n      call vector_F(2,hgrad)\n      value=direction*sum(F(1:NN))\n   end subroutine closed_desaturation_trial\n"
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_frost_hydraulic_state_native.f90": {
+      "new_file": false,
+      "before_lf_sha256": "f02511df671f048c220c234c94ad4b1ff8223b921e1558353cd6f8322f8e3bf3",
+      "after_lf_sha256": "b945d0d08025dc864b27069a8790efe36c4c09124bf8d06dfdd2e3c5fbef53d8",
+      "ordered_literal_edits": [
+        {
+          "base_start": 875,
+          "base_end": 875,
+          "before": "",
+          "after": "6.and.swbotb/="
+        },
+        {
+          "base_start": 936,
+          "base_end": 936,
+          "before": "",
+          "after": "'\n    if(swbotb==6.and.swdra/=0)error stop 'Closed implicit Frost hydraulic boundary requires drainage off"
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_frost_source_guard.py": {
+      "new_file": false,
+      "before_lf_sha256": "b7a98d977e0abc78dd266f08fdbe0633b5d9150c2511d2ce5df25e5a4403e894",
+      "after_lf_sha256": "1fd7f08913831eee15eb50f1ca1fecc9b7a5885cd9b93c90e6bd7beaeae7355a",
+      "ordered_literal_edits": [
+        {
+          "base_start": 698,
+          "base_end": 698,
+          "before": "",
+          "after": "\n    from implicit_closed_desaturation import restore as restore_desaturation\n    source=restore_desaturation(source)"
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_hydraulic_state.py": {
+      "new_file": false,
+      "before_lf_sha256": "3193d10a8ae33e55571df74f8f23e4715c3f1f9979a07a996ae6bf07e6fcfde5",
+      "after_lf_sha256": "c8bc9ee82792e35625ceda841feba8f53dbaae6821a5419aead9d9dcbae162d0",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1001,
+          "base_end": 1001,
+          "before": "",
+          "after": "6,"
+        },
+        {
+          "base_start": 1014,
+          "base_end": 1014,
+          "before": "",
+          "after": "return None\n    closed=boundary.get('SWBOTB')==6\n    if closed and selectors.get('SWDRA')!=0:"
+        },
+        {
+          "base_start": 1296,
+          "base_end": 1296,
+          "before": "",
+          "after": "(0 if closed else "
+        },
+        {
+          "base_start": 1297,
+          "base_end": 1297,
+          "before": "",
+          "after": ")"
+        },
+        {
+          "base_start": 4489,
+          "base_end": 4489,
+          "before": "",
+          "after": "elif boundary['SWBOTB']==6:result['drainage']=0\n    "
+        },
+        {
+          "base_start": 4934,
+          "base_end": 4934,
+          "before": "",
+          "after": "\n    from implicit_closed_desaturation import metadata as trial_metadata,selected as trial_selected"
+        },
+        {
+          "base_start": 5458,
+          "base_end": 5458,
+          "before": "",
+          "after": ",\n                **({'closed_desaturation_trial_start':trial_metadata(item)} if trial_selected(item) else {})"
+        },
+        {
+          "base_start": 7739,
+          "base_end": 7739,
+          "before": "",
+          "after": "from implicit_closed_desaturation import selected as desaturation_selected,source as desaturation_source\n    if desaturation_selected(item):\n        head=output/'headcalc.f90';head.write_text(desaturation_source(head.read_text(encoding='cp1252')),encoding='cp1252')\n    "
+        },
+        {
+          "base_start": 8331,
+          "base_end": 8331,
+          "before": "",
+          "after": "\n    from implicit_closed_desaturation import validate as validate_desaturation\n    validate_desaturation(bundle,selected(project))"
+        }
+      ]
+    },
+    "app/hybrid_water/implicit_hydraulic_state_native.f90": {
+      "new_file": false,
+      "before_lf_sha256": "b684a9f1bd665abb00e063b136a4211b42279826b4e7bb2c24864e55c2fae337",
+      "after_lf_sha256": "bc6a6cdc61299bb5c9fdfd215de484975f8ac4eabb9b7ab90ba1c8f8d6e1fdec",
+      "ordered_literal_edits": [
+        {
+          "base_start": 566,
+          "base_end": 566,
+          "before": "",
+          "after": ",partition_active"
+        },
+        {
+          "base_start": 755,
+          "base_end": 755,
+          "before": "",
+          "after": "(swdra/=0.and."
+        },
+        {
+          "base_start": 763,
+          "base_end": 763,
+          "before": "",
+          "after": ")"
+        },
+        {
+          "base_start": 853,
+          "base_end": 853,
+          "before": "",
+          "after": "6.and.swbotb/="
+        },
+        {
+          "base_start": 910,
+          "base_end": 910,
+          "before": "",
+          "after": "    if((swbotb==6).neqv.(swdra==0))error stop 'Foreign closed implicit hydraulic drainage selection'\n    partition_active=0\n    if(swdra==1)then\n  "
+        },
+        {
+          "base_start": 1001,
+          "base_end": 1001,
+          "before": "",
+          "after": "  "
+        },
+        {
+          "base_start": 1083,
+          "base_end": 1083,
+          "before": "",
+          "after": "\n      partition_active=swdivd\n    end if"
+        },
+        {
+          "base_start": 1582,
+          "base_end": 1585,
+          "before": "swd",
+          "after": "partition_act"
+        },
+        {
+          "base_start": 1587,
+          "base_end": 1588,
+          "before": "d",
+          "after": "e"
+        }
+      ]
+    },
+    "app/hybrid_water/ordinary_pond_source_guard.py": {
+      "new_file": false,
+      "before_lf_sha256": "dbbaeb8cfa6056940a8d734ac40d5e5dc5de9d430172686d8f4ecc7157778b03",
+      "after_lf_sha256": "771a85586c972d8650db01797c3ab190e1577cbc707239ffffe842188021bea8",
+      "ordered_literal_edits": [
+        {
+          "base_start": 3017,
+          "base_end": 3017,
+          "before": "",
+          "after": "from implicit_closed_desaturation import restore as restore_desaturation\n    source=restore_desaturation(source.decode('cp1252')).encode('cp1252')\n    "
+        },
+        {
+          "base_start": 5530,
+          "base_end": 5530,
+          "before": "",
+          "after": "        from cde_clock_output import active_selection as actual_clock_selection\n            clock=actual_clock_selection(project) if project.solute else None\n            if clock is not None and clock.get('closed_implicit_calendar'):\n                # Invert only the literal original zero-bottom trial receipt;\n                # the entire remaining HeadCalc must equal its qualified parent.\n                from analytical_cde_calendar import HEAD_GUARD,head_guard\n                actual=head_guard(6).encode('cp1252')\n                if source.count(actual)!=1:raise ValueError('Foreign complete closed implicit CDE clock trial receipt')\n                source=source.replace(actual,HEAD_GUARD.encode('cp1252'),1)\n                form='cde'\n    "
+        }
+      ]
+    },
+    "app/hybrid_water/snow_undrained.py": {
+      "new_file": false,
+      "before_lf_sha256": "88c9f4fd583bc73babd9b09428eae961f030f61780ec37147dd140b92985898a",
+      "after_lf_sha256": "981ef532b9f9412a32a5994612a4d3a8a0036e31850dcb475ee6df96eba7caa8",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1614,
+          "base_end": 1614,
+          "before": "",
+          "after": "from closed_zero_boundary import implicit_selection as closed_implicit_selection\n    closed_implicit=closed_implicit_selection(project)\n    "
+        },
+        {
+          "base_start": 2266,
+          "base_end": 2266,
+          "before": "",
+          "after": " is None and closed_implicit"
+        },
+        {
+          "base_start": 4328,
+          "base_end": 4328,
+          "before": "",
+          "after": ",**({'closed_implicit_calendar':True,'closed_implicit_models':closed_implicit['models']} if closed_implicit is not None else {})"
+        }
+      ]
+    },
+    "app/hybrid_water/snow_undrained_source_guard.py": {
+      "new_file": false,
+      "before_lf_sha256": "67ed6606bd03f0433bd7512020fe6c4b618f7597d13bced15b4d0f56e62aaaab",
+      "after_lf_sha256": "bc86221c18bfc938c7f1ca252e1daad56e9c4c9b72faed45ab161c4ab697989b",
+      "ordered_literal_edits": [
+        {
+          "base_start": 5676,
+          "base_end": 5676,
+          "before": "",
+          "after": "from implicit_closed_desaturation import restore as restore_desaturation\n    "
+        },
+        {
+          "base_start": 5683,
+          "base_end": 5683,
+          "before": "",
+          "after": "restore_desaturation("
+        },
+        {
+          "base_start": 5704,
+          "base_end": 5704,
+          "before": "",
+          "after": ")"
+        },
+        {
+          "base_start": 9659,
+          "base_end": 9660,
+          "before": "b",
+          "after": "fr"
+        },
+        {
+          "base_start": 9661,
+          "base_end": 9661,
+          "before": "",
+          "after": "m implicit_hy"
+        },
+        {
+          "base_start": 9662,
+          "base_end": 9663,
+          "before": "y",
+          "after": "raulic_state import restore_macro\n    parent_macro"
+        },
+        {
+          "base_start": 9664,
+          "base_end": 9664,
+          "before": "",
+          "after": "restore_macro("
+        },
+        {
+          "base_start": 9687,
+          "base_end": 9687,
+          "before": "",
+          "after": ",project)\n    body=parent_macro"
+        }
+      ]
+    }
+  }
+}

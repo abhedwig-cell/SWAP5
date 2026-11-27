@@ -7,11 +7,22 @@ continue to own acceptance. No accepted state, parameter, flux or clock is fixed
 from pathlib import Path
 import hashlib
 
-POLICY='original-closed-implicit-residual-start-and-convergence-order-v2'
+POLICY='original-closed-implicit-residual-start-and-conditional-convergence-v3'
 TRIGGER='      if(numbit==1.and.swmacro==0.and.swbotb==6.and.swkimpl==1.and.pond==0d0)then\n         if(sum(F(1:NN))/=0d0.and.maxval(abs(F(1:NN)))>CritDevBalCp)then\n            call closed_desaturation_trial()\n            sumold=0.5d0*dot_product(F(1:NN),F(1:NN))\n            cycle\n         end if\n      end if\n'
-PRECHECK='      if(swmacro==0.and.swbotb==6.and.swkimpl==1)then\n         if(maxval(abs(F(1:NN)))<=CritDevBalCp.and.abs(sum(F(1:NN)))<=CritDevBalTot)then\n            sump=0.5d0*dot_product(F(1:NN),F(1:NN))\n            sum1=sum(F(1:NN))\n            Fmax=maxval(abs(F(1:NN)))\n            goto 1\n         end if\n      end if\n'
+PRECHECK='      if(.not.closed_current_iterate_checked.and.swmacro==0.and.swbotb==6.and.swkimpl==1)then\n         if(maxval(abs(F(1:NN)))<=CritDevBalCp.and.abs(sum(F(1:NN)))<=CritDevBalTot)then\n            closed_current_iterate_checked=.true.\n            sump=0.5d0*dot_product(F(1:NN),F(1:NN))\n            sum1=sum(F(1:NN))\n            Fmax=maxval(abs(F(1:NN)))\n            goto 1\n         end if\n      end if\n'
 ANCHOR='!     special case: SwKimpl = 1'
 ROUTINE_ANCHOR='   subroutine alternative_solver()'
+ITERATE_EDITS=(
+    ('   logical::implicit_pond_event_requested',
+     '   logical::implicit_pond_event_requested\n   logical::closed_current_iterate_checked'),
+    ('   call assert_no_implicit_pond_event()',
+     '   call assert_no_implicit_pond_event()\n   closed_current_iterate_checked=.false.'),
+    ('         call vector_F(2, hgrad)',
+     '         call vector_F(2, hgrad)\n         closed_current_iterate_checked=.false.'),
+    ('               call vector_F(2,hgrad)',
+     '               call vector_F(2,hgrad)\n               closed_current_iterate_checked=.false.'),
+    ('            mass_polish_at=numbit',
+     '            mass_polish_at=numbit\n            closed_current_iterate_checked=.false.'))
 
 
 def routine():
@@ -25,7 +36,12 @@ def selected(item):
 def source(text):
     if text.count(ANCHOR)!=1 or text.count(ROUTINE_ANCHOR)!=1 or 'subroutine closed_desaturation_trial' in text:
         raise ValueError('Foreign complete original closed implicit initial-iterate seam')
-    result=text.replace(ANCHOR,TRIGGER+PRECHECK+ANCHOR,1).replace(ROUTINE_ANCHOR,routine()+'\n'+ROUTINE_ANCHOR,1)
+    result=text
+    for before,after in ITERATE_EDITS:
+        if result.count(before)!=1 or after in result:
+            raise ValueError('Foreign complete original closed implicit iterate ownership seam')
+        result=result.replace(before,after,1)
+    result=result.replace(ANCHOR,TRIGGER+PRECHECK+ANCHOR,1).replace(ROUTINE_ANCHOR,routine()+'\n'+ROUTINE_ANCHOR,1)
     if restore(result)!=text:raise ValueError('Incomplete original closed implicit initial-iterate inverse')
     return result
 
@@ -35,7 +51,12 @@ def restore(text):
     body=routine()+'\n'
     if text.count(TRIGGER)!=1 or text.count(PRECHECK)!=1 or text.count(body)!=1:
         raise ValueError('Foreign original-residual initial-iterate body')
-    return text.replace(TRIGGER,'',1).replace(PRECHECK,'',1).replace(body,'',1)
+    text=text.replace(TRIGGER,'',1).replace(PRECHECK,'',1).replace(body,'',1)
+    for before,after in reversed(ITERATE_EDITS):
+        if text.count(after)!=1:
+            raise ValueError('Foreign complete closed implicit iterate ownership')
+        text=text.replace(after,before,1)
+    return text
 
 
 def metadata(item):
@@ -48,7 +69,8 @@ def metadata(item):
         search_iteration_bound='existing MaxIt1; no changed original Newton/backtracking limits',
         accepted_state_added=False,physical_equations_changed=False,tolerances_changed=False,
         original_full_residual_and_budget_acceptance_required=True,
-        convergence_order='when the current iterate already meets original compartment and total residual criteria, evaluate the unchanged complete convergence/pond/strict-budget block before computing an ill-conditioned Newton direction; no physical state or tolerance is assigned')
+        convergence_order='evaluate unchanged complete convergence/pond/strict-budget block once per current iterate before an ill-conditioned Newton solve; a failed full check requires Newton progress, while the unchanged mandatory polish may recheck an already feasible iterate; no physical state or tolerance is assigned',
+        transient_iterate_check_flag='HeadCalc local only; initialized on every call; reset only after actual vector_F reevaluation or the original mandatory polish; no accepted/native state')
 
 
 def validate(bundle,item):

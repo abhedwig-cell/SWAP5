@@ -3523,10 +3523,10 @@
     "still_a_historical_migration_gap": true
   },
   "closed_implicit_state13": {
-    "status": "SIGNED_ORIGINAL_RESIDUAL_START_AND_ORIGINAL_CONVERGENCE_ORDER_IMPLEMENTED_NOT_QUALIFIED",
+    "status": "CONDITIONAL_CURRENT_ITERATE_COMPLETE_CONVERGENCE_CHECK_IMPLEMENTED_NOT_QUALIFIED",
     "classification": "COMPOSITION_MISSING",
     "actual_canonical_parent": "2e98506b4fb469bbf5995a8ab0b49c88ead0972c",
-    "source_proposal": "CLOSED_IMPLICIT_STATE13_SOURCE_PROPOSAL_V6.json",
+    "source_proposal": "CLOSED_IMPLICIT_STATE13_SOURCE_PROPOSAL_V7.json",
     "finite_case_plan": "CLOSED_IMPLICIT_STATE13_FINITE_CASE_PLAN_V1.json",
     "original_zero_day_acceptances": 14,
     "pre_change_public_acceptances": 0,
@@ -3536,7 +3536,7 @@
     "new_qualified_contexts": 0,
     "new_admitted_contexts": 0,
     "canonical_admission": false,
-    "next_action": "Requalify four previously failing/censored actual35day contexts on signed original-residual start and unchanged complete convergence precheck; then all14 Windows/Ubuntu O0/O2 plus native/current-parent compiler preservation. No canonical13 admission yet.",
+    "next_action": "Run four actual35day regressions on conditional per-iterate convergence order, then independent science. Continue all14 portable/source/native preservation after this local gate passes; no13 canonical admission.",
     "current_public_input_acceptances": 14,
     "first_local_feedback": {
       "actual_source": "2215b9d93d3616160d5ac813bd0c7b879536171a",
@@ -3563,7 +3563,7 @@
       "raw": "CLOSED_IMPLICIT_STATE13_OUTPUT_FEEDBACK_AND_CLOCK_OBSERVATION_RAW_V2.zip",
       "sha256": "c8ef491dc2664db877c916ee4868cf739d653e71d3d0840c136f8b089da50063"
     },
-    "new_numerical_policy": "original-closed-implicit-residual-start-and-convergence-order-v2",
+    "new_numerical_policy": "original-closed-implicit-residual-start-and-conditional-convergence-v3",
     "physical_equations_changed": false,
     "tolerances_changed": false,
     "accepted_stores_fluxes_dates_or_parameters_corrected": false,
@@ -3592,6 +3592,16 @@
       "analytical_derivative_prototype_not_installed": true,
       "raw": "CLOSED_IMPLICIT_STATE13_RESIDUAL_FAILURES_SUCCESSES_AND_CAUSAL_PROTOTYPES_RAW_V4.zip",
       "sha256": "cacdaae6a05ed728c7e6a8f8e71e320ca9f42f5a9049956ea16df8890d1edb29"
+    },
+    "fifth_local_feedback": {
+      "actual_source": "3ee4db1ceeb9d923d44fd833f82d196e116a23c0",
+      "attempts": 4,
+      "complete_contexts": 0,
+      "partial_primary_days": 7,
+      "classification": "NUMERICAL_DEFECT",
+      "cause": "Residual-only precheck repeatedly jumped to full budget rejection without Newton progress. A local nonserialized iterate-check flag now requires a real Newton residual evaluation after rejection; original mandatory polish remains separately repeatable.",
+      "raw": "CLOSED_IMPLICIT_STATE13_CONVERGENCE_PRECHECK_REGRESSION_FAILURES_RAW_V5.zip",
+      "sha256": "d6cf52bfa315ae73a88af7abc77f3f22afe4cb1364c8f690519bf09b441b698a"
     }
   }
 }
