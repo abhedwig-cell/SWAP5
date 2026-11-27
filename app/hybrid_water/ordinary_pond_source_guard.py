@@ -92,5 +92,15 @@ def validate(bundle, project, identity):
             from lower_boundary_receipt import render_headcalc
             source=render_headcalc(source.decode('cp1252'),8).encode('cp1252')
             form='water'
+            from cde_clock_output import active_selection as actual_clock_selection
+            clock=actual_clock_selection(project) if project.solute else None
+            if clock is not None and clock.get('closed_implicit_calendar'):
+                # Invert only the literal original zero-bottom trial receipt;
+                # the entire remaining HeadCalc must equal its qualified parent.
+                from analytical_cde_calendar import HEAD_GUARD,head_guard
+                actual=head_guard(6).encode('cp1252')
+                if source.count(actual)!=1:raise ValueError('Foreign complete closed implicit CDE clock trial receipt')
+                source=source.replace(actual,HEAD_GUARD.encode('cp1252'),1)
+                form='cde'
     if hashlib.sha256(source).hexdigest() != HEADS[form]:
         raise ValueError('Foreign actual ordinary implicit coupled HeadCalc provider')

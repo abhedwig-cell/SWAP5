@@ -23,3 +23,12 @@ The two explicit Gardner/Snow paired9 numerical failures, paired9 active
 vapor/thermal semantics and retained AGE dry-pond moments stay separate.
 Whole migration PARTIAL, scientific equivalence NOT_QUALIFIED, global
 family/gap counts UNKNOWN and fixed RC3 unchanged.
+
+Current repair checkpoint: nine production files compose the original monthly,
+per-step and Snow output owners using actual implicit inputs. No calendar or
+parameter bytes change. All14 current public inputs and output metadata are
+accepted; model qualification remains pending. The first five actual2215
+feedback attempts all failed: three output-owner composition guards and two
+Frost clock-resolution failures after32 days each. Complete original failure
+bytes are preserved in FIRST_LOCAL_FAILURES_RAW_V1 (0558985b). The latter
+remain NUMERICAL_DEFECT with original causality UNKNOWN.

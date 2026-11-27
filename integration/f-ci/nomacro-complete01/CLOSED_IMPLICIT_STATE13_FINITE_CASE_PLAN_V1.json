@@ -1,5 +1,5 @@
 {
-  "status": "PROPOSED_FINITE_ALL_ORIGINAL_ANALYTICAL_CLOSED_IMPLICIT_STATE_COMPOSITION_NOT_INSTALLED",
+  "status": "ACTUAL_ORIGINAL_INPUT_PLAN_METADATA_CORRECTED_NO_INPUT_BYTES_CHANGED_NOT_QUALIFIED",
   "actual_source": "07cb2850e2cd45deb1e197161409a3784a8975e7",
   "cases": [
     {
@@ -15,10 +15,18 @@
       "initial": 2,
       "snow": 0,
       "frost": 0,
-      "calendar": "dense",
+      "calendar": "unchanged-original-input",
       "actual_original_input_prefix": "current/ordinary-gardner-water/inputs/",
       "actual_original_zero_day_accepted": true,
-      "actual_original_zero_day_record_case": "ordinary-gardner-water"
+      "actual_original_zero_day_record_case": "ordinary-gardner-water",
+      "original_output_controls": {
+        "NPRINTDAY": "1",
+        "PERIOD": "0",
+        "SWMONTH": "1",
+        "SWODAT": "0",
+        "SWRES": "1",
+        "FLPRINTDT": ".FALSE."
+      }
     },
     {
       "name": "closed-ordinary-model7-snow-cde-fitted",
@@ -33,10 +41,18 @@
       "initial": 2,
       "snow": 1,
       "frost": 0,
-      "calendar": "dense",
+      "calendar": "unchanged-original-input",
       "actual_original_input_prefix": "current/ordinary-model7-snow-cde-fitted/inputs/",
       "actual_original_zero_day_accepted": true,
-      "actual_original_zero_day_record_case": "ordinary-model7-snow-cde-fitted"
+      "actual_original_zero_day_record_case": "ordinary-model7-snow-cde-fitted",
+      "original_output_controls": {
+        "NPRINTDAY": "3",
+        "PERIOD": "0",
+        "SWMONTH": "0",
+        "SWODAT": "1",
+        "SWRES": "1",
+        "FLPRINTDT": ".TRUE."
+      }
     },
     {
       "name": "closed-ordinary-model3-water",
@@ -51,10 +67,18 @@
       "initial": 2,
       "snow": 0,
       "frost": 0,
-      "calendar": "dense",
+      "calendar": "unchanged-original-input",
       "actual_original_input_prefix": "current/ordinary-model3-water/inputs/",
       "actual_original_zero_day_accepted": true,
-      "actual_original_zero_day_record_case": "ordinary-model3-water"
+      "actual_original_zero_day_record_case": "ordinary-model3-water",
+      "original_output_controls": {
+        "NPRINTDAY": "1",
+        "PERIOD": "0",
+        "SWMONTH": "1",
+        "SWODAT": "0",
+        "SWRES": "1",
+        "FLPRINTDT": ".FALSE."
+      }
     },
     {
       "name": "closed-ordinary-model4-snow-water",
@@ -69,10 +93,18 @@
       "initial": 2,
       "snow": 1,
       "frost": 0,
-      "calendar": "dense",
+      "calendar": "unchanged-original-input",
       "actual_original_input_prefix": "current/ordinary-model4-snow-water/inputs/",
       "actual_original_zero_day_accepted": true,
-      "actual_original_zero_day_record_case": "ordinary-model4-snow-water"
+      "actual_original_zero_day_record_case": "ordinary-model4-snow-water",
+      "original_output_controls": {
+        "NPRINTDAY": "1",
+        "PERIOD": "0",
+        "SWMONTH": "1",
+        "SWODAT": "0",
+        "SWRES": "1",
+        "FLPRINTDT": ".FALSE."
+      }
     },
     {
       "name": "closed-ordinary-model5-cde-profile",
@@ -87,10 +119,18 @@
       "initial": 1,
       "snow": 0,
       "frost": 0,
-      "calendar": "dense",
+      "calendar": "unchanged-original-input",
       "actual_original_input_prefix": "current/ordinary-model5-cde-profile/inputs/",
       "actual_original_zero_day_accepted": true,
-      "actual_original_zero_day_record_case": "ordinary-model5-cde-profile"
+      "actual_original_zero_day_record_case": "ordinary-model5-cde-profile",
+      "original_output_controls": {
+        "NPRINTDAY": "3",
+        "PERIOD": "0",
+        "SWMONTH": "0",
+        "SWODAT": "1",
+        "SWRES": "1",
+        "FLPRINTDT": ".TRUE."
+      }
     },
     {
       "name": "closed-ordinary-model6-snow-cde-profile",
@@ -105,10 +145,18 @@
       "initial": 1,
       "snow": 1,
       "frost": 0,
-      "calendar": "dense",
+      "calendar": "unchanged-original-input",
       "actual_original_input_prefix": "current/ordinary-model6-snow-cde-profile/inputs/",
       "actual_original_zero_day_accepted": true,
-      "actual_original_zero_day_record_case": "ordinary-model6-snow-cde-profile"
+      "actual_original_zero_day_record_case": "ordinary-model6-snow-cde-profile",
+      "original_output_controls": {
+        "NPRINTDAY": "3",
+        "PERIOD": "0",
+        "SWMONTH": "0",
+        "SWODAT": "1",
+        "SWRES": "1",
+        "FLPRINTDT": ".TRUE."
+      }
     },
     {
       "name": "closed-ordinary-mixed8-9-water",
@@ -124,10 +172,18 @@
       "initial": 2,
       "snow": 0,
       "frost": 0,
-      "calendar": "dense",
+      "calendar": "unchanged-original-input",
       "actual_original_input_prefix": "current/ordinary-mixed8-9-water/inputs/",
       "actual_original_zero_day_accepted": true,
-      "actual_original_zero_day_record_case": "ordinary-mixed8-9-water"
+      "actual_original_zero_day_record_case": "ordinary-mixed8-9-water",
+      "original_output_controls": {
+        "NPRINTDAY": "1",
+        "PERIOD": "0",
+        "SWMONTH": "1",
+        "SWODAT": "0",
+        "SWRES": "1",
+        "FLPRINTDT": ".FALSE."
+      }
     },
     {
       "name": "closed-ordinary-mixed10-11-snow-water",
@@ -143,10 +199,18 @@
       "initial": 2,
       "snow": 1,
       "frost": 0,
-      "calendar": "dense",
+      "calendar": "unchanged-original-input",
       "actual_original_input_prefix": "current/ordinary-mixed10-11-snow-water/inputs/",
       "actual_original_zero_day_accepted": true,
-      "actual_original_zero_day_record_case": "ordinary-mixed10-11-snow-water"
+      "actual_original_zero_day_record_case": "ordinary-mixed10-11-snow-water",
+      "original_output_controls": {
+        "NPRINTDAY": "1",
+        "PERIOD": "0",
+        "SWMONTH": "1",
+        "SWODAT": "0",
+        "SWRES": "1",
+        "FLPRINTDT": ".FALSE."
+      }
     },
     {
       "name": "closed-ordinary-mixed1-7-cde",
@@ -162,10 +226,18 @@
       "initial": 2,
       "snow": 0,
       "frost": 0,
-      "calendar": "dense",
+      "calendar": "unchanged-original-input",
       "actual_original_input_prefix": "current/ordinary-mixed1-7-cde/inputs/",
       "actual_original_zero_day_accepted": true,
-      "actual_original_zero_day_record_case": "ordinary-mixed1-7-cde"
+      "actual_original_zero_day_record_case": "ordinary-mixed1-7-cde",
+      "original_output_controls": {
+        "NPRINTDAY": "3",
+        "PERIOD": "0",
+        "SWMONTH": "0",
+        "SWODAT": "1",
+        "SWRES": "1",
+        "FLPRINTDT": ".TRUE."
+      }
     },
     {
       "name": "closed-frost-mixed2-3-water",
@@ -181,10 +253,18 @@
       "initial": 2,
       "snow": 1,
       "frost": 1,
-      "calendar": "dense",
+      "calendar": "unchanged-original-input",
       "actual_original_input_prefix": "current/frost-mixed2-3-water-d0-b5/inputs/",
       "actual_original_zero_day_accepted": true,
-      "actual_original_zero_day_record_case": "frost-mixed2-3-water-d0-b5"
+      "actual_original_zero_day_record_case": "frost-mixed2-3-water-d0-b5",
+      "original_output_controls": {
+        "NPRINTDAY": "1",
+        "PERIOD": "7",
+        "SWMONTH": "0",
+        "SWODAT": "0",
+        "SWRES": "0",
+        "FLPRINTDT": null
+      }
     },
     {
       "name": "closed-frost-mixed4-5-cde",
@@ -200,10 +280,18 @@
       "initial": 2,
       "snow": 1,
       "frost": 1,
-      "calendar": "dense",
+      "calendar": "unchanged-original-input",
       "actual_original_input_prefix": "current/frost-mixed4-5-cde-d1-b5/inputs/",
       "actual_original_zero_day_accepted": true,
-      "actual_original_zero_day_record_case": "frost-mixed4-5-cde-d1-b5"
+      "actual_original_zero_day_record_case": "frost-mixed4-5-cde-d1-b5",
+      "original_output_controls": {
+        "NPRINTDAY": "1",
+        "PERIOD": "0",
+        "SWMONTH": "0",
+        "SWODAT": "1",
+        "SWRES": "1",
+        "FLPRINTDT": null
+      }
     },
     {
       "name": "closed-frost-mixed6-7-cde",
@@ -219,10 +307,18 @@
       "initial": 2,
       "snow": 1,
       "frost": 1,
-      "calendar": "dense",
+      "calendar": "unchanged-original-input",
       "actual_original_input_prefix": "current/frost-mixed6-7-cde-d0-b8/inputs/",
       "actual_original_zero_day_accepted": true,
-      "actual_original_zero_day_record_case": "frost-mixed6-7-cde-d0-b8"
+      "actual_original_zero_day_record_case": "frost-mixed6-7-cde-d0-b8",
+      "original_output_controls": {
+        "NPRINTDAY": "1",
+        "PERIOD": "1",
+        "SWMONTH": "0",
+        "SWODAT": "0",
+        "SWRES": "1",
+        "FLPRINTDT": null
+      }
     },
     {
       "name": "closed-frost-mixed8-9-water",
@@ -238,10 +334,18 @@
       "initial": 1,
       "snow": 1,
       "frost": 1,
-      "calendar": "dense",
+      "calendar": "unchanged-original-input",
       "actual_original_input_prefix": "current/frost-mixed8-9-water-d1-b8/inputs/",
       "actual_original_zero_day_accepted": true,
-      "actual_original_zero_day_record_case": "frost-mixed8-9-water-d1-b8"
+      "actual_original_zero_day_record_case": "frost-mixed8-9-water-d1-b8",
+      "original_output_controls": {
+        "NPRINTDAY": "1",
+        "PERIOD": "0",
+        "SWMONTH": "0",
+        "SWODAT": "1",
+        "SWRES": "1",
+        "FLPRINTDT": null
+      }
     },
     {
       "name": "closed-frost-mixed10-11-water",
@@ -257,10 +361,18 @@
       "initial": 2,
       "snow": 1,
       "frost": 1,
-      "calendar": "dense",
+      "calendar": "unchanged-original-input",
       "actual_original_input_prefix": "current/frost-mixed10-11-water-d0-b5/inputs/",
       "actual_original_zero_day_accepted": true,
-      "actual_original_zero_day_record_case": "frost-mixed10-11-water-d0-b5"
+      "actual_original_zero_day_record_case": "frost-mixed10-11-water-d0-b5",
+      "original_output_controls": {
+        "NPRINTDAY": "1",
+        "PERIOD": "7",
+        "SWMONTH": "0",
+        "SWODAT": "0",
+        "SWRES": "0",
+        "FLPRINTDT": null
+      }
     }
   ],
   "source_proposal": "CLOSED_IMPLICIT_STATE13_SOURCE_PROPOSAL_V2.json",
@@ -288,5 +400,7 @@
   "deferred_numerical_cases": [],
   "actual_canonical_parent": "2e98506b4fb469bbf5995a8ab0b49c88ead0972c",
   "actual_original_input_git_source": "2e98506b4fb469bbf5995a8ab0b49c88ead0972c",
-  "original_input_scientific_producer": "c40ca084d8e5eb638e0b4ac5c471463d9aad01c3"
+  "original_input_scientific_producer": "c40ca084d8e5eb638e0b4ac5c471463d9aad01c3",
+  "calendar_description_correction": "Earlier dense labels described no executed modification: prepare changed only SWDRA and SWBOTB. Exact failed producer2215 inputs remain in FIRST_LOCAL_FAILURES_RAW_V1.",
+  "actual_current_input_preflight_source": "2215b9d93d3616160d5ac813bd0c7b879536171a"
 }

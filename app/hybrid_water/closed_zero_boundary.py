@@ -12,11 +12,13 @@ def input_domain(text,selectors,original_output=True):
     rows=re.findall(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[ \t]*([^\r\n]*)',active)
     rest=re.sub(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[^\r\n]*','',active)
     if len(rows)>1 or re.search(r'(?i)\b(?:IHWCKMODEL|SWAP_SOILS_DB)\b',rest):return False
+    implicit_analytical=False
     if rows and re.fullmatch(r'\+?0*1(?:[ \t]+\+?0*1)*[ \t]*',rows[0]) is None:
         if selectors['SWKIMPL']!=1 or selectors['SWHYST']!=0:return False
         from implicit_hydraulic_state import input_models
         if input_models(text,selectors,selectors,original_output) is None:return False
-    if selectors['SWSNOW']==0:
+        implicit_analytical=True
+    if selectors['SWSNOW']==0 and not implicit_analytical:
         # Ordinary non-daily initialization needs its own complete output-owner
         # qualification; this predicate does not claim that remaining gap.
         dense=dict(NPRINTDAY=1,PERIOD=1,SWMONTH=0,SWODAT=0,SWRES=1)
@@ -26,3 +28,11 @@ def input_domain(text,selectors,original_output=True):
         step=re.findall(r'(?mi)^[ \t]*FLPRINTDT[ \t]*=[ \t]*([^\r\n]*)',active)
         if len(step)>1 or step and step[0].strip().upper() not in ('.FALSE.','FALSE','.F.','F'):return False
     return True
+
+
+def implicit_selection(project):
+    """Select the actual existing per-layer closed implicit state, never an input projection."""
+    from implicit_hydraulic_state import selected
+    item=selected(project)
+    if item is None or item.get('frost',0)!=0 or item['bottom']!=6 or item.get('drainage',1)!=0:return None
+    return item

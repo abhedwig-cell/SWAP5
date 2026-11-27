@@ -42,12 +42,14 @@ def active_selection(project):
     bottom=inspect(project.input_directory,original_output=True)['boundary']['SWBOTB']
     from prescribed_head_flux_boundary import selection as paired_selection
     paired_bottom=bottom==9 and paired_selection(project.input_directory,project.original_output) is not None
-    if bottom not in (1,5,8) and not paired_bottom:
+    from closed_zero_boundary import implicit_selection as closed_implicit_selection
+    closed_implicit=closed_implicit_selection(project) is not None
+    if bottom not in (1,5,8) and not paired_bottom and not closed_implicit:
         from analytical_cde_calendar import bottom6_selected
         if bottom!=6 or not bottom6_selected(project):return None
     drainage=one('SWDRA')
     if drainage not in (0,1):return None
-    if bottom!=1 and drainage!=1 and not paired_bottom:
+    if bottom!=1 and drainage!=1 and not paired_bottom and not closed_implicit:
         from analytical_cde_calendar import vapor_selected
         if not vapor_selected(project):return None
     reset=0 if monthly else one('SWRES');fmt=one('SWCSV',0);hys=one('SWHYST')
@@ -56,6 +58,7 @@ def active_selection(project):
     precision=one('NUM_DECIMALS',5) if fmt else None
     if precision is not None and not 5<=precision<=12:raise ValueError('Invalid original CDE interval precision')
     return dict(cde_interval_output=True,thermal_output=bool(swsnow),thermal_calendar=bool(swsnow),kind='cde',swsnow=swsnow,swhea=1,swcalt=2,swfrost=0,swdra=drainage,
+        **({'closed_implicit_calendar':True} if closed_implicit else {}),
         swhyst=hys,swcsv=fmt,nprintday=1,swmonth=monthly,swodat=dates,swres=reset,requested_period=requested,period=requested,flprintdt=False,
         groups=one('INLIST_CSV',quoted=True) if fmt else None,num_decimals=precision,
         **({'paired_head_flux_cde_calendar':True} if paired_bottom else {}),

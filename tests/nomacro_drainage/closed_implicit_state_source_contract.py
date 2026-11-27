@@ -1,8 +1,8 @@
-"""Proposed complete current APP delta proof against genuine canonical880."""
+"""Proposed complete current APP delta proof against genuine canonical948."""
 import ast,argparse,json,re
 from pathlib import Path
 from closed_implicit_state_feedback import R,P,PARENT,SHA,git
-PROPOSAL='CLOSED_IMPLICIT_STATE13_SOURCE_PROPOSAL_V2.json'
+PROPOSAL='CLOSED_IMPLICIT_STATE13_SOURCE_PROPOSAL_V3.json'
 
 
 def source():
