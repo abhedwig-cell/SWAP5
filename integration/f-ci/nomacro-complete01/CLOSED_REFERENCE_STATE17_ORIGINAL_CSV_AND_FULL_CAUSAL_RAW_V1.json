@@ -1,0 +1,1329 @@
+{
+  "status": "RAW_ORIGINAL_CSV_FAILURES_DIAGNOSTIC_ALTERNATIVE_EXISTING_CORRECTION_AND_SIX_FULL_REFERENCE_OBSERVATIONS_PRESERVED",
+  "actual_packaging_observer": "8c9be76b2c107cb6461d00f25f832244239457fb",
+  "archive": "CLOSED_REFERENCE_STATE17_ORIGINAL_CSV_AND_FULL_CAUSAL_RAW_V1.zip",
+  "bytes": 5585949,
+  "sha256": "0f77f87d43a95720a034a02e70a1e4287c874a224a23ee07537b09a8becc9b7d",
+  "parts": [
+    {
+      "file": "CLOSED_REFERENCE_STATE17_ORIGINAL_CSV_AND_FULL_CAUSAL_RAW_V1.zip",
+      "bytes": 5585949,
+      "sha256": "0f77f87d43a95720a034a02e70a1e4287c874a224a23ee07537b09a8becc9b7d"
+    }
+  ],
+  "members": {
+    "builds/closure17-reference-accepted-O0-v1/0.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-accepted-O0-v1/0.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-accepted-O0-v1/1.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-accepted-O0-v1/1.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-accepted-O0-v1/2.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-accepted-O0-v1/2.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-accepted-O0-v1/full-period.exe": {
+      "bytes": 1992304,
+      "sha256": "2188134004f1923d839bbbd22d6914bc3674ab1cb3143302d9ff06049417a01a"
+    },
+    "builds/closure17-reference-accepted-O0-v1/reference_task1.f90": {
+      "bytes": 3456,
+      "sha256": "248ce5aaa15d61f9e47daa7bf90628866985a2c42868f0ca8060747f5a0b2481"
+    },
+    "builds/closure17-reference-accepted-O0-v1/reference_task1.o": {
+      "bytes": 7916,
+      "sha256": "af8dec30e0209e1ae0e9db22eb8cd3350842538ab5f95caa7454f6ece29020bc"
+    },
+    "builds/closure17-reference-accepted-O0-v1/swap_csv_output.f90": {
+      "bytes": 127496,
+      "sha256": "531a7bc6b51e3716f75bd827107b22f0f74ccb3478ce4b5bc24c3200de840c6f"
+    },
+    "builds/closure17-reference-accepted-O0-v1/swap_csv_output.mod": {
+      "bytes": 2955,
+      "sha256": "9cf061d7f26367fe26da8438746e423134b9c0fbeaf813fa68b1047fb9b16388"
+    },
+    "builds/closure17-reference-accepted-O0-v1/swap_csv_output.o": {
+      "bytes": 285045,
+      "sha256": "494885749cc9e75099cfdaba817c15223d22466a7b81c1137c3eb25be9d02c6c"
+    },
+    "builds/closure17-reference-accepted-O0-v1/zero-day.exe": {
+      "bytes": 1994147,
+      "sha256": "535e5d24dc002ee2fd87472160f1dbf9db625d51e007db83c3abc7bc23aa9dee"
+    },
+    "builds/closure17-reference-accepted-O2-v1/3.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-accepted-O2-v1/3.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-accepted-O2-v1/4.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-accepted-O2-v1/4.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-accepted-O2-v1/5.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-accepted-O2-v1/5.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-accepted-O2-v1/full-period.exe": {
+      "bytes": 1959356,
+      "sha256": "2aae0f220aff78cf4c9f888777bbc245737743307e9925fe77087c2f3c6009b4"
+    },
+    "builds/closure17-reference-accepted-O2-v1/reference_task1.f90": {
+      "bytes": 3456,
+      "sha256": "248ce5aaa15d61f9e47daa7bf90628866985a2c42868f0ca8060747f5a0b2481"
+    },
+    "builds/closure17-reference-accepted-O2-v1/reference_task1.o": {
+      "bytes": 7257,
+      "sha256": "a4b7165e6b2274b0b84580aad75d761e224e0be95861a430da0ba69079f8291c"
+    },
+    "builds/closure17-reference-accepted-O2-v1/swap_csv_output.f90": {
+      "bytes": 127496,
+      "sha256": "531a7bc6b51e3716f75bd827107b22f0f74ccb3478ce4b5bc24c3200de840c6f"
+    },
+    "builds/closure17-reference-accepted-O2-v1/swap_csv_output.mod": {
+      "bytes": 2955,
+      "sha256": "9cf061d7f26367fe26da8438746e423134b9c0fbeaf813fa68b1047fb9b16388"
+    },
+    "builds/closure17-reference-accepted-O2-v1/swap_csv_output.o": {
+      "bytes": 243951,
+      "sha256": "2e353956f243cfeac98221e804ae31f9979a33cde00c29ad8706d89a565cdfd7"
+    },
+    "builds/closure17-reference-accepted-O2-v1/zero-day.exe": {
+      "bytes": 1960795,
+      "sha256": "2fc8293f6bfdcc3d787db5e3781399e772d75565cf9bf05cafebff8eb5894722"
+    },
+    "builds/closure17-reference-csv-O0-v1/0.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-csv-O0-v1/0.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-csv-O0-v1/1.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-csv-O0-v1/1.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-csv-O0-v1/2.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-csv-O0-v1/2.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-csv-O0-v1/3.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-csv-O0-v1/3.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-csv-O0-v1/candidate-buffer.exe": {
+      "bytes": 1993653,
+      "sha256": "b8f9bdebc52570afd6a47382594d864dd289297eaa0ca1027fa17aba0f7098e4"
+    },
+    "builds/closure17-reference-csv-O0-v1/original-buffer.exe": {
+      "bytes": 1963247,
+      "sha256": "4fd53a9cf250164d5db84dc1e0d39795946a625b86a97b183bfa964b0086ee15"
+    },
+    "builds/closure17-reference-csv-O0-v1/reference_task1.f90": {
+      "bytes": 3456,
+      "sha256": "248ce5aaa15d61f9e47daa7bf90628866985a2c42868f0ca8060747f5a0b2481"
+    },
+    "builds/closure17-reference-csv-O0-v1/reference_task1.o": {
+      "bytes": 7916,
+      "sha256": "af8dec30e0209e1ae0e9db22eb8cd3350842538ab5f95caa7454f6ece29020bc"
+    },
+    "builds/closure17-reference-csv-O0-v1/swap_csv_output.f90": {
+      "bytes": 127508,
+      "sha256": "3230708830f2b7e415c10da650ced78c92cdbb86fabd146d490034f7a87af0c1"
+    },
+    "builds/closure17-reference-csv-O0-v1/swap_csv_output.mod": {
+      "bytes": 2955,
+      "sha256": "9cf061d7f26367fe26da8438746e423134b9c0fbeaf813fa68b1047fb9b16388"
+    },
+    "builds/closure17-reference-csv-O0-v1/swap_csv_output.o": {
+      "bytes": 284793,
+      "sha256": "6c59bf4c1eb360108c5155aea1200fc41d370d7cd77a4d1c100ead9c6c3040fc"
+    },
+    "builds/closure17-reference-csv-O2-v1/4.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-csv-O2-v1/4.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-csv-O2-v1/5.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-csv-O2-v1/5.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-csv-O2-v1/6.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-csv-O2-v1/6.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-csv-O2-v1/7.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-csv-O2-v1/7.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "builds/closure17-reference-csv-O2-v1/candidate-buffer.exe": {
+      "bytes": 1960301,
+      "sha256": "ed7c22bcb6f16893c11d3bc5bf716f9920aadca0c46fea11334c7c15af0a26a3"
+    },
+    "builds/closure17-reference-csv-O2-v1/original-buffer.exe": {
+      "bytes": 1961819,
+      "sha256": "7e9f80d5117badd401a98c05695eb691ca1929817b651801f27b9012709e5cbe"
+    },
+    "builds/closure17-reference-csv-O2-v1/reference_task1.f90": {
+      "bytes": 3456,
+      "sha256": "248ce5aaa15d61f9e47daa7bf90628866985a2c42868f0ca8060747f5a0b2481"
+    },
+    "builds/closure17-reference-csv-O2-v1/reference_task1.o": {
+      "bytes": 7257,
+      "sha256": "a4b7165e6b2274b0b84580aad75d761e224e0be95861a430da0ba69079f8291c"
+    },
+    "builds/closure17-reference-csv-O2-v1/swap_csv_output.f90": {
+      "bytes": 127508,
+      "sha256": "3230708830f2b7e415c10da650ced78c92cdbb86fabd146d490034f7a87af0c1"
+    },
+    "builds/closure17-reference-csv-O2-v1/swap_csv_output.mod": {
+      "bytes": 2955,
+      "sha256": "9cf061d7f26367fe26da8438746e423134b9c0fbeaf813fa68b1047fb9b16388"
+    },
+    "builds/closure17-reference-csv-O2-v1/swap_csv_output.o": {
+      "bytes": 243635,
+      "sha256": "c2867e5cd568b3f0d6cd1cec764c67c1511a25b9d1817bc0144b649861f2663c"
+    },
+    "controller-source/07379e70e3/closed_reference_csv_lifetime_probe.py": {
+      "bytes": 8984,
+      "sha256": "cd6cae6c6ac656835a76b6e39f46e64ed56803a96fb9e9039715186ebe81d1be"
+    },
+    "controller-source/0f3682b03b/closed_reference_csv_lifetime_probe.py": {
+      "bytes": 11413,
+      "sha256": "564bd832ae213e5006032179681be87834cceac1832e9e99056de01d071627be"
+    },
+    "controller-source/8c9be76b2c107cb6461d00f25f832244239457fb/closed_reference_accepted_binary_probe.py": {
+      "bytes": 8700,
+      "sha256": "a7188d6fbfcc01b4dcb494b62d6aac06f58518bfee194905e062b88cdf069c52"
+    },
+    "controller-source/8c9be76b2c107cb6461d00f25f832244239457fb/closed_reference_csv_lifetime_probe.py": {
+      "bytes": 11413,
+      "sha256": "564bd832ae213e5006032179681be87834cceac1832e9e99056de01d071627be"
+    },
+    "controller-source/eaf1b20e79/closed_reference_csv_lifetime_probe.py": {
+      "bytes": 9984,
+      "sha256": "77c5863ea07fabaec7a3ecceeb0c28d5db18278694cd16c25a9e7be7b79bdccf"
+    },
+    "inherited-input-member-references.json": {
+      "bytes": 146118,
+      "sha256": "eeab6b267a98e719f4d742e1a3ac1f04f7ad2d1928b5250dafb572059f417bb1"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-gardner-mixed2-1-snow-paired9-explicit-cde/result.bal": {
+      "bytes": 1569,
+      "sha256": "fe7554ee67d9cd705b42119298018f72abc85027b48585fb8aa8de29d277f0c5"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-gardner-mixed2-1-snow-paired9-explicit-cde/result.blc": {
+      "bytes": 2586,
+      "sha256": "52c49a48e506ae6e90745db0e385a6b999e8c75b8697c08f092908e705241fe7"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-gardner-mixed2-1-snow-paired9-explicit-cde/result_output.bin": {
+      "bytes": 1158,
+      "sha256": "f2c26130a2dee5e42b9889fd13a0d33ab78d0b8d6a30031d0130e72e513bdb5e"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-gardner-mixed2-1-snow-paired9-explicit-cde/stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-gardner-mixed2-1-snow-paired9-explicit-cde/stdout.txt": {
+      "bytes": 49,
+      "sha256": "e38e3a04013d0228c08d7820500cefcea11f2b17e0dd0f15978cfc3b830493b1"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-gardner-mixed2-1-snow-paired9-explicit-cde/swap.log": {
+      "bytes": 918,
+      "sha256": "4a6914dc5acb939777ccbd7ea33e90e50d754325d6281a38c88d219d47288e8d"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-gardner-mixed2-1-snow-paired9-explicit-cde/swap.ok": {
+      "bytes": 170,
+      "sha256": "c7419abddfbadbc0bd679e9d1a358bfc3bff8349797d2c8a9ac5ae2d2327cc20"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-gardner-mixed2-1-snow-paired9-explicit-cde/swap.wrn": {
+      "bytes": 133,
+      "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-gardner-snow-paired9-explicit-water/result.bal": {
+      "bytes": 990,
+      "sha256": "3993a8bde911c13df641a2c84db0f03b2ba1971936f6fe7ff1964b84ecccd053"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-gardner-snow-paired9-explicit-water/result.blc": {
+      "bytes": 2458,
+      "sha256": "9b133636d93951b25d529a44b27036a65ca5f2c207226a5e2a573288949680c8"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-gardner-snow-paired9-explicit-water/result_output.bin": {
+      "bytes": 3980,
+      "sha256": "d8d2a86c1d456bd9538c880fe806bf908fdcfa3b5c18434e7b11b5f7d6e3664f"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-gardner-snow-paired9-explicit-water/stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-gardner-snow-paired9-explicit-water/stdout.txt": {
+      "bytes": 49,
+      "sha256": "e38e3a04013d0228c08d7820500cefcea11f2b17e0dd0f15978cfc3b830493b1"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-gardner-snow-paired9-explicit-water/swap.log": {
+      "bytes": 918,
+      "sha256": "866d52cee0d9ae27a4a71a8707c56a8f6261789600b4ca15b829bfb9465549b8"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-gardner-snow-paired9-explicit-water/swap.ok": {
+      "bytes": 170,
+      "sha256": "c6d2adbeb2fbb23dffaf4d512cce8b3b09700f996311960fb8f3a7631d8ca0a3"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-gardner-snow-paired9-explicit-water/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-original-model3-snow9-control-stack64-v1/result.bal": {
+      "bytes": 990,
+      "sha256": "b60d9e80e896e35959ec3a71ee3e843758e6b2214cc00b8ebd3e6cf9fd8d1300"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-original-model3-snow9-control-stack64-v1/result.blc": {
+      "bytes": 2458,
+      "sha256": "2e9d5eb3d1c7da8b696ecd35967bf10b1e6bb7c0a76a2b8f9eb7e52a77eda143"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-original-model3-snow9-control-stack64-v1/result_output.bin": {
+      "bytes": 3980,
+      "sha256": "5ce2ddc22654db1c3ef5d6a6ffdfe84ddfd63ea9a396263ad449981d3f10d892"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-original-model3-snow9-control-stack64-v1/stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-original-model3-snow9-control-stack64-v1/stdout.txt": {
+      "bytes": 49,
+      "sha256": "e38e3a04013d0228c08d7820500cefcea11f2b17e0dd0f15978cfc3b830493b1"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-original-model3-snow9-control-stack64-v1/swap.log": {
+      "bytes": 988,
+      "sha256": "c61481a3addad6745793e2c185ee6bf736736f8b3918ccae9ce70ad6d82ab505"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-original-model3-snow9-control-stack64-v1/swap.ok": {
+      "bytes": 170,
+      "sha256": "c6d2adbeb2fbb23dffaf4d512cce8b3b09700f996311960fb8f3a7631d8ca0a3"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O0-original-model3-snow9-control-stack64-v1/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-gardner-mixed2-1-snow-paired9-explicit-cde/result.bal": {
+      "bytes": 1569,
+      "sha256": "fe7554ee67d9cd705b42119298018f72abc85027b48585fb8aa8de29d277f0c5"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-gardner-mixed2-1-snow-paired9-explicit-cde/result.blc": {
+      "bytes": 2586,
+      "sha256": "52c49a48e506ae6e90745db0e385a6b999e8c75b8697c08f092908e705241fe7"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-gardner-mixed2-1-snow-paired9-explicit-cde/result_output.bin": {
+      "bytes": 1158,
+      "sha256": "f2c26130a2dee5e42b9889fd13a0d33ab78d0b8d6a30031d0130e72e513bdb5e"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-gardner-mixed2-1-snow-paired9-explicit-cde/stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-gardner-mixed2-1-snow-paired9-explicit-cde/stdout.txt": {
+      "bytes": 49,
+      "sha256": "e38e3a04013d0228c08d7820500cefcea11f2b17e0dd0f15978cfc3b830493b1"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-gardner-mixed2-1-snow-paired9-explicit-cde/swap.log": {
+      "bytes": 918,
+      "sha256": "4a6914dc5acb939777ccbd7ea33e90e50d754325d6281a38c88d219d47288e8d"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-gardner-mixed2-1-snow-paired9-explicit-cde/swap.ok": {
+      "bytes": 170,
+      "sha256": "c7419abddfbadbc0bd679e9d1a358bfc3bff8349797d2c8a9ac5ae2d2327cc20"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-gardner-mixed2-1-snow-paired9-explicit-cde/swap.wrn": {
+      "bytes": 133,
+      "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-gardner-snow-paired9-explicit-water/result.bal": {
+      "bytes": 990,
+      "sha256": "1effbf1890b2289145d1d3e44baef9692cd73b0539728a7103af75c81ab5d9a5"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-gardner-snow-paired9-explicit-water/result.blc": {
+      "bytes": 2458,
+      "sha256": "13a82eba400a8f20aef5587817d2d6b5259597ff55df961ff2183f7090bcb5ca"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-gardner-snow-paired9-explicit-water/result_output.bin": {
+      "bytes": 3980,
+      "sha256": "3f1934b1c1616fc92c2ea6ceab9f4a0af619da9c4b3611ad6e1d059b393eea76"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-gardner-snow-paired9-explicit-water/stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-gardner-snow-paired9-explicit-water/stdout.txt": {
+      "bytes": 49,
+      "sha256": "e38e3a04013d0228c08d7820500cefcea11f2b17e0dd0f15978cfc3b830493b1"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-gardner-snow-paired9-explicit-water/swap.log": {
+      "bytes": 918,
+      "sha256": "5d144de57f6ca698673ba5c720b1138ed1ecf358ea801caae9e404763de1f67f"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-gardner-snow-paired9-explicit-water/swap.ok": {
+      "bytes": 170,
+      "sha256": "c7419abddfbadbc0bd679e9d1a358bfc3bff8349797d2c8a9ac5ae2d2327cc20"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-gardner-snow-paired9-explicit-water/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-original-model3-snow9-control-stack64-v1/result.bal": {
+      "bytes": 990,
+      "sha256": "b60d9e80e896e35959ec3a71ee3e843758e6b2214cc00b8ebd3e6cf9fd8d1300"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-original-model3-snow9-control-stack64-v1/result.blc": {
+      "bytes": 2458,
+      "sha256": "2e9d5eb3d1c7da8b696ecd35967bf10b1e6bb7c0a76a2b8f9eb7e52a77eda143"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-original-model3-snow9-control-stack64-v1/result_output.bin": {
+      "bytes": 3980,
+      "sha256": "5ce2ddc22654db1c3ef5d6a6ffdfe84ddfd63ea9a396263ad449981d3f10d892"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-original-model3-snow9-control-stack64-v1/stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-original-model3-snow9-control-stack64-v1/stdout.txt": {
+      "bytes": 49,
+      "sha256": "e38e3a04013d0228c08d7820500cefcea11f2b17e0dd0f15978cfc3b830493b1"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-original-model3-snow9-control-stack64-v1/swap.log": {
+      "bytes": 988,
+      "sha256": "8fcfc69d8c5bede66510f2b01eaa31e89d4f921f89a4ed7a7d4d35278beb88f3"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-original-model3-snow9-control-stack64-v1/swap.ok": {
+      "bytes": 170,
+      "sha256": "c6d2adbeb2fbb23dffaf4d512cce8b3b09700f996311960fb8f3a7631d8ca0a3"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-O2-original-model3-snow9-control-stack64-v1/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "observations/closure17-reference-accepted-v1/full-period-RESULT.json": {
+      "bytes": 16356,
+      "sha256": "e0dcfcfa4722dd60edfcd6c461e056d37b57df756aed259c3d3dbe17e9519bcf"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-gardner-mixed2-1-snow-paired9-explicit-cde/first-output.bin": {
+      "bytes": 1241,
+      "sha256": "0363acd01e4d2f8c41a567d45ae9eb3c4ef174f7bebc93a4877d0d2a81b77611"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-gardner-mixed2-1-snow-paired9-explicit-cde/result.bal": {
+      "bytes": 194,
+      "sha256": "59582f14daa443bc7892b5bf2bf33cffb1c5e75d281e8436663b2f542249315c"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-gardner-mixed2-1-snow-paired9-explicit-cde/result.blc": {
+      "bytes": 190,
+      "sha256": "25f2b7df76b68efb74240dd688a3d18ffe15459e9c343b54d92e017f31f25b95"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-gardner-mixed2-1-snow-paired9-explicit-cde/result_output.bin": {
+      "bytes": 1158,
+      "sha256": "2f041595860938abd7e668764dbe60f3970fa796c6d05ccf1ca040bcfd9c4ad2"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-gardner-mixed2-1-snow-paired9-explicit-cde/second-output.bin": {
+      "bytes": 1158,
+      "sha256": "2f041595860938abd7e668764dbe60f3970fa796c6d05ccf1ca040bcfd9c4ad2"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-gardner-mixed2-1-snow-paired9-explicit-cde/stderr.txt": {
+      "bytes": 82,
+      "sha256": "6e8658cbd2bf71044b960ff59b4371a98438c32a7d4cb54ab562294b8cc4f05d"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-gardner-mixed2-1-snow-paired9-explicit-cde/stdout.txt": {
+      "bytes": 125,
+      "sha256": "26ec62d3c06efdd2fbb900fd0bea2853a2d4bcfecacbd43f34e1ee60fdace6fd"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-gardner-mixed2-1-snow-paired9-explicit-cde/swap.err": {
+      "bytes": 771,
+      "sha256": "82d9e7d6d2815ddfe929a11931c0b27f0aa8548c656ee2feec836c587ccb8d48"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-gardner-mixed2-1-snow-paired9-explicit-cde/swap.log": {
+      "bytes": 645,
+      "sha256": "8b1470e7b484d759150ac506e7d63831573121111d9013c41d31094736b01ed6"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-gardner-mixed2-1-snow-paired9-explicit-cde/swap.wrn": {
+      "bytes": 133,
+      "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-gardner-snow-paired9-explicit-water/first-output.bin": {
+      "bytes": 1241,
+      "sha256": "6b39cb6a321f3536c72d579eb14c239b1fffecebe1815a258af360a1dde4d094"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-gardner-snow-paired9-explicit-water/result.bal": {
+      "bytes": 194,
+      "sha256": "5c5fc08a2d6cc9eda83541a6560228f1b1a9290a1b6d1e50812ff2236c8c4667"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-gardner-snow-paired9-explicit-water/result.blc": {
+      "bytes": 190,
+      "sha256": "935943ee18adbe90cea0a0e0d790bf73a8b79dc289413c61349b1013dfe7fdff"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-gardner-snow-paired9-explicit-water/result_output.bin": {
+      "bytes": 1158,
+      "sha256": "b9650ca5aa4e7273314ecad0eab65fcf82b9b6a4cd2149b51605ef9326733c34"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-gardner-snow-paired9-explicit-water/second-output.bin": {
+      "bytes": 1158,
+      "sha256": "b9650ca5aa4e7273314ecad0eab65fcf82b9b6a4cd2149b51605ef9326733c34"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-gardner-snow-paired9-explicit-water/stderr.txt": {
+      "bytes": 82,
+      "sha256": "6e8658cbd2bf71044b960ff59b4371a98438c32a7d4cb54ab562294b8cc4f05d"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-gardner-snow-paired9-explicit-water/stdout.txt": {
+      "bytes": 125,
+      "sha256": "26ec62d3c06efdd2fbb900fd0bea2853a2d4bcfecacbd43f34e1ee60fdace6fd"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-gardner-snow-paired9-explicit-water/swap.err": {
+      "bytes": 602,
+      "sha256": "85966139365879e3288d57e518a4981a2bc12ed9678b138f8c06a717867f3f81"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-gardner-snow-paired9-explicit-water/swap.log": {
+      "bytes": 645,
+      "sha256": "c57fa50b899dd71642dc75db806a776db6a04dc8cfb1487e5424c695be11ff79"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-gardner-snow-paired9-explicit-water/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-original-model3-snow9-control-stack64-v1/first-output.bin": {
+      "bytes": 1241,
+      "sha256": "e4ac26c74aed2a4f164e61c0b33b2774cdc90633b4915f57194995625b24bbd3"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-original-model3-snow9-control-stack64-v1/result.bal": {
+      "bytes": 194,
+      "sha256": "5c5fc08a2d6cc9eda83541a6560228f1b1a9290a1b6d1e50812ff2236c8c4667"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-original-model3-snow9-control-stack64-v1/result.blc": {
+      "bytes": 190,
+      "sha256": "935943ee18adbe90cea0a0e0d790bf73a8b79dc289413c61349b1013dfe7fdff"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-original-model3-snow9-control-stack64-v1/result_output.bin": {
+      "bytes": 1158,
+      "sha256": "8a6b2845b9c35915541d8494fec8cdad6e704c10fb0337a28139396043dd64bc"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-original-model3-snow9-control-stack64-v1/second-output.bin": {
+      "bytes": 1158,
+      "sha256": "8a6b2845b9c35915541d8494fec8cdad6e704c10fb0337a28139396043dd64bc"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-original-model3-snow9-control-stack64-v1/stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-original-model3-snow9-control-stack64-v1/stdout.txt": {
+      "bytes": 125,
+      "sha256": "26ec62d3c06efdd2fbb900fd0bea2853a2d4bcfecacbd43f34e1ee60fdace6fd"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-original-model3-snow9-control-stack64-v1/swap.err": {
+      "bytes": 602,
+      "sha256": "85966139365879e3288d57e518a4981a2bc12ed9678b138f8c06a717867f3f81"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-original-model3-snow9-control-stack64-v1/swap.log": {
+      "bytes": 645,
+      "sha256": "c57fa50b899dd71642dc75db806a776db6a04dc8cfb1487e5424c695be11ff79"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O0-original-model3-snow9-control-stack64-v1/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-gardner-mixed2-1-snow-paired9-explicit-cde/first-output.bin": {
+      "bytes": 1241,
+      "sha256": "0363acd01e4d2f8c41a567d45ae9eb3c4ef174f7bebc93a4877d0d2a81b77611"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-gardner-mixed2-1-snow-paired9-explicit-cde/result.bal": {
+      "bytes": 194,
+      "sha256": "59582f14daa443bc7892b5bf2bf33cffb1c5e75d281e8436663b2f542249315c"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-gardner-mixed2-1-snow-paired9-explicit-cde/result.blc": {
+      "bytes": 190,
+      "sha256": "25f2b7df76b68efb74240dd688a3d18ffe15459e9c343b54d92e017f31f25b95"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-gardner-mixed2-1-snow-paired9-explicit-cde/result_output.bin": {
+      "bytes": 1158,
+      "sha256": "2f041595860938abd7e668764dbe60f3970fa796c6d05ccf1ca040bcfd9c4ad2"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-gardner-mixed2-1-snow-paired9-explicit-cde/second-output.bin": {
+      "bytes": 1158,
+      "sha256": "2f041595860938abd7e668764dbe60f3970fa796c6d05ccf1ca040bcfd9c4ad2"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-gardner-mixed2-1-snow-paired9-explicit-cde/stderr.txt": {
+      "bytes": 82,
+      "sha256": "6e8658cbd2bf71044b960ff59b4371a98438c32a7d4cb54ab562294b8cc4f05d"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-gardner-mixed2-1-snow-paired9-explicit-cde/stdout.txt": {
+      "bytes": 125,
+      "sha256": "26ec62d3c06efdd2fbb900fd0bea2853a2d4bcfecacbd43f34e1ee60fdace6fd"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-gardner-mixed2-1-snow-paired9-explicit-cde/swap.err": {
+      "bytes": 771,
+      "sha256": "82d9e7d6d2815ddfe929a11931c0b27f0aa8548c656ee2feec836c587ccb8d48"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-gardner-mixed2-1-snow-paired9-explicit-cde/swap.log": {
+      "bytes": 645,
+      "sha256": "8b1470e7b484d759150ac506e7d63831573121111d9013c41d31094736b01ed6"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-gardner-mixed2-1-snow-paired9-explicit-cde/swap.wrn": {
+      "bytes": 133,
+      "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-gardner-snow-paired9-explicit-water/first-output.bin": {
+      "bytes": 1241,
+      "sha256": "f8a5906869c937876077429bf02df994022d091d6cf170da54f2956cbf7b881a"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-gardner-snow-paired9-explicit-water/result.bal": {
+      "bytes": 194,
+      "sha256": "59582f14daa443bc7892b5bf2bf33cffb1c5e75d281e8436663b2f542249315c"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-gardner-snow-paired9-explicit-water/result.blc": {
+      "bytes": 190,
+      "sha256": "25f2b7df76b68efb74240dd688a3d18ffe15459e9c343b54d92e017f31f25b95"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-gardner-snow-paired9-explicit-water/result_output.bin": {
+      "bytes": 1158,
+      "sha256": "80223c68d14ca080c7a267fb2aa51ced4f184f26f85aa57123d96f6f7c8bb9cd"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-gardner-snow-paired9-explicit-water/second-output.bin": {
+      "bytes": 1158,
+      "sha256": "80223c68d14ca080c7a267fb2aa51ced4f184f26f85aa57123d96f6f7c8bb9cd"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-gardner-snow-paired9-explicit-water/stderr.txt": {
+      "bytes": 82,
+      "sha256": "6e8658cbd2bf71044b960ff59b4371a98438c32a7d4cb54ab562294b8cc4f05d"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-gardner-snow-paired9-explicit-water/stdout.txt": {
+      "bytes": 125,
+      "sha256": "26ec62d3c06efdd2fbb900fd0bea2853a2d4bcfecacbd43f34e1ee60fdace6fd"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-gardner-snow-paired9-explicit-water/swap.err": {
+      "bytes": 602,
+      "sha256": "85966139365879e3288d57e518a4981a2bc12ed9678b138f8c06a717867f3f81"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-gardner-snow-paired9-explicit-water/swap.log": {
+      "bytes": 645,
+      "sha256": "c57fa50b899dd71642dc75db806a776db6a04dc8cfb1487e5424c695be11ff79"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-gardner-snow-paired9-explicit-water/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-original-model3-snow9-control-stack64-v1/first-output.bin": {
+      "bytes": 1241,
+      "sha256": "e4ac26c74aed2a4f164e61c0b33b2774cdc90633b4915f57194995625b24bbd3"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-original-model3-snow9-control-stack64-v1/result.bal": {
+      "bytes": 194,
+      "sha256": "5c5fc08a2d6cc9eda83541a6560228f1b1a9290a1b6d1e50812ff2236c8c4667"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-original-model3-snow9-control-stack64-v1/result.blc": {
+      "bytes": 190,
+      "sha256": "935943ee18adbe90cea0a0e0d790bf73a8b79dc289413c61349b1013dfe7fdff"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-original-model3-snow9-control-stack64-v1/result_output.bin": {
+      "bytes": 1158,
+      "sha256": "8a6b2845b9c35915541d8494fec8cdad6e704c10fb0337a28139396043dd64bc"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-original-model3-snow9-control-stack64-v1/second-output.bin": {
+      "bytes": 1158,
+      "sha256": "8a6b2845b9c35915541d8494fec8cdad6e704c10fb0337a28139396043dd64bc"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-original-model3-snow9-control-stack64-v1/stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-original-model3-snow9-control-stack64-v1/stdout.txt": {
+      "bytes": 125,
+      "sha256": "26ec62d3c06efdd2fbb900fd0bea2853a2d4bcfecacbd43f34e1ee60fdace6fd"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-original-model3-snow9-control-stack64-v1/swap.err": {
+      "bytes": 602,
+      "sha256": "85966139365879e3288d57e518a4981a2bc12ed9678b138f8c06a717867f3f81"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-original-model3-snow9-control-stack64-v1/swap.log": {
+      "bytes": 645,
+      "sha256": "c57fa50b899dd71642dc75db806a776db6a04dc8cfb1487e5424c695be11ff79"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-O2-original-model3-snow9-control-stack64-v1/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "observations/closure17-reference-accepted-v1/zero-day-RESULT.json": {
+      "bytes": 44575,
+      "sha256": "c2df98bb581c41174de3de09523ba89f66f2800d07964909e77cd1e4acdbe99b"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-gardner-mixed2-1-snow-paired9-explicit-cde/stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-gardner-mixed2-1-snow-paired9-explicit-cde/stdout.txt": {
+      "bytes": 23,
+      "sha256": "b80d1c0e86617a6d34612c994002d468e47398e6d4c6c666d023f1959cb96b7e"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-gardner-mixed2-1-snow-paired9-explicit-cde/swap.err": {
+      "bytes": 532,
+      "sha256": "fb7afce8b57b20a81b58cffd8480e4128a6d4df5971744840ea69aa5d7ffa60f"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-gardner-mixed2-1-snow-paired9-explicit-cde/swap.log": {
+      "bytes": 645,
+      "sha256": "03ef1b7d59272d54e68fa63bc29591e5106dad233be3840f83477f0bac7d157f"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-gardner-snow-paired9-explicit-water/283rd$00002.tmp": {
+      "bytes": 244992,
+      "sha256": "3e9dba33807b485c7791c91d5b1b1759bafe5fcd15c2fc8b336305a6fe3badcf"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-gardner-snow-paired9-explicit-water/result.bal": {
+      "bytes": 194,
+      "sha256": "bcaacbf583b0d57d6dae5df77ff42d0c6abf58bf0455c02d0408cc0adb0d8e33"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-gardner-snow-paired9-explicit-water/result.blc": {
+      "bytes": 190,
+      "sha256": "cd7627846cc08626f9a45df05e637e8301cf30f468cc825400133a689ab6064d"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-gardner-snow-paired9-explicit-water/result_output.bin": {
+      "bytes": 992,
+      "sha256": "104de77c930f92d42643011d661bfefe060ab045f2048b7248a301da6eabfe38"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-gardner-snow-paired9-explicit-water/stderr.txt": {
+      "bytes": 347,
+      "sha256": "19f0025c7db6fd0ea2671f32fd6c163c00628a91dca4f8d0a9db7c64bcf899c8"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-gardner-snow-paired9-explicit-water/stdout.txt": {
+      "bytes": 23,
+      "sha256": "b80d1c0e86617a6d34612c994002d468e47398e6d4c6c666d023f1959cb96b7e"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-gardner-snow-paired9-explicit-water/swap.err": {
+      "bytes": 602,
+      "sha256": "85966139365879e3288d57e518a4981a2bc12ed9678b138f8c06a717867f3f81"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-gardner-snow-paired9-explicit-water/swap.log": {
+      "bytes": 645,
+      "sha256": "f09cee8c2db5049216b9bd2e5ee3f16e1162cd752311bcfbeecd40fee0620d71"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-gardner-snow-paired9-explicit-water/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-gardner-snow-paired9-explicit-water/swaprd$00001.tmp": {
+      "bytes": 20988,
+      "sha256": "0d33c9daf7ac5a62ca29b77d66c50d816ac51e146cdbb9e66518061b4656cf6b"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-original-model3-snow9-control-stack64-v1/283rd$00002.tmp": {
+      "bytes": 244992,
+      "sha256": "3e9dba33807b485c7791c91d5b1b1759bafe5fcd15c2fc8b336305a6fe3badcf"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-original-model3-snow9-control-stack64-v1/result.bal": {
+      "bytes": 194,
+      "sha256": "bcaacbf583b0d57d6dae5df77ff42d0c6abf58bf0455c02d0408cc0adb0d8e33"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-original-model3-snow9-control-stack64-v1/result.blc": {
+      "bytes": 190,
+      "sha256": "cd7627846cc08626f9a45df05e637e8301cf30f468cc825400133a689ab6064d"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-original-model3-snow9-control-stack64-v1/result_output.bin": {
+      "bytes": 992,
+      "sha256": "0411e53bcd58f35a2d6aa33c3ca5588d41f67659a870c573451c48d69d926d68"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-original-model3-snow9-control-stack64-v1/stderr.txt": {
+      "bytes": 347,
+      "sha256": "19f0025c7db6fd0ea2671f32fd6c163c00628a91dca4f8d0a9db7c64bcf899c8"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-original-model3-snow9-control-stack64-v1/stdout.txt": {
+      "bytes": 23,
+      "sha256": "b80d1c0e86617a6d34612c994002d468e47398e6d4c6c666d023f1959cb96b7e"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-original-model3-snow9-control-stack64-v1/swap.err": {
+      "bytes": 602,
+      "sha256": "85966139365879e3288d57e518a4981a2bc12ed9678b138f8c06a717867f3f81"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-original-model3-snow9-control-stack64-v1/swap.log": {
+      "bytes": 645,
+      "sha256": "f09cee8c2db5049216b9bd2e5ee3f16e1162cd752311bcfbeecd40fee0620d71"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-original-model3-snow9-control-stack64-v1/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/O0-original-original-model3-snow9-control-stack64-v1/swaprd$00001.tmp": {
+      "bytes": 20988,
+      "sha256": "29eee8dd58fe961a038f79523fb07d54717592bdb1559367e594f21dba0eaf33"
+    },
+    "observations/closure17-reference-csv-lifecycle-v1/RESULT.json": {
+      "bytes": 36617,
+      "sha256": "16337ad381dbfdfa5ad2e0464f3ec12b0f25dccd37968e321fcfd1969ebd60f9"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-candidate-original-model3-snow9-control-stack64-v1/first-output.bin": {
+      "bytes": 1241,
+      "sha256": "25cd0409c310d1b13bde718d32ec137ae86fd2dcbb8a7d877d41817b71cc51de"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-candidate-original-model3-snow9-control-stack64-v1/result.bal": {
+      "bytes": 194,
+      "sha256": "f3ac3f1c1a6ef93d4bf09e813c84e662e16b3328e9a7b7f93d2c6809612a0520"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-candidate-original-model3-snow9-control-stack64-v1/result.blc": {
+      "bytes": 190,
+      "sha256": "edd6b5fdeb0cc3d19847b5d6dff98ae3c3361605ee44aec9351b242c5ff88b1a"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-candidate-original-model3-snow9-control-stack64-v1/result_output.bin": {
+      "bytes": 1158,
+      "sha256": "34da66822f22c96e26bcf43c19644a9c9588ba46afc3d5b0f2014ff51143e3dd"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-candidate-original-model3-snow9-control-stack64-v1/second-output.bin": {
+      "bytes": 1158,
+      "sha256": "34da66822f22c96e26bcf43c19644a9c9588ba46afc3d5b0f2014ff51143e3dd"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-candidate-original-model3-snow9-control-stack64-v1/stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-candidate-original-model3-snow9-control-stack64-v1/stdout.txt": {
+      "bytes": 125,
+      "sha256": "26ec62d3c06efdd2fbb900fd0bea2853a2d4bcfecacbd43f34e1ee60fdace6fd"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-candidate-original-model3-snow9-control-stack64-v1/swap.err": {
+      "bytes": 602,
+      "sha256": "85966139365879e3288d57e518a4981a2bc12ed9678b138f8c06a717867f3f81"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-candidate-original-model3-snow9-control-stack64-v1/swap.log": {
+      "bytes": 645,
+      "sha256": "24b594b3071911fdbb99b3f41d25003793da2a95d2189611647339fb46d721f6"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-candidate-original-model3-snow9-control-stack64-v1/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-gardner-mixed2-1-snow-paired9-explicit-cde/283rd$00003.tmp": {
+      "bytes": 244992,
+      "sha256": "3e9dba33807b485c7791c91d5b1b1759bafe5fcd15c2fc8b336305a6fe3badcf"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-gardner-mixed2-1-snow-paired9-explicit-cde/fixed-irrigationrd$00002.tmp": {
+      "bytes": 1188,
+      "sha256": "67234b583b8b62fd424cca5ce8750236fad4b533ccb1ca7425d8080e4ab3df09"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-gardner-mixed2-1-snow-paired9-explicit-cde/result.bal": {
+      "bytes": 194,
+      "sha256": "f3ac3f1c1a6ef93d4bf09e813c84e662e16b3328e9a7b7f93d2c6809612a0520"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-gardner-mixed2-1-snow-paired9-explicit-cde/result.blc": {
+      "bytes": 190,
+      "sha256": "edd6b5fdeb0cc3d19847b5d6dff98ae3c3361605ee44aec9351b242c5ff88b1a"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-gardner-mixed2-1-snow-paired9-explicit-cde/result_output.bin": {
+      "bytes": 992,
+      "sha256": "dd3a9583bfa3fafcb63c5542a297a250f9e60883a20965cc3a09f415f21c3654"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-gardner-mixed2-1-snow-paired9-explicit-cde/stderr.txt": {
+      "bytes": 347,
+      "sha256": "19f0025c7db6fd0ea2671f32fd6c163c00628a91dca4f8d0a9db7c64bcf899c8"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-gardner-mixed2-1-snow-paired9-explicit-cde/stdout.txt": {
+      "bytes": 23,
+      "sha256": "b80d1c0e86617a6d34612c994002d468e47398e6d4c6c666d023f1959cb96b7e"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-gardner-mixed2-1-snow-paired9-explicit-cde/swap.err": {
+      "bytes": 771,
+      "sha256": "82d9e7d6d2815ddfe929a11931c0b27f0aa8548c656ee2feec836c587ccb8d48"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-gardner-mixed2-1-snow-paired9-explicit-cde/swap.log": {
+      "bytes": 645,
+      "sha256": "24b594b3071911fdbb99b3f41d25003793da2a95d2189611647339fb46d721f6"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-gardner-mixed2-1-snow-paired9-explicit-cde/swap.wrn": {
+      "bytes": 133,
+      "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-gardner-mixed2-1-snow-paired9-explicit-cde/swaprd$00001.tmp": {
+      "bytes": 20988,
+      "sha256": "f96372f936e21cf1d7a3bdb1e6010c950cddd4c99049d7cb5510382aa7bcd0b9"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-gardner-snow-paired9-explicit-water/283rd$00002.tmp": {
+      "bytes": 244992,
+      "sha256": "3e9dba33807b485c7791c91d5b1b1759bafe5fcd15c2fc8b336305a6fe3badcf"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-gardner-snow-paired9-explicit-water/result.bal": {
+      "bytes": 194,
+      "sha256": "f3ac3f1c1a6ef93d4bf09e813c84e662e16b3328e9a7b7f93d2c6809612a0520"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-gardner-snow-paired9-explicit-water/result.blc": {
+      "bytes": 190,
+      "sha256": "edd6b5fdeb0cc3d19847b5d6dff98ae3c3361605ee44aec9351b242c5ff88b1a"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-gardner-snow-paired9-explicit-water/result_output.bin": {
+      "bytes": 992,
+      "sha256": "3d909736989accfe44d15dc5bd09bdcbbcbb10c6bb0ae818d86cd1dfa9eac8b8"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-gardner-snow-paired9-explicit-water/stderr.txt": {
+      "bytes": 347,
+      "sha256": "19f0025c7db6fd0ea2671f32fd6c163c00628a91dca4f8d0a9db7c64bcf899c8"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-gardner-snow-paired9-explicit-water/stdout.txt": {
+      "bytes": 23,
+      "sha256": "b80d1c0e86617a6d34612c994002d468e47398e6d4c6c666d023f1959cb96b7e"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-gardner-snow-paired9-explicit-water/swap.err": {
+      "bytes": 602,
+      "sha256": "85966139365879e3288d57e518a4981a2bc12ed9678b138f8c06a717867f3f81"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-gardner-snow-paired9-explicit-water/swap.log": {
+      "bytes": 645,
+      "sha256": "24b594b3071911fdbb99b3f41d25003793da2a95d2189611647339fb46d721f6"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-gardner-snow-paired9-explicit-water/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-gardner-snow-paired9-explicit-water/swaprd$00001.tmp": {
+      "bytes": 20988,
+      "sha256": "0d33c9daf7ac5a62ca29b77d66c50d816ac51e146cdbb9e66518061b4656cf6b"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-original-model3-snow9-control-stack64-v1/283rd$00002.tmp": {
+      "bytes": 244992,
+      "sha256": "3e9dba33807b485c7791c91d5b1b1759bafe5fcd15c2fc8b336305a6fe3badcf"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-original-model3-snow9-control-stack64-v1/result.bal": {
+      "bytes": 194,
+      "sha256": "38f387f732e010528f03f5faba5765d5268b4944f343b523c84a7c02bff852b8"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-original-model3-snow9-control-stack64-v1/result.blc": {
+      "bytes": 190,
+      "sha256": "252a53bf60c4c06091d89ad8bd8691bf5a31c76798c26ff2b0ea32a60acd898a"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-original-model3-snow9-control-stack64-v1/result_output.bin": {
+      "bytes": 992,
+      "sha256": "8468476d0714664a9615cb6ad9a0143e8bc1f02bd5e6187fc2ed16d45db8af4f"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-original-model3-snow9-control-stack64-v1/stderr.txt": {
+      "bytes": 347,
+      "sha256": "19f0025c7db6fd0ea2671f32fd6c163c00628a91dca4f8d0a9db7c64bcf899c8"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-original-model3-snow9-control-stack64-v1/stdout.txt": {
+      "bytes": 23,
+      "sha256": "b80d1c0e86617a6d34612c994002d468e47398e6d4c6c666d023f1959cb96b7e"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-original-model3-snow9-control-stack64-v1/swap.err": {
+      "bytes": 602,
+      "sha256": "85966139365879e3288d57e518a4981a2bc12ed9678b138f8c06a717867f3f81"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-original-model3-snow9-control-stack64-v1/swap.log": {
+      "bytes": 645,
+      "sha256": "b0ef733395b51f3539a55b2b4b6ab207443dd59f236d39820be2c2b994e1efaa"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-original-model3-snow9-control-stack64-v1/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/O0-original-original-model3-snow9-control-stack64-v1/swaprd$00001.tmp": {
+      "bytes": 20988,
+      "sha256": "29eee8dd58fe961a038f79523fb07d54717592bdb1559367e594f21dba0eaf33"
+    },
+    "observations/closure17-reference-csv-lifecycle-v2/RESULT.json": {
+      "bytes": 39335,
+      "sha256": "7faf8298600e3428dbb2a866dcf6fa150cbbe61eab06cdb882fbdbd4dfd407c2"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O0-candidate-gardner-mixed2-1-snow-paired9-explicit-cde/first-output.bin": {
+      "bytes": 1241,
+      "sha256": "ec32fd60be396a16f95efb24d373a52e4de393531a0567035fc8c31f078c5b0e"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O0-candidate-gardner-mixed2-1-snow-paired9-explicit-cde/result.bal": {
+      "bytes": 194,
+      "sha256": "6349ee3dbe1bc175b626d5bd12988425a13b301f1d91dd1ae72a2489d65e5cdf"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O0-candidate-gardner-mixed2-1-snow-paired9-explicit-cde/result.blc": {
+      "bytes": 190,
+      "sha256": "88f1830f85c96e36bc9235075705291d3105aa4277e562e8351ddcab889ead7a"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O0-candidate-gardner-mixed2-1-snow-paired9-explicit-cde/result_output.bin": {
+      "bytes": 1158,
+      "sha256": "c76c9a4b266ef75eb57435ac8c5f14dd1f45ce3f4b88f3f66aeb3fd588fd45ee"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O0-candidate-gardner-mixed2-1-snow-paired9-explicit-cde/second-output.bin": {
+      "bytes": 1158,
+      "sha256": "c76c9a4b266ef75eb57435ac8c5f14dd1f45ce3f4b88f3f66aeb3fd588fd45ee"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O0-candidate-gardner-mixed2-1-snow-paired9-explicit-cde/stderr.txt": {
+      "bytes": 82,
+      "sha256": "6e8658cbd2bf71044b960ff59b4371a98438c32a7d4cb54ab562294b8cc4f05d"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O0-candidate-gardner-mixed2-1-snow-paired9-explicit-cde/stdout.txt": {
+      "bytes": 125,
+      "sha256": "26ec62d3c06efdd2fbb900fd0bea2853a2d4bcfecacbd43f34e1ee60fdace6fd"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O0-candidate-gardner-mixed2-1-snow-paired9-explicit-cde/swap.err": {
+      "bytes": 771,
+      "sha256": "82d9e7d6d2815ddfe929a11931c0b27f0aa8548c656ee2feec836c587ccb8d48"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O0-candidate-gardner-mixed2-1-snow-paired9-explicit-cde/swap.log": {
+      "bytes": 645,
+      "sha256": "98f65acd138c2f7e9438fe5779bddd0116d9ccb101e340842af20814a5f5782c"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O0-candidate-gardner-mixed2-1-snow-paired9-explicit-cde/swap.wrn": {
+      "bytes": 133,
+      "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O0-candidate-gardner-snow-paired9-explicit-water/first-output.bin": {
+      "bytes": 1241,
+      "sha256": "5d369f6c085f3c7bf39ed260741abab8f3ecc6b0130013be0804ba512ed366fb"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O0-candidate-gardner-snow-paired9-explicit-water/result.bal": {
+      "bytes": 194,
+      "sha256": "d73b25e9b948ac0c3224a91f155313218a064660f23716fb8ee2371c4837cfff"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O0-candidate-gardner-snow-paired9-explicit-water/result.blc": {
+      "bytes": 190,
+      "sha256": "c6ab38f4eb83a16076393a071427a386243bf46064d53c3fc83b86a93f69ea6f"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O0-candidate-gardner-snow-paired9-explicit-water/result_output.bin": {
+      "bytes": 1158,
+      "sha256": "e56719012a9c971944ab44d2c5839b063fac5dae7662bebc2adbfa9bb9d4dbbb"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O0-candidate-gardner-snow-paired9-explicit-water/second-output.bin": {
+      "bytes": 1158,
+      "sha256": "e56719012a9c971944ab44d2c5839b063fac5dae7662bebc2adbfa9bb9d4dbbb"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O0-candidate-gardner-snow-paired9-explicit-water/stderr.txt": {
+      "bytes": 82,
+      "sha256": "6e8658cbd2bf71044b960ff59b4371a98438c32a7d4cb54ab562294b8cc4f05d"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O0-candidate-gardner-snow-paired9-explicit-water/stdout.txt": {
+      "bytes": 125,
+      "sha256": "26ec62d3c06efdd2fbb900fd0bea2853a2d4bcfecacbd43f34e1ee60fdace6fd"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O0-candidate-gardner-snow-paired9-explicit-water/swap.err": {
+      "bytes": 602,
+      "sha256": "85966139365879e3288d57e518a4981a2bc12ed9678b138f8c06a717867f3f81"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O0-candidate-gardner-snow-paired9-explicit-water/swap.log": {
+      "bytes": 645,
+      "sha256": "02d0bd5e6856f1cef164f4f96aacd9ad56277d6f61074bb72c93096834af9a06"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O0-candidate-gardner-snow-paired9-explicit-water/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-gardner-mixed2-1-snow-paired9-explicit-cde/first-output.bin": {
+      "bytes": 1241,
+      "sha256": "8df5079050b9820f7645b322c1bf7c75ab68e5283b2f7972307d760a2215e887"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-gardner-mixed2-1-snow-paired9-explicit-cde/result.bal": {
+      "bytes": 194,
+      "sha256": "51732222772056154c6f76b19660b15482d442bfda0dc1a6c273c945d290ecd7"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-gardner-mixed2-1-snow-paired9-explicit-cde/result.blc": {
+      "bytes": 190,
+      "sha256": "1f5cdf5217bf2e4c479a2aab2f28494b35b82b84c10787a21b5a970251b2ad30"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-gardner-mixed2-1-snow-paired9-explicit-cde/result_output.bin": {
+      "bytes": 1158,
+      "sha256": "5d91fc16c3fda3179281e4437eb0b5d2f1edf836117b645d4cca02c0ef401d04"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-gardner-mixed2-1-snow-paired9-explicit-cde/second-output.bin": {
+      "bytes": 1158,
+      "sha256": "5d91fc16c3fda3179281e4437eb0b5d2f1edf836117b645d4cca02c0ef401d04"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-gardner-mixed2-1-snow-paired9-explicit-cde/stderr.txt": {
+      "bytes": 82,
+      "sha256": "6e8658cbd2bf71044b960ff59b4371a98438c32a7d4cb54ab562294b8cc4f05d"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-gardner-mixed2-1-snow-paired9-explicit-cde/stdout.txt": {
+      "bytes": 125,
+      "sha256": "26ec62d3c06efdd2fbb900fd0bea2853a2d4bcfecacbd43f34e1ee60fdace6fd"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-gardner-mixed2-1-snow-paired9-explicit-cde/swap.err": {
+      "bytes": 771,
+      "sha256": "82d9e7d6d2815ddfe929a11931c0b27f0aa8548c656ee2feec836c587ccb8d48"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-gardner-mixed2-1-snow-paired9-explicit-cde/swap.log": {
+      "bytes": 645,
+      "sha256": "c6c8f50f3dbceb17200e7a45bd41e375d380f660b90f162aaa387a098c0e2f3a"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-gardner-mixed2-1-snow-paired9-explicit-cde/swap.wrn": {
+      "bytes": 133,
+      "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-gardner-snow-paired9-explicit-water/first-output.bin": {
+      "bytes": 1241,
+      "sha256": "6388fb7691b57c0979bd03f2ae21b77f2605f7a7ff5d308539bf3620f6d37bbf"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-gardner-snow-paired9-explicit-water/result.bal": {
+      "bytes": 194,
+      "sha256": "51732222772056154c6f76b19660b15482d442bfda0dc1a6c273c945d290ecd7"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-gardner-snow-paired9-explicit-water/result.blc": {
+      "bytes": 190,
+      "sha256": "1f5cdf5217bf2e4c479a2aab2f28494b35b82b84c10787a21b5a970251b2ad30"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-gardner-snow-paired9-explicit-water/result_output.bin": {
+      "bytes": 1158,
+      "sha256": "00f5f499dc5ef9fdb4f3bcf661765ae21536c21d271b1c1c9f32abf2a30ec6f2"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-gardner-snow-paired9-explicit-water/second-output.bin": {
+      "bytes": 1158,
+      "sha256": "00f5f499dc5ef9fdb4f3bcf661765ae21536c21d271b1c1c9f32abf2a30ec6f2"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-gardner-snow-paired9-explicit-water/stderr.txt": {
+      "bytes": 82,
+      "sha256": "6e8658cbd2bf71044b960ff59b4371a98438c32a7d4cb54ab562294b8cc4f05d"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-gardner-snow-paired9-explicit-water/stdout.txt": {
+      "bytes": 125,
+      "sha256": "26ec62d3c06efdd2fbb900fd0bea2853a2d4bcfecacbd43f34e1ee60fdace6fd"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-gardner-snow-paired9-explicit-water/swap.err": {
+      "bytes": 602,
+      "sha256": "85966139365879e3288d57e518a4981a2bc12ed9678b138f8c06a717867f3f81"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-gardner-snow-paired9-explicit-water/swap.log": {
+      "bytes": 645,
+      "sha256": "c6c8f50f3dbceb17200e7a45bd41e375d380f660b90f162aaa387a098c0e2f3a"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-gardner-snow-paired9-explicit-water/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-original-model3-snow9-control-stack64-v1/first-output.bin": {
+      "bytes": 1241,
+      "sha256": "9cb6f40f9df58cd3f9499b64f2cddd40aaf3075fe77673b50bfaf0d53f4198e9"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-original-model3-snow9-control-stack64-v1/result.bal": {
+      "bytes": 194,
+      "sha256": "51732222772056154c6f76b19660b15482d442bfda0dc1a6c273c945d290ecd7"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-original-model3-snow9-control-stack64-v1/result.blc": {
+      "bytes": 190,
+      "sha256": "1f5cdf5217bf2e4c479a2aab2f28494b35b82b84c10787a21b5a970251b2ad30"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-original-model3-snow9-control-stack64-v1/result_output.bin": {
+      "bytes": 1158,
+      "sha256": "48bbda04cc8c6f05e83d52c0b65fb71091007bdd81777d01a27cb29432598ae6"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-original-model3-snow9-control-stack64-v1/second-output.bin": {
+      "bytes": 1158,
+      "sha256": "48bbda04cc8c6f05e83d52c0b65fb71091007bdd81777d01a27cb29432598ae6"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-original-model3-snow9-control-stack64-v1/stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-original-model3-snow9-control-stack64-v1/stdout.txt": {
+      "bytes": 125,
+      "sha256": "26ec62d3c06efdd2fbb900fd0bea2853a2d4bcfecacbd43f34e1ee60fdace6fd"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-original-model3-snow9-control-stack64-v1/swap.err": {
+      "bytes": 602,
+      "sha256": "85966139365879e3288d57e518a4981a2bc12ed9678b138f8c06a717867f3f81"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-original-model3-snow9-control-stack64-v1/swap.log": {
+      "bytes": 645,
+      "sha256": "c6c8f50f3dbceb17200e7a45bd41e375d380f660b90f162aaa387a098c0e2f3a"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-candidate-original-model3-snow9-control-stack64-v1/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-gardner-mixed2-1-snow-paired9-explicit-cde/283rd$00003.tmp": {
+      "bytes": 244992,
+      "sha256": "3e9dba33807b485c7791c91d5b1b1759bafe5fcd15c2fc8b336305a6fe3badcf"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-gardner-mixed2-1-snow-paired9-explicit-cde/fixed-irrigationrd$00002.tmp": {
+      "bytes": 1188,
+      "sha256": "67234b583b8b62fd424cca5ce8750236fad4b533ccb1ca7425d8080e4ab3df09"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-gardner-mixed2-1-snow-paired9-explicit-cde/result.bal": {
+      "bytes": 194,
+      "sha256": "51732222772056154c6f76b19660b15482d442bfda0dc1a6c273c945d290ecd7"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-gardner-mixed2-1-snow-paired9-explicit-cde/result.blc": {
+      "bytes": 190,
+      "sha256": "1f5cdf5217bf2e4c479a2aab2f28494b35b82b84c10787a21b5a970251b2ad30"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-gardner-mixed2-1-snow-paired9-explicit-cde/result_output.bin": {
+      "bytes": 992,
+      "sha256": "a6e1875bf9bed90c1138e9dab7d09e159a3b03bf7824fad886f25072d9a06f2e"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-gardner-mixed2-1-snow-paired9-explicit-cde/stderr.txt": {
+      "bytes": 354,
+      "sha256": "2d6c96255103e39ab1a70e5a79675ba594b04b4fa2bc9a27a9652419fabb829e"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-gardner-mixed2-1-snow-paired9-explicit-cde/stdout.txt": {
+      "bytes": 23,
+      "sha256": "b80d1c0e86617a6d34612c994002d468e47398e6d4c6c666d023f1959cb96b7e"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-gardner-mixed2-1-snow-paired9-explicit-cde/swap.err": {
+      "bytes": 771,
+      "sha256": "82d9e7d6d2815ddfe929a11931c0b27f0aa8548c656ee2feec836c587ccb8d48"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-gardner-mixed2-1-snow-paired9-explicit-cde/swap.log": {
+      "bytes": 645,
+      "sha256": "98f65acd138c2f7e9438fe5779bddd0116d9ccb101e340842af20814a5f5782c"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-gardner-mixed2-1-snow-paired9-explicit-cde/swap.wrn": {
+      "bytes": 133,
+      "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-gardner-mixed2-1-snow-paired9-explicit-cde/swaprd$00001.tmp": {
+      "bytes": 20988,
+      "sha256": "f96372f936e21cf1d7a3bdb1e6010c950cddd4c99049d7cb5510382aa7bcd0b9"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-gardner-snow-paired9-explicit-water/283rd$00002.tmp": {
+      "bytes": 244992,
+      "sha256": "3e9dba33807b485c7791c91d5b1b1759bafe5fcd15c2fc8b336305a6fe3badcf"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-gardner-snow-paired9-explicit-water/result.bal": {
+      "bytes": 194,
+      "sha256": "6349ee3dbe1bc175b626d5bd12988425a13b301f1d91dd1ae72a2489d65e5cdf"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-gardner-snow-paired9-explicit-water/result.blc": {
+      "bytes": 190,
+      "sha256": "88f1830f85c96e36bc9235075705291d3105aa4277e562e8351ddcab889ead7a"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-gardner-snow-paired9-explicit-water/result_output.bin": {
+      "bytes": 992,
+      "sha256": "d394b1febdc5cc481666b087c158a0ef3fa7bbeee6f4035c7d4b8988f0411d86"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-gardner-snow-paired9-explicit-water/stderr.txt": {
+      "bytes": 354,
+      "sha256": "2d6c96255103e39ab1a70e5a79675ba594b04b4fa2bc9a27a9652419fabb829e"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-gardner-snow-paired9-explicit-water/stdout.txt": {
+      "bytes": 23,
+      "sha256": "b80d1c0e86617a6d34612c994002d468e47398e6d4c6c666d023f1959cb96b7e"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-gardner-snow-paired9-explicit-water/swap.err": {
+      "bytes": 602,
+      "sha256": "85966139365879e3288d57e518a4981a2bc12ed9678b138f8c06a717867f3f81"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-gardner-snow-paired9-explicit-water/swap.log": {
+      "bytes": 645,
+      "sha256": "98f65acd138c2f7e9438fe5779bddd0116d9ccb101e340842af20814a5f5782c"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-gardner-snow-paired9-explicit-water/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-gardner-snow-paired9-explicit-water/swaprd$00001.tmp": {
+      "bytes": 20988,
+      "sha256": "0d33c9daf7ac5a62ca29b77d66c50d816ac51e146cdbb9e66518061b4656cf6b"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-original-model3-snow9-control-stack64-v1/283rd$00002.tmp": {
+      "bytes": 244992,
+      "sha256": "3e9dba33807b485c7791c91d5b1b1759bafe5fcd15c2fc8b336305a6fe3badcf"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-original-model3-snow9-control-stack64-v1/result.bal": {
+      "bytes": 194,
+      "sha256": "6349ee3dbe1bc175b626d5bd12988425a13b301f1d91dd1ae72a2489d65e5cdf"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-original-model3-snow9-control-stack64-v1/result.blc": {
+      "bytes": 190,
+      "sha256": "88f1830f85c96e36bc9235075705291d3105aa4277e562e8351ddcab889ead7a"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-original-model3-snow9-control-stack64-v1/result_output.bin": {
+      "bytes": 992,
+      "sha256": "ccf0e13b2cf5cf09c4274f4c588d8bf1de38bbbde370eefafec427c4f29b9974"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-original-model3-snow9-control-stack64-v1/stderr.txt": {
+      "bytes": 354,
+      "sha256": "2d6c96255103e39ab1a70e5a79675ba594b04b4fa2bc9a27a9652419fabb829e"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-original-model3-snow9-control-stack64-v1/stdout.txt": {
+      "bytes": 23,
+      "sha256": "b80d1c0e86617a6d34612c994002d468e47398e6d4c6c666d023f1959cb96b7e"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-original-model3-snow9-control-stack64-v1/swap.err": {
+      "bytes": 602,
+      "sha256": "85966139365879e3288d57e518a4981a2bc12ed9678b138f8c06a717867f3f81"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-original-model3-snow9-control-stack64-v1/swap.log": {
+      "bytes": 645,
+      "sha256": "98f65acd138c2f7e9438fe5779bddd0116d9ccb101e340842af20814a5f5782c"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-original-model3-snow9-control-stack64-v1/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/O2-original-original-model3-snow9-control-stack64-v1/swaprd$00001.tmp": {
+      "bytes": 20988,
+      "sha256": "29eee8dd58fe961a038f79523fb07d54717592bdb1559367e594f21dba0eaf33"
+    },
+    "observations/closure17-reference-csv-lifecycle-v3/RESULT.json": {
+      "bytes": 63158,
+      "sha256": "510078ac09bb79b2e269da0b3f07e74b27c13db6f302ed02ef4a95e1cbef7faa"
+    },
+    "original-controller-refusals.json": {
+      "bytes": 540,
+      "sha256": "7138dff667cff7ba43194abde9361c29192d93424265250540bf3a5ab8d1106c"
+    },
+    "source/CLOSED_REFERENCE_STATE17_ORIGINAL_FAULT_SYMBOL_DISCOVERY_V1.json": {
+      "bytes": 4453,
+      "sha256": "a45d542d2b0e893ea03fd071c509e48846eb39da7fbac14e83927a34f04dacf2"
+    },
+    "source/CLOSED_REFERENCE_STATE17_ORIGINAL_SYMBOLS_V1.txt": {
+      "bytes": 337256,
+      "sha256": "624f29fc8b011c38530ca8b3cdc80d4877887073ac7b0bf0fbe360853c482be9"
+    },
+    "source/closed-reference17-seal-original-causal-v1.py": {
+      "bytes": 5495,
+      "sha256": "b24427eacc85792172a2c0f47be28f5df252668eab6f6801b767588affec0864"
+    }
+  },
+  "inherited_input_members": 261,
+  "unique_original_input_bytes_not_duplicated": true,
+  "original_provider": "J_windows_provider",
+  "original_SDK_once_in": "CLOSED_DEFAULT_CALENDAR_STATE14_ORIGINAL_MIXED_J_SDK_RAW_V5",
+  "original_SDK_is_mixed_compiler_profiles": true,
+  "physical_O0_O2_recompilation_claimed": false,
+  "existing_output_correction": "NOMACRO-BINARY-OUTPUT-01",
+  "original_scientific_failures_relabelled": false,
+  "scientific_equivalence": "NOT_QUALIFIED",
+  "qualified_B1_snapshot": false,
+  "whole_functional_completion": "PARTIAL",
+  "global_counts": "UNKNOWN",
+  "RC3_changed": false
+}
