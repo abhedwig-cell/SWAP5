@@ -1,0 +1,657 @@
+{
+  "status": "ORIGINAL_MIXED_SDK_GARDNER_SNOW_NONFINITE_REPRODUCED_WITH_VALID_MODEL3_CONTROLS",
+  "actual_archive_reader": "26938c8270a6a03d91a8e4c1a01200feb4b1e943",
+  "actual_canonical": "bd9b3b2e74e93fccb8bbcc8b06822efcd740f349",
+  "raw_sha256": "0f77f87d43a95720a034a02e70a1e4287c874a224a23ee07537b09a8becc9b7d",
+  "classification": "LEGACY_DEFECT",
+  "classification_scope": "Only two exact original-reader-accepted dry Gardner/Snow paired9 input sets and unchanged mixed original physical SDK; no blanket exclusion of Gardner or Snow.",
+  "original_CSV_crash_is_separate_known_output_lifetime_defect": true,
+  "existing_output_correction": "NOMACRO-BINARY-OUTPUT-01",
+  "original_physical_objects_unchanged": 62,
+  "full_original_main_object_retained": true,
+  "output_O0_O2_profiles_are_not_two_independent_physical_builds": true,
+  "source_level_first_invalid_operation": "UNKNOWN",
+  "intended_physical_resolution": "SCIENTIFIC_DECISION_PENDING_SOURCE_CAUSAL_ANALYSIS",
+  "current_failures_relabelled_as_PASS": false,
+  "original_period_normal_completion_not_scientific_PASS": true,
+  "new_scientific_contexts_admitted": 0,
+  "unchanged_prior_periods_replayed": false,
+  "observations": [
+    {
+      "case": "original-model3-snow9-control-stack64-v1",
+      "output_compiler_profile_only": "O0",
+      "original_physical_SDK_profile": "MIXED_UNCHANGED",
+      "records": 36,
+      "first_original_date": "2001-12-31         ",
+      "last_original_date": "2002-02-04         ",
+      "nonfinite_records": [],
+      "actual_binary_sha256": "5ce2ddc22654db1c3ef5d6a6ffdfe84ddfd63ea9a396263ad449981d3f10d892",
+      "actual_BAL_sha256": "b60d9e80e896e35959ec3a71ee3e843758e6b2214cc00b8ebd3e6cf9fd8d1300",
+      "actual_BLC_sha256": "2e9d5eb3d1c7da8b696ecd35967bf10b1e6bb7c0a76a2b8f9eb7e52a77eda143",
+      "finite_original_control": true,
+      "new_scientific_qualification": false
+    },
+    {
+      "case": "original-model3-snow9-control-stack64-v1",
+      "output_compiler_profile_only": "O2",
+      "original_physical_SDK_profile": "MIXED_UNCHANGED",
+      "records": 36,
+      "first_original_date": "2001-12-31         ",
+      "last_original_date": "2002-02-04         ",
+      "nonfinite_records": [],
+      "actual_binary_sha256": "5ce2ddc22654db1c3ef5d6a6ffdfe84ddfd63ea9a396263ad449981d3f10d892",
+      "actual_BAL_sha256": "b60d9e80e896e35959ec3a71ee3e843758e6b2214cc00b8ebd3e6cf9fd8d1300",
+      "actual_BLC_sha256": "2e9d5eb3d1c7da8b696ecd35967bf10b1e6bb7c0a76a2b8f9eb7e52a77eda143",
+      "finite_original_control": true,
+      "new_scientific_qualification": false
+    },
+    {
+      "case": "gardner-snow-paired9-explicit-water",
+      "output_compiler_profile_only": "O0",
+      "original_physical_SDK_profile": "MIXED_UNCHANGED",
+      "records": 36,
+      "first_original_date": "2001-12-31         ",
+      "last_original_date": "2002-02-04         ",
+      "nonfinite_records": [
+        {
+          "original_record_index": 7,
+          "original_date": "2002-01-07         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 8,
+          "original_date": "2002-01-08         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 9,
+          "original_date": "2002-01-09         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 10,
+          "original_date": "2002-01-10         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 11,
+          "original_date": "2002-01-11         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 12,
+          "original_date": "2002-01-12         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 13,
+          "original_date": "2002-01-13         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 14,
+          "original_date": "2002-01-14         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 15,
+          "original_date": "2002-01-15         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 16,
+          "original_date": "2002-01-16         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 17,
+          "original_date": "2002-01-17         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 18,
+          "original_date": "2002-01-18         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 19,
+          "original_date": "2002-01-19         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 20,
+          "original_date": "2002-01-20         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 21,
+          "original_date": "2002-01-21         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 22,
+          "original_date": "2002-01-22         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 23,
+          "original_date": "2002-01-23         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 24,
+          "original_date": "2002-01-24         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 25,
+          "original_date": "2002-01-25         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 26,
+          "original_date": "2002-01-26         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 27,
+          "original_date": "2002-01-27         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 28,
+          "original_date": "2002-01-28         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 29,
+          "original_date": "2002-01-29         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 30,
+          "original_date": "2002-01-30         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 31,
+          "original_date": "2002-01-31         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 32,
+          "original_date": "2002-02-01         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 33,
+          "original_date": "2002-02-02         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 34,
+          "original_date": "2002-02-03         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 35,
+          "original_date": "2002-02-04         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        }
+      ],
+      "actual_binary_sha256": "d8d2a86c1d456bd9538c880fe806bf908fdcfa3b5c18434e7b11b5f7d6e3664f",
+      "actual_BAL_sha256": "3993a8bde911c13df641a2c84db0f03b2ba1971936f6fe7ff1964b84ecccd053",
+      "actual_BLC_sha256": "9b133636d93951b25d529a44b27036a65ca5f2c207226a5e2a573288949680c8",
+      "finite_original_control": false,
+      "new_scientific_qualification": false
+    },
+    {
+      "case": "gardner-snow-paired9-explicit-water",
+      "output_compiler_profile_only": "O2",
+      "original_physical_SDK_profile": "MIXED_UNCHANGED",
+      "records": 36,
+      "first_original_date": "2001-12-31         ",
+      "last_original_date": "2002-02-04         ",
+      "nonfinite_records": [
+        {
+          "original_record_index": 7,
+          "original_date": "2002-01-07         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 8,
+          "original_date": "2002-01-08         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 9,
+          "original_date": "2002-01-09         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 10,
+          "original_date": "2002-01-10         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 11,
+          "original_date": "2002-01-11         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 12,
+          "original_date": "2002-01-12         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 13,
+          "original_date": "2002-01-13         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 14,
+          "original_date": "2002-01-14         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 15,
+          "original_date": "2002-01-15         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 16,
+          "original_date": "2002-01-16         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 17,
+          "original_date": "2002-01-17         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 18,
+          "original_date": "2002-01-18         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 19,
+          "original_date": "2002-01-19         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 20,
+          "original_date": "2002-01-20         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 21,
+          "original_date": "2002-01-21         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 22,
+          "original_date": "2002-01-22         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 23,
+          "original_date": "2002-01-23         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 24,
+          "original_date": "2002-01-24         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 25,
+          "original_date": "2002-01-25         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 26,
+          "original_date": "2002-01-26         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 27,
+          "original_date": "2002-01-27         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 28,
+          "original_date": "2002-01-28         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 29,
+          "original_date": "2002-01-29         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 30,
+          "original_date": "2002-01-30         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 31,
+          "original_date": "2002-01-31         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 32,
+          "original_date": "2002-02-01         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 33,
+          "original_date": "2002-02-02         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 34,
+          "original_date": "2002-02-03         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        },
+        {
+          "original_record_index": 35,
+          "original_date": "2002-02-04         ",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "DSTOR",
+            "BALDEV"
+          ]
+        }
+      ],
+      "actual_binary_sha256": "3f1934b1c1616fc92c2ea6ceab9f4a0af619da9c4b3611ad6e1d059b393eea76",
+      "actual_BAL_sha256": "1effbf1890b2289145d1d3e44baef9692cd73b0539728a7103af75c81ab5d9a5",
+      "actual_BLC_sha256": "13a82eba400a8f20aef5587817d2d6b5259597ff55df961ff2183f7090bcb5ca",
+      "finite_original_control": false,
+      "new_scientific_qualification": false
+    },
+    {
+      "case": "gardner-mixed2-1-snow-paired9-explicit-cde",
+      "output_compiler_profile_only": "O0",
+      "original_physical_SDK_profile": "MIXED_UNCHANGED",
+      "records": 2,
+      "first_original_date": "2002-01-01 00:00:00",
+      "last_original_date": "2002-02-05 00:00:00",
+      "nonfinite_records": [
+        {
+          "original_record_index": 1,
+          "original_date": "2002-02-05 00:00:00",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "WTOT",
+            "DSTOR",
+            "BALDEV"
+          ]
+        }
+      ],
+      "actual_binary_sha256": "f2c26130a2dee5e42b9889fd13a0d33ab78d0b8d6a30031d0130e72e513bdb5e",
+      "actual_BAL_sha256": "fe7554ee67d9cd705b42119298018f72abc85027b48585fb8aa8de29d277f0c5",
+      "actual_BLC_sha256": "52c49a48e506ae6e90745db0e385a6b999e8c75b8697c08f092908e705241fe7",
+      "finite_original_control": false,
+      "new_scientific_qualification": false
+    },
+    {
+      "case": "gardner-mixed2-1-snow-paired9-explicit-cde",
+      "output_compiler_profile_only": "O2",
+      "original_physical_SDK_profile": "MIXED_UNCHANGED",
+      "records": 2,
+      "first_original_date": "2002-01-01 00:00:00",
+      "last_original_date": "2002-02-05 00:00:00",
+      "nonfinite_records": [
+        {
+          "original_record_index": 1,
+          "original_date": "2002-02-05 00:00:00",
+          "original_nonfinite_fields": [
+            "PD_VOL",
+            "WTOT",
+            "DSTOR",
+            "BALDEV"
+          ]
+        }
+      ],
+      "actual_binary_sha256": "f2c26130a2dee5e42b9889fd13a0d33ab78d0b8d6a30031d0130e72e513bdb5e",
+      "actual_BAL_sha256": "fe7554ee67d9cd705b42119298018f72abc85027b48585fb8aa8de29d277f0c5",
+      "actual_BLC_sha256": "52c49a48e506ae6e90745db0e385a6b999e8c75b8697c08f092908e705241fe7",
+      "finite_original_control": false,
+      "new_scientific_qualification": false
+    }
+  ],
+  "global_functional_completion": "PARTIAL",
+  "global_scientific_equivalence": "NOT_QUALIFIED",
+  "global_counts": "UNKNOWN",
+  "RC3_changed": false,
+  "compiler_executions": 0,
+  "model_executions": 0
+}
