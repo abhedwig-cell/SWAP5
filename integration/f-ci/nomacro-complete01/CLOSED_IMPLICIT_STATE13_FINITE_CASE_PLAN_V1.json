@@ -1,0 +1,292 @@
+{
+  "status": "PROPOSED_FINITE_ALL_ORIGINAL_ANALYTICAL_CLOSED_IMPLICIT_STATE_COMPOSITION_NOT_INSTALLED",
+  "actual_source": "07cb2850e2cd45deb1e197161409a3784a8975e7",
+  "cases": [
+    {
+      "name": "closed-ordinary-gardner-water",
+      "kind": "water",
+      "models": [
+        2
+      ],
+      "implicit": 1,
+      "hysteresis": 0,
+      "drainage": 0,
+      "bottom": 6,
+      "initial": 2,
+      "snow": 0,
+      "frost": 0,
+      "calendar": "dense",
+      "actual_original_input_prefix": "current/ordinary-gardner-water/inputs/",
+      "actual_original_zero_day_accepted": true,
+      "actual_original_zero_day_record_case": "ordinary-gardner-water"
+    },
+    {
+      "name": "closed-ordinary-model7-snow-cde-fitted",
+      "kind": "cde",
+      "models": [
+        7
+      ],
+      "implicit": 1,
+      "hysteresis": 0,
+      "drainage": 0,
+      "bottom": 6,
+      "initial": 2,
+      "snow": 1,
+      "frost": 0,
+      "calendar": "dense",
+      "actual_original_input_prefix": "current/ordinary-model7-snow-cde-fitted/inputs/",
+      "actual_original_zero_day_accepted": true,
+      "actual_original_zero_day_record_case": "ordinary-model7-snow-cde-fitted"
+    },
+    {
+      "name": "closed-ordinary-model3-water",
+      "kind": "water",
+      "models": [
+        3
+      ],
+      "implicit": 1,
+      "hysteresis": 0,
+      "drainage": 0,
+      "bottom": 6,
+      "initial": 2,
+      "snow": 0,
+      "frost": 0,
+      "calendar": "dense",
+      "actual_original_input_prefix": "current/ordinary-model3-water/inputs/",
+      "actual_original_zero_day_accepted": true,
+      "actual_original_zero_day_record_case": "ordinary-model3-water"
+    },
+    {
+      "name": "closed-ordinary-model4-snow-water",
+      "kind": "water",
+      "models": [
+        4
+      ],
+      "implicit": 1,
+      "hysteresis": 0,
+      "drainage": 0,
+      "bottom": 6,
+      "initial": 2,
+      "snow": 1,
+      "frost": 0,
+      "calendar": "dense",
+      "actual_original_input_prefix": "current/ordinary-model4-snow-water/inputs/",
+      "actual_original_zero_day_accepted": true,
+      "actual_original_zero_day_record_case": "ordinary-model4-snow-water"
+    },
+    {
+      "name": "closed-ordinary-model5-cde-profile",
+      "kind": "cde",
+      "models": [
+        5
+      ],
+      "implicit": 1,
+      "hysteresis": 0,
+      "drainage": 0,
+      "bottom": 6,
+      "initial": 1,
+      "snow": 0,
+      "frost": 0,
+      "calendar": "dense",
+      "actual_original_input_prefix": "current/ordinary-model5-cde-profile/inputs/",
+      "actual_original_zero_day_accepted": true,
+      "actual_original_zero_day_record_case": "ordinary-model5-cde-profile"
+    },
+    {
+      "name": "closed-ordinary-model6-snow-cde-profile",
+      "kind": "cde",
+      "models": [
+        6
+      ],
+      "implicit": 1,
+      "hysteresis": 0,
+      "drainage": 0,
+      "bottom": 6,
+      "initial": 1,
+      "snow": 1,
+      "frost": 0,
+      "calendar": "dense",
+      "actual_original_input_prefix": "current/ordinary-model6-snow-cde-profile/inputs/",
+      "actual_original_zero_day_accepted": true,
+      "actual_original_zero_day_record_case": "ordinary-model6-snow-cde-profile"
+    },
+    {
+      "name": "closed-ordinary-mixed8-9-water",
+      "kind": "water",
+      "models": [
+        8,
+        9
+      ],
+      "implicit": 1,
+      "hysteresis": 0,
+      "drainage": 0,
+      "bottom": 6,
+      "initial": 2,
+      "snow": 0,
+      "frost": 0,
+      "calendar": "dense",
+      "actual_original_input_prefix": "current/ordinary-mixed8-9-water/inputs/",
+      "actual_original_zero_day_accepted": true,
+      "actual_original_zero_day_record_case": "ordinary-mixed8-9-water"
+    },
+    {
+      "name": "closed-ordinary-mixed10-11-snow-water",
+      "kind": "water",
+      "models": [
+        10,
+        11
+      ],
+      "implicit": 1,
+      "hysteresis": 0,
+      "drainage": 0,
+      "bottom": 6,
+      "initial": 2,
+      "snow": 1,
+      "frost": 0,
+      "calendar": "dense",
+      "actual_original_input_prefix": "current/ordinary-mixed10-11-snow-water/inputs/",
+      "actual_original_zero_day_accepted": true,
+      "actual_original_zero_day_record_case": "ordinary-mixed10-11-snow-water"
+    },
+    {
+      "name": "closed-ordinary-mixed1-7-cde",
+      "kind": "cde",
+      "models": [
+        1,
+        7
+      ],
+      "implicit": 1,
+      "hysteresis": 0,
+      "drainage": 0,
+      "bottom": 6,
+      "initial": 2,
+      "snow": 0,
+      "frost": 0,
+      "calendar": "dense",
+      "actual_original_input_prefix": "current/ordinary-mixed1-7-cde/inputs/",
+      "actual_original_zero_day_accepted": true,
+      "actual_original_zero_day_record_case": "ordinary-mixed1-7-cde"
+    },
+    {
+      "name": "closed-frost-mixed2-3-water",
+      "kind": "water",
+      "models": [
+        2,
+        3
+      ],
+      "implicit": 1,
+      "hysteresis": 0,
+      "drainage": 0,
+      "bottom": 6,
+      "initial": 2,
+      "snow": 1,
+      "frost": 1,
+      "calendar": "dense",
+      "actual_original_input_prefix": "current/frost-mixed2-3-water-d0-b5/inputs/",
+      "actual_original_zero_day_accepted": true,
+      "actual_original_zero_day_record_case": "frost-mixed2-3-water-d0-b5"
+    },
+    {
+      "name": "closed-frost-mixed4-5-cde",
+      "kind": "cde",
+      "models": [
+        4,
+        5
+      ],
+      "implicit": 1,
+      "hysteresis": 0,
+      "drainage": 0,
+      "bottom": 6,
+      "initial": 2,
+      "snow": 1,
+      "frost": 1,
+      "calendar": "dense",
+      "actual_original_input_prefix": "current/frost-mixed4-5-cde-d1-b5/inputs/",
+      "actual_original_zero_day_accepted": true,
+      "actual_original_zero_day_record_case": "frost-mixed4-5-cde-d1-b5"
+    },
+    {
+      "name": "closed-frost-mixed6-7-cde",
+      "kind": "cde",
+      "models": [
+        6,
+        7
+      ],
+      "implicit": 1,
+      "hysteresis": 0,
+      "drainage": 0,
+      "bottom": 6,
+      "initial": 2,
+      "snow": 1,
+      "frost": 1,
+      "calendar": "dense",
+      "actual_original_input_prefix": "current/frost-mixed6-7-cde-d0-b8/inputs/",
+      "actual_original_zero_day_accepted": true,
+      "actual_original_zero_day_record_case": "frost-mixed6-7-cde-d0-b8"
+    },
+    {
+      "name": "closed-frost-mixed8-9-water",
+      "kind": "water",
+      "models": [
+        8,
+        9
+      ],
+      "implicit": 1,
+      "hysteresis": 0,
+      "drainage": 0,
+      "bottom": 6,
+      "initial": 1,
+      "snow": 1,
+      "frost": 1,
+      "calendar": "dense",
+      "actual_original_input_prefix": "current/frost-mixed8-9-water-d1-b8/inputs/",
+      "actual_original_zero_day_accepted": true,
+      "actual_original_zero_day_record_case": "frost-mixed8-9-water-d1-b8"
+    },
+    {
+      "name": "closed-frost-mixed10-11-water",
+      "kind": "water",
+      "models": [
+        10,
+        11
+      ],
+      "implicit": 1,
+      "hysteresis": 0,
+      "drainage": 0,
+      "bottom": 6,
+      "initial": 2,
+      "snow": 1,
+      "frost": 1,
+      "calendar": "dense",
+      "actual_original_input_prefix": "current/frost-mixed10-11-water-d0-b5/inputs/",
+      "actual_original_zero_day_accepted": true,
+      "actual_original_zero_day_record_case": "frost-mixed10-11-water-d0-b5"
+    }
+  ],
+  "source_proposal": "CLOSED_IMPLICIT_STATE13_SOURCE_PROPOSAL_V2.json",
+  "scientific_claim": "All existing original analytical2..11 NoVap implicit ordinary/Snow/Frost per-layer native state composed with closed zero-flux6/drainage0; original parameter and output bytes remain unchanged.",
+  "planned_portable_contexts": 56,
+  "planned_primary_days": 1960,
+  "compiler_or_model_executions": 0,
+  "canonical_admission": false,
+  "independent_qualification_cases": [
+    "closed-ordinary-gardner-water",
+    "closed-ordinary-model7-snow-cde-fitted",
+    "closed-ordinary-model3-water",
+    "closed-ordinary-model4-snow-water",
+    "closed-ordinary-model5-cde-profile",
+    "closed-ordinary-model6-snow-cde-profile",
+    "closed-ordinary-mixed8-9-water",
+    "closed-ordinary-mixed10-11-snow-water",
+    "closed-ordinary-mixed1-7-cde",
+    "closed-frost-mixed2-3-water",
+    "closed-frost-mixed4-5-cde",
+    "closed-frost-mixed6-7-cde",
+    "closed-frost-mixed8-9-water",
+    "closed-frost-mixed10-11-water"
+  ],
+  "deferred_numerical_cases": [],
+  "actual_canonical_parent": "2e98506b4fb469bbf5995a8ab0b49c88ead0972c",
+  "actual_original_input_git_source": "2e98506b4fb469bbf5995a8ab0b49c88ead0972c",
+  "original_input_scientific_producer": "c40ca084d8e5eb638e0b4ac5c471463d9aad01c3"
+}

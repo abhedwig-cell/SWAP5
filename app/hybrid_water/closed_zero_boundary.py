@@ -12,7 +12,10 @@ def input_domain(text,selectors,original_output=True):
     rows=re.findall(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[ \t]*([^\r\n]*)',active)
     rest=re.sub(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[^\r\n]*','',active)
     if len(rows)>1 or re.search(r'(?i)\b(?:IHWCKMODEL|SWAP_SOILS_DB)\b',rest):return False
-    if rows and re.fullmatch(r'\+?0*1(?:[ \t]+\+?0*1)*[ \t]*',rows[0]) is None:return False
+    if rows and re.fullmatch(r'\+?0*1(?:[ \t]+\+?0*1)*[ \t]*',rows[0]) is None:
+        if selectors['SWKIMPL']!=1 or selectors['SWHYST']!=0:return False
+        from implicit_hydraulic_state import input_models
+        if input_models(text,selectors,selectors,original_output) is None:return False
     if selectors['SWSNOW']==0:
         # Ordinary non-daily initialization needs its own complete output-owner
         # qualification; this predicate does not claim that remaining gap.

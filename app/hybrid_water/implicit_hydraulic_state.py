@@ -21,13 +21,15 @@ def input_models(text,selectors,boundary,original_output=None):
                SWHEA=1,SWCALT=2,SWBR=0,SWMETDETAIL=0)
     if any(selectors.get(k)!=v for k,v in fixed.items()):return None
     if (selectors.get('SWSOLU') not in (0,1) or selectors.get('SWSNOW') not in (0,1)
-            or selectors.get('SWINCO') not in (1,2) or boundary.get('SWBOTB') not in (5,8)):
+            or selectors.get('SWINCO') not in (1,2) or boundary.get('SWBOTB') not in (5,6,8)):
         return None
+    closed=boundary.get('SWBOTB')==6
+    if closed and selectors.get('SWDRA')!=0:return None
     frost=selectors.get('SWFROST')
     if frost==1:
         if (selectors.get('SWSNOW')!=1 or selectors.get('SWDRA') not in (0,1)
                 or selectors.get('SWBBCFILE')!=0 or selectors.get('SWTOPBHEA')!=2):return None
-    elif frost!=0 or selectors.get('SWDRA')!=1:return None
+    elif frost!=0 or selectors.get('SWDRA')!=(0 if closed else 1):return None
     active='\n'.join(line.split('!',1)[0] for line in text.splitlines()
                      if not line.lstrip().startswith('*'))
     # Original scalar replication is validated against the actual grid. Gardner
@@ -83,6 +85,7 @@ def selected(project):
             raise ValueError('Invalid original implicit drainage partition')
     result=dict(models=models,solute=s['SWSOLU'],snow=s['SWSNOW'],bottom=boundary['SWBOTB'],partition=partition)
     if s['SWFROST']==1:result.update(frost=1,drainage=s['SWDRA'])
+    elif boundary['SWBOTB']==6:result['drainage']=0
     return result
 
 
