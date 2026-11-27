@@ -3,6 +3,7 @@ from pathlib import Path
 import re
 POLICY='original-closed-default-pressure-nondaily-calendar-composition-v1'
 GROUNDWATER_POLICY='original-closed-default-groundwater-nondaily-calendar-composition-v1'
+COUPLED_POLICY='original-closed-default-implicit-hysteresis-nondaily-calendar-composition-v1'
 
 
 def input_domain(text,selectors,original_output=True):
@@ -12,9 +13,8 @@ def input_domain(text,selectors,original_output=True):
                SWHEA=1,SWCALT=2,SWSOPHY=0,SWBBCFILE=0,SWMETDETAIL=0,SWBR=0)
     if any(selectors.get(k)!=v for k,v in fixed.items()):return None
     if selectors.get('SWSOLU') not in (0,1) or selectors.get('SWHYST') not in (0,1,2) or selectors.get('SWKIMPL') not in (0,1):return None
-    # The existing qualified non-daily state classes retain their original
-    # hysteresis/implicit ownership. Their simultaneous composition is separate.
-    if selectors['SWKIMPL'] and selectors['SWHYST']:return None
+    # Compose the existing original implicit and hysteresis state owners.
+    # Dense output and every older separate-owner policy remain unchanged.
     active='\n'.join(v.split('!',1)[0] for v in text.splitlines() if not v.lstrip().startswith('*'))
     rows=re.findall(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[ \t]*([^\r\n]*)',active)
     rest=re.sub(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[^\r\n]*','',active)
@@ -33,7 +33,7 @@ def input_domain(text,selectors,original_output=True):
     perstep=token in ('.TRUE.','TRUE','.T.','T');clock=perstep or npd>1
     if monthly and dates or clock and (monthly or dates) or perstep and reset:return None
     if not clock and not monthly and not dates and period==1:return None
-    return dict(policy=POLICY if selectors['SWINCO']==1 else GROUNDWATER_POLICY,hydraulic_model=1,initial=selectors['SWINCO'],drainage=0,bottom=6,
+    return dict(policy=COUPLED_POLICY if selectors['SWKIMPL'] and selectors['SWHYST'] else POLICY if selectors['SWINCO']==1 else GROUNDWATER_POLICY,hydraulic_model=1,initial=selectors['SWINCO'],drainage=0,bottom=6,
                 kind='cde' if selectors['SWSOLU'] else 'water',history=selectors['SWHYST'],
                 implicit=selectors['SWKIMPL'],clock=clock,perstep=perstep,
                 original_parameter_and_calendar_bytes_preserved=True,
@@ -47,9 +47,37 @@ def selection(project):
     return input_domain(text,switches(text),project.original_output)
 
 
+def render_regular_counter_validation(source,project):
+    """Validate the original periodic counter; never assign a restored state."""
+    selected=selection(project)
+    if selected is None or not selected['implicit'] or not selected['history'] or project.solute:return source
+    from original_output_hysteresis import selection as output_selection
+    output=output_selection(project)
+    if output['flprintdt'] or output['nprintday']!=1 or output['swmonth'] or output['swodat'] or output['period']<=0:return source
+    declaration='integer::header(20),witness_header(20),ios,nreal'
+    if source.count(declaration)!=1:raise ValueError('Changed complete joint calendar native declaration')
+    source=source.replace(declaration,declaration+'\ninteger::joint_expected,joint_date(6)\nreal(4)::joint_seconds\nreal(8)::joint_day,joint_jan1',1)
+    anchor=" if(header(12)/=swres.or.minval(header(7:11))<0)error stop 'Invalid original output calendar counters'"
+    if source.count(anchor)!=1:raise ValueError('Changed complete joint calendar native counter guard')
+    validation="""
+ ! Read only: original TimeControl count modulo PERIOD, including its SWRES1 year reset.
+ joint_expected=header(7)
+ if(swres==1.and.header(7)>0)then
+  joint_day=original_output_start_clock+dble(header(7))-1d0
+  call dtdpar(joint_day+0.1d0,joint_date,joint_seconds)
+  joint_date(2:6)=0;joint_date(2)=1;joint_date(3)=1
+  call dtardp(joint_date,0.0,joint_jan1)
+  joint_expected=min(header(7),nint(joint_day-joint_jan1)+1)
+ end if
+ if(header(8)/=mod(joint_expected,period))error stop 'Foreign original joint regular output counter'
+"""
+    return source.replace(anchor,anchor+validation,1)
+
+
 def render_trial_domain(source,project):
     """Compose only the real closed boundary with the original trial receipt."""
     selected=selection(project)
+    source=render_regular_counter_validation(source,project)
     if selected is None or not selected['clock'] or project.solute:return source
     old="if(swmacro/=0.or.swsnow/=0.or.swdra/=1)error stop 'Foreign original trial receipt domain'"
     new="if(swmacro/=0.or.swsnow/=0.or.swdra/=0.or.swbotb/=6)error stop 'Foreign original closed default trial receipt domain'"

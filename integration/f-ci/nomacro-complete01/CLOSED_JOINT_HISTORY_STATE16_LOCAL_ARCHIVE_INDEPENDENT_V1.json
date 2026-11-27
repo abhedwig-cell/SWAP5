@@ -1,0 +1,4081 @@
+{
+  "status": "TWELVE_ORIGINAL_LOCAL_SCIENTIFIC_PERIODS_AND_ALL_FOUR_NATIVE_FAILURES_INDEPENDENTLY_RETAINED_NOT_QUALIFIED",
+  "contexts": [
+    {
+      "status": "INDEPENDENT_ACTUAL_DEFAULT_CALENDAR_INPUT_SOURCE_BUDGET_PRIVATE_NATIVE_COLD_TRANSACTION_PASS",
+      "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+      "case": "hys1-monthly-water-initial1",
+      "optimization": "O0",
+      "source_contract": {
+        "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+        "complete_literal_inverses": 1,
+        "source_proposal_sha256": "fcf08affbbb2bbde3c775b8fae5b792e146b50eda6314f813833816ec7268579"
+      },
+      "days": 35,
+      "initial_pressure_nodes": 34,
+      "initial_profile": {
+        "legacy_ZI_H": false,
+        "profile_knots": [
+          [
+            0.5,
+            -93.0
+          ],
+          [
+            195.0,
+            120.0
+          ]
+        ],
+        "saturated_nodes_reinitialized_by_original": 11
+      },
+      "actual_default_hydraulic_model": 1,
+      "native_codec": "S5IHW001",
+      "water": {
+        "days": 35,
+        "whole_water_residual_cm": 4.15221540961061e-13
+      },
+      "original_observations": {
+        "actual_original_days": 35,
+        "initial_clock": 37256.0
+      },
+      "original_input_archive_sha256": "422a6e14386ee5cf7606be1124aafd236b1ab8411bc62241416d43dfa0801c30",
+      "only_declared_selectors_changed": true,
+      "native_samples": [
+        {
+          "day": 2,
+          "sha256": "873446727e031cfce528dc3e26e757c05cad41e630a35ddc8efc927fbf485f0d",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              2,
+              2,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 4,
+          "sha256": "e134744f0b52ff128c7f9a7b36e297bbcfa891f28bed04f11b88e49bdb1bb0ce",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              4,
+              4,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 7,
+          "sha256": "4807abcdc6fe4961c03466418191a68d1584baf665328bd2f5a0d4d534cc8da8",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              7,
+              7,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 9,
+          "sha256": "cfac61c177efd0ec81796bfb20bb0abef9be5cc35f3149cb76df6818427dfb79",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              9,
+              9,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 30,
+          "sha256": "137796e92e51c36322200f7c5a33c619a4a941ee5d75ed0523a9a1176b5cc276",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              30,
+              30,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 34,
+          "sha256": "10ad001fb60d1c65bb397c91160fd2a6031e007a0b16241ca08454cc9d86d9e7",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              34,
+              34,
+              1,
+              1,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 35,
+          "sha256": "ba31c853949f758333231a0b997ba4ce2f5dff68798ad8966c4cc2a875d4d6ab",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              35,
+              35,
+              1,
+              1,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        }
+      ],
+      "active_original_hysteresis": true,
+      "cold": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 1,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_CDE_daily_increment_rows": 0,
+      "native_refusals": 28,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "status": "INDEPENDENT_ACTUAL_DEFAULT_CALENDAR_INPUT_SOURCE_BUDGET_PRIVATE_NATIVE_COLD_TRANSACTION_PASS",
+      "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+      "case": "hys1-monthly-water-initial2",
+      "optimization": "O0",
+      "source_contract": {
+        "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+        "complete_literal_inverses": 1,
+        "source_proposal_sha256": "fcf08affbbb2bbde3c775b8fae5b792e146b50eda6314f813833816ec7268579"
+      },
+      "days": 35,
+      "initial_pressure_nodes": 34,
+      "initial_profile": {
+        "original_initialization": 2,
+        "original_GWLI_cm": -75.0,
+        "original_node_coordinates_cm": [
+          -0.5,
+          -1.5,
+          -2.5,
+          -3.5,
+          -4.5,
+          -5.5,
+          -6.5,
+          -7.5,
+          -8.5,
+          -9.5,
+          -12.5,
+          -17.5,
+          -22.5,
+          -27.5,
+          -32.5,
+          -37.5,
+          -42.5,
+          -47.5,
+          -52.5,
+          -57.5,
+          -65.0,
+          -75.0,
+          -85.0,
+          -95.0,
+          -105.0,
+          -115.0,
+          -125.0,
+          -135.0,
+          -145.0,
+          -155.0,
+          -165.0,
+          -175.0,
+          -185.0,
+          -195.0
+        ],
+        "observer_changes_model_inputs": false
+      },
+      "actual_default_hydraulic_model": 1,
+      "native_codec": "S5IHW001",
+      "water": {
+        "days": 35,
+        "whole_water_residual_cm": 3.541453968188696e-13
+      },
+      "original_observations": {
+        "actual_original_days": 35,
+        "initial_clock": 37256.0
+      },
+      "original_input_archive_sha256": "422a6e14386ee5cf7606be1124aafd236b1ab8411bc62241416d43dfa0801c30",
+      "only_declared_selectors_changed": true,
+      "native_samples": [
+        {
+          "day": 2,
+          "sha256": "2c25dffe04eae7065ed5f08a52759bbacfe47c033cf0f6a8078de6e5f731fb87",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              2,
+              2,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 4,
+          "sha256": "ef769abb289a42a2cf99f222b149fe8df2d33ca2925cff33a481e22b3f909ffb",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              4,
+              4,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 7,
+          "sha256": "fadbcbce7f70940617c6d736e5c4a71d44deeaabb3e8fc446abc5d3e08eea876",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              7,
+              7,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 9,
+          "sha256": "c2439360427811bb4ac3f61f046c4e6686c5fcd0ad0b4d93294a2efd5950c6a5",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              9,
+              9,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 30,
+          "sha256": "b98794e21322c11251c1fce36512d6fb5c05c430708cd296af16f527385a2f88",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              30,
+              30,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 34,
+          "sha256": "3bcbce405893d765940134565ff05fd63bcb0e5ab6630543cba29a35885bfe00",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              34,
+              34,
+              1,
+              1,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 35,
+          "sha256": "e56a752d25e7394d4091d6acf57a7c400e11e976e15822708462799a0df06297",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              35,
+              35,
+              1,
+              1,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        }
+      ],
+      "active_original_hysteresis": true,
+      "cold": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 1,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_CDE_daily_increment_rows": 0,
+      "native_refusals": 28,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "status": "INDEPENDENT_ACTUAL_DEFAULT_CALENDAR_INPUT_SOURCE_BUDGET_PRIVATE_NATIVE_COLD_TRANSACTION_PASS",
+      "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+      "case": "hys2-periodic-water-initial1",
+      "optimization": "O0",
+      "source_contract": {
+        "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+        "complete_literal_inverses": 1,
+        "source_proposal_sha256": "fcf08affbbb2bbde3c775b8fae5b792e146b50eda6314f813833816ec7268579"
+      },
+      "days": 35,
+      "initial_pressure_nodes": 34,
+      "initial_profile": {
+        "legacy_ZI_H": false,
+        "profile_knots": [
+          [
+            0.5,
+            -93.0
+          ],
+          [
+            195.0,
+            120.0
+          ]
+        ],
+        "saturated_nodes_reinitialized_by_original": 11
+      },
+      "actual_default_hydraulic_model": 1,
+      "native_codec": "S5IHW001",
+      "water": {
+        "days": 35,
+        "whole_water_residual_cm": 2.5966021325284083e-13
+      },
+      "original_observations": {
+        "actual_original_days": 35,
+        "initial_clock": 37256.0
+      },
+      "original_input_archive_sha256": "422a6e14386ee5cf7606be1124aafd236b1ab8411bc62241416d43dfa0801c30",
+      "only_declared_selectors_changed": true,
+      "native_samples": [
+        {
+          "day": 2,
+          "sha256": "1b84a10f914c761a4c258bf7d14efb4fdcfbacc465891057cd3c725f2392aa6f",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              2,
+              2,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 4,
+          "sha256": "d78ee51e47e4c7f38149beceafa86ed7186ac95bdc4c9e5befc245f47c6575be",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              4,
+              4,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 7,
+          "sha256": "b284a91ec7dcfa6b32a2bae63daa064b5ce5bcf86575e225f13c7a92a4f0b007",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              7,
+              0,
+              1,
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 9,
+          "sha256": "1ac74fa62c88dd5386c36136c31b87e17380620b3af5fae556cf222c8558841b",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              9,
+              2,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 30,
+          "sha256": "bd19b4828e729cb0fa6c3312491cc00eddaa8851b6b6640a29c8c9c8e570f1a3",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              30,
+              2,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 34,
+          "sha256": "22ff03eca61869e8a6453537a01b98b13e71f633174d266e568019941d4b0949",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              34,
+              6,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 35,
+          "sha256": "2dcb4bb80730c86fa53ffd8b530d1bb2fbc55312ddb8f2ad0131154a2a6b5926",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              35,
+              0,
+              1,
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        }
+      ],
+      "active_original_hysteresis": true,
+      "cold": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_CDE_daily_increment_rows": 0,
+      "native_refusals": 0,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "status": "INDEPENDENT_ACTUAL_DEFAULT_CALENDAR_INPUT_SOURCE_BUDGET_PRIVATE_NATIVE_COLD_TRANSACTION_PASS",
+      "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+      "case": "hys2-periodic-water-initial2",
+      "optimization": "O0",
+      "source_contract": {
+        "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+        "complete_literal_inverses": 1,
+        "source_proposal_sha256": "fcf08affbbb2bbde3c775b8fae5b792e146b50eda6314f813833816ec7268579"
+      },
+      "days": 35,
+      "initial_pressure_nodes": 34,
+      "initial_profile": {
+        "original_initialization": 2,
+        "original_GWLI_cm": -75.0,
+        "original_node_coordinates_cm": [
+          -0.5,
+          -1.5,
+          -2.5,
+          -3.5,
+          -4.5,
+          -5.5,
+          -6.5,
+          -7.5,
+          -8.5,
+          -9.5,
+          -12.5,
+          -17.5,
+          -22.5,
+          -27.5,
+          -32.5,
+          -37.5,
+          -42.5,
+          -47.5,
+          -52.5,
+          -57.5,
+          -65.0,
+          -75.0,
+          -85.0,
+          -95.0,
+          -105.0,
+          -115.0,
+          -125.0,
+          -135.0,
+          -145.0,
+          -155.0,
+          -165.0,
+          -175.0,
+          -185.0,
+          -195.0
+        ],
+        "observer_changes_model_inputs": false
+      },
+      "actual_default_hydraulic_model": 1,
+      "native_codec": "S5IHW001",
+      "water": {
+        "days": 35,
+        "whole_water_residual_cm": 1.616513726262342e-13
+      },
+      "original_observations": {
+        "actual_original_days": 35,
+        "initial_clock": 37256.0
+      },
+      "original_input_archive_sha256": "422a6e14386ee5cf7606be1124aafd236b1ab8411bc62241416d43dfa0801c30",
+      "only_declared_selectors_changed": true,
+      "native_samples": [
+        {
+          "day": 2,
+          "sha256": "57b05ae197741cc346b81d0df32c8d4135638b933d55995ac110eb234afe79c0",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              2,
+              2,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 4,
+          "sha256": "376caf9d77a576503bf364455912558920de19fcb175ca640475cb103e7f600a",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              4,
+              4,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 7,
+          "sha256": "a426f93dfd32c26c28b398ee761bac3b010a178cad89726abf61f7ae07242593",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              7,
+              0,
+              1,
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 9,
+          "sha256": "b6789ef46c983531627ae14bc29c36168d806b6d108cb396c8e1a65ea45870fd",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              9,
+              2,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 30,
+          "sha256": "7e4f699c943364bf3ac4cc97d3905814d2c6d8fd9d88600fc6a293c71a52e8ca",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              30,
+              2,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 34,
+          "sha256": "8d7c6c982c5f0aca426513f17b1635f58c6f3bc01cce8f158f6c6429bddaba17",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              34,
+              6,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 35,
+          "sha256": "62d9ef1d8998cdbf7ecc46614215642ee73d112d15781a49fa48ec298f0b64f1",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              35,
+              0,
+              1,
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        }
+      ],
+      "active_original_hysteresis": true,
+      "cold": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_CDE_daily_increment_rows": 0,
+      "native_refusals": 0,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "status": "INDEPENDENT_ACTUAL_DEFAULT_CALENDAR_INPUT_SOURCE_BUDGET_PRIVATE_NATIVE_COLD_TRANSACTION_PASS",
+      "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+      "case": "hys2-dates-cde-initial1",
+      "optimization": "O0",
+      "source_contract": {
+        "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+        "complete_literal_inverses": 1,
+        "source_proposal_sha256": "fcf08affbbb2bbde3c775b8fae5b792e146b50eda6314f813833816ec7268579"
+      },
+      "days": 35,
+      "initial_pressure_nodes": 34,
+      "initial_profile": {
+        "legacy_ZI_H": false,
+        "profile_knots": [
+          [
+            0.5,
+            -93.0
+          ],
+          [
+            195.0,
+            120.0
+          ]
+        ],
+        "saturated_nodes_reinitialized_by_original": 11
+      },
+      "actual_default_hydraulic_model": 1,
+      "native_codec": "S5CIH001",
+      "water": {
+        "days": 35,
+        "whole_water_residual_cm": 2.5966021325284083e-13
+      },
+      "original_observations": {
+        "actual_original_days": 35,
+        "initial_clock": 37256.0
+      },
+      "original_input_archive_sha256": "422a6e14386ee5cf7606be1124aafd236b1ab8411bc62241416d43dfa0801c30",
+      "only_declared_selectors_changed": true,
+      "native_samples": [
+        {
+          "day": 2,
+          "sha256": "b7c2c72f0897fb54793963aaebba8a6ee49700ef890b90994e2a663ac9f3d794",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              2,
+              2,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 4,
+          "sha256": "0acf0abb4b8d3925d348efb5150810b1227bad318de015b3ce5330c58a0f0326",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              4,
+              4,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 7,
+          "sha256": "1e6d3b1d27c7bf4ff17aae3440aac0687b4e7c2d83bf2d00775cdd0412ff85e6",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              7,
+              7,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 9,
+          "sha256": "d77b23e16ff5d0037e9078439ccdeb83a51a598a2eb5475ecb26f3f51492f902",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              9,
+              9,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 30,
+          "sha256": "22f15e757bd14694f56474edb656de2c18a76e00b7d7d3be4b621f4f6cef0fba",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              30,
+              30,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 34,
+          "sha256": "925bff377cdbf608f9b55b42ea5f3677fb36e0486d94dc69eee85cbfdd3e6ce0",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              34,
+              34,
+              1,
+              1,
+              3,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 35,
+          "sha256": "48d3bdc07789829e0ee6704661884ff39f72dcf79f4fb5489343904fdd437f34",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              35,
+              35,
+              1,
+              1,
+              3,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        }
+      ],
+      "active_original_hysteresis": true,
+      "cold": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_CDE_daily_increment_rows": 35,
+      "native_refusals": 37,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "status": "INDEPENDENT_ACTUAL_DEFAULT_CALENDAR_INPUT_SOURCE_BUDGET_PRIVATE_NATIVE_COLD_TRANSACTION_PASS",
+      "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+      "case": "hys2-dates-cde-initial2",
+      "optimization": "O0",
+      "source_contract": {
+        "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+        "complete_literal_inverses": 1,
+        "source_proposal_sha256": "fcf08affbbb2bbde3c775b8fae5b792e146b50eda6314f813833816ec7268579"
+      },
+      "days": 35,
+      "initial_pressure_nodes": 34,
+      "initial_profile": {
+        "original_initialization": 2,
+        "original_GWLI_cm": -75.0,
+        "original_node_coordinates_cm": [
+          -0.5,
+          -1.5,
+          -2.5,
+          -3.5,
+          -4.5,
+          -5.5,
+          -6.5,
+          -7.5,
+          -8.5,
+          -9.5,
+          -12.5,
+          -17.5,
+          -22.5,
+          -27.5,
+          -32.5,
+          -37.5,
+          -42.5,
+          -47.5,
+          -52.5,
+          -57.5,
+          -65.0,
+          -75.0,
+          -85.0,
+          -95.0,
+          -105.0,
+          -115.0,
+          -125.0,
+          -135.0,
+          -145.0,
+          -155.0,
+          -165.0,
+          -175.0,
+          -185.0,
+          -195.0
+        ],
+        "observer_changes_model_inputs": false
+      },
+      "actual_default_hydraulic_model": 1,
+      "native_codec": "S5CIH001",
+      "water": {
+        "days": 35,
+        "whole_water_residual_cm": 1.616513726262342e-13
+      },
+      "original_observations": {
+        "actual_original_days": 35,
+        "initial_clock": 37256.0
+      },
+      "original_input_archive_sha256": "422a6e14386ee5cf7606be1124aafd236b1ab8411bc62241416d43dfa0801c30",
+      "only_declared_selectors_changed": true,
+      "native_samples": [
+        {
+          "day": 2,
+          "sha256": "06f31b9ccfac59fe86b4d07f57ee59638484bd5cefe5ddfe38204f50ee1772d0",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              2,
+              2,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 4,
+          "sha256": "eb548fa3b7db1847ac04f2413af7a8cc796b3f23bfbf03f2aa62b13ca14cdac1",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              4,
+              4,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 7,
+          "sha256": "9f9fd8ebedad69fbcd8a47c12ae197171ba1fdbff7d725bd34366dda8e082089",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              7,
+              7,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 9,
+          "sha256": "e2a2ee1cb0a83711e9525a991fce1ca2c15ad6a557110a3e8dcc77546c1ab665",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              9,
+              9,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 30,
+          "sha256": "719c5b61609bc06804453cdd72ef5d78238ca6a2c4cec48d9045339c51bec493",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              30,
+              30,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 34,
+          "sha256": "d2bc14455e34ab2f46d648bbeb0b7f67d8a3c47f0ae762c388bc3a331e1fe03d",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              34,
+              34,
+              1,
+              1,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 35,
+          "sha256": "cdd04b5b00883a8158cf54bff08c7c3101767a4bf2bb51b3d813803b44396aee",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              35,
+              35,
+              1,
+              1,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        }
+      ],
+      "active_original_hysteresis": true,
+      "cold": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_CDE_daily_increment_rows": 35,
+      "native_refusals": 37,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "status": "INDEPENDENT_ACTUAL_DEFAULT_CALENDAR_INPUT_SOURCE_BUDGET_PRIVATE_NATIVE_COLD_TRANSACTION_PASS",
+      "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+      "case": "hys1-monthly-water-initial1",
+      "optimization": "O2",
+      "source_contract": {
+        "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+        "complete_literal_inverses": 1,
+        "source_proposal_sha256": "fcf08affbbb2bbde3c775b8fae5b792e146b50eda6314f813833816ec7268579"
+      },
+      "days": 35,
+      "initial_pressure_nodes": 34,
+      "initial_profile": {
+        "legacy_ZI_H": false,
+        "profile_knots": [
+          [
+            0.5,
+            -93.0
+          ],
+          [
+            195.0,
+            120.0
+          ]
+        ],
+        "saturated_nodes_reinitialized_by_original": 11
+      },
+      "actual_default_hydraulic_model": 1,
+      "native_codec": "S5IHW001",
+      "water": {
+        "days": 35,
+        "whole_water_residual_cm": 4.15221540961061e-13
+      },
+      "original_observations": {
+        "actual_original_days": 35,
+        "initial_clock": 37256.0
+      },
+      "original_input_archive_sha256": "422a6e14386ee5cf7606be1124aafd236b1ab8411bc62241416d43dfa0801c30",
+      "only_declared_selectors_changed": true,
+      "native_samples": [
+        {
+          "day": 2,
+          "sha256": "873446727e031cfce528dc3e26e757c05cad41e630a35ddc8efc927fbf485f0d",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              2,
+              2,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 4,
+          "sha256": "e134744f0b52ff128c7f9a7b36e297bbcfa891f28bed04f11b88e49bdb1bb0ce",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              4,
+              4,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 7,
+          "sha256": "4807abcdc6fe4961c03466418191a68d1584baf665328bd2f5a0d4d534cc8da8",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              7,
+              7,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 9,
+          "sha256": "cfac61c177efd0ec81796bfb20bb0abef9be5cc35f3149cb76df6818427dfb79",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              9,
+              9,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 30,
+          "sha256": "137796e92e51c36322200f7c5a33c619a4a941ee5d75ed0523a9a1176b5cc276",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              30,
+              30,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 34,
+          "sha256": "10ad001fb60d1c65bb397c91160fd2a6031e007a0b16241ca08454cc9d86d9e7",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              34,
+              34,
+              1,
+              1,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 35,
+          "sha256": "ba31c853949f758333231a0b997ba4ce2f5dff68798ad8966c4cc2a875d4d6ab",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              35,
+              35,
+              1,
+              1,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        }
+      ],
+      "active_original_hysteresis": true,
+      "cold": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 1,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_CDE_daily_increment_rows": 0,
+      "native_refusals": 28,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "status": "INDEPENDENT_ACTUAL_DEFAULT_CALENDAR_INPUT_SOURCE_BUDGET_PRIVATE_NATIVE_COLD_TRANSACTION_PASS",
+      "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+      "case": "hys1-monthly-water-initial2",
+      "optimization": "O2",
+      "source_contract": {
+        "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+        "complete_literal_inverses": 1,
+        "source_proposal_sha256": "fcf08affbbb2bbde3c775b8fae5b792e146b50eda6314f813833816ec7268579"
+      },
+      "days": 35,
+      "initial_pressure_nodes": 34,
+      "initial_profile": {
+        "original_initialization": 2,
+        "original_GWLI_cm": -75.0,
+        "original_node_coordinates_cm": [
+          -0.5,
+          -1.5,
+          -2.5,
+          -3.5,
+          -4.5,
+          -5.5,
+          -6.5,
+          -7.5,
+          -8.5,
+          -9.5,
+          -12.5,
+          -17.5,
+          -22.5,
+          -27.5,
+          -32.5,
+          -37.5,
+          -42.5,
+          -47.5,
+          -52.5,
+          -57.5,
+          -65.0,
+          -75.0,
+          -85.0,
+          -95.0,
+          -105.0,
+          -115.0,
+          -125.0,
+          -135.0,
+          -145.0,
+          -155.0,
+          -165.0,
+          -175.0,
+          -185.0,
+          -195.0
+        ],
+        "observer_changes_model_inputs": false
+      },
+      "actual_default_hydraulic_model": 1,
+      "native_codec": "S5IHW001",
+      "water": {
+        "days": 35,
+        "whole_water_residual_cm": 3.541453968188696e-13
+      },
+      "original_observations": {
+        "actual_original_days": 35,
+        "initial_clock": 37256.0
+      },
+      "original_input_archive_sha256": "422a6e14386ee5cf7606be1124aafd236b1ab8411bc62241416d43dfa0801c30",
+      "only_declared_selectors_changed": true,
+      "native_samples": [
+        {
+          "day": 2,
+          "sha256": "2c25dffe04eae7065ed5f08a52759bbacfe47c033cf0f6a8078de6e5f731fb87",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              2,
+              2,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 4,
+          "sha256": "ef769abb289a42a2cf99f222b149fe8df2d33ca2925cff33a481e22b3f909ffb",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              4,
+              4,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 7,
+          "sha256": "fadbcbce7f70940617c6d736e5c4a71d44deeaabb3e8fc446abc5d3e08eea876",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              7,
+              7,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 9,
+          "sha256": "c2439360427811bb4ac3f61f046c4e6686c5fcd0ad0b4d93294a2efd5950c6a5",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              9,
+              9,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 30,
+          "sha256": "b98794e21322c11251c1fce36512d6fb5c05c430708cd296af16f527385a2f88",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              30,
+              30,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 34,
+          "sha256": "3bcbce405893d765940134565ff05fd63bcb0e5ab6630543cba29a35885bfe00",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              34,
+              34,
+              1,
+              1,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 35,
+          "sha256": "e56a752d25e7394d4091d6acf57a7c400e11e976e15822708462799a0df06297",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              35,
+              35,
+              1,
+              1,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        }
+      ],
+      "active_original_hysteresis": true,
+      "cold": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 1,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_CDE_daily_increment_rows": 0,
+      "native_refusals": 28,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "status": "INDEPENDENT_ACTUAL_DEFAULT_CALENDAR_INPUT_SOURCE_BUDGET_PRIVATE_NATIVE_COLD_TRANSACTION_PASS",
+      "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+      "case": "hys2-periodic-water-initial1",
+      "optimization": "O2",
+      "source_contract": {
+        "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+        "complete_literal_inverses": 1,
+        "source_proposal_sha256": "fcf08affbbb2bbde3c775b8fae5b792e146b50eda6314f813833816ec7268579"
+      },
+      "days": 35,
+      "initial_pressure_nodes": 34,
+      "initial_profile": {
+        "legacy_ZI_H": false,
+        "profile_knots": [
+          [
+            0.5,
+            -93.0
+          ],
+          [
+            195.0,
+            120.0
+          ]
+        ],
+        "saturated_nodes_reinitialized_by_original": 11
+      },
+      "actual_default_hydraulic_model": 1,
+      "native_codec": "S5IHW001",
+      "water": {
+        "days": 35,
+        "whole_water_residual_cm": 2.5966021325284083e-13
+      },
+      "original_observations": {
+        "actual_original_days": 35,
+        "initial_clock": 37256.0
+      },
+      "original_input_archive_sha256": "422a6e14386ee5cf7606be1124aafd236b1ab8411bc62241416d43dfa0801c30",
+      "only_declared_selectors_changed": true,
+      "native_samples": [
+        {
+          "day": 2,
+          "sha256": "1b84a10f914c761a4c258bf7d14efb4fdcfbacc465891057cd3c725f2392aa6f",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              2,
+              2,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 4,
+          "sha256": "d78ee51e47e4c7f38149beceafa86ed7186ac95bdc4c9e5befc245f47c6575be",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              4,
+              4,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 7,
+          "sha256": "b284a91ec7dcfa6b32a2bae63daa064b5ce5bcf86575e225f13c7a92a4f0b007",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              7,
+              0,
+              1,
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 9,
+          "sha256": "1ac74fa62c88dd5386c36136c31b87e17380620b3af5fae556cf222c8558841b",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              9,
+              2,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 30,
+          "sha256": "bd19b4828e729cb0fa6c3312491cc00eddaa8851b6b6640a29c8c9c8e570f1a3",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              30,
+              2,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 34,
+          "sha256": "22ff03eca61869e8a6453537a01b98b13e71f633174d266e568019941d4b0949",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              34,
+              6,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 35,
+          "sha256": "2dcb4bb80730c86fa53ffd8b530d1bb2fbc55312ddb8f2ad0131154a2a6b5926",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              35,
+              0,
+              1,
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        }
+      ],
+      "active_original_hysteresis": true,
+      "cold": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_CDE_daily_increment_rows": 0,
+      "native_refusals": 0,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "status": "INDEPENDENT_ACTUAL_DEFAULT_CALENDAR_INPUT_SOURCE_BUDGET_PRIVATE_NATIVE_COLD_TRANSACTION_PASS",
+      "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+      "case": "hys2-periodic-water-initial2",
+      "optimization": "O2",
+      "source_contract": {
+        "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+        "complete_literal_inverses": 1,
+        "source_proposal_sha256": "fcf08affbbb2bbde3c775b8fae5b792e146b50eda6314f813833816ec7268579"
+      },
+      "days": 35,
+      "initial_pressure_nodes": 34,
+      "initial_profile": {
+        "original_initialization": 2,
+        "original_GWLI_cm": -75.0,
+        "original_node_coordinates_cm": [
+          -0.5,
+          -1.5,
+          -2.5,
+          -3.5,
+          -4.5,
+          -5.5,
+          -6.5,
+          -7.5,
+          -8.5,
+          -9.5,
+          -12.5,
+          -17.5,
+          -22.5,
+          -27.5,
+          -32.5,
+          -37.5,
+          -42.5,
+          -47.5,
+          -52.5,
+          -57.5,
+          -65.0,
+          -75.0,
+          -85.0,
+          -95.0,
+          -105.0,
+          -115.0,
+          -125.0,
+          -135.0,
+          -145.0,
+          -155.0,
+          -165.0,
+          -175.0,
+          -185.0,
+          -195.0
+        ],
+        "observer_changes_model_inputs": false
+      },
+      "actual_default_hydraulic_model": 1,
+      "native_codec": "S5IHW001",
+      "water": {
+        "days": 35,
+        "whole_water_residual_cm": 1.616513726262342e-13
+      },
+      "original_observations": {
+        "actual_original_days": 35,
+        "initial_clock": 37256.0
+      },
+      "original_input_archive_sha256": "422a6e14386ee5cf7606be1124aafd236b1ab8411bc62241416d43dfa0801c30",
+      "only_declared_selectors_changed": true,
+      "native_samples": [
+        {
+          "day": 2,
+          "sha256": "57b05ae197741cc346b81d0df32c8d4135638b933d55995ac110eb234afe79c0",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              2,
+              2,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 4,
+          "sha256": "376caf9d77a576503bf364455912558920de19fcb175ca640475cb103e7f600a",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              4,
+              4,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 7,
+          "sha256": "a426f93dfd32c26c28b398ee761bac3b010a178cad89726abf61f7ae07242593",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              7,
+              0,
+              1,
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 9,
+          "sha256": "b6789ef46c983531627ae14bc29c36168d806b6d108cb396c8e1a65ea45870fd",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              9,
+              2,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 30,
+          "sha256": "7e4f699c943364bf3ac4cc97d3905814d2c6d8fd9d88600fc6a293c71a52e8ca",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              30,
+              2,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 34,
+          "sha256": "8d7c6c982c5f0aca426513f17b1635f58c6f3bc01cce8f158f6c6429bddaba17",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              34,
+              6,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        },
+        {
+          "day": 35,
+          "sha256": "62d9ef1d8998cdbf7ecc46614215642ee73d112d15781a49fa48ec298f0b64f1",
+          "calendar": {
+            "calendar_offset": 1362380,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              7,
+              1,
+              35,
+              0,
+              1,
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1466748
+          }
+        }
+      ],
+      "active_original_hysteresis": true,
+      "cold": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_CDE_daily_increment_rows": 0,
+      "native_refusals": 0,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "status": "INDEPENDENT_ACTUAL_DEFAULT_CALENDAR_INPUT_SOURCE_BUDGET_PRIVATE_NATIVE_COLD_TRANSACTION_PASS",
+      "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+      "case": "hys2-dates-cde-initial1",
+      "optimization": "O2",
+      "source_contract": {
+        "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+        "complete_literal_inverses": 1,
+        "source_proposal_sha256": "fcf08affbbb2bbde3c775b8fae5b792e146b50eda6314f813833816ec7268579"
+      },
+      "days": 35,
+      "initial_pressure_nodes": 34,
+      "initial_profile": {
+        "legacy_ZI_H": false,
+        "profile_knots": [
+          [
+            0.5,
+            -93.0
+          ],
+          [
+            195.0,
+            120.0
+          ]
+        ],
+        "saturated_nodes_reinitialized_by_original": 11
+      },
+      "actual_default_hydraulic_model": 1,
+      "native_codec": "S5CIH001",
+      "water": {
+        "days": 35,
+        "whole_water_residual_cm": 2.5966021325284083e-13
+      },
+      "original_observations": {
+        "actual_original_days": 35,
+        "initial_clock": 37256.0
+      },
+      "original_input_archive_sha256": "422a6e14386ee5cf7606be1124aafd236b1ab8411bc62241416d43dfa0801c30",
+      "only_declared_selectors_changed": true,
+      "native_samples": [
+        {
+          "day": 2,
+          "sha256": "b7c2c72f0897fb54793963aaebba8a6ee49700ef890b90994e2a663ac9f3d794",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              2,
+              2,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 4,
+          "sha256": "0acf0abb4b8d3925d348efb5150810b1227bad318de015b3ce5330c58a0f0326",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              4,
+              4,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 7,
+          "sha256": "1e6d3b1d27c7bf4ff17aae3440aac0687b4e7c2d83bf2d00775cdd0412ff85e6",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              7,
+              7,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 9,
+          "sha256": "d77b23e16ff5d0037e9078439ccdeb83a51a598a2eb5475ecb26f3f51492f902",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              9,
+              9,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 30,
+          "sha256": "22f15e757bd14694f56474edb656de2c18a76e00b7d7d3be4b621f4f6cef0fba",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              30,
+              30,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 34,
+          "sha256": "925bff377cdbf608f9b55b42ea5f3677fb36e0486d94dc69eee85cbfdd3e6ce0",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              34,
+              34,
+              1,
+              1,
+              3,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 35,
+          "sha256": "48d3bdc07789829e0ee6704661884ff39f72dcf79f4fb5489343904fdd437f34",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              35,
+              35,
+              1,
+              1,
+              3,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        }
+      ],
+      "active_original_hysteresis": true,
+      "cold": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_CDE_daily_increment_rows": 35,
+      "native_refusals": 37,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "status": "INDEPENDENT_ACTUAL_DEFAULT_CALENDAR_INPUT_SOURCE_BUDGET_PRIVATE_NATIVE_COLD_TRANSACTION_PASS",
+      "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+      "case": "hys2-dates-cde-initial2",
+      "optimization": "O2",
+      "source_contract": {
+        "actual_producer": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+        "complete_literal_inverses": 1,
+        "source_proposal_sha256": "fcf08affbbb2bbde3c775b8fae5b792e146b50eda6314f813833816ec7268579"
+      },
+      "days": 35,
+      "initial_pressure_nodes": 34,
+      "initial_profile": {
+        "original_initialization": 2,
+        "original_GWLI_cm": -75.0,
+        "original_node_coordinates_cm": [
+          -0.5,
+          -1.5,
+          -2.5,
+          -3.5,
+          -4.5,
+          -5.5,
+          -6.5,
+          -7.5,
+          -8.5,
+          -9.5,
+          -12.5,
+          -17.5,
+          -22.5,
+          -27.5,
+          -32.5,
+          -37.5,
+          -42.5,
+          -47.5,
+          -52.5,
+          -57.5,
+          -65.0,
+          -75.0,
+          -85.0,
+          -95.0,
+          -105.0,
+          -115.0,
+          -125.0,
+          -135.0,
+          -145.0,
+          -155.0,
+          -165.0,
+          -175.0,
+          -185.0,
+          -195.0
+        ],
+        "observer_changes_model_inputs": false
+      },
+      "actual_default_hydraulic_model": 1,
+      "native_codec": "S5CIH001",
+      "water": {
+        "days": 35,
+        "whole_water_residual_cm": 1.616513726262342e-13
+      },
+      "original_observations": {
+        "actual_original_days": 35,
+        "initial_clock": 37256.0
+      },
+      "original_input_archive_sha256": "422a6e14386ee5cf7606be1124aafd236b1ab8411bc62241416d43dfa0801c30",
+      "only_declared_selectors_changed": true,
+      "native_samples": [
+        {
+          "day": 2,
+          "sha256": "06f31b9ccfac59fe86b4d07f57ee59638484bd5cefe5ddfe38204f50ee1772d0",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              2,
+              2,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 4,
+          "sha256": "eb548fa3b7db1847ac04f2413af7a8cc796b3f23bfbf03f2aa62b13ca14cdac1",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              4,
+              4,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 7,
+          "sha256": "9f9fd8ebedad69fbcd8a47c12ae197171ba1fdbff7d725bd34366dda8e082089",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              7,
+              7,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 9,
+          "sha256": "e2a2ee1cb0a83711e9525a991fce1ca2c15ad6a557110a3e8dcc77546c1ab665",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              9,
+              9,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 30,
+          "sha256": "719c5b61609bc06804453cdd72ef5d78238ca6a2c4cec48d9045339c51bec493",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              30,
+              30,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 34,
+          "sha256": "d2bc14455e34ab2f46d648bbeb0b7f67d8a3c47f0ae762c388bc3a331e1fe03d",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              34,
+              34,
+              1,
+              1,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        },
+        {
+          "day": 35,
+          "sha256": "cdd04b5b00883a8158cf54bff08c7c3101767a4bf2bb51b3d813803b44396aee",
+          "calendar": {
+            "calendar_offset": 1362668,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              0,
+              1,
+              35,
+              35,
+              1,
+              1,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1467036
+          }
+        }
+      ],
+      "active_original_hysteresis": true,
+      "cold": [
+        {
+          "start": 2,
+          "end": 4,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 7,
+          "end": 9,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 0,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        },
+        {
+          "start": 30,
+          "end": 34,
+          "complete_payload_equal": true,
+          "exact_original_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 2,
+              "kind": "original_REAL4_binary"
+            }
+          }
+        }
+      ],
+      "actual_CDE_daily_increment_rows": 35,
+      "native_refusals": 37,
+      "compiler_executions": 0,
+      "model_executions": 0,
+      "canonical_admission": false
+    }
+  ],
+  "actual_original_SDK_bindings": [
+    {
+      "case": "hys1-monthly-water-initial1",
+      "optimization": "O0",
+      "donor_objects": 47,
+      "donor_modules": 60,
+      "ttutil_modules": 4,
+      "actual_compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+      "actual_donor_flags": [
+        "-O0",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ],
+      "actual_kernel_flags": [
+        "-O0",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ]
+    },
+    {
+      "case": "hys1-monthly-water-initial2",
+      "optimization": "O0",
+      "donor_objects": 47,
+      "donor_modules": 60,
+      "ttutil_modules": 4,
+      "actual_compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+      "actual_donor_flags": [
+        "-O0",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ],
+      "actual_kernel_flags": [
+        "-O0",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ]
+    },
+    {
+      "case": "hys2-periodic-water-initial1",
+      "optimization": "O0",
+      "donor_objects": 47,
+      "donor_modules": 60,
+      "ttutil_modules": 4,
+      "actual_compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+      "actual_donor_flags": [
+        "-O0",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ],
+      "actual_kernel_flags": [
+        "-O0",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ]
+    },
+    {
+      "case": "hys2-periodic-water-initial2",
+      "optimization": "O0",
+      "donor_objects": 47,
+      "donor_modules": 60,
+      "ttutil_modules": 4,
+      "actual_compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+      "actual_donor_flags": [
+        "-O0",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ],
+      "actual_kernel_flags": [
+        "-O0",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ]
+    },
+    {
+      "case": "hys2-dates-cde-initial1",
+      "optimization": "O0",
+      "donor_objects": 46,
+      "donor_modules": 60,
+      "ttutil_modules": 4,
+      "actual_compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+      "actual_donor_flags": [
+        "-O0",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ],
+      "actual_kernel_flags": [
+        "-O0",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ]
+    },
+    {
+      "case": "hys2-dates-cde-initial2",
+      "optimization": "O0",
+      "donor_objects": 46,
+      "donor_modules": 60,
+      "ttutil_modules": 4,
+      "actual_compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+      "actual_donor_flags": [
+        "-O0",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ],
+      "actual_kernel_flags": [
+        "-O0",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ]
+    },
+    {
+      "case": "hys1-monthly-water-initial1",
+      "optimization": "O2",
+      "donor_objects": 47,
+      "donor_modules": 60,
+      "ttutil_modules": 4,
+      "actual_compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+      "actual_donor_flags": [
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ],
+      "actual_kernel_flags": [
+        "-O2",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ]
+    },
+    {
+      "case": "hys1-monthly-water-initial2",
+      "optimization": "O2",
+      "donor_objects": 47,
+      "donor_modules": 60,
+      "ttutil_modules": 4,
+      "actual_compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+      "actual_donor_flags": [
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ],
+      "actual_kernel_flags": [
+        "-O2",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ]
+    },
+    {
+      "case": "hys2-periodic-water-initial1",
+      "optimization": "O2",
+      "donor_objects": 47,
+      "donor_modules": 60,
+      "ttutil_modules": 4,
+      "actual_compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+      "actual_donor_flags": [
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ],
+      "actual_kernel_flags": [
+        "-O2",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ]
+    },
+    {
+      "case": "hys2-periodic-water-initial2",
+      "optimization": "O2",
+      "donor_objects": 47,
+      "donor_modules": 60,
+      "ttutil_modules": 4,
+      "actual_compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+      "actual_donor_flags": [
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ],
+      "actual_kernel_flags": [
+        "-O2",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ]
+    },
+    {
+      "case": "hys2-dates-cde-initial1",
+      "optimization": "O2",
+      "donor_objects": 46,
+      "donor_modules": 60,
+      "ttutil_modules": 4,
+      "actual_compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+      "actual_donor_flags": [
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ],
+      "actual_kernel_flags": [
+        "-O2",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ]
+    },
+    {
+      "case": "hys2-dates-cde-initial2",
+      "optimization": "O2",
+      "donor_objects": 46,
+      "donor_modules": 60,
+      "ttutil_modules": 4,
+      "actual_compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+      "actual_donor_flags": [
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ],
+      "actual_kernel_flags": [
+        "-O2",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ]
+    }
+  ],
+  "context_count": 12,
+  "primary_days": 420,
+  "native_samples": 84,
+  "exact_cold_windows": 36,
+  "compiled_refusals_from_complete_successful_controls": 260,
+  "original_native_failures": [
+    {
+      "case": "hys2-periodic-water-initial1",
+      "optimization": "O0",
+      "actual_original_runtime_source": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+      "actual_original_native_failure": "AssertionError(('counter', 100))",
+      "actual_accepted_counter_mutant_sha256": "40e2c12d95b3600fe4793df63d38e32ca3c7e365a333521c94fe023c15e9fadf",
+      "unchanged_independent_observer_refusal": "Actual original calendar numerical policy/day/counters differ",
+      "original_roles_rebound": false
+    },
+    {
+      "case": "hys2-periodic-water-initial2",
+      "optimization": "O0",
+      "actual_original_runtime_source": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+      "actual_original_native_failure": "AssertionError(('counter', 100))",
+      "actual_accepted_counter_mutant_sha256": "0710411f460d06600e10090bf206d8bf76260f7f298c80a9e78a0d11cdf73d73",
+      "unchanged_independent_observer_refusal": "Actual original calendar numerical policy/day/counters differ",
+      "original_roles_rebound": false
+    },
+    {
+      "case": "hys2-periodic-water-initial1",
+      "optimization": "O2",
+      "actual_original_runtime_source": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+      "actual_original_native_failure": "AssertionError(('counter', 100))",
+      "actual_accepted_counter_mutant_sha256": "40e2c12d95b3600fe4793df63d38e32ca3c7e365a333521c94fe023c15e9fadf",
+      "unchanged_independent_observer_refusal": "Actual original calendar numerical policy/day/counters differ",
+      "original_roles_rebound": false
+    },
+    {
+      "case": "hys2-periodic-water-initial2",
+      "optimization": "O2",
+      "actual_original_runtime_source": "9f794ca219367b85b79bdd9850617e4e26c691a1",
+      "actual_original_native_failure": "AssertionError(('counter', 100))",
+      "actual_accepted_counter_mutant_sha256": "0710411f460d06600e10090bf206d8bf76260f7f298c80a9e78a0d11cdf73d73",
+      "unchanged_independent_observer_refusal": "Actual original calendar numerical policy/day/counters differ",
+      "original_roles_rebound": false
+    }
+  ],
+  "original_native_failure_contexts_not_qualified": 4,
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "additional_local_contexts_counted_again": false,
+  "canonical_admission": false
+}

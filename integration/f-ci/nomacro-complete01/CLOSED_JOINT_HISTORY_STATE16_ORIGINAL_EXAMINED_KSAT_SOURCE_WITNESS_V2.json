@@ -1,0 +1,24 @@
+{
+  "status": "TWO_ACTUAL_ORIGINAL_PROVIDER_REFUSAL_SNIPPETS_WITH_DISTINCT_SOURCE_IDENTITIES_RETAINED",
+  "original_providers": [
+    {
+      "path": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\reference\\swap-4.3.1\\b1_11_frost_source\\SWAP\\MOD_MvG_functions.f90",
+      "actual_file_sha256": "6b65637866476581b283eb3d61c3aa0dfe4b51f84223f6eea571ac25ecac1104",
+      "actual_LF_branch_sha256": "2b58ac0c60ca3bc986dd56b2a843ef51cae622add158de6349bccedbefb4c444",
+      "original_LF_branch": "if (cofgen(10,node) > 0.0d0 .AND. relsat > cofgen(11,node)) then\n               message = 'Linear interpolation option for examined ksat not yet implemented for implicit hydraulic conductivity (swKimpl=1) in iteration scheme'\n               call swap_error ('dhconduc', message)\n            end if"
+    },
+    {
+      "path": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-selected\\MOD_MvG_functions.f90",
+      "actual_file_sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
+      "actual_LF_branch_sha256": "390095850fdf4f62c4b5f41691a55683e9c84ef2b972482e87da7c1c44f4db29",
+      "original_LF_branch": "if (cofgen(10,node) > 0.0d0 .AND.  relsat > cofgen(11,node)) then\n               message = 'Linear interpolation option for examined ksat not yet implemented for implicit hydraulic conductivity (swKimpl=1) in iteration scheme'\n               call swap_error ('dhconduc', message)\n            end if"
+    }
+  ],
+  "branch_byte_equality_claimed": false,
+  "first_literal_equality_assertion": "REFUSED: original reference has one space and original J has two spaces before relsat; both actual snippets retained without normalization",
+  "whole_original_full_period_causality": "UNKNOWN_ZERO_DAY_INITIALIZATION_DOES_NOT_ESTABLISH_PERIOD_BRANCH_ACTIVATION",
+  "earlier_input_guard_refusals_retained": true,
+  "parameter_values_changed": false,
+  "compiler_executions": 0,
+  "model_executions": 0
+}

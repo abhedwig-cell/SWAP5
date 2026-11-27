@@ -1,0 +1,40 @@
+{
+  "status": "ONE_ACTUAL_APP_OWNER_COMPOSITION_COMPLETE_LITERAL_PARENT_INVERSE",
+  "actual_parent": "857b25a81c88626075b91f46a3fb42e9fce801f3",
+  "path": "app/hybrid_water/closed_default_calendar.py",
+  "original_sha256": "daffd08b4d10072aae145d7e56f11bbc201c0e96b9762aa5eabac7e3a3795ac3",
+  "actual_installed_source_bytes_sha256": "05888bdfd4ac73c0b50fa80e9418a5a4369d2607a9097dee40caa87933f92252",
+  "source_representation": "actual installed canonical LF bytes; complete original Git parent bytes",
+  "edits": [
+    {
+      "before": "GROUNDWATER_POLICY='original-closed-default-groundwater-nondaily-calendar-composition-v1'",
+      "after": "GROUNDWATER_POLICY='original-closed-default-groundwater-nondaily-calendar-composition-v1'\nCOUPLED_POLICY='original-closed-default-implicit-hysteresis-nondaily-calendar-composition-v1'"
+    },
+    {
+      "before": "    # The existing qualified non-daily state classes retain their original\n    # hysteresis/implicit ownership. Their simultaneous composition is separate.\n    if selectors['SWKIMPL'] and selectors['SWHYST']:return None",
+      "after": "    # Compose the existing original implicit and hysteresis state owners.\n    # Dense output and every older separate-owner policy remain unchanged."
+    },
+    {
+      "before": "policy=POLICY if selectors['SWINCO']==1 else GROUNDWATER_POLICY",
+      "after": "policy=COUPLED_POLICY if selectors['SWKIMPL'] and selectors['SWHYST'] else POLICY if selectors['SWINCO']==1 else GROUNDWATER_POLICY"
+    },
+    {
+      "before": "def render_trial_domain(source,project):",
+      "after": "def render_regular_counter_validation(source,project):\n    \"\"\"Validate the original periodic counter; never assign a restored state.\"\"\"\n    selected=selection(project)\n    if selected is None or not selected['implicit'] or not selected['history'] or project.solute:return source\n    from original_output_hysteresis import selection as output_selection\n    output=output_selection(project)\n    if output['flprintdt'] or output['nprintday']!=1 or output['swmonth'] or output['swodat'] or output['period']<=0:return source\n    declaration='integer::header(20),witness_header(20),ios,nreal'\n    if source.count(declaration)!=1:raise ValueError('Changed complete joint calendar native declaration')\n    source=source.replace(declaration,declaration+'\\ninteger::joint_expected,joint_date(6)\\nreal(4)::joint_seconds\\nreal(8)::joint_day,joint_jan1',1)\n    anchor=\" if(header(12)/=swres.or.minval(header(7:11))<0)error stop 'Invalid original output calendar counters'\"\n    if source.count(anchor)!=1:raise ValueError('Changed complete joint calendar native counter guard')\n    validation=\"\"\"\n ! Read only: original TimeControl count modulo PERIOD, including its SWRES1 year reset.\n joint_expected=header(7)\n if(swres==1.and.header(7)>0)then\n  joint_day=original_output_start_clock+dble(header(7))-1d0\n  call dtdpar(joint_day+0.1d0,joint_date,joint_seconds)\n  joint_date(2:6)=0;joint_date(2)=1;joint_date(3)=1\n  call dtardp(joint_date,0.0,joint_jan1)\n  joint_expected=min(header(7),nint(joint_day-joint_jan1)+1)\n end if\n if(header(8)/=mod(joint_expected,period))error stop 'Foreign original joint regular output counter'\n\"\"\"\n    return source.replace(anchor,anchor+validation,1)\n\n\ndef render_trial_domain(source,project):"
+    },
+    {
+      "before": "    selected=selection(project)\n    if selected is None or not selected['clock'] or project.solute:return source",
+      "after": "    selected=selection(project)\n    source=render_regular_counter_validation(source,project)\n    if selected is None or not selected['clock'] or project.solute:return source"
+    }
+  ],
+  "preserves_original_initial1_policy_identity": true,
+  "preserves_original_initial2_policy_identity": true,
+  "new_initial3_claimed": false,
+  "new_numerical_policy": false,
+  "physical_equations_changed": false,
+  "new_physical_state": false,
+  "new_native_codec": false,
+  "parameter_tables_or_tolerances_changed": false,
+  "targeted_native_counter_validation_only": true,
+  "native_counter_assigned_or_normalized": false
+}
