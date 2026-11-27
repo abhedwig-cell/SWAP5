@@ -3,7 +3,7 @@ import re
 
 def input_domain(text,selectors,original_output=True):
     if original_output is False:return False
-    fixed=dict(SWMACRO=0,SWDRA=0,SWBOTB=6,SWBR=0,SWSOPHY=0,SWFROST=0,
+    fixed=dict(SWMACRO=0,SWDRA=0,SWBOTB=7,SWBR=0,SWSOPHY=0,SWFROST=0,
                SWHEA=1,SWCALT=2,SWMETDETAIL=0)
     if any(selectors.get(k)!=v for k,v in fixed.items()):return False
     if any(selectors.get(k) not in values for k,values in
