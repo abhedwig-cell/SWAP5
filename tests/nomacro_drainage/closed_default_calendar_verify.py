@@ -10,6 +10,7 @@ from closed_default_calendar_local_archive_science import audit as local
 from closed_default_calendar_preservation_science import audit as preservation
 from closed_default_calendar_inherited_domains import audit as inherited_domains
 from closed_default_calendar_ci_custody import audit as ci_custody
+from closed_default_calendar_checkout import audit as checkout_custody
 import closed_implicit_state_verify as previous
 SEALED='9f5f428f4dc40ed6b52512e751369113d9313ec4'
 
@@ -38,7 +39,7 @@ def raw_custody():
                 value=z.read(key);assert len(value)==item['bytes'] and SHA(value)==item['sha256']
             count=len(z.namelist())
         observed.append(dict(archive=q['archive'],bytes=q['bytes'],sha256=q['sha256'],members=count))
-    assert len(observed)==9
+    assert len(observed)==10
     return observed
 
 
@@ -54,7 +55,7 @@ def publication_dependencies_unchanged():
 
 
 def verify():
-    current=source(SEALED);parent=parent_admission();data=data_source();raw=raw_custody();ci=ci_custody(data)
+    current=source(SEALED);parent=parent_admission();data=data_source();raw=raw_custody();ci=ci_custody(data);checkout=checkout_custody()
     assert ci==frozen('CLOSED_DEFAULT_CALENDAR_STATE14_ORIGINAL_CI_INDEPENDENT_V1')
     results=[]
     for platform in ['Ubuntu','Windows']:
@@ -76,7 +77,7 @@ def verify():
     coadmission.update(contexts=1024,short35_contexts=coadmission['short35_contexts']+20,native_calendar_samples=coadmission['native_calendar_samples']+140,exact_cold_windows=coadmission['exact_cold_windows']+60,
         new_closed_default_calendar_contexts=20,new_closed_default_calendar_primary_days=700,new_closed_default_calendar_compiled_refusals=584,new_closed_default_calendar_external_transactions=20,previous_canonical=BASE)
     return dict(status='BOUNDED_ORIGINAL_CLOSED_DEFAULT_MODEL1_PRESSURE_CALENDAR_NATIVE_COLD_AND_TRANSACTIONS_SOURCE_PASS',actual_current_source=current,parent_historical_admission=parent,
-        actual_raw_custody=raw,actual_original_portable_CI_custody=ci,new_original_portable_science=results,additional_actual_local_science=actual_local,
+        actual_raw_custody=raw,actual_original_portable_CI_custody=ci,actual_two_checkout_body_custody=checkout,new_original_portable_science=results,additional_actual_local_science=actual_local,
         actual_old_numerical_and_native_preservation=actual_preservation,actual_non1_closed_domains_preserved=actual_inherited,unchanged_MCSOL_selection=mcsol,coadmission=coadmission,
         deferred_numerical_cases=deferred,current_finite_batch_deferred_numerical_cases=[],scientific_change_class='EXISTING_DEFAULT_HYDRAULIC_PROCESS_STATE_AND_OUTPUT_COMPOSITION',
         additional_local_contexts_counted_again=False,unchanged_periods_replayed=False,original_scientific_producers_rebound=False,original_scientific_water_limit_cm='1e-10',original_scientific_cde_limit_mg_cm2='1e-10',

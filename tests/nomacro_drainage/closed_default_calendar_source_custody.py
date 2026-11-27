@@ -33,7 +33,7 @@ def source(anchor):
     left,a=re.subn(pattern,b"SEALED='SOURCE_ANCHOR'",git('show','HEAD:'+SELF));right,b=re.subn(pattern,b"SEALED='SOURCE_ANCHOR'",git('show',anchor+':'+SELF))
     assert a==b==1 and left==right
     literal=complete_inverse();contract=json.loads(git('show','HEAD:'+PREFIX+'CLOSED_DEFAULT_CALENDAR_STATE14_SOURCE_PROPOSAL_V3.json'))
-    expected={p for p,item in contract['files'].items() if not item['new_file']}|{JOINT,'.github/workflows/fci-canonical.yml'}|metadata
+    expected={p for p,item in contract['files'].items() if not item['new_file']}|{JOINT,'.github/workflows/fci-canonical.yml','tests/hupsel51/test_successor.py'}|metadata
     assert {p for p in old if old[p]!=current[p]}==expected
     actual=(ROOT/JOINT).read_bytes().replace(b'\r\n',b'\n')
     for name in ['guard_previous_source','verify','strip_current_evidence','publication_dependencies_unchanged']:
@@ -47,6 +47,14 @@ def source(anchor):
     full=b'            /*\n            !/integration/**/*.zip\n            !/integration/**/*.zip.part*\n'
     assert raw.count(full)==2
     assert raw.replace(full,b'            /*\n',2)==git('show',BASE+':'+workflow)
+    test_path='tests/hupsel51/test_successor.py'
+    before="                else:new=checkout.historical_workflow(path,new)\n"
+    after=("                else:\n"
+           "                    spec=importlib.util.spec_from_file_location('actual_closed_default_checkout_custody',s.ROOT/'tests/nomacro_drainage/closed_default_calendar_checkout.py')\n"
+           "                    custody=importlib.util.module_from_spec(spec);spec.loader.exec_module(custody)\n"
+           "                    new=checkout.historical_workflow(path,custody.historical_parent(path,new))\n")
+    raw=(ROOT/test_path).read_bytes().replace(b'\r\n',b'\n');assert raw.count(after.encode())==1
+    assert raw.replace(after.encode(),before.encode(),1)==git('show',BASE+':'+test_path)
     eols={};patterns=[':(glob)**/*.'+ext for ext in ['py','json','md','yml','yaml','f90','F90','f','F','txt','toml','ini','cfg','cmake','xml','sh','ps1','cpp','c','h']]
     for row in git('ls-files','--eol','-z','--',*patterns).split(b'\0'):
         if row:
