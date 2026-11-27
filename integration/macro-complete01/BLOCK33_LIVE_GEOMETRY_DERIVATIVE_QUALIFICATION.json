@@ -1,0 +1,82 @@
+{
+  "scope": "Actualoldrefusaltime35836.018, deficitbetween1e-6and1e-4, originalinactivegeometry. Threefullcoupledmacrocolumns/twoFDscales, absolute1e-8differentialbound unchanged. Noallregimes/fullperiodclaim.",
+  "results": [
+    {
+      "opt": "O0",
+      "checks": [
+        {
+          "time": 35836.018000000004,
+          "dt": 0.002,
+          "iteration": 2.0,
+          "column": 73,
+          "Jnorm": 0.4121550435279399,
+          "error_e": 1.0373785164219385e-10,
+          "error_half_e": 1.203555033413295e-10,
+          "worst_node": 92
+        },
+        {
+          "time": 35836.018000000004,
+          "dt": 0.002,
+          "iteration": 2.0,
+          "column": 74,
+          "Jnorm": 0.3780988737354893,
+          "error_e": 3.672945281252282e-11,
+          "error_half_e": 1.3773887586054911e-10,
+          "worst_node": 92
+        },
+        {
+          "time": 35836.018000000004,
+          "dt": 0.002,
+          "iteration": 2.0,
+          "column": 72,
+          "Jnorm": 0.0,
+          "error_e": 0.0,
+          "error_half_e": 0.0,
+          "worst_node": 1
+        }
+      ],
+      "physical25_matrix_flux_restore_exact": true,
+      "full_day_native_exact_to_uninstrumented_candidate": true,
+      "elapsed_seconds": 7.329436799976975
+    },
+    {
+      "opt": "O2",
+      "checks": [
+        {
+          "time": 35836.018000000004,
+          "dt": 0.002,
+          "iteration": 2.0,
+          "column": 73,
+          "Jnorm": 0.4121550435279399,
+          "error_e": 1.0373785164219385e-10,
+          "error_half_e": 1.203555033413295e-10,
+          "worst_node": 92
+        },
+        {
+          "time": 35836.018000000004,
+          "dt": 0.002,
+          "iteration": 2.0,
+          "column": 74,
+          "Jnorm": 0.3780988737354893,
+          "error_e": 3.672945281252282e-11,
+          "error_half_e": 1.3773887586054911e-10,
+          "worst_node": 92
+        },
+        {
+          "time": 35836.018000000004,
+          "dt": 0.002,
+          "iteration": 2.0,
+          "column": 72,
+          "Jnorm": 0.0,
+          "error_e": 0.0,
+          "error_half_e": 0.0,
+          "worst_node": 1
+        }
+      ],
+      "physical25_matrix_flux_restore_exact": true,
+      "full_day_native_exact_to_uninstrumented_candidate": true,
+      "elapsed_seconds": 5.661155899986625
+    }
+  ],
+  "models_launched": 0
+}

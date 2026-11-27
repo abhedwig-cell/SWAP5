@@ -11,6 +11,7 @@ implicit none
 integer,intent(in)::n
 real(8),intent(out)::uu(macp,madm+1),vv(macp,madm+1),bl,bd,diag_extra(macp),meta(16)
 logical,intent(out)::eligible
+logical,external::macro_geometry_frozen_cell
 real(8)::cm(24,madm),pot(macp,madm),pu(macp,madm),valid,den,g,g0,g1,depth,hm,delta,doo,rhoslope,cg,fr,dq,qp,latvalid,dI(macp),proof_base(macp),proof_meta(10),ct0(madm),ct1(madm),nativeU(madm),du0,du1,contact_valid,contactD1(2),upperIn(macp),dUpperIn(macp),upperValid,frIn1,upperG0,upperG1,upperBase(macp),dUpperOut(macp),upperContact(macp),lowerPS(macp),lowerPU(macp),lowerDL(macp),lowerL,lowerO,lowerF
 real(8)::ordinary_base(macp,madm),ordinary_native
 integer::d,k,i,cell,upper,lower
@@ -140,7 +141,7 @@ if(frIn1>0d0.and.frIn1<1d0)then
  if(cm(7,1)<=cm(3,1)+1d-7)return
  if(abs(frIn1-(cm(3,1)-cm(1,1)+cm(6,1))/cm(5,1))>256d0*epsilon(1d0)* &
   max(1d0,abs(cm(3,1)/cm(5,1))))return
- if(thetas(cell)-theta(cell)>1d-6)return
+ if(.not.macro_geometry_frozen_cell(cell))return
  call macro_upper1_data(upperIn,upperValid)
  if(upperValid/=1d0)return
  if(abs(sum(upperIn(1:n))-cm(5,1))>128d0*epsilon(1d0)*max(cm(5,1),tiny(1d0)))return
@@ -201,7 +202,7 @@ if(frIn1==1d0.and.lowerF>0d0.and.lowerF<1d0)then
  if(abs(cm(5,1)-sum(cm(9:12,1)))>128d0*epsilon(1d0)*max(cm(5,1),tiny(1d0)))return
  if(abs(lowerO-sum(cm(13:15,1)))>128d0*epsilon(1d0)*max(lowerO,tiny(1d0)))return
  if(any(QOutMtxUnsDmCp(1,cell+1:n)/=0d0))return
- if(thetas(cell)-theta(cell)>1d-6)return
+ if(.not.macro_geometry_frozen_cell(cell))return
  call macro_upper1_data(upperIn,upperValid)
  if(upperValid/=1d0)return
  if(abs(sum(upperIn(1:n))-cm(12,1))>128d0*epsilon(1d0)*max(cm(12,1),tiny(1d0)))return
@@ -385,6 +386,7 @@ real(8),intent(in)::hold(n),difh(n),cap
 real(8),intent(inout)::factor
 real(8)::cm(24,madm),ps(macp,madm),pu(macp,madm),valid,zm,A,B,num,den,lambda,tie
 integer::cell,upper,lower,d
+logical,external::macro_geometry_frozen_cell
 integer,save::u=0
 if(n/=numnod.or.cap<=0d0.or.swmbf/=1.or.IDecMpRat/=0.or.FrReduQ/=1d0)return
 call macro_saturated_data(cm,ps,pu,valid)
@@ -395,7 +397,7 @@ if(hold(cell)<0d0)then
  upper=cell;lower=cell+1
 end if
 if(hold(upper)>=0d0.or.hold(lower)<=0d0)return
-if(thetas(cell)-theta(cell)>1d-6.or.VlMpDyCp(cell)/=0d0.or.SubsidCp(cell)/=0d0)return
+if(.not.macro_geometry_frozen_cell(cell))return
 do d=2,NumDm
  if(cm(8,d)/=1d0.or.cm(22,d)/=0d0.or.cm(18,d)<=0d0.or.cm(2,d)/=min(cm(4,d),cm(1,d)))cycle
  tie=128d0*epsilon(1d0)*max(abs(cm(4,d)),abs(cm(1,d)),tiny(1d0))

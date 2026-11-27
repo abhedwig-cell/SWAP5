@@ -1,0 +1,27 @@
+{
+  "opt": "O2",
+  "start": 41,
+  "end": 43,
+  "status": "STOPPED_AT_MODEL_REFUSAL_OR_CAP",
+  "pid": 49328,
+  "routes": [
+    {
+      "day": 41,
+      "returncode": 0,
+      "wall_seconds": 5.905436099972576,
+      "stdout": "{\"status\": \"OWN_RESTART_WINDOW_COMPLETE\", \"elapsed_seconds\": 4.98047069972381, \"requested_day\": 41}\n",
+      "stderr": "",
+      "status": "OWN_RESTART_WINDOW_COMPLETE",
+      "model_route_seconds": 4.98047069972381
+    },
+    {
+      "day": 42,
+      "returncode": 2,
+      "wall_seconds": 2.6263298001140356,
+      "stdout": "{\"status\": \"FAILED\", \"elapsed_seconds\": 1.493736700154841, \"requested_day\": 42}\n",
+      "stderr": "",
+      "status": "FAILED",
+      "model_route_seconds": 1.493736700154841
+    }
+  ]
+}

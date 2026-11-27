@@ -14,12 +14,13 @@ real(8),intent(in)::g0,g1,pu
 real(8),intent(out)::du0,du1,native,valid
 real(8)::ztop,span,overlap,deficit,active,age,power,C,rawS,rawD,ds,dd,wet,amp,ratio,sfac,dsfac,hm,delta,raw,der,dk
 integer::lay
+logical,external::macro_geometry_frozen_cell
 du0=0d0;du1=0d0;native=0d0;valid=0d0
 if(h(cell)>=0d0)then
  if(pu==0d0)valid=1d0
  return
 end if
-if(VlMpDyCp(cell)/=0d0.or.SubsidCp(cell)/=0d0.or.thetas(cell)-theta(cell)>1d-6)return
+if(.not.macro_geometry_frozen_cell(cell))return
 ztop=min(z(cell)+.5d0*dz(cell),ZWaLevDm(d));span=max(0d0,ztop-(z(cell)-.5d0*dz(cell)))
 overlap=max(0d0,ztop-max(z(cell)-.5d0*dz(cell),GwlFlCpZo))
 if(span<=0d0.or.overlap<=0d0.or.cell<ICpTpWaSrDm(d))then
@@ -71,3 +72,16 @@ else
 end if
 valid=1d0
 end subroutine
+
+! Exact inactive-shrinkage branch from original MPVOLUME(1), not a moisture tolerance.
+logical function macro_geometry_frozen_cell(cell)
+use MOD_grid,only:layer
+use MOD_macropore,only:SwSoilShr,VlMpDyCp,SubsidCp
+use variables,only:theta,thetas
+implicit none
+integer,intent(in)::cell
+macro_geometry_frozen_cell=.false.
+if(VlMpDyCp(cell)/=0d0.or.SubsidCp(cell)/=0d0)return
+if(SwSoilShr(layer(cell))/=0.and.theta(cell)<thetas(cell)-1d-4)return
+macro_geometry_frozen_cell=.true.
+end function

@@ -1,0 +1,61 @@
+{
+  "results": [
+    {
+      "opt": "O0",
+      "label": "GEOMETRY_V33_CONTEXT41TO42",
+      "status": "COMPATIBLE_JACOBIAN_CONTEXT_WINDOW_COMPLETE",
+      "elapsed": 7.603460300248116,
+      "rows": [
+        {
+          "day": 42,
+          "committed": true,
+          "mass": -1.9410363161312958e-8,
+          "budget_retries": 0
+        }
+      ]
+    },
+    {
+      "opt": "O0",
+      "label": "GEOMETRY_V33_OWN42TO43",
+      "status": "OWN_RESTART_WINDOW_COMPLETE",
+      "elapsed": 7.139409500174224,
+      "rows": [
+        {
+          "day": 43,
+          "committed": true,
+          "mass": -2.007934444928116e-8,
+          "budget_retries": 0
+        }
+      ]
+    },
+    {
+      "opt": "O2",
+      "label": "GEOMETRY_V33_CONTEXT41TO42",
+      "status": "COMPATIBLE_JACOBIAN_CONTEXT_WINDOW_COMPLETE",
+      "elapsed": 5.882397999987006,
+      "rows": [
+        {
+          "day": 42,
+          "committed": true,
+          "mass": -1.9410363161312958e-8,
+          "budget_retries": 0
+        }
+      ]
+    },
+    {
+      "opt": "O2",
+      "label": "GEOMETRY_V33_OWN42TO43",
+      "status": "OWN_RESTART_WINDOW_COMPLETE",
+      "elapsed": 5.699265599716455,
+      "rows": [
+        {
+          "day": 43,
+          "committed": true,
+          "mass": -2.007934444928116e-8,
+          "budget_retries": 0
+        }
+      ]
+    }
+  ],
+  "scope": "Minimal originalinactivegeometry Jacobian guard only. Contextday42plusown43, nofixedV33prefix/fullperiodclaim."
+}

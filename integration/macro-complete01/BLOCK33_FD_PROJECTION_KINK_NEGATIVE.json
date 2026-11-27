@@ -1,0 +1,17 @@
+{
+  "scope": "Actual firstoldrefusaltimeiteration1 finite-difference negative control",
+  "time": 35836.018000000004,
+  "dt": 0.002,
+  "iteration": 1,
+  "domain1_outfactor": 0,
+  "analytic_macro_column_norm": 0,
+  "centered_FD_errors": [
+    0.2087809202807401,
+    0.18991204288087365,
+    0
+  ],
+  "cause": "Atlowerprojectionzerooutfactor, centralpressureperturbation crosses active projection branch. Native fullsemismooth fOut0 derivative iszero; centralFDmixesone-sidedbranch derivatives. This state is not a smoothdifferentialacceptancepoint.",
+  "criterion_unchanged": 1e-8,
+  "disposition": "Retainnegativecontrol; selectsamenativeattemptnextiterationstrictlypartial0<FrOut1<1 for smoothoperatorcheck; no physics/criterion change",
+  "models_launched": 0
+}

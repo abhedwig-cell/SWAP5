@@ -1,0 +1,7 @@
+{
+  "opt": "O0",
+  "status": "FAILED",
+  "models_launched": 0,
+  "error": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-macro-complete01\\tests\\macro_complete01\\build_geometry_fd_probe.py\", line 36, in <module>\n    p=subprocess.run(cmd,cwd=out,capture_output=True,text=True,timeout=45);logs.append(dict(command=cmd,code=p.returncode,stdout=p.stdout,stderr=p.stderr));(out/'REPLAY_BUILD.json').write_text(json.dumps(logs,indent=2)+'\\n');assert p.returncode==0,p.stderr\n                                                                                                                                                                                                                                        ^^^^^^^^^^^^^^^\nAssertionError: headcalc.f90:473:45:\n\n  473 |       if(thetas(upper)-theta(upper)<=1d-6.or.thetas(upper)-theta(upper)>=1d-4)return\n      |                                             1\nError: Function 'thetas' at (1) has no IMPLICIT type\nheadcalc.f90:473:9:\n\n  473 |       if(thetas(upper)-theta(upper)<=1d-6.or.thetas(upper)-theta(upper)>=1d-4)return\n      |         1\nError: Function 'thetas' at (1) has no IMPLICIT type\n\n",
+  "seconds": 0.6915618004277349
+}
