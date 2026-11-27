@@ -13,13 +13,18 @@ contains
     integer,intent(in)::unit
     logical,intent(in)::restoring
     integer,allocatable::expected(:),header(:),witness(:)
-    integer::n,ios,i
+    integer::n,ios,i,partition_active
     character(len=8)::tag
     if(numnod<1.or.numlay<1.or.numlay>size(iHWCKmodel).or.swmacro/=0.or.swsolu<0.or.swsolu>1.or. &
-       (swsnow/=0.and.swsnow/=1).or.swfrost/=0.or.swhyst/=0.or.swdra/=1.or.swhea/=1.or.swcalt/=2.or. &
-       swsophy/=0.or.swkimpl/=1.or.(swbotb/=5.and.swbotb/=8))error stop 'Foreign implicit hydraulic native domain'
-    if(swdivd<0.or.swdivd>1)error stop 'Foreign implicit hydraulic drainage partition'
-    if(swsolu==1.and.swdivd==0)error stop 'Invalid original solute drainage partition'
+       (swsnow/=0.and.swsnow/=1).or.swfrost/=0.or.swhyst/=0.or.(swdra/=0.and.swdra/=1).or.swhea/=1.or.swcalt/=2.or. &
+       swsophy/=0.or.swkimpl/=1.or.(swbotb/=5.and.swbotb/=6.and.swbotb/=8))error stop 'Foreign implicit hydraulic native domain'
+    if((swbotb==6).neqv.(swdra==0))error stop 'Foreign closed implicit hydraulic drainage selection'
+    partition_active=0
+    if(swdra==1)then
+      if(swdivd<0.or.swdivd>1)error stop 'Foreign implicit hydraulic drainage partition'
+      if(swsolu==1.and.swdivd==0)error stop 'Invalid original solute drainage partition'
+      partition_active=swdivd
+    end if
     if(any(iHWCKmodel(1:numlay)<1).or.any(iHWCKmodel(1:numlay)>11).or.all(iHWCKmodel(1:numlay)==1)) &
        error stop 'Foreign implicit hydraulic constitutive models'
     do i=1,numlay
@@ -28,7 +33,7 @@ contains
       end if
     end do
     n=13+numlay;allocate(expected(n),header(n),witness(n))
-    expected(1:13)=[1,numnod,numlay,swsolu,swkimpl,swhyst,swsnow,swfrost,swhea,swcalt,swdra,swbotb,swdivd]
+    expected(1:13)=[1,numnod,numlay,swsolu,swkimpl,swhyst,swsnow,swfrost,swhea,swcalt,swdra,swbotb,partition_active]
     expected(14:n)=iHWCKmodel(1:numlay)
     if(restoring)then
       read(unit,iostat=ios)tag,header,witness

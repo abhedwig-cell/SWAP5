@@ -23,13 +23,15 @@ def selection(project):
     text=(Path(project.input_directory)/'swap.swp').read_text(encoding='cp1252')
     active='\n'.join(line.split('!',1)[0] for line in text.splitlines() if not line.lstrip().startswith('*'))
     models=re.findall(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[ \t]*([^\r\n]+)',active)
+    from closed_zero_boundary import implicit_selection as closed_implicit_selection
+    closed_implicit=closed_implicit_selection(project)
     remainder=re.sub(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[^\r\n]*','',active)
     if len(models)>1 or models and re.fullmatch(r'\+?0*1(?:[ \t]+\+?0*1)*[ \t]*',models[0].strip()) is None or re.search(r'(?i)\b(?:IHWCKMODEL|SWAP_SOILS_DB)\b',remainder):
         # New paired9 analytical composition stays explicit with hysteresis0.
         # The actual paired Snow selector above already validated every model.
         if report['boundary']['SWBOTB']!=9 or s['SWKIMPL']!=0 or s['SWHYST']!=0:
             from analytical_snow_undrained import selection as analytical58_selection
-            if analytical58_selection(project.input_directory,project.original_output) is None:
+            if analytical58_selection(project.input_directory,project.original_output) is None and closed_implicit is None:
                 raise ValueError('Ordinary Snow drainage-off requires original analytical model1 or bounded explicit analytical Snow')
     def one(key,default=None,quoted=False):
         pattern=r"'[^']*'" if quoted else r'[+-]?\d+'
@@ -55,7 +57,7 @@ def selection(project):
         layer_models=analytical_models(project)
         if layer_models and any(value!=1 for value in layer_models):
             analytical={'analytical_snow_models':list(layer_models)}
-    return dict(**analytical,**({'paired_snow_boundary':True} if report['boundary']['SWBOTB']==9 else {}),**({'cde_interval_output':True,'cde_clock_output':npd>1 or step} if project.solute else {}),ordinary_snow_undrained_output=True,thermal_output=True,thermal_calendar=True,
+    return dict(**analytical,**({'closed_implicit_calendar':True,'closed_implicit_models':closed_implicit['models']} if closed_implicit is not None else {}),**({'paired_snow_boundary':True} if report['boundary']['SWBOTB']==9 else {}),**({'cde_interval_output':True,'cde_clock_output':npd>1 or step} if project.solute else {}),ordinary_snow_undrained_output=True,thermal_output=True,thermal_calendar=True,
         thermal_clock=step or npd>1,thermal_step=step,thermal_reset=step and bool(reset),kind='cde' if project.solute else 'water',
         swsnow=1,swhea=1,swcalt=2,swfrost=0,swdra=s['SWDRA'],swhyst=s['SWHYST'],et=one('SWCFBS'),
         swkimpl=s['SWKIMPL'],swbotb=report['boundary']['SWBOTB'],swcsv=fmt,nprintday=npd,swmonth=monthly,swodat=dates,swres=reset,

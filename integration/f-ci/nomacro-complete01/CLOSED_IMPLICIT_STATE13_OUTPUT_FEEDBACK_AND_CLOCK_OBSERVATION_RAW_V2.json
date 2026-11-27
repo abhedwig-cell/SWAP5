@@ -1,0 +1,2694 @@
+{
+  "status": "ONE_35DAY_LOCAL_PASS_ONE_DAY26_NUMERICAL_FAILURE_ONE_PREMODEL_SNOW_NATIVE_GUARD_FAILURE_AND_DAY30_COLD_CAUSAL_OBSERVATION_RETAINED",
+  "actual_scientific_source": "6a0e6ff6cab1c0a7565938f43ee3b1921f63eaa3",
+  "archive": "CLOSED_IMPLICIT_STATE13_OUTPUT_FEEDBACK_AND_CLOCK_OBSERVATION_RAW_V2.zip",
+  "bytes": 11070673,
+  "sha256": "c8ef491dc2664db877c916ee4868cf739d653e71d3d0840c136f8b089da50063",
+  "parts": [
+    {
+      "file": "CLOSED_IMPLICIT_STATE13_OUTPUT_FEEDBACK_AND_CLOCK_OBSERVATION_RAW_V2.zip",
+      "bytes": 11070673,
+      "sha256": "c8ef491dc2664db877c916ee4868cf739d653e71d3d0840c136f8b089da50063"
+    }
+  ],
+  "members": {
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/build.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/build.stdout": {
+      "bytes": 101,
+      "sha256": "d021fa9b8bb72bfb22f3a967492ae8e6a333a4ba3ae5c9497610ce5a26a3175f"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/inputs/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/inputs/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/inputs/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/inputs/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/inputs/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/inputs/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/inputs/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/inputs/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/inputs/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/inputs/swap.swp": {
+      "bytes": 35951,
+      "sha256": "dc65f92a8ffd2a3ff32217f2d211c8af314304476aaa2c398b10d28a7513bb33"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/accepted-column-1-day-4.zip": {
+      "bytes": 1496932,
+      "sha256": "850f4c111b2ac94a3a21eab03022cf920016c8374921c2617a998780febb1fe5"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/daily.jsonl": {
+      "bytes": 2497,
+      "sha256": "61bf0821346655b2cbecdf7a2aeb35d6ef96ae3daa957ef51aeaf1582713025e"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/kernel.stdout": {
+      "bytes": 288,
+      "sha256": "c4f54351c76bf8e0c845f8f8db5b4f6f2cd0079fcd4b8a4828509026bb06806c"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/original/donor.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/original/donor.stdout": {
+      "bytes": 5866,
+      "sha256": "9a55c3c80eeb5088e1b1cb98bae7e97db9dc41c10ab00fca52a20bf80f81c024"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/original/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/original/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/original/macro-origin.bin": {
+      "bytes": 1465304,
+      "sha256": "2e9b6f5158ea4a0a6c1279e1500bb176353c38fb83f9b055390c0f230cb303de"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/original/macro.bin": {
+      "bytes": 1465304,
+      "sha256": "43fd8075298f4f6bd36b866769386ae03c094cba5888fde7c6fbd3067652515f"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/original/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/original/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/original/restart.end": {
+      "bytes": 752,
+      "sha256": "427b4f9dfa5db6068d6f653a95ce41830fdb819cdeb9651838e0945bc0a8eedb"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/original/result.bal": {
+      "bytes": 194,
+      "sha256": "4b657587b96393520921ebc19f022cbf4b0c82fec5b02b11f5ec09392017eb66"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/original/result.blc": {
+      "bytes": 190,
+      "sha256": "6244f963ed7d01ff9903434d5216a828bf144f3b1f193c5313b01249f27d8d81"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/original/result.end": {
+      "bytes": 752,
+      "sha256": "369129317ac8e1a70e7df3414b78a00440a0b75915a9ee12ad1b4f3df18ca338"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/original/result_input.csv": {
+      "bytes": 1581,
+      "sha256": "1a637ad99bcfa230094cb4ea3f3ebd9f91fb7c149e734e2cedd38aae6ec75dfd"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/original/result_output.csv": {
+      "bytes": 453,
+      "sha256": "0e3538c051856ee7c2fdc22cc6eecee4ab60295ac1d943da671553957388f6d5"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/original/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/original/swap.log": {
+      "bytes": 918,
+      "sha256": "b5e890d71a1df300a615fa2da6b895ec31ccd9eb8206a54e0c876df12a0d0ca3"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/original/swap.ok": {
+      "bytes": 170,
+      "sha256": "610685bfcb4bdda2c7603d839ec0b4f86b79f7a8c07b9023ef2589f7703ccecf"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/original/swap.swp": {
+      "bytes": 36685,
+      "sha256": "8b73ecd0fab962043dab77d7760fc3c300371baf345cb42f4fbabf92474edac7"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2/original/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2-origin/macro.bin": {
+      "bytes": 1465304,
+      "sha256": "2e9b6f5158ea4a0a6c1279e1500bb176353c38fb83f9b055390c0f230cb303de"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-2-origin/result.end": {
+      "bytes": 752,
+      "sha256": "427b4f9dfa5db6068d6f653a95ce41830fdb819cdeb9651838e0945bc0a8eedb"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/accepted-column-1-day-34.zip": {
+      "bytes": 1496952,
+      "sha256": "9608991edb53471c0c7bcac10b928cf31c64362f644b0ecfb3d8b6786f8bd4cb"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/daily.jsonl": {
+      "bytes": 5131,
+      "sha256": "544c263d65428d09afcf7559f4fc740610ea40811a6bc5a608ee8b7bdd67402b"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/kernel.stdout": {
+      "bytes": 550,
+      "sha256": "e314e72d189649efb69d8e0945ba034683c302c7e539bf833d97057bf5560fdc"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/original/donor.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/original/donor.stdout": {
+      "bytes": 10375,
+      "sha256": "7a4763219c460cd803e3e8e9be1fb7657220a7d8a436bc6717ef5bce9f550114"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/original/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/original/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/original/macro-origin.bin": {
+      "bytes": 1465304,
+      "sha256": "f977475d3fbe2dc6cb2f472f63306d58b9cdfcb1039584d25d3402fffd6ff0c6"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/original/macro.bin": {
+      "bytes": 1465304,
+      "sha256": "a04053189a519d75eee1c64b900466f2b6a2448cb563efd518c14879a717f0fd"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/original/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/original/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/original/restart.end": {
+      "bytes": 752,
+      "sha256": "4fd993d76fad5c35762c71678c3a22098ab6923b2fa493e16bd99e0b20bfaace"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/original/result.bal": {
+      "bytes": 194,
+      "sha256": "6fa39e001fc7fa1206a727c103c780eedb680b2a1cf775598c7f5a0865416a83"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/original/result.blc": {
+      "bytes": 190,
+      "sha256": "8df185d4d4700b07958ace42b33431214e0aa1c53a024612cf4967ca3f22ce3f"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/original/result.end": {
+      "bytes": 752,
+      "sha256": "3d593c96c21d6512d5654dc8bceec530ee729747f0004cfca6d8d7891761c0ab"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/original/result_input.csv": {
+      "bytes": 1582,
+      "sha256": "706b2341347cd65a3f8dde97aeb232586a704103969b2b2774070ba33bd03e88"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/original/result_output.csv": {
+      "bytes": 600,
+      "sha256": "90e9040fb659a8e26b6e15430e400a6d3292dbaad180581d81ba576d42f3c718"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/original/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/original/swap.log": {
+      "bytes": 918,
+      "sha256": "736494481f3f7e90e09e39820d17d6477286f44de0c3f264ee90a32dd1d9ddb4"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/original/swap.ok": {
+      "bytes": 170,
+      "sha256": "31bf6587c290611c78beeb9655829e0e0dbf22b1c85e56e38772874dd63855c0"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/original/swap.swp": {
+      "bytes": 36685,
+      "sha256": "3840d6c6d1a930c4668b6454368243c1baea9d8a66565f4fe273a6621fa3603a"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30/original/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30-origin/macro.bin": {
+      "bytes": 1465304,
+      "sha256": "f977475d3fbe2dc6cb2f472f63306d58b9cdfcb1039584d25d3402fffd6ff0c6"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-30-origin/result.end": {
+      "bytes": 752,
+      "sha256": "4fd993d76fad5c35762c71678c3a22098ab6923b2fa493e16bd99e0b20bfaace"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/accepted-column-1-day-9.zip": {
+      "bytes": 1496869,
+      "sha256": "cc08f52a24b2ca38fb0116f95b6edee7739979db49983c8f6808355887c1579d"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/daily.jsonl": {
+      "bytes": 2484,
+      "sha256": "d3694e67b94951599f5ba3a2b027bad4143412e222c5b5090f03a2b59c60607d"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/kernel.stdout": {
+      "bytes": 288,
+      "sha256": "cf52d6b662a85d9a5e458c398e5ecb6d995fb5afe8672619f70b9ead0070accc"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/original/donor.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/original/donor.stdout": {
+      "bytes": 5866,
+      "sha256": "338fef77694470b4da2933b4956b0caaf96b47c0b5b99cc9233f0965cee4f141"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/original/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/original/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/original/macro-origin.bin": {
+      "bytes": 1465304,
+      "sha256": "7a575fb4be8af3cbf45dce4c0b8ab6b3f9bf93db39159f32cc5dd96ace1c28bb"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/original/macro.bin": {
+      "bytes": 1465304,
+      "sha256": "cb7e038fca6e5c5b9bd0fa7b82f2e5a579e72dee9c29fb571405360616a06902"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/original/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/original/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/original/restart.end": {
+      "bytes": 752,
+      "sha256": "2c3733dd1ff1670a13c847702a9299cb5014734b3b0dc27542e72b74397a79c1"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/original/result.bal": {
+      "bytes": 194,
+      "sha256": "879ee716021d2726a80363b7341f5524c63c6f8927cb810d9f72104700dc536a"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/original/result.blc": {
+      "bytes": 190,
+      "sha256": "1f0d42b54a7b172a0794cb308e6948de24b65f5b63ac697eb18520f1233cb3a3"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/original/result.end": {
+      "bytes": 752,
+      "sha256": "c31574a8be8e71b0a8e19e8389704fdd0f208bc8a266eccdda8594794829f88a"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/original/result_input.csv": {
+      "bytes": 1581,
+      "sha256": "77cd44a77decfd79e77df434761a359f30529e04751a8436f6d296dc7c781b29"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/original/result_output.csv": {
+      "bytes": 453,
+      "sha256": "5042cd8b291ec006da2e5173edbe1c887ef54ec6f2c2ecd0817fbec5a1a18b9a"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/original/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/original/swap.log": {
+      "bytes": 883,
+      "sha256": "4894690f406d4a8e3566253d24f80b82b89b585e10a148da72e15e6676ab3b1d"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/original/swap.ok": {
+      "bytes": 170,
+      "sha256": "12c8c26f35b3a379f80e6b4ec7a447e20e0c3358b8163573eb4954817c4e0407"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/original/swap.swp": {
+      "bytes": 36685,
+      "sha256": "ed20dadf042087bb191b97ac2e5aec792d95fe6edd588fb031f8d3986942c54d"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7/original/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7-origin/macro.bin": {
+      "bytes": 1465304,
+      "sha256": "7a575fb4be8af3cbf45dce4c0b8ab6b3f9bf93db39159f32cc5dd96ace1c28bb"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/own-7-origin/result.end": {
+      "bytes": 752,
+      "sha256": "2c3733dd1ff1670a13c847702a9299cb5014734b3b0dc27542e72b74397a79c1"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/RESULT.json": {
+      "bytes": 10622,
+      "sha256": "8befa3a3d9ef86983534eaae5daba090c0ac1704ff893ec2c7257e6b5934e930"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/accepted-column-1-day-2.zip": {
+      "bytes": 1496935,
+      "sha256": "7960ef0a217623e040aecec2e6c4a35e5125850dea9312967c347b5ed5fcc730"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/accepted-column-1-day-30.zip": {
+      "bytes": 1496929,
+      "sha256": "cceb8a4254943cad2788a78f942baf6b281aeedfef5c681a5cfd2eaa56982a62"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/accepted-column-1-day-34.zip": {
+      "bytes": 1496953,
+      "sha256": "a3b3afe134188c78fa0017eef0ed768ca76e44067bead167228a6a72fee6686f"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/accepted-column-1-day-35.zip": {
+      "bytes": 1496946,
+      "sha256": "cb49b7fd68a82dcbd7ed3695e007a0602709be4a738228cdf506177f5c58b5c7"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/accepted-column-1-day-4.zip": {
+      "bytes": 1496932,
+      "sha256": "2dee55c3e30d47797475e1f38dcf8d80c95c78a7c9bcc3bb5d355eda00b02035"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/accepted-column-1-day-7.zip": {
+      "bytes": 1496927,
+      "sha256": "c6a9d67d0484abfe87f94937d5b87bdac8d6261cfdc6ac6d31dccc8e76a9215f"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/accepted-column-1-day-9.zip": {
+      "bytes": 1496869,
+      "sha256": "1cb21a8c5aca1873e58bc9d1de01f8466d1760fb099a13fff91afe39f303fb47"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/BUILD.json": {
+      "bytes": 57206,
+      "sha256": "6bf52dc0932eea458a9c41df36d65716f7a2e417f113e891e745c5adae2e3e82"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/daily.jsonl": {
+      "bytes": 44198,
+      "sha256": "0ca4a76f1f318a7069bd219fe88c7343807bd19bcfa47dfe06dd295e94068cdc"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/kernel.stdout": {
+      "bytes": 4556,
+      "sha256": "a1d61bf2774f137692bb6692494193b8cea28002f07eb88c19dee1c510788ed5"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/original/donor.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/original/donor.stdout": {
+      "bytes": 68265,
+      "sha256": "203eba8d118eb6e9fceef78e7ca6414bf3f8f5aaada43580a79e77e0bfc021a5"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/original/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/original/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/original/macro.bin": {
+      "bytes": 1465304,
+      "sha256": "54bc3ef22f880e1c3e0e71e747e917035b51a5fd4339f1f5138d93e0842c36e6"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/original/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/original/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/original/result.bal": {
+      "bytes": 194,
+      "sha256": "a89d43f867131d2877938d28de43de47ce453322cc3c671afe35818eab080ffb"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/original/result.blc": {
+      "bytes": 190,
+      "sha256": "94c323917231d4f0d8ee005cbf2b49650878ed90e4ecb6bc7f6ccb3309e30ecb"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/original/result.end": {
+      "bytes": 752,
+      "sha256": "ab2bd3290f83c360b22b1b3ede5f1ff6672f23e1ee1d228fb30b302060310554"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/original/result_input.csv": {
+      "bytes": 1581,
+      "sha256": "8ec8576ca1ded9bfa05cf0c6ea105d6c71c493cf2f9acdbaffdf013c6214f5c9"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/original/result_output.csv": {
+      "bytes": 600,
+      "sha256": "cca105466b2fed72bfe02c6305d59a5bf87cfbd33edbdbf9eb54a444dc28caa5"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/original/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/original/swap.log": {
+      "bytes": 988,
+      "sha256": "f665543690ba0b4522c19fb44358faa3bcdf1918fdab09e12513bbe54633af6d"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/original/swap.ok": {
+      "bytes": 170,
+      "sha256": "00057438e661785059b52d67b035c33df650beba1e08a029dcb3682641833572"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/original/swap.swp": {
+      "bytes": 36741,
+      "sha256": "390ddba3d5fc9828f004202f2dca775e88f46b14217316b816cce29405f44ab9"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/trajectory/original/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/accepted-column-1-day-5.zip": {
+      "bytes": 1497454,
+      "sha256": "7b77dbc194db9f2619f0d1d679808511dcc370d16a2607ea115bfa170dcf2a68"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/restart_publish.dll": {
+      "bytes": 30291,
+      "sha256": "c609b07d25521c8753b070ff767e19bc14329bc42e7024ac85f5183f1df71acb"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/accepted-column-1-day-5.zip": {
+      "bytes": 1496917,
+      "sha256": "4508482ae578ad0ad3b48190ae5f00b4759e061e065ea8af236b425a03bbb730"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/kernel.stdout": {
+      "bytes": 161,
+      "sha256": "1bae4dbe0b780136f9f77c9d16db1795ef0e97daa366f10e65e3c01c3dcccc28"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/origin/macro.bin": {
+      "bytes": 1465304,
+      "sha256": "43fd8075298f4f6bd36b866769386ae03c094cba5888fde7c6fbd3067652515f"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/origin/result.end": {
+      "bytes": 752,
+      "sha256": "369129317ac8e1a70e7df3414b78a00440a0b75915a9ee12ad1b4f3df18ca338"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/original/donor.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/original/donor.stdout": {
+      "bytes": 4000,
+      "sha256": "d14296f8c3b997424a3222c63c11a260474fdb5ddf84ceb5c7a169d02f6dd97e"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/original/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/original/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/original/macro-origin.bin": {
+      "bytes": 1465304,
+      "sha256": "43fd8075298f4f6bd36b866769386ae03c094cba5888fde7c6fbd3067652515f"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/original/macro.bin": {
+      "bytes": 1465304,
+      "sha256": "4d1a45e48f7cea0f0796074a120c33b3bd2c9816b99002f2ba83081c69f5a190"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/original/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/original/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/original/restart.end": {
+      "bytes": 752,
+      "sha256": "369129317ac8e1a70e7df3414b78a00440a0b75915a9ee12ad1b4f3df18ca338"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/original/result.bal": {
+      "bytes": 194,
+      "sha256": "3ccb991d94e450cd36bf69f9b09d932b2c302f350c21e1abb6269cf6dbd8259c"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/original/result.blc": {
+      "bytes": 190,
+      "sha256": "8ad933782073827efa1c95fe60fd2e1fbc82cd451b8c00b912a47fde907c7f41"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/original/result.end": {
+      "bytes": 752,
+      "sha256": "35fb7d90e99e3a2af9c0afa67dfec69df42c9c863b2d12bce706e44f05e07467"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/original/result_input.csv": {
+      "bytes": 1581,
+      "sha256": "270861f5618046932fc3ebf8fff66c749715a4509de9693aef8fb6235a10293c"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/original/result_output.csv": {
+      "bytes": 453,
+      "sha256": "b222f19e3b73ee4e2d47485821c37ee452476ad2160b2ab843a698ffaa53c2c0"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/original/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/original/swap.log": {
+      "bytes": 953,
+      "sha256": "52b2cb254c52bed570cc7516b1cc0f1baf608fe9096a5441b7511741e80c776b"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/original/swap.ok": {
+      "bytes": 170,
+      "sha256": "2618bf8e2223b3dcb6ff8fec771135ce4e3bae5083985bea99442ba3473aba3a"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/original/swap.swp": {
+      "bytes": 36685,
+      "sha256": "e1d9afefb6cdddf4afe7f396175e8ea16a725920032d4f219b0c7cb3c90513f0"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/original/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/verified-candidate/macro.bin": {
+      "bytes": 1465304,
+      "sha256": "4d1a45e48f7cea0f0796074a120c33b3bd2c9816b99002f2ba83081c69f5a190"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-1/verified-candidate/result.end": {
+      "bytes": 752,
+      "sha256": "35fb7d90e99e3a2af9c0afa67dfec69df42c9c863b2d12bce706e44f05e07467"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/accepted-column-1-day-5.zip": {
+      "bytes": 1496917,
+      "sha256": "7f2f10fb12355559ed9e182792e18564a626690fe0280c5425e359880be4c0dd"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/kernel.stdout": {
+      "bytes": 161,
+      "sha256": "1bae4dbe0b780136f9f77c9d16db1795ef0e97daa366f10e65e3c01c3dcccc28"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/origin/macro.bin": {
+      "bytes": 1465304,
+      "sha256": "43fd8075298f4f6bd36b866769386ae03c094cba5888fde7c6fbd3067652515f"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/origin/result.end": {
+      "bytes": 752,
+      "sha256": "369129317ac8e1a70e7df3414b78a00440a0b75915a9ee12ad1b4f3df18ca338"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/original/donor.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/original/donor.stdout": {
+      "bytes": 4000,
+      "sha256": "d14296f8c3b997424a3222c63c11a260474fdb5ddf84ceb5c7a169d02f6dd97e"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/original/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/original/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/original/macro-origin.bin": {
+      "bytes": 1465304,
+      "sha256": "43fd8075298f4f6bd36b866769386ae03c094cba5888fde7c6fbd3067652515f"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/original/macro.bin": {
+      "bytes": 1465304,
+      "sha256": "4d1a45e48f7cea0f0796074a120c33b3bd2c9816b99002f2ba83081c69f5a190"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/original/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/original/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/original/restart.end": {
+      "bytes": 752,
+      "sha256": "369129317ac8e1a70e7df3414b78a00440a0b75915a9ee12ad1b4f3df18ca338"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/original/result.bal": {
+      "bytes": 194,
+      "sha256": "d2494e54208afcfa0911510bd6fc692677cfe04b55037f71097bcfe8ded1ff14"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/original/result.blc": {
+      "bytes": 190,
+      "sha256": "21c254f8df10fefe8b50eef3e5fb4f507fbd9fecc70bc1db0990555676e138fd"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/original/result.end": {
+      "bytes": 752,
+      "sha256": "35fb7d90e99e3a2af9c0afa67dfec69df42c9c863b2d12bce706e44f05e07467"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/original/result_input.csv": {
+      "bytes": 1581,
+      "sha256": "69f8c75bfe8d56ca5e2013464857fadca89d20dc2ac6238bbb6e575ac1bef7ee"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/original/result_output.csv": {
+      "bytes": 453,
+      "sha256": "ec319a1b6fe5699564f1fda312e177751a009d37f8106c95f279f05c1f682972"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/original/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/original/swap.log": {
+      "bytes": 953,
+      "sha256": "2bfe003ad9282f974f194c4cab012f68d037257790c1f1f5bb3173091d8e36fe"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/original/swap.ok": {
+      "bytes": 170,
+      "sha256": "fd9564cf1989c824d5b54a1e78ae4374693d01b004744eae0c1afc7828be2841"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/original/swap.swp": {
+      "bytes": 36685,
+      "sha256": "e1d9afefb6cdddf4afe7f396175e8ea16a725920032d4f219b0c7cb3c90513f0"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/original/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/verified-candidate/macro.bin": {
+      "bytes": 1465304,
+      "sha256": "4d1a45e48f7cea0f0796074a120c33b3bd2c9816b99002f2ba83081c69f5a190"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/trial-2/verified-candidate/result.end": {
+      "bytes": 752,
+      "sha256": "35fb7d90e99e3a2af9c0afa67dfec69df42c9c863b2d12bce706e44f05e07467"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/verified-initial-origin/macro.bin": {
+      "bytes": 1465304,
+      "sha256": "43fd8075298f4f6bd36b866769386ae03c094cba5888fde7c6fbd3067652515f"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/external/verified-initial-origin/result.end": {
+      "bytes": 752,
+      "sha256": "369129317ac8e1a70e7df3414b78a00440a0b75915a9ee12ad1b4f3df18ca338"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/restart_publish.dll": {
+      "bytes": 30291,
+      "sha256": "25ae078ab817e13edbe2039914cf7dc98287bf89f306788a3baccb7e0062f592"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/accepted-column-1-day-6.zip": {
+      "bytes": 1496944,
+      "sha256": "d0b81a90301a0c96fdfced9d3d165b457653a7e2e19696c33a09d7f36b356cb0"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/kernel.stdout": {
+      "bytes": 161,
+      "sha256": "1ab357152839ea6c7bc353461ebcc1cb1193de6c6ff0143c51669734555d774a"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/origin/macro.bin": {
+      "bytes": 1465304,
+      "sha256": "4d1a45e48f7cea0f0796074a120c33b3bd2c9816b99002f2ba83081c69f5a190"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/origin/result.end": {
+      "bytes": 752,
+      "sha256": "35fb7d90e99e3a2af9c0afa67dfec69df42c9c863b2d12bce706e44f05e07467"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/original/donor.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/original/donor.stdout": {
+      "bytes": 4000,
+      "sha256": "8000437c872351f9419ccc025381741b50503b9f7244acffca80fd06dbee690f"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/original/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/original/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/original/macro-origin.bin": {
+      "bytes": 1465304,
+      "sha256": "4d1a45e48f7cea0f0796074a120c33b3bd2c9816b99002f2ba83081c69f5a190"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/original/macro.bin": {
+      "bytes": 1465304,
+      "sha256": "5191060093810d34388f3d1a37090d701134a61f9353782262d0f3db0318cfdb"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/original/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/original/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/original/restart.end": {
+      "bytes": 752,
+      "sha256": "35fb7d90e99e3a2af9c0afa67dfec69df42c9c863b2d12bce706e44f05e07467"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/original/result.bal": {
+      "bytes": 194,
+      "sha256": "81bf3fa83d5513ee042546a0afe926c10df3e910309dbd181745b97dafd28a7d"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/original/result.blc": {
+      "bytes": 190,
+      "sha256": "077e7555765e97b7d49ca6cc3f13996309cab55fc3ee25143f5c9cba4e7c9952"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/original/result.end": {
+      "bytes": 752,
+      "sha256": "cee6b79bc10365e49e6ee826a4e337a2061f9bf1c2de81b7fd7d6c42ca77499a"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/original/result_input.csv": {
+      "bytes": 1581,
+      "sha256": "a228488d94e39361a47fd0bed0a3f38c3e56660ca918da8c482fbf45db033f63"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/original/result_output.csv": {
+      "bytes": 453,
+      "sha256": "927a5aba2b9d49735ea48753652d2ac5366c2ea61871601b49b3709844afcac8"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/original/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/original/swap.log": {
+      "bytes": 918,
+      "sha256": "cee5159427a787b98ae801bb7a7fcf85ad3d22f86202bdd8c0874f41c640ab4e"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/original/swap.ok": {
+      "bytes": 170,
+      "sha256": "d011186ecd6376f524a90ec6fd8c4aa762f43ccdb211f41fc35773eff773de07"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/original/swap.swp": {
+      "bytes": 36685,
+      "sha256": "1bd25d089b7d10d86a600bbd19b9fd27427498f64a411637b632695627ef7ce2"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/original/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/verified-candidate/macro.bin": {
+      "bytes": 1465304,
+      "sha256": "5191060093810d34388f3d1a37090d701134a61f9353782262d0f3db0318cfdb"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/trial-1/verified-candidate/result.end": {
+      "bytes": 752,
+      "sha256": "cee6b79bc10365e49e6ee826a4e337a2061f9bf1c2de81b7fd7d6c42ca77499a"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/verified-initial-origin/macro.bin": {
+      "bytes": 1465304,
+      "sha256": "4d1a45e48f7cea0f0796074a120c33b3bd2c9816b99002f2ba83081c69f5a190"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water/transactions/recovered/verified-initial-origin/result.end": {
+      "bytes": 752,
+      "sha256": "35fb7d90e99e3a2af9c0afa67dfec69df42c9c863b2d12bce706e44f05e07467"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-gardner-water.stdout": {
+      "bytes": 120,
+      "sha256": "9dcdeab09fb294fa35bfc86b8650dfdf9b72e70a35f2e742840a5e083f6a0610"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/build.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/build.stdout": {
+      "bytes": 101,
+      "sha256": "d021fa9b8bb72bfb22f3a967492ae8e6a333a4ba3ae5c9497610ce5a26a3175f"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/inputs/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/inputs/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/inputs/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/inputs/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/inputs/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/inputs/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/inputs/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/inputs/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/inputs/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/inputs/swap.swp": {
+      "bytes": 36031,
+      "sha256": "e9e15b5809794cc308374b5c003ce76de5a40ac6902f89ce6ba3031d240b9335"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/RESULT.json": {
+      "bytes": 5835,
+      "sha256": "34bece3479392eb6d5f42cba8c6c31ee2f4e28b1abaaf6182aa84133a0451890"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile.stderr": {
+      "bytes": 1266,
+      "sha256": "f142fc6fc61c88c13f2661c763bce7a2ed4219ad8e6640545272f95ad358ea8a"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O0/SUMMARY.json": {
+      "bytes": 753,
+      "sha256": "87b6a448467795bb84338f790e3f20eeb32a9a290fb58b621dc8b7f53ab52caf"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/build.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/build.stdout": {
+      "bytes": 101,
+      "sha256": "4b901a38e94ad02a6cd848854e6daddccf114f981c7429269ab7a4c3e74c0502"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/inputs/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/inputs/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/inputs/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/inputs/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/inputs/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/inputs/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/inputs/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/inputs/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/inputs/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/inputs/swap.swp": {
+      "bytes": 35990,
+      "sha256": "6b66e6641ba3c1adffa295a459c1b01c1bbe3f9b6cfcd08da0d5e37749ec0e6d"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/RESULT.json": {
+      "bytes": 5879,
+      "sha256": "c2cd4de0b38f79cef3b1626662232c52ec1789f97f24d47b9c79f2fa82707933"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/accepted-column-1-day-2.zip": {
+      "bytes": 1505181,
+      "sha256": "28f82adb22408e64af846002bdcdc1563664e512a7b63a7194c0131ec25e19c1"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/accepted-column-1-day-4.zip": {
+      "bytes": 1505185,
+      "sha256": "f91695574055aeb13def6ed039fcfc757cfd2f76c98bf0f0e0b372fef331fef0"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/accepted-column-1-day-7.zip": {
+      "bytes": 1505189,
+      "sha256": "5b977dbd49177cacc100e2e3113b740222dc8d589f7c93ad728b1042dbdfe767"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/accepted-column-1-day-9.zip": {
+      "bytes": 1505127,
+      "sha256": "f3a8b158381be5434406f778f290c81698068d1efcdfcc5ada2699783371e091"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/BUILD.json": {
+      "bytes": 70094,
+      "sha256": "d8094cb506e51560b728d12da09c506072b3de556e9bbdb1d9790bdaa29b58da"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/daily.jsonl": {
+      "bytes": 37840,
+      "sha256": "635e4414d83b171139fc2b495d4dfa12d42501d2344c4389de817011ac013c51"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/kernel.stdout": {
+      "bytes": 3310,
+      "sha256": "f5a4b42d5686644bf8c2903fe602c6d386e008666a1ac3ca439b2890c68e65d9"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/283rd$00003.tmp": {
+      "bytes": 244992,
+      "sha256": "4bd4c4973a32fe6cd880ab8b5d4d9884edc6adfd9fc06662a21de9ea9782d13f"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/donor.stderr": {
+      "bytes": 671,
+      "sha256": "c2c14c31fe014f6558be1e30da9a30bc175109cdbca661cd2d77942458882b76"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/donor.stdout": {
+      "bytes": 78902,
+      "sha256": "72ac5c78bf5eaa066e188ca215d7a3a5d17644a9c764207cc5285ef07745f8be"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/fixed-irrigationrd$00002.tmp": {
+      "bytes": 1188,
+      "sha256": "b584d67f090fd005f56e2d558172620bd85a059c0858e456311b2b99de17e162"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/macro.bin": {
+      "bytes": 1466480,
+      "sha256": "34f76287c7f6c7559d847de454d2086f271064f58da7aefead00b815cad5d51a"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/result.bal": {
+      "bytes": 194,
+      "sha256": "8d8ad786681528445e848d6458f05fe2b1b5d8590b53591bd6fcc53b9e606de2"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/result.blc": {
+      "bytes": 190,
+      "sha256": "535b96ea6520bd55b58e204cdf7dbb66cd251c05f6d1cbba99b512a4d4f70a7d"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/result.end": {
+      "bytes": 1032,
+      "sha256": "8af09cd3eee527a4232706c150b46bd96b6d8e756d29047df3c57ec337706d4f"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/result_output.bin": {
+      "bytes": 1158,
+      "sha256": "49ea7ccae2703c1285a6e342f2b815baa4badaa8e737972973174fea1fa2d3c4"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/swap.err": {
+      "bytes": 820,
+      "sha256": "ef6042109d7624316d6b430c6af71adee11f129d9e12b83f4b6974a52759a147"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/swap.log": {
+      "bytes": 645,
+      "sha256": "659ae11202a7e8410d87acf99dc772cef235e9c84f78f0912225814e4f35c398"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/swap.swp": {
+      "bytes": 36785,
+      "sha256": "d7aa0bd03434f7e2b3294d6f8a48fd14ff4b187de5526495ac6f342cc27bdcaa"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/swap.wrn": {
+      "bytes": 133,
+      "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/swaprd$00001.tmp": {
+      "bytes": 20328,
+      "sha256": "b10190a6a9cc9d0272035429463ad41e532d3e6e93edf2c1315fc2e28807c57f"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile.stderr": {
+      "bytes": 1724,
+      "sha256": "6147cee965f1a683003108d0e346a423b0441d7ac1b355f5d90600ba0f1aa1d4"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/closed-ordinary-model5-cde-profile.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-local-feedback-v2/O2/SUMMARY.json": {
+      "bytes": 491,
+      "sha256": "745b9af8b425d7a9dfa0c81a2a096a3f30f97aad7def5ab31885aa132f8cc533"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/age_output_calendar_probe.f90": {
+      "bytes": 870,
+      "sha256": "6082d492aaa0a921971384a8bb3c85d09b852d4758b2aeb72eeef8ea9c48756b"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/age_output_calendar_probe.o": {
+      "bytes": 5584,
+      "sha256": "e7512d4b94901de98c6e3f5c3a9232c8b943a6b1679a0c718907f6659c659c79"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/boundtop.f90": {
+      "bytes": 14566,
+      "sha256": "3ae980f01a665d1d78c64ca00d96bbdeccb982563ae94e36766bca46e48a4881"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/boundtop.o": {
+      "bytes": 24131,
+      "sha256": "5dada7c60ec906e6c6f780c3f3c282622ebf6b488d062fb132b4aa9d90b19904"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/BUILD.json": {
+      "bytes": 57208,
+      "sha256": "cae56d71cdd327e4b83f893dfd493919545be04394c6c60bba25fdd4ce33eefa"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/day_donor.exe": {
+      "bytes": 2218643,
+      "sha256": "11345640125bd78fc61400f4222c9be27feb2a66e00721b7fd8b179ecf51f51d"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/day_kernel.exe": {
+      "bytes": 364079,
+      "sha256": "f93b40081bb80ca09e75c76c6d3a98d19d5f45df06f4c6442ab7835748601068"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/headcalc.f90": {
+      "bytes": 30262,
+      "sha256": "16008fdb1efac52c8589dff1aba6740110ea8f59741cdbdf144eacef701dacc1"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/headcalc.o": {
+      "bytes": 63960,
+      "sha256": "a2250844603966a45c709de46441dea42472f28cd2725add94443756796f2127"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/hybrid_age_output_state.f90": {
+      "bytes": 852,
+      "sha256": "4b1657194d82b50358f8abbde0b019ab7ecb67d870d57edce92d01079d0c2e31"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/hybrid_age_output_state.mod": {
+      "bytes": 2765,
+      "sha256": "87f65728b41718d28ed3b923e7ba529ddf31e064c7c06e59041983bee0d2c83e"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/hybrid_age_output_state.o": {
+      "bytes": 1761,
+      "sha256": "b3e9a4e89705374a630b80131fcb675d57a99cd134e263f5abc35be8d5a346df"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/hybrid_day_window.mod": {
+      "bytes": 366,
+      "sha256": "911b49f55990e262040cce187c963668eba4d0993e826894a20bec2d971f04fc"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/hybrid_implicit_pond_availability.mod": {
+      "bytes": 1653,
+      "sha256": "506074c6c5eb2bb7750b32772cd62bfaab5eed78cf331a7773a2a5ea4fd48906"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/hybrid_implicit_pond_event_state.mod": {
+      "bytes": 1745,
+      "sha256": "728ff031457137d728f5b96155b4c18cb4423f6d457707b5f24114afa792f1ca"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/hybrid_step_budget.mod": {
+      "bytes": 1099,
+      "sha256": "fea8cd19ba097c0487ec766ecd545e1d61609f06459de05dc4fa3016ff22d4f7"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/hybrid_step_budget.o": {
+      "bytes": 12352,
+      "sha256": "e000a43d12f7e5d184597a72d6cb5cc2af1a07b5cb13a417f1acc529869808bd"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/implicit_hydraulic_state_native.f90": {
+      "bytes": 2312,
+      "sha256": "bc6a6cdc61299bb5c9fdfd215de484975f8ac4eabb9b7ab90ba1c8f8d6e1fdec"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/implicit_hydraulic_state_native.mod": {
+      "bytes": 320,
+      "sha256": "25a377b322e0c522c45e7e5a1e624b99f48d943d831ff523474a1e0fb84c66b9"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/implicit_hydraulic_state_native.o": {
+      "bytes": 11491,
+      "sha256": "46214cc723add71605f6c5452955335e65ed7173c1045c6ea21f5947d4d9df8b"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/implicit_pond_availability.f90": {
+      "bytes": 1078,
+      "sha256": "ddb9bf2a4f1755dac221d270f40f28a24ce81d1d8291c481913d51714cb25ec7"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/implicit_pond_availability.o": {
+      "bytes": 1861,
+      "sha256": "558981a46e549857b2a09db4016ca4a60eccbff5aa193b651ea939d6fdb02858"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/implicit_pond_event_state.f90": {
+      "bytes": 2081,
+      "sha256": "0aac6ca53c7d88a2793366ab726b56fbb1e71105cad62682a01867e7a3045651"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/implicit_pond_event_state.o": {
+      "bytes": 3790,
+      "sha256": "5412a8187f0558dae82539c1b076d35e593e3746aa661993699bacfe6fee1f16"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/integral.f90": {
+      "bytes": 34807,
+      "sha256": "34f11e21dab1a568bb273215ebb2808d1d9b5227d4fe2709cebfd5a5717e038a"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/integral.o": {
+      "bytes": 80152,
+      "sha256": "80a2e8100cfbd29a34f430442e746ffc4e48df1faf709e49974fa4b0418d9821"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/irrigation.f90": {
+      "bytes": 83038,
+      "sha256": "70a452b171e00cf782169f138fc8644ca7cbbb0f121eaed1bb69b055c6d1472d"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/irrigation.o": {
+      "bytes": 81864,
+      "sha256": "dfc59e9ced88fc3ceace84f7123cb66af2e4e22ce0822259e83fd0b648539f7d"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/macropore.f90": {
+      "bytes": 90740,
+      "sha256": "434e00d3fc0b6a607395960b87da02a7881b389ed44937c3cc4e6fa3ecba60d7"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/macropore.o": {
+      "bytes": 505258,
+      "sha256": "885a5ba82ed35332d1224656c1dd63ad7618d30d0e69b845703365bdd5971b62"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_accepted_trajectory_directional_publication.mod": {
+      "bytes": 4417,
+      "sha256": "54184df44f860cbba7c53c94035f4df3d4ec150403dcdf1c6b8444934489a92f"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_accepted_trajectory_directional_sensitivity.mod": {
+      "bytes": 4709,
+      "sha256": "cadc559986ceecd90866c3f9e9635224699063d96052f409a4e272c0922d7f93"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_canonical_contracts.mod": {
+      "bytes": 12974,
+      "sha256": "9e38688b54853b5c7a1b4ed4f8a4a90f27edbe8719edafe8c5fb95d74e095482"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_canonical_interval_runtime.mod": {
+      "bytes": 12951,
+      "sha256": "48b870166a41bd2323be5ecd7dce5632faebfe590ee7b3e52ee9d29d30bac263"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/MOD_cropdevelopment.f90": {
+      "bytes": 81515,
+      "sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_cropdevelopment.mod": {
+      "bytes": 4009,
+      "sha256": "a41356a36a4447d608aafcf20c4d45c497cbb83b5139d1f07cb26fa0ec772717"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/MOD_cropdevelopment.o": {
+      "bytes": 113751,
+      "sha256": "9bf4457fe26b84c3ae397b53de7155bbfd3166d84d99be0da681e88ba84da4f4"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_fmr_soil_water_application_host.mod": {
+      "bytes": 1313,
+      "sha256": "0f29a4e295f13b5cac97fe7900e8dd0829e1ab4d7adcd25b4f43b1cbf721101c"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_groundwater_coupling_contract.mod": {
+      "bytes": 4100,
+      "sha256": "dd3624fda727a7dd40cb1458256662d7c107636179f6d8e3e0b32ce019c0e6b0"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_groundwater_interface_mass_ledger.mod": {
+      "bytes": 6592,
+      "sha256": "a8f874e48ac1c86f42d29003b7ac0c2a4e5c067fd69999582370eeecfc9bb6c8"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_groundwater_swap_forcing_adapter.mod": {
+      "bytes": 24540,
+      "sha256": "3ac8dbbdaa9632a473fef14721974b5de64dbb39d1df3c8ced8f02bc3a49189f"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_groundwater_swap_transaction_participant.mod": {
+      "bytes": 27203,
+      "sha256": "d792c0b8ae3e103cc9bd1a73370a91b1c92ef0555e836c7f3395e1bfb5b3fc78"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_integral.mod": {
+      "bytes": 4234,
+      "sha256": "f84abbd3048e5570bf69e4e4f433e3156990b13502b7aff8e97f5cc200d7a5b2"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_irrigation.mod": {
+      "bytes": 4286,
+      "sha256": "618b437ce47a9911ba93e91d8c30f32cd14683088d2669449f63c694a0409765"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_kernel_transactions.mod": {
+      "bytes": 23972,
+      "sha256": "1721cee5a08145e6945c26002cc2e126a41449672c8d767da799a79cb0f903d3"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_macropore.mod": {
+      "bytes": 4157,
+      "sha256": "458782f1f2ac8affcbfdd7e1f2c32bf765bdc2c4431d3a530a40fc77c560e92b"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/MOD_meteo.f90": {
+      "bytes": 85547,
+      "sha256": "c265397927e219787d294b1cfa273871c0e2dd90ecc1af371b954cfcddac6fae"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_meteo.mod": {
+      "bytes": 1962,
+      "sha256": "c6c874d288bdac405d376a4fd42d819d491ee29778718d4660b287a549dcd33f"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/MOD_meteo.o": {
+      "bytes": 147425,
+      "sha256": "187f51d97e3add64adca7f813ec9a4f01c4871e10cc9382e26cb27c5717a6994"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_mvg.mod": {
+      "bytes": 1352,
+      "sha256": "eba6a50d6a511f3a6833dcb4ae46c1306b60b5f2a0f294bd764ec6703d4141d1"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/MOD_MvG_functions.f90": {
+      "bytes": 38694,
+      "sha256": "174058c84293d592d1fe31d27202cdf839fc66c2311c251296530bb6d8325d13"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/MOD_MvG_functions.o": {
+      "bytes": 67549,
+      "sha256": "bf4db4ca2b51b657a0991333a8f3a4e1232dec7c2e72ed563c37a95d98a8369a"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_original_output_receipt.f90": {
+      "bytes": 2735,
+      "sha256": "fef3897c3b59efb198f601f50e01ce1f206294a13d6003e7ddff8d12c1ac060e"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_original_output_receipt.mod": {
+      "bytes": 2331,
+      "sha256": "5ec8ae83688d32ed90ce6b06b41ec605d5c08cbd530191bd870131e221bfec92"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_original_output_receipt.o": {
+      "bytes": 3663,
+      "sha256": "7ad0e5b64149f31ca86a78d64946971fafa6a308fa071bf848c9b76157138b8d"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_rwu_micro.mod": {
+      "bytes": 1154,
+      "sha256": "053e13a03d4daa76b5a84c0cb5eccbc7566fe10b0e9f9dc9d861a70e237f1448"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_soil_water_accepted_step_direction_contract.mod": {
+      "bytes": 2006,
+      "sha256": "db54ebc9c6d2f1e5db4c907169f53bb1ae0bb5ca8c55e0863ba22d629068f58f"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_timer.mod": {
+      "bytes": 222,
+      "sha256": "665bb47ce9f4ae69116d6db4e45c0147d55f27e5b1a9c80e6893e4235245569a"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_top.mod": {
+      "bytes": 645,
+      "sha256": "907b741649c22fb088c1b6e756a0cfa0ccb5b9dbaf879edd247e7de9f4525d3f"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_transaction_reference.mod": {
+      "bytes": 6815,
+      "sha256": "b46e6f85c656b446bab5ab0359533fc06c39198baaa5a21303714461fcd61bef"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/mod_wofost.mod": {
+      "bytes": 4134,
+      "sha256": "9cd3f46ded050cc8678a2f51b40f6b69aadb31ba25fd64f0166430e304fab08a"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/probe_kernel_donor.mod": {
+      "bytes": 36537,
+      "sha256": "1ef66137dc1539d56845abf27a661c11ec953fd9888bd84a1f89a74a655ee922"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/restart_publish.dll": {
+      "bytes": 30291,
+      "sha256": "51857557e1911cd68d5013bb800b3063ff311330834dc810171a939af69dcd9f"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/RWU_micro.f90": {
+      "bytes": 52707,
+      "sha256": "0491f45743cbd178964ec7b00b13d61e4438f3b99940cdb7df91d1bb3d44378c"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/RWU_micro.o": {
+      "bytes": 74477,
+      "sha256": "14884a7cac3301942ae57c46a214b507c0a9ee80a06def914c2cbc176f4daed6"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/swap.f90": {
+      "bytes": 29176,
+      "sha256": "c0ca2990ca6a260d224b85ff650671c2f32df14e5ab40e81b9f6531b69092be9"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/swap.o": {
+      "bytes": 47541,
+      "sha256": "ca880c20e1d94e6a19c547af0367b96eba96201638cfd56ad066ad3555fd5c0b"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/swap_csv_output.f90": {
+      "bytes": 135925,
+      "sha256": "05a616bc317c7ee2aaf04de94c23f5c2dee7faafc3df697e8541eb5c3f4d70f6"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/swap_csv_output.mod": {
+      "bytes": 2955,
+      "sha256": "9cf061d7f26367fe26da8438746e423134b9c0fbeaf813fa68b1047fb9b16388"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/swap_csv_output.o": {
+      "bytes": 296761,
+      "sha256": "2d00aecb56704650e1f830e94e2404cbcb14c7e8a5ec5b0b8b4efa25fb23fbfc"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/swap_exchange.mod": {
+      "bytes": 1470,
+      "sha256": "1f666015d2741e0835066e4d51345d88165a713dd7f8fe068c3a7a5057ddf876"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/swap_main.f90": {
+      "bytes": 11679,
+      "sha256": "8c1fd1ffd8ea6c7e36980d07a6f03445ed70d9b1c4dbc8bd9a676f0f5433caa8"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/swap_main.o": {
+      "bytes": 11150,
+      "sha256": "b582c26c4d22c6e344105c04762705f1710df0ff86dfe5af1ceb596667539039"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/swapoutput.f90": {
+      "bytes": 47749,
+      "sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/swapoutput.o": {
+      "bytes": 108454,
+      "sha256": "f64f57828a50b2f8b692e61cdbd852523eb617e71e60e07f3cb40698b415a213"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/timecontrol.f90": {
+      "bytes": 19812,
+      "sha256": "76d6b1fc41e46ba8ccf451015f8a4594f441fa8665eba99bff3448136695f577"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/timecontrol.o": {
+      "bytes": 40684,
+      "sha256": "9fc28cb828813f46c77180d9b87f50f796b8e766f62b181477d46d84c82d57f5"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/wofost.f90": {
+      "bytes": 79125,
+      "sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-gardner-water/bundle/wofost.o": {
+      "bytes": 105790,
+      "sha256": "36af1649a1a29edc122add1b6afd6a8e71d60a462d535468802f5fa4d5c36822"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/age_output_calendar_probe.f90": {
+      "bytes": 2653,
+      "sha256": "bc222ef531777c2e8ff78e1e1561a2b75fbcdba31e62185989bf6d10a1034267"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/age_output_calendar_probe.o": {
+      "bytes": 15417,
+      "sha256": "5ef5d13f670d3e91db007581381e113476b8e69acfbfa1af018a5c0d7303696f"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/boundtop.f90": {
+      "bytes": 16404,
+      "sha256": "07f079c2ff97304b9fadcfc08a9ec75904f8e7cbc78914b80da42f8d64638b44"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/boundtop.o": {
+      "bytes": 28506,
+      "sha256": "a905b19bbc8554a5d155f94004ccb8f351c76eb1c04d1757a3a8d860405c284d"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/BUILD.json": {
+      "bytes": 69354,
+      "sha256": "d8b03e736d918da5a1150d72fcb99ffdfdb7e92b3dc9a69520ed1a0868b7ef1d"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/cde_clock_events.f90": {
+      "bytes": 1696,
+      "sha256": "5b5d54a1b5558fd38fb1368070f855394e7068aa69aeb4aece0a6b3288698964"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/cde_clock_events.o": {
+      "bytes": 1907,
+      "sha256": "b393198c3fa3d87a4c55c87d0a4e67742763e5ef9cffd72141e3fe8f4ef8c4ee"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/cde_interval_receipt.f90": {
+      "bytes": 3273,
+      "sha256": "023ceb3252b5251059a4e4997d04e2f648cd8be2a15e04fd431e5606565dec7c"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/cde_interval_receipt.o": {
+      "bytes": 4918,
+      "sha256": "2715d96a4a0ae7b96f87b154c1766e18f226527d798dcec56a0572a8678d1701"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/day_donor.exe": {
+      "bytes": 2293252,
+      "sha256": "153c28119b5e3785b269b2f89e8fce1831a6e0209d95543b31f131e85bf3c125"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/day_kernel.exe": {
+      "bytes": 364079,
+      "sha256": "9b8b351660de0ba673f70bc799ce14b9d11b214f8dbeba7921be893a1346bab0"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/headcalc.f90": {
+      "bytes": 30493,
+      "sha256": "60436ae01f4ab4583b1227dd4db65152ef06d17c55eaac4048c957341c480602"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/headcalc.o": {
+      "bytes": 64149,
+      "sha256": "c19577edc101e768dfc3864bc3ae27792930059062e44400105bee120bf2acd6"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_age_output_state.f90": {
+      "bytes": 913,
+      "sha256": "8f10325b36ddffc52eb65d7dd450f8e9ea67ac9394fa556dc71b8236514c76de"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_age_output_state.mod": {
+      "bytes": 2780,
+      "sha256": "7f2b4641f3349535d1138390627dbe3b47f0c6bc58cc4c1cfe7f86bdbe3d8523"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_age_output_state.o": {
+      "bytes": 1834,
+      "sha256": "8271a7faf65ac5f3af9196bc1d9306b373820bee76b856c62f36b3a2d90ede7b"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_cde_clock_events.mod": {
+      "bytes": 1722,
+      "sha256": "872db274080f9f34dfe58e04682605872d03fa20cfcd49cfaa25195824bca08d"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_cde_interval_receipt.mod": {
+      "bytes": 2062,
+      "sha256": "e108ce579fdc3063dbe3b9d760130ff7301429acf4b592ec8b0db144d0da9a2b"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_day_window.mod": {
+      "bytes": 366,
+      "sha256": "911b49f55990e262040cce187c963668eba4d0993e826894a20bec2d971f04fc"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_implicit_pond_availability.mod": {
+      "bytes": 1653,
+      "sha256": "506074c6c5eb2bb7750b32772cd62bfaab5eed78cf331a7773a2a5ea4fd48906"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_implicit_pond_event_state.mod": {
+      "bytes": 1745,
+      "sha256": "728ff031457137d728f5b96155b4c18cb4423f6d457707b5f24114afa792f1ca"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_original_cde_output_state.mod": {
+      "bytes": 1611,
+      "sha256": "9304b544b6fd670f0694142a78fc282747709be70e928f83cf25295f20fcb6c8"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_original_cde_output_state.smod": {
+      "bytes": 2687,
+      "sha256": "dfc45a99447990b4f204bac76bcad5d38071cef850ade90833803bb788061d1b"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_output_thermal_domain.mod": {
+      "bytes": 306,
+      "sha256": "0921e6d39f6d0cc3a8eea851599f19f1b1d1724d19329b77091afbf3bc748b5f"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_snow_undrained_root_state.mod": {
+      "bytes": 1610,
+      "sha256": "9527e1d1efb9e29aef6733a712dc03566e6fbfa842ba0554fc93a28267f84255"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_step_budget.mod": {
+      "bytes": 1099,
+      "sha256": "fea8cd19ba097c0487ec766ecd545e1d61609f06459de05dc4fa3016ff22d4f7"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_step_budget.o": {
+      "bytes": 12352,
+      "sha256": "e000a43d12f7e5d184597a72d6cb5cc2af1a07b5cb13a417f1acc529869808bd"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_thermal_output_snow_calendar_state.mod": {
+      "bytes": 1965,
+      "sha256": "a2d3ee111b225ee63beec5954be54879d9ec1c20eb6b85182295d21f47370959"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/implicit_hydraulic_state_native.f90": {
+      "bytes": 2312,
+      "sha256": "bc6a6cdc61299bb5c9fdfd215de484975f8ac4eabb9b7ab90ba1c8f8d6e1fdec"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/implicit_hydraulic_state_native.mod": {
+      "bytes": 320,
+      "sha256": "25a377b322e0c522c45e7e5a1e624b99f48d943d831ff523474a1e0fb84c66b9"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/implicit_hydraulic_state_native.o": {
+      "bytes": 11491,
+      "sha256": "46214cc723add71605f6c5452955335e65ed7173c1045c6ea21f5947d4d9df8b"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/implicit_pond_availability.f90": {
+      "bytes": 1078,
+      "sha256": "ddb9bf2a4f1755dac221d270f40f28a24ce81d1d8291c481913d51714cb25ec7"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/implicit_pond_availability.o": {
+      "bytes": 1861,
+      "sha256": "558981a46e549857b2a09db4016ca4a60eccbff5aa193b651ea939d6fdb02858"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/implicit_pond_event_state.f90": {
+      "bytes": 2081,
+      "sha256": "0aac6ca53c7d88a2793366ab726b56fbb1e71105cad62682a01867e7a3045651"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/implicit_pond_event_state.o": {
+      "bytes": 3790,
+      "sha256": "5412a8187f0558dae82539c1b076d35e593e3746aa661993699bacfe6fee1f16"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/integral.f90": {
+      "bytes": 43064,
+      "sha256": "bafbbe5476912f63549ef7cad0efa347f71a75813660f278c47fba69dcb1c737"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/integral.o": {
+      "bytes": 88573,
+      "sha256": "5042c311ddd998d31676475bc82297cb8808a0cb1b7df185e9f296525e278c2b"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/irrigation.f90": {
+      "bytes": 82984,
+      "sha256": "62b07bc97439845dd88e764eff979dc173faeed0492651a87e4a4c1255137c66"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/irrigation.o": {
+      "bytes": 82092,
+      "sha256": "ff5b87299ebe42116ce97649f0aaf43723af3776369ca55496392fd28503507a"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/macropore.f90": {
+      "bytes": 94389,
+      "sha256": "559de7235f61f46dd9f6de3f95af6b1231a92bacf14dd414118625cea8078244"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/macropore.o": {
+      "bytes": 515635,
+      "sha256": "e5c26d108d3c0860ad9470eebe7e7a114795f00cbb4030595fdcdb9af91b4905"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_accepted_trajectory_directional_publication.mod": {
+      "bytes": 4417,
+      "sha256": "54184df44f860cbba7c53c94035f4df3d4ec150403dcdf1c6b8444934489a92f"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_accepted_trajectory_directional_sensitivity.mod": {
+      "bytes": 4709,
+      "sha256": "cadc559986ceecd90866c3f9e9635224699063d96052f409a4e272c0922d7f93"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_canonical_contracts.mod": {
+      "bytes": 12974,
+      "sha256": "9e38688b54853b5c7a1b4ed4f8a4a90f27edbe8719edafe8c5fb95d74e095482"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_canonical_interval_runtime.mod": {
+      "bytes": 12951,
+      "sha256": "48b870166a41bd2323be5ecd7dce5632faebfe590ee7b3e52ee9d29d30bac263"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/MOD_cropdevelopment.f90": {
+      "bytes": 81515,
+      "sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_cropdevelopment.mod": {
+      "bytes": 4009,
+      "sha256": "a41356a36a4447d608aafcf20c4d45c497cbb83b5139d1f07cb26fa0ec772717"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/MOD_cropdevelopment.o": {
+      "bytes": 113751,
+      "sha256": "9bf4457fe26b84c3ae397b53de7155bbfd3166d84d99be0da681e88ba84da4f4"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_fmr_soil_water_application_host.mod": {
+      "bytes": 1313,
+      "sha256": "0f29a4e295f13b5cac97fe7900e8dd0829e1ab4d7adcd25b4f43b1cbf721101c"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_groundwater_coupling_contract.mod": {
+      "bytes": 4100,
+      "sha256": "dd3624fda727a7dd40cb1458256662d7c107636179f6d8e3e0b32ce019c0e6b0"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_groundwater_interface_mass_ledger.mod": {
+      "bytes": 6592,
+      "sha256": "a8f874e48ac1c86f42d29003b7ac0c2a4e5c067fd69999582370eeecfc9bb6c8"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_groundwater_swap_forcing_adapter.mod": {
+      "bytes": 24540,
+      "sha256": "3ac8dbbdaa9632a473fef14721974b5de64dbb39d1df3c8ced8f02bc3a49189f"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_groundwater_swap_transaction_participant.mod": {
+      "bytes": 27203,
+      "sha256": "d792c0b8ae3e103cc9bd1a73370a91b1c92ef0555e836c7f3395e1bfb5b3fc78"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_integral.mod": {
+      "bytes": 4362,
+      "sha256": "8d1ba63d4a832ebd1f2295a7182e090a8db388aaa3b6710be5de54d6842d35ed"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_irrigation.mod": {
+      "bytes": 4286,
+      "sha256": "618b437ce47a9911ba93e91d8c30f32cd14683088d2669449f63c694a0409765"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_kernel_transactions.mod": {
+      "bytes": 23972,
+      "sha256": "1721cee5a08145e6945c26002cc2e126a41449672c8d767da799a79cb0f903d3"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_macropore.mod": {
+      "bytes": 4157,
+      "sha256": "458782f1f2ac8affcbfdd7e1f2c32bf765bdc2c4431d3a530a40fc77c560e92b"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/MOD_meteo.f90": {
+      "bytes": 85547,
+      "sha256": "c265397927e219787d294b1cfa273871c0e2dd90ecc1af371b954cfcddac6fae"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_meteo.mod": {
+      "bytes": 1962,
+      "sha256": "c6c874d288bdac405d376a4fd42d819d491ee29778718d4660b287a549dcd33f"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/MOD_meteo.o": {
+      "bytes": 147425,
+      "sha256": "187f51d97e3add64adca7f813ec9a4f01c4871e10cc9382e26cb27c5717a6994"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_mvg.mod": {
+      "bytes": 1352,
+      "sha256": "eba6a50d6a511f3a6833dcb4ae46c1306b60b5f2a0f294bd764ec6703d4141d1"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/MOD_MvG_functions.f90": {
+      "bytes": 39095,
+      "sha256": "8590709784b5323e0c7fcdc9768be575f65952557e5dcfdafaef6ffdbd3e66b3"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/MOD_MvG_functions.o": {
+      "bytes": 67703,
+      "sha256": "00ae0faa1c0e662c1c2cea87f8de03e84c092d885688b881849abf13992710df"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_original_output_receipt.f90": {
+      "bytes": 2735,
+      "sha256": "fef3897c3b59efb198f601f50e01ce1f206294a13d6003e7ddff8d12c1ac060e"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_original_output_receipt.mod": {
+      "bytes": 2331,
+      "sha256": "5ec8ae83688d32ed90ce6b06b41ec605d5c08cbd530191bd870131e221bfec92"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_original_output_receipt.o": {
+      "bytes": 3663,
+      "sha256": "7ad0e5b64149f31ca86a78d64946971fafa6a308fa071bf848c9b76157138b8d"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_rwu_micro.mod": {
+      "bytes": 1154,
+      "sha256": "053e13a03d4daa76b5a84c0cb5eccbc7566fe10b0e9f9dc9d861a70e237f1448"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_soil_water_accepted_step_direction_contract.mod": {
+      "bytes": 2006,
+      "sha256": "db54ebc9c6d2f1e5db4c907169f53bb1ae0bb5ca8c55e0863ba22d629068f58f"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_solute.mod": {
+      "bytes": 1008,
+      "sha256": "df34f34dd42d0edacee29ebdfbbe6e42f84be1bcf89f0acbbadea2cab3d8d6f8"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_solute.smod": {
+      "bytes": 1142,
+      "sha256": "4e3e9e6d748168f882ecc1d9814015d184db94c7d98615cd4d4f15368a9f21ee"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_solute@mod_calc_agetracer.smod": {
+      "bytes": 1523,
+      "sha256": "e2fa351f0590bbf880f5e1b85d9ebae752d206786b797de6fa6d329e553fb072"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_solute@mod_solute_cde.smod": {
+      "bytes": 3403,
+      "sha256": "44207d92ae7c9d5d406a9a3574b8d13f1ad178ceb557dfdea32a036a26bb7ac2"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_subsurface_solute_source.f90": {
+      "bytes": 3023,
+      "sha256": "0a5cf80aa06eecf23ad408292b710e56d616a2236acb8b26f14527f0f838fd0f"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_subsurface_solute_source.mod": {
+      "bytes": 1868,
+      "sha256": "a5cb6f76850e945fce2e5105a3c2eea27b0affc245746eca3300d9cd897d1254"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_subsurface_solute_source.o": {
+      "bytes": 4106,
+      "sha256": "dd0186422bb4ae72c067d99e33d34380c8d4483ec2be3a23fb670f04176b0c5a"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_timer.mod": {
+      "bytes": 222,
+      "sha256": "665bb47ce9f4ae69116d6db4e45c0147d55f27e5b1a9c80e6893e4235245569a"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_top.mod": {
+      "bytes": 736,
+      "sha256": "fa6a58b9f8e92c0f7ab4e73a75ceb34462c3a2899b1f97a9627d2bf80e3ae48a"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_transaction_reference.mod": {
+      "bytes": 6815,
+      "sha256": "b46e6f85c656b446bab5ab0359533fc06c39198baaa5a21303714461fcd61bef"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_wofost.mod": {
+      "bytes": 4134,
+      "sha256": "9cd3f46ded050cc8678a2f51b40f6b69aadb31ba25fd64f0166430e304fab08a"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/o2_pars.mod": {
+      "bytes": 1274,
+      "sha256": "e467aa7dc2f106e6e52762e06832aae20d286dd78e3017889e56ee7a78e24316"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/original_cde_output_state.f90": {
+      "bytes": 3576,
+      "sha256": "0b05d5b71639775bcb0ab949bb5cf353edbc0a5b79b40548649723af6333f321"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/original_cde_output_state.o": {
+      "bytes": 17078,
+      "sha256": "e75c2ffdb2e0de39f71aae61c45ac463042e0082a0f82c7df5837d80edb38af9"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/original_output_thermal_domain.f90": {
+      "bytes": 1084,
+      "sha256": "e3e3b5f66787349d3075b67a3e0893cbe18a6d33891d9a75ef4ab17f7a14e209"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/original_output_thermal_domain.o": {
+      "bytes": 5729,
+      "sha256": "6e63e6fa52e9c87016b3e1a6d87956be6707f8ac71be2a3910b457c9a7953aa5"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/oxygenstress.f90": {
+      "bytes": 66696,
+      "sha256": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/oxygenstress.o": {
+      "bytes": 47625,
+      "sha256": "6aa974ba2afdf8eba00b1c0157cd18673cd068929db1f5c3170a711009669705"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/probe_kernel_donor.mod": {
+      "bytes": 36537,
+      "sha256": "1ef66137dc1539d56845abf27a661c11ec953fd9888bd84a1f89a74a655ee922"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/restart_publish.dll": {
+      "bytes": 30291,
+      "sha256": "082000bb0f548c2aa39d89eb93c1c8039f7c406f466e5f48169528ad83395f80"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/RWU_micro.f90": {
+      "bytes": 52707,
+      "sha256": "0491f45743cbd178964ec7b00b13d61e4438f3b99940cdb7df91d1bb3d44378c"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/RWU_micro.o": {
+      "bytes": 74477,
+      "sha256": "14884a7cac3301942ae57c46a214b507c0a9ee80a06def914c2cbc176f4daed6"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/snow_undrained_root_state.f90": {
+      "bytes": 1713,
+      "sha256": "6c9c7a65ed36af8217562e86e36779264d2a01596ecb3b1c53b10041816b283f"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/solute.f90": {
+      "bytes": 58107,
+      "sha256": "e4269c3cb6fc0649c1a3bdcc1673c02a9a7a56ec130ad1225edbad80c0aa1178"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/solute.o": {
+      "bytes": 103371,
+      "sha256": "4d3f0e505a9fa1655e0dd38941c5891377b92550674f681ea24642a6a0415f7a"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/swap.f90": {
+      "bytes": 29413,
+      "sha256": "82b37c566c7d35aa3b1d35897d70d73e989f23ecb4504ffb21fd04617b2e28c0"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/swap.o": {
+      "bytes": 47736,
+      "sha256": "5b5efab7154d84db3dfdc84e59c1ed5d5818fd95282c4b5ab402dc3d174be9df"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/swap_csv_output.f90": {
+      "bytes": 136205,
+      "sha256": "fe5efd0d2f2d1f3f5837c62d8101104d30441b86655b8e8f3c852390624039c5"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/swap_csv_output.mod": {
+      "bytes": 2955,
+      "sha256": "9cf061d7f26367fe26da8438746e423134b9c0fbeaf813fa68b1047fb9b16388"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/swap_csv_output.o": {
+      "bytes": 298457,
+      "sha256": "ec6233aa299343c3fa2e3511678a8f59031c9e044a91d2a83c59e16197f109e2"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/swap_exchange.mod": {
+      "bytes": 1470,
+      "sha256": "1f666015d2741e0835066e4d51345d88165a713dd7f8fe068c3a7a5057ddf876"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/swap_main.f90": {
+      "bytes": 11990,
+      "sha256": "994867ed726957a39c7c68962b6493b6a286328fce9d3df2e1c1e33840d8499a"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/swap_main.o": {
+      "bytes": 11856,
+      "sha256": "e7ece79f24099428e018cf7bf890f9cf3c27ee6a7502ec6d6717a8c1bcb3ca54"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/swapoutput.f90": {
+      "bytes": 47749,
+      "sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/swapoutput.o": {
+      "bytes": 108454,
+      "sha256": "f64f57828a50b2f8b692e61cdbd852523eb617e71e60e07f3cb40698b415a213"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/thermal_output_snow_calendar_state.f90": {
+      "bytes": 2061,
+      "sha256": "3afb9bb69a87d8fa6b57b2885b88d23b1be761da707a5ff6fb99e70596ab594d"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/thermal_output_snow_calendar_state.o": {
+      "bytes": 8663,
+      "sha256": "b9459b5e1c536b5667e3025e85e70f188f1dbe3cef34cb557fa7c7410bd600a8"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/timecontrol.f90": {
+      "bytes": 21532,
+      "sha256": "63fe339bcc87ab83ac2f0ce64f4c0290b6c8312d893d4093fb58687014a1e4d1"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/timecontrol.o": {
+      "bytes": 42662,
+      "sha256": "4e8d2c5f41e5632fe8deb123277d438c42692e287e4ed9084620dafcc58b2dd4"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/wofost.f90": {
+      "bytes": 79125,
+      "sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+    },
+    "actual/closure13-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/wofost.o": {
+      "bytes": 105790,
+      "sha256": "36af1649a1a29edc122add1b6afd6a8e71d60a462d535468802f5fa4d5c36822"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/age_output_calendar_probe.f90": {
+      "bytes": 1908,
+      "sha256": "19783277a916b3ae7f352a3db251dcea3980463d83b966bca0d5a74647979bab"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/age_output_calendar_probe.o": {
+      "bytes": 12104,
+      "sha256": "9346739e627bbd31d6ac2d2e54c699be3667457be782e98ef003aa6dd486ec10"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/boundtop.f90": {
+      "bytes": 14566,
+      "sha256": "3ae980f01a665d1d78c64ca00d96bbdeccb982563ae94e36766bca46e48a4881"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/boundtop.o": {
+      "bytes": 20302,
+      "sha256": "a06a20c089172b92939572032bfb76d11a7fdb097f4d20e388e1dc6ddc2b94df"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/BUILD.json": {
+      "bytes": 70096,
+      "sha256": "18b7dd82e711fbdca0246d330b906d1d0cb2d7dfc5716edbb51a9bf9fb2ed9b2"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/cde_clock_events.f90": {
+      "bytes": 1696,
+      "sha256": "5b5d54a1b5558fd38fb1368070f855394e7068aa69aeb4aece0a6b3288698964"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/cde_clock_events.o": {
+      "bytes": 1401,
+      "sha256": "12baa045579a54d16e95cfa49bde17a32236ca60eae485e1a0d42c9457e3e6e0"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/cde_interval_receipt.f90": {
+      "bytes": 3273,
+      "sha256": "023ceb3252b5251059a4e4997d04e2f648cd8be2a15e04fd431e5606565dec7c"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/cde_interval_receipt.o": {
+      "bytes": 4302,
+      "sha256": "12cb944a9407851bab6999857a66d0539abe3b8f93f32ae6d31c23777b6777f8"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/day_donor.exe": {
+      "bytes": 2060773,
+      "sha256": "44e68fec6c4b9909718aeb29faccda3e27184f028a5811e787205f42285a0aff"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/day_kernel.exe": {
+      "bytes": 255284,
+      "sha256": "a4cfccca0c7a7bdac1525a602cb3569e16739ebe990f830bb9d9f13746384501"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/headcalc.f90": {
+      "bytes": 30853,
+      "sha256": "5cba6483abaef91f52be080b53f5ea19fbadaf93642467e93ddc1b6470466aa4"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/headcalc.o": {
+      "bytes": 52199,
+      "sha256": "0728394a6dd8a7a2e9f6566fe4e003dbafe9ea2055c352de30aac74a5a879911"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_age_output_state.f90": {
+      "bytes": 852,
+      "sha256": "4b1657194d82b50358f8abbde0b019ab7ecb67d870d57edce92d01079d0c2e31"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_age_output_state.mod": {
+      "bytes": 2765,
+      "sha256": "87f65728b41718d28ed3b923e7ba529ddf31e064c7c06e59041983bee0d2c83e"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_age_output_state.o": {
+      "bytes": 1667,
+      "sha256": "9f9787d212928c6e5453602a3b38c7e9249b2251ca73e1176c09142272277bee"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_cde_clock_events.mod": {
+      "bytes": 1722,
+      "sha256": "872db274080f9f34dfe58e04682605872d03fa20cfcd49cfaa25195824bca08d"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_cde_interval_receipt.mod": {
+      "bytes": 2062,
+      "sha256": "e108ce579fdc3063dbe3b9d760130ff7301429acf4b592ec8b0db144d0da9a2b"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_day_window.mod": {
+      "bytes": 366,
+      "sha256": "911b49f55990e262040cce187c963668eba4d0993e826894a20bec2d971f04fc"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_implicit_pond_availability.mod": {
+      "bytes": 1653,
+      "sha256": "506074c6c5eb2bb7750b32772cd62bfaab5eed78cf331a7773a2a5ea4fd48906"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_implicit_pond_event_state.mod": {
+      "bytes": 1745,
+      "sha256": "728ff031457137d728f5b96155b4c18cb4423f6d457707b5f24114afa792f1ca"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_original_cde_output_state.mod": {
+      "bytes": 1611,
+      "sha256": "9304b544b6fd670f0694142a78fc282747709be70e928f83cf25295f20fcb6c8"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_original_cde_output_state.smod": {
+      "bytes": 2687,
+      "sha256": "dfc45a99447990b4f204bac76bcad5d38071cef850ade90833803bb788061d1b"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_step_budget.mod": {
+      "bytes": 1099,
+      "sha256": "fea8cd19ba097c0487ec766ecd545e1d61609f06459de05dc4fa3016ff22d4f7"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_step_budget.o": {
+      "bytes": 12192,
+      "sha256": "dd438c094fbaa7e8b306962d0621176f3b014c74c60f923c742ae045bdff7358"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/implicit_hydraulic_state_native.f90": {
+      "bytes": 2312,
+      "sha256": "bc6a6cdc61299bb5c9fdfd215de484975f8ac4eabb9b7ab90ba1c8f8d6e1fdec"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/implicit_hydraulic_state_native.mod": {
+      "bytes": 320,
+      "sha256": "25a377b322e0c522c45e7e5a1e624b99f48d943d831ff523474a1e0fb84c66b9"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/implicit_hydraulic_state_native.o": {
+      "bytes": 9140,
+      "sha256": "f0302f24a3f08543438028d4839c9ad57ce42c1a9e9b81630f98d244425aca0e"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/implicit_pond_availability.f90": {
+      "bytes": 1078,
+      "sha256": "ddb9bf2a4f1755dac221d270f40f28a24ce81d1d8291c481913d51714cb25ec7"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/implicit_pond_availability.o": {
+      "bytes": 1423,
+      "sha256": "a08d36fb2f45ed2dfadfd1bbdfe7fb34614f3fc18d592f37cb54696485b18803"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/implicit_pond_event_state.f90": {
+      "bytes": 2081,
+      "sha256": "0aac6ca53c7d88a2793366ab726b56fbb1e71105cad62682a01867e7a3045651"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/implicit_pond_event_state.o": {
+      "bytes": 3200,
+      "sha256": "e69201f49d65866464c9c897f002434241522e79238a57ff27d41fa16bab2735"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/integral.f90": {
+      "bytes": 41910,
+      "sha256": "29be102a8cf8e379367caeb711fff120448f8b8ca7c75cd9f3f638479e5f7332"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/integral.o": {
+      "bytes": 69276,
+      "sha256": "2711118fbfc6dc90bbffcafcd83c336559200cdad3ff9278c559439a3790b412"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/irrigation.f90": {
+      "bytes": 82984,
+      "sha256": "62b07bc97439845dd88e764eff979dc173faeed0492651a87e4a4c1255137c66"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/irrigation.o": {
+      "bytes": 79148,
+      "sha256": "26bf6a21e73e37e7240e8e390cbf68d8473f76507ebdb9be3b265dcbba3906bd"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/macropore.f90": {
+      "bytes": 91090,
+      "sha256": "0dbab5379da171bdc5fc71e3c72a98825de3b05293c66338ba0f0ea4037858af"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/macropore.o": {
+      "bytes": 487268,
+      "sha256": "6e7413c2229a3ca98aa03d87f7cd1b4512fb240212d0b648f4501413d428956d"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_accepted_trajectory_directional_publication.mod": {
+      "bytes": 4417,
+      "sha256": "54184df44f860cbba7c53c94035f4df3d4ec150403dcdf1c6b8444934489a92f"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_accepted_trajectory_directional_sensitivity.mod": {
+      "bytes": 4709,
+      "sha256": "cadc559986ceecd90866c3f9e9635224699063d96052f409a4e272c0922d7f93"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_canonical_contracts.mod": {
+      "bytes": 12974,
+      "sha256": "9e38688b54853b5c7a1b4ed4f8a4a90f27edbe8719edafe8c5fb95d74e095482"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_canonical_interval_runtime.mod": {
+      "bytes": 12951,
+      "sha256": "48b870166a41bd2323be5ecd7dce5632faebfe590ee7b3e52ee9d29d30bac263"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/MOD_cropdevelopment.f90": {
+      "bytes": 81515,
+      "sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_cropdevelopment.mod": {
+      "bytes": 4009,
+      "sha256": "a41356a36a4447d608aafcf20c4d45c497cbb83b5139d1f07cb26fa0ec772717"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/MOD_cropdevelopment.o": {
+      "bytes": 102229,
+      "sha256": "3dd5503c0e402b580da15834037bf0809226a2e61b72e5ab2801e5e2a6464455"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_fmr_soil_water_application_host.mod": {
+      "bytes": 1313,
+      "sha256": "0f29a4e295f13b5cac97fe7900e8dd0829e1ab4d7adcd25b4f43b1cbf721101c"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_groundwater_coupling_contract.mod": {
+      "bytes": 4100,
+      "sha256": "dd3624fda727a7dd40cb1458256662d7c107636179f6d8e3e0b32ce019c0e6b0"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_groundwater_interface_mass_ledger.mod": {
+      "bytes": 6592,
+      "sha256": "a8f874e48ac1c86f42d29003b7ac0c2a4e5c067fd69999582370eeecfc9bb6c8"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_groundwater_swap_forcing_adapter.mod": {
+      "bytes": 24540,
+      "sha256": "3ac8dbbdaa9632a473fef14721974b5de64dbb39d1df3c8ced8f02bc3a49189f"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_groundwater_swap_transaction_participant.mod": {
+      "bytes": 27203,
+      "sha256": "d792c0b8ae3e103cc9bd1a73370a91b1c92ef0555e836c7f3395e1bfb5b3fc78"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_integral.mod": {
+      "bytes": 4362,
+      "sha256": "f7c5f06e8a5ba2a9b3fd2eb3bf4c7429f6732b77f3298889a9230a24ee52e097"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_irrigation.mod": {
+      "bytes": 4286,
+      "sha256": "618b437ce47a9911ba93e91d8c30f32cd14683088d2669449f63c694a0409765"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_kernel_transactions.mod": {
+      "bytes": 23972,
+      "sha256": "1721cee5a08145e6945c26002cc2e126a41449672c8d767da799a79cb0f903d3"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_macropore.mod": {
+      "bytes": 4157,
+      "sha256": "458782f1f2ac8affcbfdd7e1f2c32bf765bdc2c4431d3a530a40fc77c560e92b"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/MOD_meteo.f90": {
+      "bytes": 85547,
+      "sha256": "c265397927e219787d294b1cfa273871c0e2dd90ecc1af371b954cfcddac6fae"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_meteo.mod": {
+      "bytes": 1962,
+      "sha256": "c6c874d288bdac405d376a4fd42d819d491ee29778718d4660b287a549dcd33f"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/MOD_meteo.o": {
+      "bytes": 98705,
+      "sha256": "afaa16b2986104534b54478a55306f06deab0c8a9602ffd7e7967caf4bd71c71"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_mvg.mod": {
+      "bytes": 1352,
+      "sha256": "eba6a50d6a511f3a6833dcb4ae46c1306b60b5f2a0f294bd764ec6703d4141d1"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/MOD_MvG_functions.f90": {
+      "bytes": 40144,
+      "sha256": "25e814c88ca71d2c2111295dc895c55952764901ebae372cd290b06699a5d9ff"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/MOD_MvG_functions.o": {
+      "bytes": 41465,
+      "sha256": "89df0b46859ed4f10442fbed6ad6fd889a8f4a29cdfc65e265762c5172af96b0"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_original_output_receipt.f90": {
+      "bytes": 2735,
+      "sha256": "fef3897c3b59efb198f601f50e01ce1f206294a13d6003e7ddff8d12c1ac060e"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_original_output_receipt.mod": {
+      "bytes": 2331,
+      "sha256": "5ec8ae83688d32ed90ce6b06b41ec605d5c08cbd530191bd870131e221bfec92"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_original_output_receipt.o": {
+      "bytes": 2751,
+      "sha256": "b48cc53e9d54c88993ec103f52f70deebb42be0162bb0da63d7f5a26156ce629"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_rwu_micro.mod": {
+      "bytes": 1154,
+      "sha256": "053e13a03d4daa76b5a84c0cb5eccbc7566fe10b0e9f9dc9d861a70e237f1448"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_soil_water_accepted_step_direction_contract.mod": {
+      "bytes": 2006,
+      "sha256": "db54ebc9c6d2f1e5db4c907169f53bb1ae0bb5ca8c55e0863ba22d629068f58f"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_solute.mod": {
+      "bytes": 1008,
+      "sha256": "df34f34dd42d0edacee29ebdfbbe6e42f84be1bcf89f0acbbadea2cab3d8d6f8"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_solute.smod": {
+      "bytes": 1142,
+      "sha256": "4e3e9e6d748168f882ecc1d9814015d184db94c7d98615cd4d4f15368a9f21ee"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_solute@mod_calc_agetracer.smod": {
+      "bytes": 1523,
+      "sha256": "e2fa351f0590bbf880f5e1b85d9ebae752d206786b797de6fa6d329e553fb072"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_solute@mod_solute_cde.smod": {
+      "bytes": 3403,
+      "sha256": "44207d92ae7c9d5d406a9a3574b8d13f1ad178ceb557dfdea32a036a26bb7ac2"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_subsurface_solute_source.f90": {
+      "bytes": 3023,
+      "sha256": "0a5cf80aa06eecf23ad408292b710e56d616a2236acb8b26f14527f0f838fd0f"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_subsurface_solute_source.mod": {
+      "bytes": 1868,
+      "sha256": "a5cb6f76850e945fce2e5105a3c2eea27b0affc245746eca3300d9cd897d1254"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_subsurface_solute_source.o": {
+      "bytes": 2398,
+      "sha256": "eda9c98efb6b92a08716392bfa82bd53682fb97c4fa35abfa0e13908680d2cc4"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_timer.mod": {
+      "bytes": 222,
+      "sha256": "665bb47ce9f4ae69116d6db4e45c0147d55f27e5b1a9c80e6893e4235245569a"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_top.mod": {
+      "bytes": 645,
+      "sha256": "907b741649c22fb088c1b6e756a0cfa0ccb5b9dbaf879edd247e7de9f4525d3f"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_transaction_reference.mod": {
+      "bytes": 6815,
+      "sha256": "b46e6f85c656b446bab5ab0359533fc06c39198baaa5a21303714461fcd61bef"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_wofost.mod": {
+      "bytes": 4134,
+      "sha256": "9cd3f46ded050cc8678a2f51b40f6b69aadb31ba25fd64f0166430e304fab08a"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/original_cde_output_state.f90": {
+      "bytes": 3576,
+      "sha256": "0b05d5b71639775bcb0ab949bb5cf353edbc0a5b79b40548649723af6333f321"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/original_cde_output_state.o": {
+      "bytes": 13678,
+      "sha256": "0b8a48636c95c44126cae81ba43fe0e789a31dd36fbf2965893f64acabbfd701"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/probe_kernel_donor.mod": {
+      "bytes": 36537,
+      "sha256": "1ef66137dc1539d56845abf27a661c11ec953fd9888bd84a1f89a74a655ee922"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/restart_publish.dll": {
+      "bytes": 30291,
+      "sha256": "ec8ab22086624dc1db4e89adc73aec3ce6507314332d78b76cc51e256a02c747"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/RWU_micro.f90": {
+      "bytes": 52707,
+      "sha256": "0491f45743cbd178964ec7b00b13d61e4438f3b99940cdb7df91d1bb3d44378c"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/RWU_micro.o": {
+      "bytes": 52935,
+      "sha256": "b350c70f107730e965ab9478e7d56a9655b5968d9da554da0bf804c81f8068a1"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/solute.f90": {
+      "bytes": 58109,
+      "sha256": "49897d6d973252738e90264cdafa6a6cfa657ba4979ad8ce23cf1a16347445d6"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/solute.o": {
+      "bytes": 74609,
+      "sha256": "b19430fe1697a55e8972dd0d49316da40a09fd3382c1d3eecdf95126be4a28ef"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/swap.f90": {
+      "bytes": 29176,
+      "sha256": "c0ca2990ca6a260d224b85ff650671c2f32df14e5ab40e81b9f6531b69092be9"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/swap.o": {
+      "bytes": 45954,
+      "sha256": "43ec80b0c9b83fcac6722be08b0f5d6b742a80a7c779db4511da193b94ab7de2"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/swap_csv_output.f90": {
+      "bytes": 136205,
+      "sha256": "fe5efd0d2f2d1f3f5837c62d8101104d30441b86655b8e8f3c852390624039c5"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/swap_csv_output.mod": {
+      "bytes": 2955,
+      "sha256": "9cf061d7f26367fe26da8438746e423134b9c0fbeaf813fa68b1047fb9b16388"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/swap_csv_output.o": {
+      "bytes": 251585,
+      "sha256": "c62cec3fba8ad1d4b6850e8010375ce64209c90ea01c9f70ef4613ac3d66c969"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/swap_exchange.mod": {
+      "bytes": 1470,
+      "sha256": "1f666015d2741e0835066e4d51345d88165a713dd7f8fe068c3a7a5057ddf876"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/swap_main.f90": {
+      "bytes": 11873,
+      "sha256": "a5df41d1dfd764c5c3781e515a986bc02b605a506c8c2900beb99af41f45247f"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/swap_main.o": {
+      "bytes": 11945,
+      "sha256": "7b2dbe8eb6af4272058e6f85106428fec0100c9076135e890359f0e71bc43e59"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/swapoutput.f90": {
+      "bytes": 47749,
+      "sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/swapoutput.o": {
+      "bytes": 100326,
+      "sha256": "12c63bdce0287354b1e46a994720b3b81986a9d671b7743b6014f5a70a7c92aa"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/timecontrol.f90": {
+      "bytes": 20906,
+      "sha256": "40c2f6bca96ce178fb2dea483fc0702786fc4161e7e8fb92d0c1133fd177ce79"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/timecontrol.o": {
+      "bytes": 38323,
+      "sha256": "3589bebee68a1855fc6a23d639557b4e8c4ba8f6fde3832ca1cb05b447420d6d"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/wofost.f90": {
+      "bytes": 79125,
+      "sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+    },
+    "actual/closure13-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/wofost.o": {
+      "bytes": 85637,
+      "sha256": "3321c466eeec63a5cd420c5d4310416428cf0483c25d1254d94cc16431887525"
+    },
+    "actual/closure13-clock-observer-O0-v1/day_donor.exe": {
+      "bytes": 2295128,
+      "sha256": "47b22d5d8de8f34f53bf67ea281fb40e7540288162f67c522429e86846726a07"
+    },
+    "actual/closure13-clock-observer-O0-v1/headcalc.f90": {
+      "bytes": 31044,
+      "sha256": "c014f3f3b7d2ee5d6f1d4666a777d01a9bb72a6b1c3822960c6541491ef0ec5f"
+    },
+    "actual/closure13-clock-observer-O0-v1/headcalc.o": {
+      "bytes": 67825,
+      "sha256": "52a8c158694681313dd527e629d89f080738f93fa5d3decf2402c3451fcc5588"
+    },
+    "actual/closure13-clock-observer-O0-v1/restart_publish.dll": {
+      "bytes": 30291,
+      "sha256": "fa218264c2c810a188523cd7133cc2faab00c092e2b74abacfa04a018723dc29"
+    },
+    "actual/closure13-clock-observer-v1/compile.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/closure13-clock-observer-v1/compile.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/closure13-clock-observer-v1/link.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/closure13-clock-observer-v1/link.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/closure13-clock-observer-v1/origin/macro.bin": {
+      "bytes": 1467444,
+      "sha256": "a08ac21a6dd291aa7c0931d5ccf3571deee75a469c5f7430d85e409c78b8c82f"
+    },
+    "actual/closure13-clock-observer-v1/origin/result.end": {
+      "bytes": 1064,
+      "sha256": "62fe0d5f0a67c8d1fcb6ec1ee767893d8b8db4725da1b65acaf7b7aa94ffa0ea"
+    },
+    "actual/closure13-clock-observer-v1/origin-v2/macro.bin": {
+      "bytes": 1467444,
+      "sha256": "a08ac21a6dd291aa7c0931d5ccf3571deee75a469c5f7430d85e409c78b8c82f"
+    },
+    "actual/closure13-clock-observer-v1/origin-v2/result.end": {
+      "bytes": 1064,
+      "sha256": "62fe0d5f0a67c8d1fcb6ec1ee767893d8b8db4725da1b65acaf7b7aa94ffa0ea"
+    },
+    "actual/evidence/closure13-clock-observer-v1/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-clock-observer-v1/kernel.stdout": {
+      "bytes": 34,
+      "sha256": "bf7876ea2cd9f1f13a31b3e1f7fde3104305669046aca240404542a2da18fc34"
+    },
+    "actual/evidence/closure13-clock-observer-v2/daily.jsonl": {
+      "bytes": 3201,
+      "sha256": "88f18e63cb52dab366df71bd0db0e046e393cd3f11de37dfbdc915082ca786a7"
+    },
+    "actual/evidence/closure13-clock-observer-v2/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-clock-observer-v2/kernel.stdout": {
+      "bytes": 346,
+      "sha256": "cdd2129e7d670ffd0f8d33d542e0cdd3651f11343cc0bd8a1858b37a82ea5519"
+    },
+    "actual/evidence/closure13-clock-observer-v2/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "actual/evidence/closure13-clock-observer-v2/original/283rd$00002.tmp": {
+      "bytes": 244992,
+      "sha256": "4bd4c4973a32fe6cd880ab8b5d4d9884edc6adfd9fc06662a21de9ea9782d13f"
+    },
+    "actual/evidence/closure13-clock-observer-v2/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "actual/evidence/closure13-clock-observer-v2/original/donor.stderr": {
+      "bytes": 666,
+      "sha256": "67c0a3591546897ea51f61afe04b2bfc1340d0d12bb363ee481dd88727ee0a4b"
+    },
+    "actual/evidence/closure13-clock-observer-v2/original/donor.stdout": {
+      "bytes": 24452,
+      "sha256": "b22d43ec0cefab47c5e98c68f8661870e63d330dace2f8f3902df2dc24755f59"
+    },
+    "actual/evidence/closure13-clock-observer-v2/original/grass.crp": {
+      "bytes": 31370,
+      "sha256": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+    },
+    "actual/evidence/closure13-clock-observer-v2/original/macro-origin.bin": {
+      "bytes": 1467444,
+      "sha256": "a08ac21a6dd291aa7c0931d5ccf3571deee75a469c5f7430d85e409c78b8c82f"
+    },
+    "actual/evidence/closure13-clock-observer-v2/original/maize.crp": {
+      "bytes": 24670,
+      "sha256": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+    },
+    "actual/evidence/closure13-clock-observer-v2/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "actual/evidence/closure13-clock-observer-v2/original/potato.crp": {
+      "bytes": 31435,
+      "sha256": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+    },
+    "actual/evidence/closure13-clock-observer-v2/original/restart.end": {
+      "bytes": 1064,
+      "sha256": "62fe0d5f0a67c8d1fcb6ec1ee767893d8b8db4725da1b65acaf7b7aa94ffa0ea"
+    },
+    "actual/evidence/closure13-clock-observer-v2/original/result.bal": {
+      "bytes": 194,
+      "sha256": "42ce569331d4c85e7fc990b847d3750445425aa8e557b550ac77e79db23fdb22"
+    },
+    "actual/evidence/closure13-clock-observer-v2/original/result.blc": {
+      "bytes": 190,
+      "sha256": "1d7f03a31d999bf9396605db0390011456221bb5f371c2b98bcac55d51feca20"
+    },
+    "actual/evidence/closure13-clock-observer-v2/original/result_output.bin": {
+      "bytes": 3014,
+      "sha256": "b7cdf400cd947ca270c28d40fcced318f305a55627f8ab74508de9d640c5cf48"
+    },
+    "actual/evidence/closure13-clock-observer-v2/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "actual/evidence/closure13-clock-observer-v2/original/swap.dra": {
+      "bytes": 11967,
+      "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+    },
+    "actual/evidence/closure13-clock-observer-v2/original/swap.err": {
+      "bytes": 759,
+      "sha256": "84105165ff1ccc85a7ba0389b38c9daff355b551fa856cb7673bacb6fffc3b9e"
+    },
+    "actual/evidence/closure13-clock-observer-v2/original/swap.log": {
+      "bytes": 645,
+      "sha256": "0c6cce0170745ee9778788abcf0294518adfd1c845148cf8c321aa8224d977a6"
+    },
+    "actual/evidence/closure13-clock-observer-v2/original/swap.swp": {
+      "bytes": 36694,
+      "sha256": "9d7a3d2efcda136c7dffc1c3f707a04efc9132ae90d7a2a753785252b529af95"
+    },
+    "actual/evidence/closure13-clock-observer-v2/original/swap.tss": {
+      "bytes": 491,
+      "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+    },
+    "actual/evidence/closure13-clock-observer-v2/original/swap.wrn": {
+      "bytes": 133,
+      "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+    },
+    "actual/evidence/closure13-clock-observer-v2/original/swaprd$00001.tmp": {
+      "bytes": 20196,
+      "sha256": "bcb47ea5462b8eebf738b7d5149560a53f7aa0bcdb8a9daae40f2863eb527c06"
+    },
+    "actual/evidence/closure13-clock-observer-v2/original/swaprd$00003.tmp": {
+      "bytes": 1452,
+      "sha256": "318d066fa3729f52ce8bf2e4a261e4ac03acfff5f5cc534f2b43205e9e9958a5"
+    },
+    "source/actual6a0e-controller-and-physical-source.zip": {
+      "bytes": 4410117,
+      "sha256": "d231deb292ba5b536b6c294890e8e88a2944f97baff20d8a2de29fc49fbad504"
+    },
+    "controllers-and-observations/closed-implicit-state13-checkpoint-output-v3.py": {
+      "bytes": 6083,
+      "sha256": "d634a6adc309cfa74999967b7ca3c3ca7446f6a83a1feee999ab73227bdcc631"
+    },
+    "controllers-and-observations/closed-implicit-state13-clock-observer-v1.py": {
+      "bytes": 4779,
+      "sha256": "e0199edb8a26cc260600b8f1ea5a55af262e5d11f769daaf639165ba750f7514"
+    },
+    "controllers-and-observations/closed-implicit-state13-complete-feedback-selection-v2.py": {
+      "bytes": 1152,
+      "sha256": "3b4a9bf29de59cce83b5a2da7ceb577735d3d1d7c0e861cba7649587bfa2059c"
+    },
+    "controllers-and-observations/closed-implicit-state13-current-public-preflight-v1.py": {
+      "bytes": 2585,
+      "sha256": "1a032bbc5690fbbdb07e8b2db0a245bff375f5e2882104546ebe957286d719bd"
+    },
+    "controllers-and-observations/closed-implicit-state13-install-first-coherent-checkpoint-v1.py": {
+      "bytes": 5960,
+      "sha256": "a8a9df76b9106cbc1beb68142a1cf0c8cf8608871c8a29e00948a438ddeebb0a"
+    },
+    "controllers-and-observations/closed-implicit-state13-native-proposal-compile-v1.py": {
+      "bytes": 2234,
+      "sha256": "49efdb171078bd73026e746a789af6706099ed39389c6039565b1ca5784e0367"
+    },
+    "controllers-and-observations/closed-implicit-state13-original-main-startup-diagnostic-v1.py": {
+      "bytes": 6588,
+      "sha256": "ec50640952473829c826b419c669d0658b392f1d0a960f37b4c03950bfd7ea1b"
+    },
+    "controllers-and-observations/closed-implicit-state13-original-reader-discovery-v1.py": {
+      "bytes": 5250,
+      "sha256": "94232e83118023ca5a35ca64c6c4150b82ddc0c1c30b4857dc198b65f0e88116"
+    },
+    "controllers-and-observations/closed-implicit-state13-output-preflight-v2.py": {
+      "bytes": 2511,
+      "sha256": "3989597d2b37a97c258792369b63d91c64bb2cb0163c051953c21345daedc543"
+    },
+    "controllers-and-observations/closed-implicit-state13-prepare-canonical-proposal-v3.py": {
+      "bytes": 4817,
+      "sha256": "4a6e13d82d430dc83480f4065331341dd92b2eae5a62a2f1727a15a85798cd6e"
+    },
+    "controllers-and-observations/closed-implicit-state13-prepare-controllers-v1.py": {
+      "bytes": 5434,
+      "sha256": "5cca98d6c2c60c68ab86f317f2604431c745e9d21698de27952f492f251da5a7"
+    },
+    "controllers-and-observations/closed-implicit-state13-prepare-readonly-input-reuse-v2.py": {
+      "bytes": 3308,
+      "sha256": "f8ae91232e8cbc3619e7ad83cacbc3f99af69eabac1f9ca358f11eb3f242fb8f"
+    },
+    "controllers-and-observations/closed-implicit-state13-prepare-source-proposal-v1.py": {
+      "bytes": 4808,
+      "sha256": "5a66365957a049c41cbfdc4de7214d6feff1d1c9535da1c674f2dedcc22d3eb8"
+    },
+    "controllers-and-observations/closed-implicit-state13-run-repaired-feedback-v2.py": {
+      "bytes": 1987,
+      "sha256": "a9c18be9fe68a272f865b8c7e8411411db4034d4e2b00e851188de36c5f2540f"
+    },
+    "controllers-and-observations/closed-implicit-state13-seal-discovery-v1.py": {
+      "bytes": 2881,
+      "sha256": "0a4d806e173f064b646a726bfdfa909d71838be047c09ce4ad8f71e7293398e4"
+    },
+    "controllers-and-observations/closed-implicit-state13-seal-first-local-feedback-v1.py": {
+      "bytes": 4476,
+      "sha256": "85b4d1317e671fb9c23243591c8444d04c9a3e2a4b800e8f4b6add03e147ed6f"
+    },
+    "controllers-and-observations/closed-implicit-state13-seal-output-feedback-v2.py": {
+      "bytes": 3720,
+      "sha256": "4e109899042412421222a6ee98369556fd7e9afb21869edc44dbb4f858bed1cc"
+    },
+    "controllers-and-observations/closed-implicit-state13-seal-startup-diagnostic-v1.py": {
+      "bytes": 2127,
+      "sha256": "5c52558a35b6043bb651ada28f02b5a1ff8be1aac01f675260874ca048ebd592"
+    },
+    "controllers-and-observations/closed-implicit-state13-select-local-feedback-v1.py": {
+      "bytes": 1812,
+      "sha256": "079a99de11ac439eed653471756502519379d6ba77fd7ec141dba10ad8ae5568"
+    },
+    "controllers-and-observations/closed-implicit-state13-select-repaired-feedback-v3.py": {
+      "bytes": 1517,
+      "sha256": "144d7d520f500766a7e8fa8d9d3890472b4847150ecaa483c12577afa65cf647"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_CLOCK_OBSERVER_V1.json": {
+      "bytes": 29756,
+      "sha256": "2003eff81f3208f61fc803da27d26d176764f7e99fc7b27e44bcee0d19eb2cc4"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_CURRENT_ALL_PUBLIC_INPUTS_V1.json": {
+      "bytes": 36056,
+      "sha256": "1fa1d56a20ca0545c8ec5a85ae1d9790589501c68eecd2a40a34353177e71838"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_FINITE_CASE_PLAN_PROPOSED_V1.json": {
+      "bytes": 6754,
+      "sha256": "21d5e4e7da42da2733e37fa7cfa0a2fc33717853d57e716f1eb880ca7f178a3e"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_FIRST_ACTUAL_CHECKPOINT_V1.json": {
+      "bytes": 2357,
+      "sha256": "dd60f7bcbac5e4c03356531577e836b27b185f2b3b76a3e271735f2190eaaf2e"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_FIRST_ACTUAL_SOURCE_CONTRACT_V1.json": {
+      "bytes": 2160,
+      "sha256": "2caad33911740091b8ac0376efebcf67bda1a0e140551bc60fcc7b645758fbd5"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_FIRST_LOCAL_FAILURE_SUMMARY_V1.json": {
+      "bytes": 5144,
+      "sha256": "17e502956d3c9b4ad649d18ff30cf1c6e22b72140cda0c4450e15fec7260061b"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_FIRST_LOCAL_FAILURES_RAW_V1.json": {
+      "bytes": 88610,
+      "sha256": "9a3a2581d8b3371f2c8ffea07c63768c074f3c0a9bcfb0737d29e04e87c134fc"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_ORIGINAL_MAIN_STARTUP_DIAGNOSTIC_V1.json": {
+      "bytes": 48652,
+      "sha256": "7926519cdd851953467c8c8dd47264f9515bb074d507240803bf18326748fb56"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_ORIGINAL_MAIN_STARTUP_RAW_V1.json": {
+      "bytes": 6044,
+      "sha256": "591e002dc4405d863a519663ed4309e3223fc199bec625df8889151d517041e1"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_ORIGINAL_READER_DISCOVERY_V1.json": {
+      "bytes": 41042,
+      "sha256": "094866bcb8ccffd04693cba812f853cba42b0a69dfe9838e4ed84c75b0f98512"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_ORIGINAL_ZERO_DAY_AND_PROPOSED_NATIVE_RAW_V1.json": {
+      "bytes": 55966,
+      "sha256": "edecd6b3c9f34292e3852ffe1fa0074c9872d7af9f2ac80435b8ab72d0695b2b"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_OUTPUT_PREFLIGHT_V2.json": {
+      "bytes": 56589,
+      "sha256": "8ab32828c48d4a6eed16e43150e27010aabb73070ccc93a47bc8a93f632d27c6"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_OUTPUT_PREFLIGHT_V3.json": {
+      "bytes": 56761,
+      "sha256": "9aa4e7b44a20c14d2832e7f3f5fb0d554dbea130ec8ee636dcd11952bc3e2adc"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_PROPOSED_NATIVE_COMPILE_V1.json": {
+      "bytes": 10031,
+      "sha256": "683ce33e25d122a6a129379ccf317b44fe534b3ce616b972da3528e80a96b9e8"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_REPAIRED_ACTUAL_SOURCE_CONTRACT_V3.json": {
+      "bytes": 3431,
+      "sha256": "b115eef90513488bb6c39ccd6d40edddd4e5db610cd8b39df17d7c3247fb8ba2"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_SOURCE_PROPOSAL_V1.json": {
+      "bytes": 7851,
+      "sha256": "9a62df7316a663d4bb9cec10219e350316f1b78d0a73bf7af390de5f62de35a7"
+    }
+  },
+  "contexts": [
+    {
+      "case": "closed-ordinary-gardner-water",
+      "optimization": "O0",
+      "actual_source": "6a0e6ff6cab1c0a7565938f43ee3b1921f63eaa3",
+      "status": "ACTUAL_CLOSED_IMPLICIT_BUDGET_NATIVE_COLD_AND_TRANSACTION_FEEDBACK_PASS_NOT_QUALIFIED",
+      "error": null,
+      "primary_days": 35,
+      "complete": true,
+      "classification": "EVIDENCE_ONLY",
+      "independent_budgets": {
+        "days": 35,
+        "water_daily_max_cm": "6.393757E-14",
+        "cde_daily_max_mg_cm2": "0",
+        "cde_every_prefix_max_mg_cm2": "0"
+      }
+    },
+    {
+      "case": "closed-ordinary-model6-snow-cde-profile",
+      "optimization": "O0",
+      "actual_source": "6a0e6ff6cab1c0a7565938f43ee3b1921f63eaa3",
+      "status": "FAILED_ACTUAL_CLOSED_IMPLICIT_FEEDBACK_NOT_QUALIFIED",
+      "error": "ValueError('Foreign complete original undrained Snow checkpoint procedure')",
+      "primary_days": 0,
+      "complete": false,
+      "classification": "COMPOSITION_MISSING"
+    },
+    {
+      "case": "closed-ordinary-model5-cde-profile",
+      "optimization": "O2",
+      "actual_source": "6a0e6ff6cab1c0a7565938f43ee3b1921f63eaa3",
+      "status": "FAILED_ACTUAL_CLOSED_IMPLICIT_FEEDBACK_NOT_QUALIFIED",
+      "error": "RuntimeError(\"Missing {'HYBRID_DAY_RETURN'}, process exited with 1\")",
+      "primary_days": 25,
+      "complete": false,
+      "classification": "NUMERICAL_DEFECT",
+      "independent_budgets": {
+        "days": 25,
+        "water_daily_max_cm": "3E-14",
+        "cde_daily_max_mg_cm2": "0",
+        "cde_every_prefix_max_mg_cm2": "0"
+      }
+    }
+  ],
+  "complete_contexts": 1,
+  "partial_primary_days": 25,
+  "new_qualified_contexts": 0,
+  "new_admitted_contexts": 0,
+  "original_main_causality": "UNKNOWN",
+  "canonical_admission": false
+}

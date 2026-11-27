@@ -1,0 +1,2718 @@
+{
+  "status": "FOUR_ACTUAL_PRECHECK_WITHOUT_NEWTON_PROGRESS_REGRESSIONS_RETAINED_NOT_QUALIFIED",
+  "actual_scientific_source": "3ee4db1ceeb9d923d44fd833f82d196e116a23c0",
+  "archive": "CLOSED_IMPLICIT_STATE13_CONVERGENCE_PRECHECK_REGRESSION_FAILURES_RAW_V5.zip",
+  "bytes": 11753852,
+  "sha256": "d6cf52bfa315ae73a88af7abc77f3f22afe4cb1364c8f690519bf09b441b698a",
+  "parts": [
+    {
+      "file": "CLOSED_IMPLICIT_STATE13_CONVERGENCE_PRECHECK_REGRESSION_FAILURES_RAW_V5.zip",
+      "bytes": 11753852,
+      "sha256": "d6cf52bfa315ae73a88af7abc77f3f22afe4cb1364c8f690519bf09b441b698a"
+    }
+  ],
+  "members": {
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/build.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/build.stdout": {
+      "bytes": 101,
+      "sha256": "d021fa9b8bb72bfb22f3a967492ae8e6a333a4ba3ae5c9497610ce5a26a3175f"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/inputs/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/inputs/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/inputs/grass.crp": {
+      "bytes": 31370,
+      "sha256": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/inputs/maize.crp": {
+      "bytes": 24670,
+      "sha256": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/inputs/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/inputs/potato.crp": {
+      "bytes": 31435,
+      "sha256": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/inputs/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/inputs/swap.dra": {
+      "bytes": 11967,
+      "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/inputs/swap.swp": {
+      "bytes": 36747,
+      "sha256": "360e6480e9a9e1524dcea759ec53408c3a82c8fb010a142eab48f4f4ed3f5b98"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/inputs/swap.tss": {
+      "bytes": 491,
+      "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/RESULT.json": {
+      "bytes": 5833,
+      "sha256": "e5c9320a0c75890130a94b0e713340b86157c735c63a65522e082ecba4844902"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/accepted-column-1-day-2.zip": {
+      "bytes": 1511942,
+      "sha256": "b4670b346defe8f5a7dcc78d23ae0cc7159260dd3a3f2287ef0a47147fd66dea"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/accepted-column-1-day-4.zip": {
+      "bytes": 1511958,
+      "sha256": "ff3b78b298bc71cd78c5de8834fc2ab72173f73c5915b40da8c0135f72af652c"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/BUILD.json": {
+      "bytes": 82542,
+      "sha256": "64420fbf637bfb235da0479323579bc59116c1d0b1a1e52f6bca067f86539a66"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/daily.jsonl": {
+      "bytes": 4080,
+      "sha256": "ca55b513c5e69575bb4315da82922963283a088102d7ced5185b22ca14ae08d9"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/kernel.stdout": {
+      "bytes": 595,
+      "sha256": "92e1fa734bb997e77111161e6b4ca75bb50ad8825fad8f96e78bfcd3d6c8cadf"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/original/283rd$00002.tmp": {
+      "bytes": 244992,
+      "sha256": "4bd4c4973a32fe6cd880ab8b5d4d9884edc6adfd9fc06662a21de9ea9782d13f"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/original/donor.stderr": {
+      "bytes": 671,
+      "sha256": "ff4e46bf801731d46c397afc1639afb013694fdcd5405bf39e721a3de3b1f5c0"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/original/donor.stdout": {
+      "bytes": 14223,
+      "sha256": "a55ceb4ded4a3eb49e667474cee97bbcf99cb4341fb293bb1fb181c91bde3793"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/original/grass.crp": {
+      "bytes": 31370,
+      "sha256": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/original/macro.bin": {
+      "bytes": 1467444,
+      "sha256": "f5f0fcb18fdc6e65a2ac6eb0aad77f55847090d11519c108dfb35eb4683ebe6c"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/original/maize.crp": {
+      "bytes": 24670,
+      "sha256": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/original/potato.crp": {
+      "bytes": 31435,
+      "sha256": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/original/result.bal": {
+      "bytes": 194,
+      "sha256": "f35af2b6a94048572461742356bb7139855f22b9bae25769e83864750a6f6709"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/original/result.blc": {
+      "bytes": 190,
+      "sha256": "37fb2630f26b71def77c40a0167a318c4dd0c0d00f3691f1a4712f9a1385efd0"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/original/result.end": {
+      "bytes": 1064,
+      "sha256": "3a96d78fc4d208241318206a5ad58dd403bbbd58e0b60818a0ddff158c5fe285"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/original/result_output.bin": {
+      "bytes": 2699,
+      "sha256": "5b40bf6ebf3c3aae794be46e4eeb164bc7c589081d8cc4aa53b5a6427cde4d36"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/original/swap.dra": {
+      "bytes": 11967,
+      "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/original/swap.err": {
+      "bytes": 759,
+      "sha256": "be20a97c26e86ae1f2b94f1e7a612633bf2cc699d50d92f98bbb286081ba148a"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/original/swap.log": {
+      "bytes": 645,
+      "sha256": "61d96d34b53b4c22faac7985c47a3f4aada21cbbdb26fd16b96d6959af23d4aa"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/original/swap.swp": {
+      "bytes": 36750,
+      "sha256": "311b2f20b19036be54bf6c12e9b65ce93a6c6e34bfd711a1572d0453a4ba41e7"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/original/swap.tss": {
+      "bytes": 491,
+      "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/original/swap.wrn": {
+      "bytes": 133,
+      "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/original/swaprd$00001.tmp": {
+      "bytes": 20196,
+      "sha256": "78fb0c4713f34e4e30cd412c4604b536db58a6326a3fe114eff347f51ee5325c"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde/trajectory/original/swaprd$00003.tmp": {
+      "bytes": 1452,
+      "sha256": "318d066fa3729f52ce8bf2e4a261e4ac03acfff5f5cc534f2b43205e9e9958a5"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde.stderr": {
+      "bytes": 1724,
+      "sha256": "6147cee965f1a683003108d0e346a423b0441d7ac1b355f5d90600ba0f1aa1d4"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-frost-mixed4-5-cde.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/build.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/build.stdout": {
+      "bytes": 101,
+      "sha256": "d021fa9b8bb72bfb22f3a967492ae8e6a333a4ba3ae5c9497610ce5a26a3175f"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/inputs/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/inputs/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/inputs/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/inputs/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/inputs/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/inputs/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/inputs/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/inputs/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/inputs/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/inputs/swap.swp": {
+      "bytes": 36031,
+      "sha256": "e9e15b5809794cc308374b5c003ce76de5a40ac6902f89ce6ba3031d240b9335"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/RESULT.json": {
+      "bytes": 5948,
+      "sha256": "ee817d42e847be14e8d034cdab35018121b323e60a0e8faa40a709032401b718"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/BUILD.json": {
+      "bytes": 72186,
+      "sha256": "6a9269124d7db4256354e15e254815b65b282d23934c0dfa99b8c20bf81050d2"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/daily.jsonl": {
+      "bytes": 1491,
+      "sha256": "ed02936097839eaf949522cbe3b6548b31176e61b052530ff591f6293755f3e4"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/kernel.stdout": {
+      "bytes": 214,
+      "sha256": "d9d6847c63e3156d90ee2927c1d2d8bcb963a877d99f4ade9fde9b2111c8e1b0"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/original/283rd$00003.tmp": {
+      "bytes": 244992,
+      "sha256": "4bd4c4973a32fe6cd880ab8b5d4d9884edc6adfd9fc06662a21de9ea9782d13f"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/original/donor.stderr": {
+      "bytes": 671,
+      "sha256": "ad817801074bff727a88d9205e57a5ee3e305ab731f8aed8f59c5e22b768e8a4"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/original/donor.stdout": {
+      "bytes": 6184,
+      "sha256": "8886073dd5ec72c0020a7bb00ee20cb64a222a72dd5a44851c528d3fb12aefe6"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/original/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/original/fixed-irrigationrd$00002.tmp": {
+      "bytes": 1188,
+      "sha256": "f39dc8c65518cd8f11b994908bb731ae9cc3eeac6a9d7d28e1341347d6574ed3"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/original/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/original/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/original/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/original/result.bal": {
+      "bytes": 194,
+      "sha256": "700c29d80b7644bb66d60af6cd6087de10ff81cab0805199ea7591b2114e1d19"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/original/result.blc": {
+      "bytes": 190,
+      "sha256": "2c0e74b05f7e09a4cd85e7836845253c60acfad88eea8efd40fcf3e2281e217c"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/original/result_output.bin": {
+      "bytes": 1159,
+      "sha256": "bfe9f08b215b3767a02fa945e2759c2b80a269bfbe82d9790f08f7013657ff33"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/original/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/original/swap.err": {
+      "bytes": 820,
+      "sha256": "d05e0ff5a06b1631bb2dffb76cd0f16d54f987c2b1a5b6914a98b1060ccd3986"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/original/swap.log": {
+      "bytes": 645,
+      "sha256": "524ff9d111e98c2241ff6cdc0994634c1eb3c4f344bfbef6f025ed6e7f8aa189"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/original/swap.swp": {
+      "bytes": 36828,
+      "sha256": "346c84630a4be9ff308a3d6a28a36658efff16542b3813fc85319d4e4fa9bfef"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/original/swap.wrn": {
+      "bytes": 133,
+      "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile/trajectory/original/swaprd$00001.tmp": {
+      "bytes": 20328,
+      "sha256": "90c445a59821cec49b8b67810488074597fe64c3727a034ffb1b38eb6d20eb8e"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile.stderr": {
+      "bytes": 1724,
+      "sha256": "6147cee965f1a683003108d0e346a423b0441d7ac1b355f5d90600ba0f1aa1d4"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/closed-ordinary-model6-snow-cde-profile.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O0/SUMMARY.json": {
+      "bytes": 913,
+      "sha256": "b697426cca91f29b019de5e8c59e31f5e00201eacf388ebb14228c2343852f17"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/build.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/build.stdout": {
+      "bytes": 101,
+      "sha256": "4b901a38e94ad02a6cd848854e6daddccf114f981c7429269ab7a4c3e74c0502"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/inputs/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/inputs/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/inputs/grass.crp": {
+      "bytes": 31370,
+      "sha256": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/inputs/maize.crp": {
+      "bytes": 24670,
+      "sha256": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/inputs/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/inputs/potato.crp": {
+      "bytes": 31435,
+      "sha256": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/inputs/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/inputs/swap.dra": {
+      "bytes": 11967,
+      "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/inputs/swap.swp": {
+      "bytes": 36855,
+      "sha256": "b9bebf8e703cbdd2f6153be05d697ebc6115a226838cb3ccc6b18c62bfcd68ab"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/inputs/swap.tss": {
+      "bytes": 491,
+      "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/RESULT.json": {
+      "bytes": 5853,
+      "sha256": "7b2ca137dfc88f3182e2d7e12448bac7e6e04e4eafe8f171c3a01fe02854089c"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/BUILD.json": {
+      "bytes": 76308,
+      "sha256": "e0c326f95423edb1025f5287320eb5fbde7dceb916d8e60864b7c2c846e1cf93"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/daily.jsonl": {
+      "bytes": 1256,
+      "sha256": "ef2edeba58d01d769be25cbd31bc71de6cfb681cd03d02afa5439c84186f1945"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/kernel.stdout": {
+      "bytes": 214,
+      "sha256": "d3b2365092380ff0c91e4dcd695150d64bfea9d9fdbf0b60b45041ceaeac73f0"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/original/283rd$00002.tmp": {
+      "bytes": 244992,
+      "sha256": "4bd4c4973a32fe6cd880ab8b5d4d9884edc6adfd9fc06662a21de9ea9782d13f"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/original/donor.stderr": {
+      "bytes": 671,
+      "sha256": "eb9722f7a345bf64a2babc5c8bd56ddf87d789ddfbb6d0b8d54ae1ca3a7b756b"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/original/donor.stdout": {
+      "bytes": 4152,
+      "sha256": "f297d1c2d30157dcb14c81ef9bd26352d62a1d5411b53fab09a6bb36832106bc"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/original/grass.crp": {
+      "bytes": 31370,
+      "sha256": "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/original/maize.crp": {
+      "bytes": 24670,
+      "sha256": "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/original/potato.crp": {
+      "bytes": 31435,
+      "sha256": "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/original/result.bal": {
+      "bytes": 194,
+      "sha256": "ecad86bfdb1b5e734061d652dc833544fda31ae7944282369c02b2a092800c0f"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/original/result.blc": {
+      "bytes": 190,
+      "sha256": "afce00223ebcdd8c226fbca2ab7e7eac939a2ea32e70da2790b6cfc63bea963c"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/original/result_output.bin": {
+      "bytes": 2503,
+      "sha256": "7dbbc90ae802dab35b06ce28511f929ac052b28727d54c9030fc466e77a973a5"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/original/swap.dra": {
+      "bytes": 11967,
+      "sha256": "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/original/swap.err": {
+      "bytes": 710,
+      "sha256": "3e226e7c17ecfb0f4a3f0811df8906c000ab9e10bb53030efe658ead640ff22e"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/original/swap.log": {
+      "bytes": 645,
+      "sha256": "db60ad1a14d8bea4fd7515e2cdaa89cea25efe7a688cd7c65b1394795c729911"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/original/swap.swp": {
+      "bytes": 36862,
+      "sha256": "49a256bdc6a4b8a0959b02e9cea9893dbed17105517136dd145eea1f27182b94"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/original/swap.tss": {
+      "bytes": 491,
+      "sha256": "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/original/swap.wrn": {
+      "bytes": 72,
+      "sha256": "7d5c1f5c91dc1c505a34b92862d6dc3743a2708a7f51fc8ba47f6652a66a8ead"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/original/swaprd$00001.tmp": {
+      "bytes": 20592,
+      "sha256": "c5486a3ddd64ccf67e39d014d276852899f7583afe8ffa3bf9a710eebffdf44a"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water/trajectory/original/swaprd$00003.tmp": {
+      "bytes": 1452,
+      "sha256": "318d066fa3729f52ce8bf2e4a261e4ac03acfff5f5cc534f2b43205e9e9958a5"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water.stderr": {
+      "bytes": 1724,
+      "sha256": "6147cee965f1a683003108d0e346a423b0441d7ac1b355f5d90600ba0f1aa1d4"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-frost-mixed8-9-water.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/build.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/build.stdout": {
+      "bytes": 101,
+      "sha256": "4b901a38e94ad02a6cd848854e6daddccf114f981c7429269ab7a4c3e74c0502"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/inputs/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/inputs/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/inputs/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/inputs/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/inputs/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/inputs/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/inputs/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/inputs/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/inputs/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/inputs/swap.swp": {
+      "bytes": 35990,
+      "sha256": "6b66e6641ba3c1adffa295a459c1b01c1bbe3f9b6cfcd08da0d5e37749ec0e6d"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/RESULT.json": {
+      "bytes": 5902,
+      "sha256": "e1c6eb8fae498b36b99f8e127de50c9e1d99fee04cc9821c1763c81d9d445e16"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/BUILD.json": {
+      "bytes": 72928,
+      "sha256": "d330ddbd08f5333bf51e5a95b68277909db66dd7c3023407baa689fa4996ad2d"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/daily.jsonl": {
+      "bytes": 1486,
+      "sha256": "e0f63143f8869f9ed59aaa0c327153ee69f191c185a75a94a152c53f1f3f114e"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/kernel.stdout": {
+      "bytes": 214,
+      "sha256": "05e0ce3961ec7b7beb9690e8d0c28f88e2f07f78dd2641b8898f96aa5653c21d"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/283rd$00003.tmp": {
+      "bytes": 244992,
+      "sha256": "4bd4c4973a32fe6cd880ab8b5d4d9884edc6adfd9fc06662a21de9ea9782d13f"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/donor.stderr": {
+      "bytes": 671,
+      "sha256": "e6d69bb965b15d6c0f880872dbb9412e751563f2b871bd9d5d00415a20467c83"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/donor.stdout": {
+      "bytes": 5404,
+      "sha256": "ba594e188290daae66770302e3dfa8a974038e01fbf70a03015e815b247c96dc"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/fixed-irrigationrd$00002.tmp": {
+      "bytes": 1188,
+      "sha256": "b584d67f090fd005f56e2d558172620bd85a059c0858e456311b2b99de17e162"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/result.bal": {
+      "bytes": 194,
+      "sha256": "3f6265182e971ef8be41d877bbaffc3c844cca3a0d54d35f26580cbb7af398b0"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/result.blc": {
+      "bytes": 190,
+      "sha256": "79d5620b690c7c1b0576817473427ecf5c35ce5f20061cbb1135e0e8d46a7eff"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/result_output.bin": {
+      "bytes": 1075,
+      "sha256": "e406d132c8ce70f2297176d3ff3fd70d291917b1a34664d68e206828ff96a3ca"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/swap.err": {
+      "bytes": 820,
+      "sha256": "ef6042109d7624316d6b430c6af71adee11f129d9e12b83f4b6974a52759a147"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/swap.log": {
+      "bytes": 645,
+      "sha256": "c0256198a3fd65ef37dfb874bbdf6ca3766836ccb2e184fdfd68b93bc9e18773"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/swap.swp": {
+      "bytes": 36785,
+      "sha256": "d7aa0bd03434f7e2b3294d6f8a48fd14ff4b187de5526495ac6f342cc27bdcaa"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/swap.wrn": {
+      "bytes": 133,
+      "sha256": "9c459b81e9e257af5dc14304bdd5e01546d54663f605d3f705370652cab6fc49"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile/trajectory/original/swaprd$00001.tmp": {
+      "bytes": 20328,
+      "sha256": "b10190a6a9cc9d0272035429463ad41e532d3e6e93edf2c1315fc2e28807c57f"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile.stderr": {
+      "bytes": 1724,
+      "sha256": "6147cee965f1a683003108d0e346a423b0441d7ac1b355f5d90600ba0f1aa1d4"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/closed-ordinary-model5-cde-profile.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/evidence/closure13-residual-feedback-v2/O2/SUMMARY.json": {
+      "bytes": 909,
+      "sha256": "3b3f6e64c1698a5c1d4958af1e297ffc7be67b42092117840af9e0912038a066"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/age_output_calendar_probe.f90": {
+      "bytes": 1964,
+      "sha256": "222fe8e5b30efeaac9b98e57265a7cefc27322baae5e0a5c821315b3f8be87bc"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/age_output_calendar_probe.o": {
+      "bytes": 12564,
+      "sha256": "04f61472f703bb9e93f46e1292d461488afa40b315538ea07836a42bc9507b11"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/boundtop.f90": {
+      "bytes": 16404,
+      "sha256": "07f079c2ff97304b9fadcfc08a9ec75904f8e7cbc78914b80da42f8d64638b44"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/boundtop.o": {
+      "bytes": 28506,
+      "sha256": "a905b19bbc8554a5d155f94004ccb8f351c76eb1c04d1757a3a8d860405c284d"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/BUILD.json": {
+      "bytes": 82544,
+      "sha256": "114f85e4fe9866ca1fe84c9c519c704038ffcf119e9f962570ef8e957af7c5f3"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/cde_interval_receipt.f90": {
+      "bytes": 3273,
+      "sha256": "023ceb3252b5251059a4e4997d04e2f648cd8be2a15e04fd431e5606565dec7c"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/cde_interval_receipt.o": {
+      "bytes": 4918,
+      "sha256": "2715d96a4a0ae7b96f87b154c1766e18f226527d798dcec56a0572a8678d1701"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/day_donor.exe": {
+      "bytes": 2299288,
+      "sha256": "943a124724b962990bb526bd73c321f266a59fa80fdfe682aa88bcbcae24d5ea"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/day_kernel.exe": {
+      "bytes": 364079,
+      "sha256": "2e6c3891764333f1b5a177eb96d1011dabdfdb7a7e5debd470077909cbff3d9c"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/frozencond.f90": {
+      "bytes": 10567,
+      "sha256": "d5dd195187d4581e09d19e6afdd4066c0fdb23eee84f8f87947251d2778724d2"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/frozencond.o": {
+      "bytes": 15466,
+      "sha256": "d0c9850a01c0ada36bd3e39a264eb8db9dc56116dbf6a6684dd232546c566787"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/headcalc.f90": {
+      "bytes": 34617,
+      "sha256": "79467e4fac21141a58487efeb1095a6c12bc686a1ca20568ec4f5aafb89e8607"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/headcalc.o": {
+      "bytes": 72756,
+      "sha256": "21ea77b3911fc804005c0ccd75424de68a69b808f40dbff2eed170e9ed1e50a5"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/hybrid_age_output_state.f90": {
+      "bytes": 852,
+      "sha256": "4b1657194d82b50358f8abbde0b019ab7ecb67d870d57edce92d01079d0c2e31"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/hybrid_age_output_state.mod": {
+      "bytes": 2765,
+      "sha256": "87f65728b41718d28ed3b923e7ba529ddf31e064c7c06e59041983bee0d2c83e"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/hybrid_age_output_state.o": {
+      "bytes": 1761,
+      "sha256": "b3e9a4e89705374a630b80131fcb675d57a99cd134e263f5abc35be8d5a346df"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/hybrid_cde_interval_receipt.mod": {
+      "bytes": 2062,
+      "sha256": "e108ce579fdc3063dbe3b9d760130ff7301429acf4b592ec8b0db144d0da9a2b"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/hybrid_day_window.mod": {
+      "bytes": 366,
+      "sha256": "911b49f55990e262040cce187c963668eba4d0993e826894a20bec2d971f04fc"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/hybrid_implicit_frost_root_state.mod": {
+      "bytes": 1610,
+      "sha256": "eef9a812da1d3db2065360d4c88e8ffb12930088f24a28dd31248ea1f7459e83"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/hybrid_implicit_pond_availability.mod": {
+      "bytes": 1653,
+      "sha256": "506074c6c5eb2bb7750b32772cd62bfaab5eed78cf331a7773a2a5ea4fd48906"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/hybrid_implicit_pond_event_state.mod": {
+      "bytes": 1745,
+      "sha256": "728ff031457137d728f5b96155b4c18cb4423f6d457707b5f24114afa792f1ca"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/hybrid_original_cde_output_state.mod": {
+      "bytes": 1611,
+      "sha256": "9304b544b6fd670f0694142a78fc282747709be70e928f83cf25295f20fcb6c8"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/hybrid_original_cde_output_state.smod": {
+      "bytes": 2687,
+      "sha256": "dfc45a99447990b4f204bac76bcad5d38071cef850ade90833803bb788061d1b"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/hybrid_output_thermal_domain.mod": {
+      "bytes": 306,
+      "sha256": "0921e6d39f6d0cc3a8eea851599f19f1b1d1724d19329b77091afbf3bc748b5f"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/hybrid_step_budget.mod": {
+      "bytes": 1099,
+      "sha256": "fea8cd19ba097c0487ec766ecd545e1d61609f06459de05dc4fa3016ff22d4f7"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/hybrid_step_budget.o": {
+      "bytes": 12352,
+      "sha256": "e000a43d12f7e5d184597a72d6cb5cc2af1a07b5cb13a417f1acc529869808bd"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/hybrid_terminal_water_receipt.mod": {
+      "bytes": 388,
+      "sha256": "30f4eaf6388da641c47e7f2c5dc96c9118833bdf7f405ed6e8d197d0aea6427c"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/hybrid_thermal_output_snow_calendar_state.mod": {
+      "bytes": 1965,
+      "sha256": "a2d3ee111b225ee63beec5954be54879d9ec1c20eb6b85182295d21f47370959"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/implicit_frost_hydraulic_state_native.f90": {
+      "bytes": 2244,
+      "sha256": "b945d0d08025dc864b27069a8790efe36c4c09124bf8d06dfdd2e3c5fbef53d8"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/implicit_frost_hydraulic_state_native.mod": {
+      "bytes": 325,
+      "sha256": "40f36f0fa89e38f085fa8a2e91a4d06f7e8560ff49db65a86d1deef1428f8745"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/implicit_frost_hydraulic_state_native.o": {
+      "bytes": 11337,
+      "sha256": "b64f8a73abb47c27305538e33e3ab965d7928010b55e416e851f050f00eaa44a"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/implicit_frost_root_state.f90": {
+      "bytes": 1759,
+      "sha256": "47f81d92c5af09ac4548b60595578941bb292f626648e00f3b8fba9b9f29d77f"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/implicit_pond_availability.f90": {
+      "bytes": 1078,
+      "sha256": "ddb9bf2a4f1755dac221d270f40f28a24ce81d1d8291c481913d51714cb25ec7"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/implicit_pond_availability.o": {
+      "bytes": 1861,
+      "sha256": "558981a46e549857b2a09db4016ca4a60eccbff5aa193b651ea939d6fdb02858"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/implicit_pond_event_state.f90": {
+      "bytes": 2081,
+      "sha256": "0aac6ca53c7d88a2793366ab726b56fbb1e71105cad62682a01867e7a3045651"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/implicit_pond_event_state.o": {
+      "bytes": 3790,
+      "sha256": "5412a8187f0558dae82539c1b076d35e593e3746aa661993699bacfe6fee1f16"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/integral.f90": {
+      "bytes": 36068,
+      "sha256": "c80a7d9f6aa1917a7397cb1debae29c2a6b38da658ce1648107487596ba7a216"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/integral.o": {
+      "bytes": 80852,
+      "sha256": "9528135e0640e3d2c43b9a342fd600224be085ac7e4ca3b72744422539ebcd04"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/irrigation.f90": {
+      "bytes": 82984,
+      "sha256": "62b07bc97439845dd88e764eff979dc173faeed0492651a87e4a4c1255137c66"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/irrigation.o": {
+      "bytes": 82092,
+      "sha256": "ff5b87299ebe42116ce97649f0aaf43723af3776369ca55496392fd28503507a"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/macropore.f90": {
+      "bytes": 94441,
+      "sha256": "58e07363cce13c977be3437be56038a676ea517f371a63fdc4f694932d162a8b"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/macropore.o": {
+      "bytes": 516271,
+      "sha256": "653e22b03bedf35d29e3ebec44e94a7d8d1559544024f7783e16c59cab9309e6"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_accepted_trajectory_directional_publication.mod": {
+      "bytes": 4417,
+      "sha256": "54184df44f860cbba7c53c94035f4df3d4ec150403dcdf1c6b8444934489a92f"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_accepted_trajectory_directional_sensitivity.mod": {
+      "bytes": 4709,
+      "sha256": "cadc559986ceecd90866c3f9e9635224699063d96052f409a4e272c0922d7f93"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_canonical_contracts.mod": {
+      "bytes": 12974,
+      "sha256": "9e38688b54853b5c7a1b4ed4f8a4a90f27edbe8719edafe8c5fb95d74e095482"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_canonical_interval_runtime.mod": {
+      "bytes": 12951,
+      "sha256": "48b870166a41bd2323be5ecd7dce5632faebfe590ee7b3e52ee9d29d30bac263"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/MOD_cropdevelopment.f90": {
+      "bytes": 81515,
+      "sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_cropdevelopment.mod": {
+      "bytes": 4009,
+      "sha256": "a41356a36a4447d608aafcf20c4d45c497cbb83b5139d1f07cb26fa0ec772717"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/MOD_cropdevelopment.o": {
+      "bytes": 113751,
+      "sha256": "9bf4457fe26b84c3ae397b53de7155bbfd3166d84d99be0da681e88ba84da4f4"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_fmr_soil_water_application_host.mod": {
+      "bytes": 1313,
+      "sha256": "0f29a4e295f13b5cac97fe7900e8dd0829e1ab4d7adcd25b4f43b1cbf721101c"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_frost.mod": {
+      "bytes": 2156,
+      "sha256": "c36b5c7996dce13e4ffcb7c203c4b3b48378ef3610add6216b9147ac3f90e97f"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_groundwater_coupling_contract.mod": {
+      "bytes": 4100,
+      "sha256": "dd3624fda727a7dd40cb1458256662d7c107636179f6d8e3e0b32ce019c0e6b0"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_groundwater_interface_mass_ledger.mod": {
+      "bytes": 6592,
+      "sha256": "a8f874e48ac1c86f42d29003b7ac0c2a4e5c067fd69999582370eeecfc9bb6c8"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_groundwater_swap_forcing_adapter.mod": {
+      "bytes": 24540,
+      "sha256": "3ac8dbbdaa9632a473fef14721974b5de64dbb39d1df3c8ced8f02bc3a49189f"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_groundwater_swap_transaction_participant.mod": {
+      "bytes": 27203,
+      "sha256": "d792c0b8ae3e103cc9bd1a73370a91b1c92ef0555e836c7f3395e1bfb5b3fc78"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_integral.mod": {
+      "bytes": 4234,
+      "sha256": "f84abbd3048e5570bf69e4e4f433e3156990b13502b7aff8e97f5cc200d7a5b2"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_irrigation.mod": {
+      "bytes": 4286,
+      "sha256": "618b437ce47a9911ba93e91d8c30f32cd14683088d2669449f63c694a0409765"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_kernel_transactions.mod": {
+      "bytes": 23972,
+      "sha256": "1721cee5a08145e6945c26002cc2e126a41449672c8d767da799a79cb0f903d3"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_macropore.mod": {
+      "bytes": 4157,
+      "sha256": "458782f1f2ac8affcbfdd7e1f2c32bf765bdc2c4431d3a530a40fc77c560e92b"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/MOD_meteo.f90": {
+      "bytes": 85547,
+      "sha256": "c265397927e219787d294b1cfa273871c0e2dd90ecc1af371b954cfcddac6fae"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_meteo.mod": {
+      "bytes": 1962,
+      "sha256": "c6c874d288bdac405d376a4fd42d819d491ee29778718d4660b287a549dcd33f"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/MOD_meteo.o": {
+      "bytes": 147425,
+      "sha256": "187f51d97e3add64adca7f813ec9a4f01c4871e10cc9382e26cb27c5717a6994"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_mvg.mod": {
+      "bytes": 1352,
+      "sha256": "eba6a50d6a511f3a6833dcb4ae46c1306b60b5f2a0f294bd764ec6703d4141d1"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/MOD_MvG_functions.f90": {
+      "bytes": 40144,
+      "sha256": "25e814c88ca71d2c2111295dc895c55952764901ebae372cd290b06699a5d9ff"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/MOD_MvG_functions.o": {
+      "bytes": 69511,
+      "sha256": "72f8b6c04b05f3bd84bf193772379cadf8dc8cc12bfac347d71b2b74dabfb358"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_original_output_receipt.f90": {
+      "bytes": 2735,
+      "sha256": "fef3897c3b59efb198f601f50e01ce1f206294a13d6003e7ddff8d12c1ac060e"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_original_output_receipt.mod": {
+      "bytes": 2331,
+      "sha256": "5ec8ae83688d32ed90ce6b06b41ec605d5c08cbd530191bd870131e221bfec92"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_original_output_receipt.o": {
+      "bytes": 3663,
+      "sha256": "7ad0e5b64149f31ca86a78d64946971fafa6a308fa071bf848c9b76157138b8d"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_rwu_micro.mod": {
+      "bytes": 1154,
+      "sha256": "053e13a03d4daa76b5a84c0cb5eccbc7566fe10b0e9f9dc9d861a70e237f1448"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_soil_water_accepted_step_direction_contract.mod": {
+      "bytes": 2006,
+      "sha256": "db54ebc9c6d2f1e5db4c907169f53bb1ae0bb5ca8c55e0863ba22d629068f58f"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_solute.mod": {
+      "bytes": 1008,
+      "sha256": "df34f34dd42d0edacee29ebdfbbe6e42f84be1bcf89f0acbbadea2cab3d8d6f8"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_solute.smod": {
+      "bytes": 1142,
+      "sha256": "4e3e9e6d748168f882ecc1d9814015d184db94c7d98615cd4d4f15368a9f21ee"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_solute@mod_calc_agetracer.smod": {
+      "bytes": 1523,
+      "sha256": "e2fa351f0590bbf880f5e1b85d9ebae752d206786b797de6fa6d329e553fb072"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_solute@mod_solute_cde.smod": {
+      "bytes": 3403,
+      "sha256": "44207d92ae7c9d5d406a9a3574b8d13f1ad178ceb557dfdea32a036a26bb7ac2"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_subsurface_solute_source.f90": {
+      "bytes": 3023,
+      "sha256": "0a5cf80aa06eecf23ad408292b710e56d616a2236acb8b26f14527f0f838fd0f"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_subsurface_solute_source.mod": {
+      "bytes": 1868,
+      "sha256": "a5cb6f76850e945fce2e5105a3c2eea27b0affc245746eca3300d9cd897d1254"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_subsurface_solute_source.o": {
+      "bytes": 4106,
+      "sha256": "dd0186422bb4ae72c067d99e33d34380c8d4483ec2be3a23fb670f04176b0c5a"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_timer.mod": {
+      "bytes": 222,
+      "sha256": "665bb47ce9f4ae69116d6db4e45c0147d55f27e5b1a9c80e6893e4235245569a"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_top.mod": {
+      "bytes": 736,
+      "sha256": "fa6a58b9f8e92c0f7ab4e73a75ceb34462c3a2899b1f97a9627d2bf80e3ae48a"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_transaction_reference.mod": {
+      "bytes": 6815,
+      "sha256": "b46e6f85c656b446bab5ab0359533fc06c39198baaa5a21303714461fcd61bef"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/mod_wofost.mod": {
+      "bytes": 4134,
+      "sha256": "9cd3f46ded050cc8678a2f51b40f6b69aadb31ba25fd64f0166430e304fab08a"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/o2_pars.mod": {
+      "bytes": 1274,
+      "sha256": "e467aa7dc2f106e6e52762e06832aae20d286dd78e3017889e56ee7a78e24316"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/original_cde_output_state.f90": {
+      "bytes": 3576,
+      "sha256": "0b05d5b71639775bcb0ab949bb5cf353edbc0a5b79b40548649723af6333f321"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/original_cde_output_state.o": {
+      "bytes": 17078,
+      "sha256": "e75c2ffdb2e0de39f71aae61c45ac463042e0082a0f82c7df5837d80edb38af9"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/original_output_thermal_domain.f90": {
+      "bytes": 1084,
+      "sha256": "e3e3b5f66787349d3075b67a3e0893cbe18a6d33891d9a75ef4ab17f7a14e209"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/original_output_thermal_domain.o": {
+      "bytes": 5729,
+      "sha256": "6e63e6fa52e9c87016b3e1a6d87956be6707f8ac71be2a3910b457c9a7953aa5"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/oxygenstress.f90": {
+      "bytes": 66696,
+      "sha256": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/oxygenstress.o": {
+      "bytes": 47625,
+      "sha256": "6aa974ba2afdf8eba00b1c0157cd18673cd068929db1f5c3170a711009669705"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/probe_kernel_donor.mod": {
+      "bytes": 36537,
+      "sha256": "1ef66137dc1539d56845abf27a661c11ec953fd9888bd84a1f89a74a655ee922"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/restart_publish.dll": {
+      "bytes": 30291,
+      "sha256": "7fa485a767c61648c86a52765cff64599395172070bdae1e36b5246807118287"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/RWU_micro.f90": {
+      "bytes": 52707,
+      "sha256": "0491f45743cbd178964ec7b00b13d61e4438f3b99940cdb7df91d1bb3d44378c"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/RWU_micro.o": {
+      "bytes": 74477,
+      "sha256": "14884a7cac3301942ae57c46a214b507c0a9ee80a06def914c2cbc176f4daed6"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/solute.f90": {
+      "bytes": 58107,
+      "sha256": "e4269c3cb6fc0649c1a3bdcc1673c02a9a7a56ec130ad1225edbad80c0aa1178"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/solute.o": {
+      "bytes": 103371,
+      "sha256": "4d3f0e505a9fa1655e0dd38941c5891377b92550674f681ea24642a6a0415f7a"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/swap.f90": {
+      "bytes": 29413,
+      "sha256": "82b37c566c7d35aa3b1d35897d70d73e989f23ecb4504ffb21fd04617b2e28c0"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/swap.o": {
+      "bytes": 47736,
+      "sha256": "5b5efab7154d84db3dfdc84e59c1ed5d5818fd95282c4b5ab402dc3d174be9df"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/swap_csv_output.f90": {
+      "bytes": 136486,
+      "sha256": "01f9eabfceacaca10dba3e51ca473ba8c986565dea55726a26b2b3e81c419453"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/swap_csv_output.mod": {
+      "bytes": 2955,
+      "sha256": "9cf061d7f26367fe26da8438746e423134b9c0fbeaf813fa68b1047fb9b16388"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/swap_csv_output.o": {
+      "bytes": 300851,
+      "sha256": "74f14c8bc312e5fc448558ad66c5277c6b0a1b55ad35eb9f1b47b7615c9fba3e"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/swap_exchange.mod": {
+      "bytes": 1470,
+      "sha256": "1f666015d2741e0835066e4d51345d88165a713dd7f8fe068c3a7a5057ddf876"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/swap_main.f90": {
+      "bytes": 11990,
+      "sha256": "994867ed726957a39c7c68962b6493b6a286328fce9d3df2e1c1e33840d8499a"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/swap_main.o": {
+      "bytes": 11856,
+      "sha256": "e7ece79f24099428e018cf7bf890f9cf3c27ee6a7502ec6d6717a8c1bcb3ca54"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/swapoutput.f90": {
+      "bytes": 47749,
+      "sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/swapoutput.o": {
+      "bytes": 108454,
+      "sha256": "f64f57828a50b2f8b692e61cdbd852523eb617e71e60e07f3cb40698b415a213"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/terminal_water_receipt.f90": {
+      "bytes": 2818,
+      "sha256": "041a6795a8570cdae941aeb28f641b4a3a82f00de1fd756916a770bdfab630b0"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/terminal_water_receipt.o": {
+      "bytes": 12800,
+      "sha256": "fae9f2315f594a939ddc9ec259b92a5c7b4252da549edd1b57c6814d29961f6e"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/thermal_output_snow_calendar_state.f90": {
+      "bytes": 2061,
+      "sha256": "3afb9bb69a87d8fa6b57b2885b88d23b1be761da707a5ff6fb99e70596ab594d"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/thermal_output_snow_calendar_state.o": {
+      "bytes": 8663,
+      "sha256": "b9459b5e1c536b5667e3025e85e70f188f1dbe3cef34cb557fa7c7410bd600a8"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/timecontrol.f90": {
+      "bytes": 19819,
+      "sha256": "4211fcd032748ddfb4a3b04e57c55b7706f0874b0dfc561e49f7bb67fad94079"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/timecontrol.o": {
+      "bytes": 40710,
+      "sha256": "d456217e9d666ccfec3cdf8068c9b4aa7dc01af171ec073ea689f5c5dd78d6df"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/wofost.f90": {
+      "bytes": 79125,
+      "sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-frost-mixed4-5-cde/bundle/wofost.o": {
+      "bytes": 105790,
+      "sha256": "36af1649a1a29edc122add1b6afd6a8e71d60a462d535468802f5fa4d5c36822"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/age_output_calendar_probe.f90": {
+      "bytes": 2653,
+      "sha256": "bc222ef531777c2e8ff78e1e1561a2b75fbcdba31e62185989bf6d10a1034267"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/age_output_calendar_probe.o": {
+      "bytes": 15417,
+      "sha256": "5ef5d13f670d3e91db007581381e113476b8e69acfbfa1af018a5c0d7303696f"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/boundtop.f90": {
+      "bytes": 16404,
+      "sha256": "07f079c2ff97304b9fadcfc08a9ec75904f8e7cbc78914b80da42f8d64638b44"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/boundtop.o": {
+      "bytes": 28506,
+      "sha256": "a905b19bbc8554a5d155f94004ccb8f351c76eb1c04d1757a3a8d860405c284d"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/BUILD.json": {
+      "bytes": 72188,
+      "sha256": "93b6e853ddb331261d888708b1dbf2b9bc346030950a86cae58b06cf721e5dd9"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/cde_clock_events.f90": {
+      "bytes": 1696,
+      "sha256": "5b5d54a1b5558fd38fb1368070f855394e7068aa69aeb4aece0a6b3288698964"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/cde_clock_events.o": {
+      "bytes": 1907,
+      "sha256": "b393198c3fa3d87a4c55c87d0a4e67742763e5ef9cffd72141e3fe8f4ef8c4ee"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/cde_interval_receipt.f90": {
+      "bytes": 3273,
+      "sha256": "023ceb3252b5251059a4e4997d04e2f648cd8be2a15e04fd431e5606565dec7c"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/cde_interval_receipt.o": {
+      "bytes": 4918,
+      "sha256": "2715d96a4a0ae7b96f87b154c1766e18f226527d798dcec56a0572a8678d1701"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/day_donor.exe": {
+      "bytes": 2299460,
+      "sha256": "2fdadd8a3a60851f2a5c6dba390573c376c0a414b5a9d36bb9d24df251055b3d"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/day_kernel.exe": {
+      "bytes": 364079,
+      "sha256": "8eff99f8d8b01faa3815f02b9deca210028893a2cf4008272bfeb959bc3947b5"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/headcalc.f90": {
+      "bytes": 34442,
+      "sha256": "67d7a14099ee8387e0f4d5c6518224e5517c7051ecc6beaf2352d15a99809e38"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/headcalc.o": {
+      "bytes": 71987,
+      "sha256": "44beeb5138f52e223ee82895c4ce90b7fbfa06d3aeb82b8c35ef1e4a5e76e1e0"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_age_output_state.f90": {
+      "bytes": 913,
+      "sha256": "8f10325b36ddffc52eb65d7dd450f8e9ea67ac9394fa556dc71b8236514c76de"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_age_output_state.mod": {
+      "bytes": 2780,
+      "sha256": "7f2b4641f3349535d1138390627dbe3b47f0c6bc58cc4c1cfe7f86bdbe3d8523"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_age_output_state.o": {
+      "bytes": 1834,
+      "sha256": "8271a7faf65ac5f3af9196bc1d9306b373820bee76b856c62f36b3a2d90ede7b"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_cde_clock_events.mod": {
+      "bytes": 1722,
+      "sha256": "872db274080f9f34dfe58e04682605872d03fa20cfcd49cfaa25195824bca08d"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_cde_interval_receipt.mod": {
+      "bytes": 2062,
+      "sha256": "e108ce579fdc3063dbe3b9d760130ff7301429acf4b592ec8b0db144d0da9a2b"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_day_window.mod": {
+      "bytes": 366,
+      "sha256": "911b49f55990e262040cce187c963668eba4d0993e826894a20bec2d971f04fc"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_implicit_pond_availability.mod": {
+      "bytes": 1653,
+      "sha256": "506074c6c5eb2bb7750b32772cd62bfaab5eed78cf331a7773a2a5ea4fd48906"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_implicit_pond_event_state.mod": {
+      "bytes": 1745,
+      "sha256": "728ff031457137d728f5b96155b4c18cb4423f6d457707b5f24114afa792f1ca"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_original_cde_output_state.mod": {
+      "bytes": 1611,
+      "sha256": "9304b544b6fd670f0694142a78fc282747709be70e928f83cf25295f20fcb6c8"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_original_cde_output_state.smod": {
+      "bytes": 2687,
+      "sha256": "dfc45a99447990b4f204bac76bcad5d38071cef850ade90833803bb788061d1b"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_output_thermal_domain.mod": {
+      "bytes": 306,
+      "sha256": "0921e6d39f6d0cc3a8eea851599f19f1b1d1724d19329b77091afbf3bc748b5f"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_snow_undrained_root_state.mod": {
+      "bytes": 1610,
+      "sha256": "9527e1d1efb9e29aef6733a712dc03566e6fbfa842ba0554fc93a28267f84255"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_step_budget.mod": {
+      "bytes": 1099,
+      "sha256": "fea8cd19ba097c0487ec766ecd545e1d61609f06459de05dc4fa3016ff22d4f7"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_step_budget.o": {
+      "bytes": 12352,
+      "sha256": "e000a43d12f7e5d184597a72d6cb5cc2af1a07b5cb13a417f1acc529869808bd"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/hybrid_thermal_output_snow_calendar_state.mod": {
+      "bytes": 1965,
+      "sha256": "a2d3ee111b225ee63beec5954be54879d9ec1c20eb6b85182295d21f47370959"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/implicit_hydraulic_state_native.f90": {
+      "bytes": 2312,
+      "sha256": "bc6a6cdc61299bb5c9fdfd215de484975f8ac4eabb9b7ab90ba1c8f8d6e1fdec"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/implicit_hydraulic_state_native.mod": {
+      "bytes": 320,
+      "sha256": "25a377b322e0c522c45e7e5a1e624b99f48d943d831ff523474a1e0fb84c66b9"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/implicit_hydraulic_state_native.o": {
+      "bytes": 11491,
+      "sha256": "46214cc723add71605f6c5452955335e65ed7173c1045c6ea21f5947d4d9df8b"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/implicit_pond_availability.f90": {
+      "bytes": 1078,
+      "sha256": "ddb9bf2a4f1755dac221d270f40f28a24ce81d1d8291c481913d51714cb25ec7"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/implicit_pond_availability.o": {
+      "bytes": 1861,
+      "sha256": "558981a46e549857b2a09db4016ca4a60eccbff5aa193b651ea939d6fdb02858"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/implicit_pond_event_state.f90": {
+      "bytes": 2081,
+      "sha256": "0aac6ca53c7d88a2793366ab726b56fbb1e71105cad62682a01867e7a3045651"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/implicit_pond_event_state.o": {
+      "bytes": 3790,
+      "sha256": "5412a8187f0558dae82539c1b076d35e593e3746aa661993699bacfe6fee1f16"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/integral.f90": {
+      "bytes": 43064,
+      "sha256": "bafbbe5476912f63549ef7cad0efa347f71a75813660f278c47fba69dcb1c737"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/integral.o": {
+      "bytes": 88573,
+      "sha256": "5042c311ddd998d31676475bc82297cb8808a0cb1b7df185e9f296525e278c2b"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/irrigation.f90": {
+      "bytes": 82984,
+      "sha256": "62b07bc97439845dd88e764eff979dc173faeed0492651a87e4a4c1255137c66"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/irrigation.o": {
+      "bytes": 82092,
+      "sha256": "ff5b87299ebe42116ce97649f0aaf43723af3776369ca55496392fd28503507a"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/macropore.f90": {
+      "bytes": 94389,
+      "sha256": "559de7235f61f46dd9f6de3f95af6b1231a92bacf14dd414118625cea8078244"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/macropore.o": {
+      "bytes": 515635,
+      "sha256": "e5c26d108d3c0860ad9470eebe7e7a114795f00cbb4030595fdcdb9af91b4905"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_accepted_trajectory_directional_publication.mod": {
+      "bytes": 4417,
+      "sha256": "54184df44f860cbba7c53c94035f4df3d4ec150403dcdf1c6b8444934489a92f"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_accepted_trajectory_directional_sensitivity.mod": {
+      "bytes": 4709,
+      "sha256": "cadc559986ceecd90866c3f9e9635224699063d96052f409a4e272c0922d7f93"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_canonical_contracts.mod": {
+      "bytes": 12974,
+      "sha256": "9e38688b54853b5c7a1b4ed4f8a4a90f27edbe8719edafe8c5fb95d74e095482"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_canonical_interval_runtime.mod": {
+      "bytes": 12951,
+      "sha256": "48b870166a41bd2323be5ecd7dce5632faebfe590ee7b3e52ee9d29d30bac263"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/MOD_cropdevelopment.f90": {
+      "bytes": 81515,
+      "sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_cropdevelopment.mod": {
+      "bytes": 4009,
+      "sha256": "a41356a36a4447d608aafcf20c4d45c497cbb83b5139d1f07cb26fa0ec772717"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/MOD_cropdevelopment.o": {
+      "bytes": 113751,
+      "sha256": "9bf4457fe26b84c3ae397b53de7155bbfd3166d84d99be0da681e88ba84da4f4"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_fmr_soil_water_application_host.mod": {
+      "bytes": 1313,
+      "sha256": "0f29a4e295f13b5cac97fe7900e8dd0829e1ab4d7adcd25b4f43b1cbf721101c"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_groundwater_coupling_contract.mod": {
+      "bytes": 4100,
+      "sha256": "dd3624fda727a7dd40cb1458256662d7c107636179f6d8e3e0b32ce019c0e6b0"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_groundwater_interface_mass_ledger.mod": {
+      "bytes": 6592,
+      "sha256": "a8f874e48ac1c86f42d29003b7ac0c2a4e5c067fd69999582370eeecfc9bb6c8"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_groundwater_swap_forcing_adapter.mod": {
+      "bytes": 24540,
+      "sha256": "3ac8dbbdaa9632a473fef14721974b5de64dbb39d1df3c8ced8f02bc3a49189f"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_groundwater_swap_transaction_participant.mod": {
+      "bytes": 27203,
+      "sha256": "d792c0b8ae3e103cc9bd1a73370a91b1c92ef0555e836c7f3395e1bfb5b3fc78"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_integral.mod": {
+      "bytes": 4362,
+      "sha256": "8d1ba63d4a832ebd1f2295a7182e090a8db388aaa3b6710be5de54d6842d35ed"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_irrigation.mod": {
+      "bytes": 4286,
+      "sha256": "618b437ce47a9911ba93e91d8c30f32cd14683088d2669449f63c694a0409765"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_kernel_transactions.mod": {
+      "bytes": 23972,
+      "sha256": "1721cee5a08145e6945c26002cc2e126a41449672c8d767da799a79cb0f903d3"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_macropore.mod": {
+      "bytes": 4157,
+      "sha256": "458782f1f2ac8affcbfdd7e1f2c32bf765bdc2c4431d3a530a40fc77c560e92b"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/MOD_meteo.f90": {
+      "bytes": 85547,
+      "sha256": "c265397927e219787d294b1cfa273871c0e2dd90ecc1af371b954cfcddac6fae"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_meteo.mod": {
+      "bytes": 1962,
+      "sha256": "c6c874d288bdac405d376a4fd42d819d491ee29778718d4660b287a549dcd33f"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/MOD_meteo.o": {
+      "bytes": 147425,
+      "sha256": "187f51d97e3add64adca7f813ec9a4f01c4871e10cc9382e26cb27c5717a6994"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_mvg.mod": {
+      "bytes": 1352,
+      "sha256": "eba6a50d6a511f3a6833dcb4ae46c1306b60b5f2a0f294bd764ec6703d4141d1"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/MOD_MvG_functions.f90": {
+      "bytes": 39095,
+      "sha256": "8590709784b5323e0c7fcdc9768be575f65952557e5dcfdafaef6ffdbd3e66b3"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/MOD_MvG_functions.o": {
+      "bytes": 67703,
+      "sha256": "00ae0faa1c0e662c1c2cea87f8de03e84c092d885688b881849abf13992710df"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_original_output_receipt.f90": {
+      "bytes": 2735,
+      "sha256": "fef3897c3b59efb198f601f50e01ce1f206294a13d6003e7ddff8d12c1ac060e"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_original_output_receipt.mod": {
+      "bytes": 2331,
+      "sha256": "5ec8ae83688d32ed90ce6b06b41ec605d5c08cbd530191bd870131e221bfec92"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_original_output_receipt.o": {
+      "bytes": 3663,
+      "sha256": "7ad0e5b64149f31ca86a78d64946971fafa6a308fa071bf848c9b76157138b8d"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_rwu_micro.mod": {
+      "bytes": 1154,
+      "sha256": "053e13a03d4daa76b5a84c0cb5eccbc7566fe10b0e9f9dc9d861a70e237f1448"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_soil_water_accepted_step_direction_contract.mod": {
+      "bytes": 2006,
+      "sha256": "db54ebc9c6d2f1e5db4c907169f53bb1ae0bb5ca8c55e0863ba22d629068f58f"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_solute.mod": {
+      "bytes": 1008,
+      "sha256": "df34f34dd42d0edacee29ebdfbbe6e42f84be1bcf89f0acbbadea2cab3d8d6f8"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_solute.smod": {
+      "bytes": 1142,
+      "sha256": "4e3e9e6d748168f882ecc1d9814015d184db94c7d98615cd4d4f15368a9f21ee"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_solute@mod_calc_agetracer.smod": {
+      "bytes": 1523,
+      "sha256": "e2fa351f0590bbf880f5e1b85d9ebae752d206786b797de6fa6d329e553fb072"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_solute@mod_solute_cde.smod": {
+      "bytes": 3403,
+      "sha256": "44207d92ae7c9d5d406a9a3574b8d13f1ad178ceb557dfdea32a036a26bb7ac2"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_subsurface_solute_source.f90": {
+      "bytes": 3023,
+      "sha256": "0a5cf80aa06eecf23ad408292b710e56d616a2236acb8b26f14527f0f838fd0f"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_subsurface_solute_source.mod": {
+      "bytes": 1868,
+      "sha256": "a5cb6f76850e945fce2e5105a3c2eea27b0affc245746eca3300d9cd897d1254"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_subsurface_solute_source.o": {
+      "bytes": 4106,
+      "sha256": "dd0186422bb4ae72c067d99e33d34380c8d4483ec2be3a23fb670f04176b0c5a"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_timer.mod": {
+      "bytes": 222,
+      "sha256": "665bb47ce9f4ae69116d6db4e45c0147d55f27e5b1a9c80e6893e4235245569a"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_top.mod": {
+      "bytes": 736,
+      "sha256": "fa6a58b9f8e92c0f7ab4e73a75ceb34462c3a2899b1f97a9627d2bf80e3ae48a"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_transaction_reference.mod": {
+      "bytes": 6815,
+      "sha256": "b46e6f85c656b446bab5ab0359533fc06c39198baaa5a21303714461fcd61bef"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/mod_wofost.mod": {
+      "bytes": 4134,
+      "sha256": "9cd3f46ded050cc8678a2f51b40f6b69aadb31ba25fd64f0166430e304fab08a"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/o2_pars.mod": {
+      "bytes": 1274,
+      "sha256": "e467aa7dc2f106e6e52762e06832aae20d286dd78e3017889e56ee7a78e24316"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/original_cde_output_state.f90": {
+      "bytes": 3576,
+      "sha256": "0b05d5b71639775bcb0ab949bb5cf353edbc0a5b79b40548649723af6333f321"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/original_cde_output_state.o": {
+      "bytes": 17078,
+      "sha256": "e75c2ffdb2e0de39f71aae61c45ac463042e0082a0f82c7df5837d80edb38af9"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/original_output_thermal_domain.f90": {
+      "bytes": 1084,
+      "sha256": "e3e3b5f66787349d3075b67a3e0893cbe18a6d33891d9a75ef4ab17f7a14e209"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/original_output_thermal_domain.o": {
+      "bytes": 5729,
+      "sha256": "6e63e6fa52e9c87016b3e1a6d87956be6707f8ac71be2a3910b457c9a7953aa5"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/oxygenstress.f90": {
+      "bytes": 66696,
+      "sha256": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/oxygenstress.o": {
+      "bytes": 47625,
+      "sha256": "6aa974ba2afdf8eba00b1c0157cd18673cd068929db1f5c3170a711009669705"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/probe_kernel_donor.mod": {
+      "bytes": 36537,
+      "sha256": "1ef66137dc1539d56845abf27a661c11ec953fd9888bd84a1f89a74a655ee922"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/restart_publish.dll": {
+      "bytes": 30291,
+      "sha256": "d1ca40c747ad35399b8d50f7c2dc4ed2cb24843ec41073d2ee1b8a5ae1e3c5ae"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/RWU_micro.f90": {
+      "bytes": 52707,
+      "sha256": "0491f45743cbd178964ec7b00b13d61e4438f3b99940cdb7df91d1bb3d44378c"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/RWU_micro.o": {
+      "bytes": 74477,
+      "sha256": "14884a7cac3301942ae57c46a214b507c0a9ee80a06def914c2cbc176f4daed6"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/snow_undrained_root_state.f90": {
+      "bytes": 1713,
+      "sha256": "6c9c7a65ed36af8217562e86e36779264d2a01596ecb3b1c53b10041816b283f"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/solute.f90": {
+      "bytes": 58107,
+      "sha256": "e4269c3cb6fc0649c1a3bdcc1673c02a9a7a56ec130ad1225edbad80c0aa1178"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/solute.o": {
+      "bytes": 103371,
+      "sha256": "4d3f0e505a9fa1655e0dd38941c5891377b92550674f681ea24642a6a0415f7a"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/swap.f90": {
+      "bytes": 29413,
+      "sha256": "82b37c566c7d35aa3b1d35897d70d73e989f23ecb4504ffb21fd04617b2e28c0"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/swap.o": {
+      "bytes": 47736,
+      "sha256": "5b5efab7154d84db3dfdc84e59c1ed5d5818fd95282c4b5ab402dc3d174be9df"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/swap_csv_output.f90": {
+      "bytes": 136205,
+      "sha256": "fe5efd0d2f2d1f3f5837c62d8101104d30441b86655b8e8f3c852390624039c5"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/swap_csv_output.mod": {
+      "bytes": 2955,
+      "sha256": "9cf061d7f26367fe26da8438746e423134b9c0fbeaf813fa68b1047fb9b16388"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/swap_csv_output.o": {
+      "bytes": 298457,
+      "sha256": "ec6233aa299343c3fa2e3511678a8f59031c9e044a91d2a83c59e16197f109e2"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/swap_exchange.mod": {
+      "bytes": 1470,
+      "sha256": "1f666015d2741e0835066e4d51345d88165a713dd7f8fe068c3a7a5057ddf876"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/swap_main.f90": {
+      "bytes": 11990,
+      "sha256": "994867ed726957a39c7c68962b6493b6a286328fce9d3df2e1c1e33840d8499a"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/swap_main.o": {
+      "bytes": 11856,
+      "sha256": "e7ece79f24099428e018cf7bf890f9cf3c27ee6a7502ec6d6717a8c1bcb3ca54"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/swapoutput.f90": {
+      "bytes": 47749,
+      "sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/swapoutput.o": {
+      "bytes": 108454,
+      "sha256": "f64f57828a50b2f8b692e61cdbd852523eb617e71e60e07f3cb40698b415a213"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/thermal_output_snow_calendar_state.f90": {
+      "bytes": 2061,
+      "sha256": "3afb9bb69a87d8fa6b57b2885b88d23b1be761da707a5ff6fb99e70596ab594d"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/thermal_output_snow_calendar_state.o": {
+      "bytes": 8663,
+      "sha256": "b9459b5e1c536b5667e3025e85e70f188f1dbe3cef34cb557fa7c7410bd600a8"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/timecontrol.f90": {
+      "bytes": 21532,
+      "sha256": "63fe339bcc87ab83ac2f0ce64f4c0290b6c8312d893d4093fb58687014a1e4d1"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/timecontrol.o": {
+      "bytes": 42662,
+      "sha256": "4e8d2c5f41e5632fe8deb123277d438c42692e287e4ed9084620dafcc58b2dd4"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/wofost.f90": {
+      "bytes": 79125,
+      "sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+    },
+    "actual/closure13-residual-feedback-O0-v2/current/closed-ordinary-model6-snow-cde-profile/bundle/wofost.o": {
+      "bytes": 105790,
+      "sha256": "36af1649a1a29edc122add1b6afd6a8e71d60a462d535468802f5fa4d5c36822"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/age_output_calendar_probe.f90": {
+      "bytes": 926,
+      "sha256": "7b91b3098fdc862f668cefe532f5b2e68f5385e2674994db972ccdd167754b80"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/age_output_calendar_probe.o": {
+      "bytes": 5674,
+      "sha256": "9149c0cc99e45a713cb6286f3f1addfd94161f213c5ee81eb6f86c7a50a3bceb"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/boundtop.f90": {
+      "bytes": 16404,
+      "sha256": "07f079c2ff97304b9fadcfc08a9ec75904f8e7cbc78914b80da42f8d64638b44"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/boundtop.o": {
+      "bytes": 24233,
+      "sha256": "bff0dabd0d6dd343669b18f0810c205f9e6eb2d297e2396beddb036a5e222a72"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/BUILD.json": {
+      "bytes": 76310,
+      "sha256": "8f481f925ab19d9afba48fe1624176580560bca53781882508b44bb402e7382b"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/day_donor.exe": {
+      "bytes": 2066793,
+      "sha256": "6083f5fb6f8c71833eb1d742154fc64ac673ebe552f1f5f93e811afee8dd8647"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/day_kernel.exe": {
+      "bytes": 255284,
+      "sha256": "7eb7e08526515703b23db33ee50e0f87cb2424d6de0e71a6c11a1638bdcd7e8a"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/frozencond.f90": {
+      "bytes": 10567,
+      "sha256": "d5dd195187d4581e09d19e6afdd4066c0fdb23eee84f8f87947251d2778724d2"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/frozencond.o": {
+      "bytes": 11662,
+      "sha256": "dd03ee5280e9f5261ce1064af9b2d50969002bf2102f21ce8fdb7d3de1b5f9f6"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/headcalc.f90": {
+      "bytes": 34617,
+      "sha256": "79467e4fac21141a58487efeb1095a6c12bc686a1ca20568ec4f5aafb89e8607"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/headcalc.o": {
+      "bytes": 57893,
+      "sha256": "37d0fc1abde9e618afe7a0ef5bcbad0cf18063dbd26aead95e6eed6fa4936644"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/hybrid_age_output_state.f90": {
+      "bytes": 852,
+      "sha256": "4b1657194d82b50358f8abbde0b019ab7ecb67d870d57edce92d01079d0c2e31"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/hybrid_age_output_state.mod": {
+      "bytes": 2765,
+      "sha256": "87f65728b41718d28ed3b923e7ba529ddf31e064c7c06e59041983bee0d2c83e"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/hybrid_age_output_state.o": {
+      "bytes": 1667,
+      "sha256": "9f9787d212928c6e5453602a3b38c7e9249b2251ca73e1176c09142272277bee"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/hybrid_day_window.mod": {
+      "bytes": 366,
+      "sha256": "911b49f55990e262040cce187c963668eba4d0993e826894a20bec2d971f04fc"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/hybrid_implicit_frost_root_state.mod": {
+      "bytes": 1610,
+      "sha256": "eef9a812da1d3db2065360d4c88e8ffb12930088f24a28dd31248ea1f7459e83"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/hybrid_implicit_pond_availability.mod": {
+      "bytes": 1653,
+      "sha256": "506074c6c5eb2bb7750b32772cd62bfaab5eed78cf331a7773a2a5ea4fd48906"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/hybrid_implicit_pond_event_state.mod": {
+      "bytes": 1745,
+      "sha256": "728ff031457137d728f5b96155b4c18cb4423f6d457707b5f24114afa792f1ca"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/hybrid_output_thermal_domain.mod": {
+      "bytes": 306,
+      "sha256": "0921e6d39f6d0cc3a8eea851599f19f1b1d1724d19329b77091afbf3bc748b5f"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/hybrid_step_budget.mod": {
+      "bytes": 1099,
+      "sha256": "fea8cd19ba097c0487ec766ecd545e1d61609f06459de05dc4fa3016ff22d4f7"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/hybrid_step_budget.o": {
+      "bytes": 12192,
+      "sha256": "dd438c094fbaa7e8b306962d0621176f3b014c74c60f923c742ae045bdff7358"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/hybrid_terminal_water_receipt.mod": {
+      "bytes": 388,
+      "sha256": "30f4eaf6388da641c47e7f2c5dc96c9118833bdf7f405ed6e8d197d0aea6427c"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/hybrid_thermal_output_snow_calendar_state.mod": {
+      "bytes": 1965,
+      "sha256": "a2d3ee111b225ee63beec5954be54879d9ec1c20eb6b85182295d21f47370959"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/implicit_frost_hydraulic_state_native.f90": {
+      "bytes": 2244,
+      "sha256": "b945d0d08025dc864b27069a8790efe36c4c09124bf8d06dfdd2e3c5fbef53d8"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/implicit_frost_hydraulic_state_native.mod": {
+      "bytes": 325,
+      "sha256": "40f36f0fa89e38f085fa8a2e91a4d06f7e8560ff49db65a86d1deef1428f8745"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/implicit_frost_hydraulic_state_native.o": {
+      "bytes": 9084,
+      "sha256": "507ca06d87bb954d51d88dfa273ad47914c8e497bcddeb957e2562a744a7cb78"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/implicit_frost_root_state.f90": {
+      "bytes": 1759,
+      "sha256": "4c2e2c496be87471bdbeb6e0b1e050e5d9f41b04cba03e20975fe71676cea524"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/implicit_pond_availability.f90": {
+      "bytes": 1078,
+      "sha256": "ddb9bf2a4f1755dac221d270f40f28a24ce81d1d8291c481913d51714cb25ec7"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/implicit_pond_availability.o": {
+      "bytes": 1423,
+      "sha256": "a08d36fb2f45ed2dfadfd1bbdfe7fb34614f3fc18d592f37cb54696485b18803"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/implicit_pond_event_state.f90": {
+      "bytes": 2081,
+      "sha256": "0aac6ca53c7d88a2793366ab726b56fbb1e71105cad62682a01867e7a3045651"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/implicit_pond_event_state.o": {
+      "bytes": 3200,
+      "sha256": "e69201f49d65866464c9c897f002434241522e79238a57ff27d41fa16bab2735"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/integral.f90": {
+      "bytes": 36068,
+      "sha256": "c80a7d9f6aa1917a7397cb1debae29c2a6b38da658ce1648107487596ba7a216"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/integral.o": {
+      "bytes": 63775,
+      "sha256": "9f1f5d34014f5e75c743b087e1d6557face8463e97f7743384c2bb43137d3e48"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/irrigation.f90": {
+      "bytes": 82594,
+      "sha256": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/irrigation.o": {
+      "bytes": 78466,
+      "sha256": "aedcf14eeb6c878fb2656071367561e73c3d545a4553c1dc41ff816cbe603f91"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/macropore.f90": {
+      "bytes": 94091,
+      "sha256": "55be4671da5725f4fc970357e5528d4de761e41655d7ef073c417546384187cd"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/macropore.o": {
+      "bytes": 496767,
+      "sha256": "f8ed0fbf4795830d66925ec6db9d4110b049ec724838ad9a621b42cb86e8dec1"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_accepted_trajectory_directional_publication.mod": {
+      "bytes": 4417,
+      "sha256": "54184df44f860cbba7c53c94035f4df3d4ec150403dcdf1c6b8444934489a92f"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_accepted_trajectory_directional_sensitivity.mod": {
+      "bytes": 4709,
+      "sha256": "cadc559986ceecd90866c3f9e9635224699063d96052f409a4e272c0922d7f93"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_canonical_contracts.mod": {
+      "bytes": 12974,
+      "sha256": "9e38688b54853b5c7a1b4ed4f8a4a90f27edbe8719edafe8c5fb95d74e095482"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_canonical_interval_runtime.mod": {
+      "bytes": 12951,
+      "sha256": "48b870166a41bd2323be5ecd7dce5632faebfe590ee7b3e52ee9d29d30bac263"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/MOD_cropdevelopment.f90": {
+      "bytes": 81515,
+      "sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_cropdevelopment.mod": {
+      "bytes": 4009,
+      "sha256": "a41356a36a4447d608aafcf20c4d45c497cbb83b5139d1f07cb26fa0ec772717"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/MOD_cropdevelopment.o": {
+      "bytes": 102229,
+      "sha256": "3dd5503c0e402b580da15834037bf0809226a2e61b72e5ab2801e5e2a6464455"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_fmr_soil_water_application_host.mod": {
+      "bytes": 1313,
+      "sha256": "0f29a4e295f13b5cac97fe7900e8dd0829e1ab4d7adcd25b4f43b1cbf721101c"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_frost.mod": {
+      "bytes": 2156,
+      "sha256": "c36b5c7996dce13e4ffcb7c203c4b3b48378ef3610add6216b9147ac3f90e97f"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_groundwater_coupling_contract.mod": {
+      "bytes": 4100,
+      "sha256": "dd3624fda727a7dd40cb1458256662d7c107636179f6d8e3e0b32ce019c0e6b0"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_groundwater_interface_mass_ledger.mod": {
+      "bytes": 6592,
+      "sha256": "a8f874e48ac1c86f42d29003b7ac0c2a4e5c067fd69999582370eeecfc9bb6c8"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_groundwater_swap_forcing_adapter.mod": {
+      "bytes": 24540,
+      "sha256": "3ac8dbbdaa9632a473fef14721974b5de64dbb39d1df3c8ced8f02bc3a49189f"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_groundwater_swap_transaction_participant.mod": {
+      "bytes": 27203,
+      "sha256": "d792c0b8ae3e103cc9bd1a73370a91b1c92ef0555e836c7f3395e1bfb5b3fc78"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_integral.mod": {
+      "bytes": 4234,
+      "sha256": "f84abbd3048e5570bf69e4e4f433e3156990b13502b7aff8e97f5cc200d7a5b2"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_irrigation.mod": {
+      "bytes": 4286,
+      "sha256": "618b437ce47a9911ba93e91d8c30f32cd14683088d2669449f63c694a0409765"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_kernel_transactions.mod": {
+      "bytes": 23972,
+      "sha256": "1721cee5a08145e6945c26002cc2e126a41449672c8d767da799a79cb0f903d3"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_macropore.mod": {
+      "bytes": 4157,
+      "sha256": "458782f1f2ac8affcbfdd7e1f2c32bf765bdc2c4431d3a530a40fc77c560e92b"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/MOD_meteo.f90": {
+      "bytes": 85547,
+      "sha256": "c265397927e219787d294b1cfa273871c0e2dd90ecc1af371b954cfcddac6fae"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_meteo.mod": {
+      "bytes": 1962,
+      "sha256": "c6c874d288bdac405d376a4fd42d819d491ee29778718d4660b287a549dcd33f"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/MOD_meteo.o": {
+      "bytes": 98705,
+      "sha256": "afaa16b2986104534b54478a55306f06deab0c8a9602ffd7e7967caf4bd71c71"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_mvg.mod": {
+      "bytes": 1352,
+      "sha256": "eba6a50d6a511f3a6833dcb4ae46c1306b60b5f2a0f294bd764ec6703d4141d1"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/MOD_MvG_functions.f90": {
+      "bytes": 39095,
+      "sha256": "8590709784b5323e0c7fcdc9768be575f65952557e5dcfdafaef6ffdbd3e66b3"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/MOD_MvG_functions.o": {
+      "bytes": 40439,
+      "sha256": "4cdce72b9a7431f89c42be31c266d571cfa53a884d9a67545f557ec6fce7e12e"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_original_output_receipt.f90": {
+      "bytes": 2735,
+      "sha256": "fef3897c3b59efb198f601f50e01ce1f206294a13d6003e7ddff8d12c1ac060e"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_original_output_receipt.mod": {
+      "bytes": 2331,
+      "sha256": "5ec8ae83688d32ed90ce6b06b41ec605d5c08cbd530191bd870131e221bfec92"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_original_output_receipt.o": {
+      "bytes": 2751,
+      "sha256": "b48cc53e9d54c88993ec103f52f70deebb42be0162bb0da63d7f5a26156ce629"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_rwu_micro.mod": {
+      "bytes": 1154,
+      "sha256": "053e13a03d4daa76b5a84c0cb5eccbc7566fe10b0e9f9dc9d861a70e237f1448"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_soil_water_accepted_step_direction_contract.mod": {
+      "bytes": 2006,
+      "sha256": "db54ebc9c6d2f1e5db4c907169f53bb1ae0bb5ca8c55e0863ba22d629068f58f"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_timer.mod": {
+      "bytes": 222,
+      "sha256": "665bb47ce9f4ae69116d6db4e45c0147d55f27e5b1a9c80e6893e4235245569a"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_top.mod": {
+      "bytes": 736,
+      "sha256": "fa6a58b9f8e92c0f7ab4e73a75ceb34462c3a2899b1f97a9627d2bf80e3ae48a"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_transaction_reference.mod": {
+      "bytes": 6815,
+      "sha256": "b46e6f85c656b446bab5ab0359533fc06c39198baaa5a21303714461fcd61bef"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/mod_wofost.mod": {
+      "bytes": 4134,
+      "sha256": "9cd3f46ded050cc8678a2f51b40f6b69aadb31ba25fd64f0166430e304fab08a"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/o2_pars.mod": {
+      "bytes": 1274,
+      "sha256": "e467aa7dc2f106e6e52762e06832aae20d286dd78e3017889e56ee7a78e24316"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/original_output_thermal_domain.f90": {
+      "bytes": 1084,
+      "sha256": "e3e3b5f66787349d3075b67a3e0893cbe18a6d33891d9a75ef4ab17f7a14e209"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/original_output_thermal_domain.o": {
+      "bytes": 5397,
+      "sha256": "f9470b4d8117b57d1728ed3edcf0787ca62cf14608868c7876d3f6b50ccc74c8"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/oxygenstress.f90": {
+      "bytes": 66696,
+      "sha256": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/oxygenstress.o": {
+      "bytes": 37663,
+      "sha256": "b50a7ef49681094bcf80aed316d4c9119e1ad4df7cedcf8b9e148b0c642fbd66"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/probe_kernel_donor.mod": {
+      "bytes": 36537,
+      "sha256": "1ef66137dc1539d56845abf27a661c11ec953fd9888bd84a1f89a74a655ee922"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/restart_publish.dll": {
+      "bytes": 30291,
+      "sha256": "56421cef9aa570c7d87e5554981faf1c7b53e8435aadcfe3565dfa8ca8a31e7c"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/RWU_micro.f90": {
+      "bytes": 52707,
+      "sha256": "0491f45743cbd178964ec7b00b13d61e4438f3b99940cdb7df91d1bb3d44378c"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/RWU_micro.o": {
+      "bytes": 52935,
+      "sha256": "b350c70f107730e965ab9478e7d56a9655b5968d9da554da0bf804c81f8068a1"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/swap.f90": {
+      "bytes": 29413,
+      "sha256": "82b37c566c7d35aa3b1d35897d70d73e989f23ecb4504ffb21fd04617b2e28c0"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/swap.o": {
+      "bytes": 46149,
+      "sha256": "143ea4194805177950615751bf73edbcebf997437bd85ed2e6228910d7e0f872"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/swap_csv_output.f90": {
+      "bytes": 136243,
+      "sha256": "9c6570d2dd6a3306323544d069a0e1c6614a29cff72e548e35b26a9e3abf844f"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/swap_csv_output.mod": {
+      "bytes": 2955,
+      "sha256": "9cf061d7f26367fe26da8438746e423134b9c0fbeaf813fa68b1047fb9b16388"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/swap_csv_output.o": {
+      "bytes": 252931,
+      "sha256": "38b29670cb63094bce8aaf1bd2d0b57e9a8925f187473ebd7fb429ff3334da3e"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/swap_exchange.mod": {
+      "bytes": 1470,
+      "sha256": "1f666015d2741e0835066e4d51345d88165a713dd7f8fe068c3a7a5057ddf876"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/swap_main.f90": {
+      "bytes": 11796,
+      "sha256": "4a45874ec164d601494ebf8a2e7126aa96e7dd6ce9f3343f2690d0fc3e9b0725"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/swap_main.o": {
+      "bytes": 11439,
+      "sha256": "76a7c740f4fff384d8847cfc5605ef593e17d91c79db2c56a2d92052f44f563f"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/swapoutput.f90": {
+      "bytes": 47749,
+      "sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/swapoutput.o": {
+      "bytes": 100326,
+      "sha256": "12c63bdce0287354b1e46a994720b3b81986a9d671b7743b6014f5a70a7c92aa"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/terminal_water_receipt.f90": {
+      "bytes": 2818,
+      "sha256": "041a6795a8570cdae941aeb28f641b4a3a82f00de1fd756916a770bdfab630b0"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/terminal_water_receipt.o": {
+      "bytes": 11392,
+      "sha256": "d5b6784ca53db8908d74a2e8463690e44d716774b6a750fd531c0174f4e1fde2"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/thermal_output_snow_calendar_state.f90": {
+      "bytes": 2033,
+      "sha256": "7cc3d72c8e235a68e16e856b20fe1b7fe75a25fafa902f19aec6af0fc5e48ce0"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/thermal_output_snow_calendar_state.o": {
+      "bytes": 8409,
+      "sha256": "47572055cb18fc4825ad51919b7be5e6e4755f5730115362b6c111599d1b3688"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/timecontrol.f90": {
+      "bytes": 19819,
+      "sha256": "4211fcd032748ddfb4a3b04e57c55b7706f0874b0dfc561e49f7bb67fad94079"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/timecontrol.o": {
+      "bytes": 37497,
+      "sha256": "168d2ad5b2da274c3ba6491898c9bd3c0126f641ecb9531edea554d56bbdf91c"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/wofost.f90": {
+      "bytes": 79125,
+      "sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-frost-mixed8-9-water/bundle/wofost.o": {
+      "bytes": 85637,
+      "sha256": "3321c466eeec63a5cd420c5d4310416428cf0483c25d1254d94cc16431887525"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/age_output_calendar_probe.f90": {
+      "bytes": 1908,
+      "sha256": "19783277a916b3ae7f352a3db251dcea3980463d83b966bca0d5a74647979bab"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/age_output_calendar_probe.o": {
+      "bytes": 12104,
+      "sha256": "9346739e627bbd31d6ac2d2e54c699be3667457be782e98ef003aa6dd486ec10"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/boundtop.f90": {
+      "bytes": 14566,
+      "sha256": "3ae980f01a665d1d78c64ca00d96bbdeccb982563ae94e36766bca46e48a4881"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/boundtop.o": {
+      "bytes": 20302,
+      "sha256": "a06a20c089172b92939572032bfb76d11a7fdb097f4d20e388e1dc6ddc2b94df"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/BUILD.json": {
+      "bytes": 72930,
+      "sha256": "9599c000eac73f1503f983a76214e252b12cecaa78417a26d90e68f30dc1c958"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/cde_clock_events.f90": {
+      "bytes": 1696,
+      "sha256": "5b5d54a1b5558fd38fb1368070f855394e7068aa69aeb4aece0a6b3288698964"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/cde_clock_events.o": {
+      "bytes": 1401,
+      "sha256": "12baa045579a54d16e95cfa49bde17a32236ca60eae485e1a0d42c9457e3e6e0"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/cde_interval_receipt.f90": {
+      "bytes": 3273,
+      "sha256": "023ceb3252b5251059a4e4997d04e2f648cd8be2a15e04fd431e5606565dec7c"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/cde_interval_receipt.o": {
+      "bytes": 4302,
+      "sha256": "12cb944a9407851bab6999857a66d0539abe3b8f93f32ae6d31c23777b6777f8"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/day_donor.exe": {
+      "bytes": 2065381,
+      "sha256": "a5a5daa296a270fd57d594417b14dea27e3e44560c8bdf66c246c9df7231ece7"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/day_kernel.exe": {
+      "bytes": 255284,
+      "sha256": "938d4e80fc92a554faa1115d775f97f77cf5b383d4969d784a1a762ee897fe66"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/headcalc.f90": {
+      "bytes": 34802,
+      "sha256": "18554b559c67312f4863d5b8f398c0ef0aee146edc66ad8e68d4540c839814c8"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/headcalc.o": {
+      "bytes": 57717,
+      "sha256": "5c9c8806b7fd1240f9b0774d3791a6f2836b4bae16164f942986b8160b112f83"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_age_output_state.f90": {
+      "bytes": 852,
+      "sha256": "4b1657194d82b50358f8abbde0b019ab7ecb67d870d57edce92d01079d0c2e31"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_age_output_state.mod": {
+      "bytes": 2765,
+      "sha256": "87f65728b41718d28ed3b923e7ba529ddf31e064c7c06e59041983bee0d2c83e"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_age_output_state.o": {
+      "bytes": 1667,
+      "sha256": "9f9787d212928c6e5453602a3b38c7e9249b2251ca73e1176c09142272277bee"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_cde_clock_events.mod": {
+      "bytes": 1722,
+      "sha256": "872db274080f9f34dfe58e04682605872d03fa20cfcd49cfaa25195824bca08d"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_cde_interval_receipt.mod": {
+      "bytes": 2062,
+      "sha256": "e108ce579fdc3063dbe3b9d760130ff7301429acf4b592ec8b0db144d0da9a2b"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_day_window.mod": {
+      "bytes": 366,
+      "sha256": "911b49f55990e262040cce187c963668eba4d0993e826894a20bec2d971f04fc"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_implicit_pond_availability.mod": {
+      "bytes": 1653,
+      "sha256": "506074c6c5eb2bb7750b32772cd62bfaab5eed78cf331a7773a2a5ea4fd48906"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_implicit_pond_event_state.mod": {
+      "bytes": 1745,
+      "sha256": "728ff031457137d728f5b96155b4c18cb4423f6d457707b5f24114afa792f1ca"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_original_cde_output_state.mod": {
+      "bytes": 1611,
+      "sha256": "9304b544b6fd670f0694142a78fc282747709be70e928f83cf25295f20fcb6c8"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_original_cde_output_state.smod": {
+      "bytes": 2687,
+      "sha256": "dfc45a99447990b4f204bac76bcad5d38071cef850ade90833803bb788061d1b"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_step_budget.mod": {
+      "bytes": 1099,
+      "sha256": "fea8cd19ba097c0487ec766ecd545e1d61609f06459de05dc4fa3016ff22d4f7"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/hybrid_step_budget.o": {
+      "bytes": 12192,
+      "sha256": "dd438c094fbaa7e8b306962d0621176f3b014c74c60f923c742ae045bdff7358"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/implicit_hydraulic_state_native.f90": {
+      "bytes": 2312,
+      "sha256": "bc6a6cdc61299bb5c9fdfd215de484975f8ac4eabb9b7ab90ba1c8f8d6e1fdec"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/implicit_hydraulic_state_native.mod": {
+      "bytes": 320,
+      "sha256": "25a377b322e0c522c45e7e5a1e624b99f48d943d831ff523474a1e0fb84c66b9"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/implicit_hydraulic_state_native.o": {
+      "bytes": 9140,
+      "sha256": "f0302f24a3f08543438028d4839c9ad57ce42c1a9e9b81630f98d244425aca0e"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/implicit_pond_availability.f90": {
+      "bytes": 1078,
+      "sha256": "ddb9bf2a4f1755dac221d270f40f28a24ce81d1d8291c481913d51714cb25ec7"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/implicit_pond_availability.o": {
+      "bytes": 1423,
+      "sha256": "a08d36fb2f45ed2dfadfd1bbdfe7fb34614f3fc18d592f37cb54696485b18803"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/implicit_pond_event_state.f90": {
+      "bytes": 2081,
+      "sha256": "0aac6ca53c7d88a2793366ab726b56fbb1e71105cad62682a01867e7a3045651"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/implicit_pond_event_state.o": {
+      "bytes": 3200,
+      "sha256": "e69201f49d65866464c9c897f002434241522e79238a57ff27d41fa16bab2735"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/integral.f90": {
+      "bytes": 41910,
+      "sha256": "29be102a8cf8e379367caeb711fff120448f8b8ca7c75cd9f3f638479e5f7332"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/integral.o": {
+      "bytes": 69276,
+      "sha256": "2711118fbfc6dc90bbffcafcd83c336559200cdad3ff9278c559439a3790b412"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/irrigation.f90": {
+      "bytes": 82984,
+      "sha256": "62b07bc97439845dd88e764eff979dc173faeed0492651a87e4a4c1255137c66"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/irrigation.o": {
+      "bytes": 79148,
+      "sha256": "26bf6a21e73e37e7240e8e390cbf68d8473f76507ebdb9be3b265dcbba3906bd"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/macropore.f90": {
+      "bytes": 91090,
+      "sha256": "0dbab5379da171bdc5fc71e3c72a98825de3b05293c66338ba0f0ea4037858af"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/macropore.o": {
+      "bytes": 487268,
+      "sha256": "6e7413c2229a3ca98aa03d87f7cd1b4512fb240212d0b648f4501413d428956d"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_accepted_trajectory_directional_publication.mod": {
+      "bytes": 4417,
+      "sha256": "54184df44f860cbba7c53c94035f4df3d4ec150403dcdf1c6b8444934489a92f"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_accepted_trajectory_directional_sensitivity.mod": {
+      "bytes": 4709,
+      "sha256": "cadc559986ceecd90866c3f9e9635224699063d96052f409a4e272c0922d7f93"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_canonical_contracts.mod": {
+      "bytes": 12974,
+      "sha256": "9e38688b54853b5c7a1b4ed4f8a4a90f27edbe8719edafe8c5fb95d74e095482"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_canonical_interval_runtime.mod": {
+      "bytes": 12951,
+      "sha256": "48b870166a41bd2323be5ecd7dce5632faebfe590ee7b3e52ee9d29d30bac263"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/MOD_cropdevelopment.f90": {
+      "bytes": 81515,
+      "sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_cropdevelopment.mod": {
+      "bytes": 4009,
+      "sha256": "a41356a36a4447d608aafcf20c4d45c497cbb83b5139d1f07cb26fa0ec772717"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/MOD_cropdevelopment.o": {
+      "bytes": 102229,
+      "sha256": "3dd5503c0e402b580da15834037bf0809226a2e61b72e5ab2801e5e2a6464455"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_fmr_soil_water_application_host.mod": {
+      "bytes": 1313,
+      "sha256": "0f29a4e295f13b5cac97fe7900e8dd0829e1ab4d7adcd25b4f43b1cbf721101c"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_groundwater_coupling_contract.mod": {
+      "bytes": 4100,
+      "sha256": "dd3624fda727a7dd40cb1458256662d7c107636179f6d8e3e0b32ce019c0e6b0"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_groundwater_interface_mass_ledger.mod": {
+      "bytes": 6592,
+      "sha256": "a8f874e48ac1c86f42d29003b7ac0c2a4e5c067fd69999582370eeecfc9bb6c8"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_groundwater_swap_forcing_adapter.mod": {
+      "bytes": 24540,
+      "sha256": "3ac8dbbdaa9632a473fef14721974b5de64dbb39d1df3c8ced8f02bc3a49189f"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_groundwater_swap_transaction_participant.mod": {
+      "bytes": 27203,
+      "sha256": "d792c0b8ae3e103cc9bd1a73370a91b1c92ef0555e836c7f3395e1bfb5b3fc78"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_integral.mod": {
+      "bytes": 4362,
+      "sha256": "f7c5f06e8a5ba2a9b3fd2eb3bf4c7429f6732b77f3298889a9230a24ee52e097"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_irrigation.mod": {
+      "bytes": 4286,
+      "sha256": "618b437ce47a9911ba93e91d8c30f32cd14683088d2669449f63c694a0409765"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_kernel_transactions.mod": {
+      "bytes": 23972,
+      "sha256": "1721cee5a08145e6945c26002cc2e126a41449672c8d767da799a79cb0f903d3"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_macropore.mod": {
+      "bytes": 4157,
+      "sha256": "458782f1f2ac8affcbfdd7e1f2c32bf765bdc2c4431d3a530a40fc77c560e92b"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/MOD_meteo.f90": {
+      "bytes": 85547,
+      "sha256": "c265397927e219787d294b1cfa273871c0e2dd90ecc1af371b954cfcddac6fae"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_meteo.mod": {
+      "bytes": 1962,
+      "sha256": "c6c874d288bdac405d376a4fd42d819d491ee29778718d4660b287a549dcd33f"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/MOD_meteo.o": {
+      "bytes": 98705,
+      "sha256": "afaa16b2986104534b54478a55306f06deab0c8a9602ffd7e7967caf4bd71c71"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_mvg.mod": {
+      "bytes": 1352,
+      "sha256": "eba6a50d6a511f3a6833dcb4ae46c1306b60b5f2a0f294bd764ec6703d4141d1"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/MOD_MvG_functions.f90": {
+      "bytes": 40144,
+      "sha256": "25e814c88ca71d2c2111295dc895c55952764901ebae372cd290b06699a5d9ff"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/MOD_MvG_functions.o": {
+      "bytes": 41465,
+      "sha256": "89df0b46859ed4f10442fbed6ad6fd889a8f4a29cdfc65e265762c5172af96b0"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_original_output_receipt.f90": {
+      "bytes": 2735,
+      "sha256": "fef3897c3b59efb198f601f50e01ce1f206294a13d6003e7ddff8d12c1ac060e"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_original_output_receipt.mod": {
+      "bytes": 2331,
+      "sha256": "5ec8ae83688d32ed90ce6b06b41ec605d5c08cbd530191bd870131e221bfec92"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_original_output_receipt.o": {
+      "bytes": 2751,
+      "sha256": "b48cc53e9d54c88993ec103f52f70deebb42be0162bb0da63d7f5a26156ce629"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_rwu_micro.mod": {
+      "bytes": 1154,
+      "sha256": "053e13a03d4daa76b5a84c0cb5eccbc7566fe10b0e9f9dc9d861a70e237f1448"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_soil_water_accepted_step_direction_contract.mod": {
+      "bytes": 2006,
+      "sha256": "db54ebc9c6d2f1e5db4c907169f53bb1ae0bb5ca8c55e0863ba22d629068f58f"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_solute.mod": {
+      "bytes": 1008,
+      "sha256": "df34f34dd42d0edacee29ebdfbbe6e42f84be1bcf89f0acbbadea2cab3d8d6f8"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_solute.smod": {
+      "bytes": 1142,
+      "sha256": "4e3e9e6d748168f882ecc1d9814015d184db94c7d98615cd4d4f15368a9f21ee"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_solute@mod_calc_agetracer.smod": {
+      "bytes": 1523,
+      "sha256": "e2fa351f0590bbf880f5e1b85d9ebae752d206786b797de6fa6d329e553fb072"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_solute@mod_solute_cde.smod": {
+      "bytes": 3403,
+      "sha256": "44207d92ae7c9d5d406a9a3574b8d13f1ad178ceb557dfdea32a036a26bb7ac2"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_subsurface_solute_source.f90": {
+      "bytes": 3023,
+      "sha256": "0a5cf80aa06eecf23ad408292b710e56d616a2236acb8b26f14527f0f838fd0f"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_subsurface_solute_source.mod": {
+      "bytes": 1868,
+      "sha256": "a5cb6f76850e945fce2e5105a3c2eea27b0affc245746eca3300d9cd897d1254"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_subsurface_solute_source.o": {
+      "bytes": 2398,
+      "sha256": "eda9c98efb6b92a08716392bfa82bd53682fb97c4fa35abfa0e13908680d2cc4"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_timer.mod": {
+      "bytes": 222,
+      "sha256": "665bb47ce9f4ae69116d6db4e45c0147d55f27e5b1a9c80e6893e4235245569a"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_top.mod": {
+      "bytes": 645,
+      "sha256": "907b741649c22fb088c1b6e756a0cfa0ccb5b9dbaf879edd247e7de9f4525d3f"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_transaction_reference.mod": {
+      "bytes": 6815,
+      "sha256": "b46e6f85c656b446bab5ab0359533fc06c39198baaa5a21303714461fcd61bef"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/mod_wofost.mod": {
+      "bytes": 4134,
+      "sha256": "9cd3f46ded050cc8678a2f51b40f6b69aadb31ba25fd64f0166430e304fab08a"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/original_cde_output_state.f90": {
+      "bytes": 3576,
+      "sha256": "0b05d5b71639775bcb0ab949bb5cf353edbc0a5b79b40548649723af6333f321"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/original_cde_output_state.o": {
+      "bytes": 13678,
+      "sha256": "0b8a48636c95c44126cae81ba43fe0e789a31dd36fbf2965893f64acabbfd701"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/probe_kernel_donor.mod": {
+      "bytes": 36537,
+      "sha256": "1ef66137dc1539d56845abf27a661c11ec953fd9888bd84a1f89a74a655ee922"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/restart_publish.dll": {
+      "bytes": 30291,
+      "sha256": "83491289387db7f3cb36696572d686e1ef7275e4990b42cc4d829eefb926cd53"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/RWU_micro.f90": {
+      "bytes": 52707,
+      "sha256": "0491f45743cbd178964ec7b00b13d61e4438f3b99940cdb7df91d1bb3d44378c"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/RWU_micro.o": {
+      "bytes": 52935,
+      "sha256": "b350c70f107730e965ab9478e7d56a9655b5968d9da554da0bf804c81f8068a1"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/solute.f90": {
+      "bytes": 58109,
+      "sha256": "49897d6d973252738e90264cdafa6a6cfa657ba4979ad8ce23cf1a16347445d6"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/solute.o": {
+      "bytes": 74609,
+      "sha256": "b19430fe1697a55e8972dd0d49316da40a09fd3382c1d3eecdf95126be4a28ef"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/swap.f90": {
+      "bytes": 29176,
+      "sha256": "c0ca2990ca6a260d224b85ff650671c2f32df14e5ab40e81b9f6531b69092be9"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/swap.o": {
+      "bytes": 45954,
+      "sha256": "43ec80b0c9b83fcac6722be08b0f5d6b742a80a7c779db4511da193b94ab7de2"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/swap_csv_output.f90": {
+      "bytes": 136205,
+      "sha256": "fe5efd0d2f2d1f3f5837c62d8101104d30441b86655b8e8f3c852390624039c5"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/swap_csv_output.mod": {
+      "bytes": 2955,
+      "sha256": "9cf061d7f26367fe26da8438746e423134b9c0fbeaf813fa68b1047fb9b16388"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/swap_csv_output.o": {
+      "bytes": 251585,
+      "sha256": "c62cec3fba8ad1d4b6850e8010375ce64209c90ea01c9f70ef4613ac3d66c969"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/swap_exchange.mod": {
+      "bytes": 1470,
+      "sha256": "1f666015d2741e0835066e4d51345d88165a713dd7f8fe068c3a7a5057ddf876"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/swap_main.f90": {
+      "bytes": 11873,
+      "sha256": "a5df41d1dfd764c5c3781e515a986bc02b605a506c8c2900beb99af41f45247f"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/swap_main.o": {
+      "bytes": 11945,
+      "sha256": "7b2dbe8eb6af4272058e6f85106428fec0100c9076135e890359f0e71bc43e59"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/swapoutput.f90": {
+      "bytes": 47749,
+      "sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/swapoutput.o": {
+      "bytes": 100326,
+      "sha256": "12c63bdce0287354b1e46a994720b3b81986a9d671b7743b6014f5a70a7c92aa"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/timecontrol.f90": {
+      "bytes": 20906,
+      "sha256": "40c2f6bca96ce178fb2dea483fc0702786fc4161e7e8fb92d0c1133fd177ce79"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/timecontrol.o": {
+      "bytes": 38323,
+      "sha256": "3589bebee68a1855fc6a23d639557b4e8c4ba8f6fde3832ca1cb05b447420d6d"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/wofost.f90": {
+      "bytes": 79125,
+      "sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+    },
+    "actual/closure13-residual-feedback-O2-v2/current/closed-ordinary-model5-cde-profile/bundle/wofost.o": {
+      "bytes": 85637,
+      "sha256": "3321c466eeec63a5cd420c5d4310416428cf0483c25d1254d94cc16431887525"
+    },
+    "source/actual3ee4-controller-and-physical-source.zip": {
+      "bytes": 4414152,
+      "sha256": "9180be9bc34e2f0cb4753246685fee372ee38d84e62bfc77006961ac477094cf"
+    },
+    "controllers-and-observations/closed-implicit-state13-analytical-derivative-prototype-v1.py": {
+      "bytes": 8059,
+      "sha256": "af8f6957d1c2e5edb78a9e64a031034ff31962bbfdba47bb0b3a72c1e5153dd5"
+    },
+    "controllers-and-observations/closed-implicit-state13-analytical-derivative-prototype-v2.py": {
+      "bytes": 8252,
+      "sha256": "7848d8834bc1a046a78e19ab69289bd6c431946e73b132622f8122efa40d251e"
+    },
+    "controllers-and-observations/closed-implicit-state13-checkpoint-convergence-order-v6.py": {
+      "bytes": 7285,
+      "sha256": "ba6bbfe1bcc704be2fef9a0dc7dd8ad1dc8e13e2ec34e8cd2814618d20dab219"
+    },
+    "controllers-and-observations/closed-implicit-state13-checkpoint-native-inverse-v4.py": {
+      "bytes": 5553,
+      "sha256": "068a87de5585a88fbb70725082e5fd57a04179535b9f636a92141fffd8c1c294"
+    },
+    "controllers-and-observations/closed-implicit-state13-checkpoint-output-v3.py": {
+      "bytes": 6083,
+      "sha256": "d634a6adc309cfa74999967b7ca3c3ca7446f6a83a1feee999ab73227bdcc631"
+    },
+    "controllers-and-observations/closed-implicit-state13-checkpoint-residual-start-v5.py": {
+      "bytes": 9088,
+      "sha256": "ce4557ed7057e7a7c0430c98236e14c5d3e8435d91bbcb668b8af90ff4f0176b"
+    },
+    "controllers-and-observations/closed-implicit-state13-clock-observer-v1.py": {
+      "bytes": 4779,
+      "sha256": "e0199edb8a26cc260600b8f1ea5a55af262e5d11f769daaf639165ba750f7514"
+    },
+    "controllers-and-observations/closed-implicit-state13-compare-original-SWAP-SDK-v1.py": {
+      "bytes": 1128,
+      "sha256": "46a665b53f0b1c41a02d32e290987ce07e7ba040cf90c95a45408b105e17154f"
+    },
+    "controllers-and-observations/closed-implicit-state13-complete-feedback-selection-v2.py": {
+      "bytes": 1152,
+      "sha256": "3b4a9bf29de59cce83b5a2da7ceb577735d3d1d7c0e861cba7649587bfa2059c"
+    },
+    "controllers-and-observations/closed-implicit-state13-create-residual-feedback-v2.py": {
+      "bytes": 646,
+      "sha256": "dc0c82b76c039feaabef0d471a1e7611e4ef506f2938d5006cb231b1948f5771"
+    },
+    "controllers-and-observations/closed-implicit-state13-create-residual-precheck-prototype-v1.py": {
+      "bytes": 1603,
+      "sha256": "c69c7ef9cec1265d80e2a3554308bab8a846c8387185efd01eaa39c40b765f3c"
+    },
+    "controllers-and-observations/closed-implicit-state13-create-snow-prototype-v2.py": {
+      "bytes": 1062,
+      "sha256": "11af2b5a71860d97b10a0c0d45cbf0716623c21e8c932556f7255400193a438b"
+    },
+    "controllers-and-observations/closed-implicit-state13-current-public-preflight-v1.py": {
+      "bytes": 2585,
+      "sha256": "1a032bbc5690fbbdb07e8b2db0a245bff375f5e2882104546ebe957286d719bd"
+    },
+    "controllers-and-observations/closed-implicit-state13-desaturation-prototype-v1.py": {
+      "bytes": 6797,
+      "sha256": "5d283cee8d68d97c255538a192df258dd24ead1211545415db39bf71da07f057"
+    },
+    "controllers-and-observations/closed-implicit-state13-install-convergence-order-v6.py": {
+      "bytes": 3125,
+      "sha256": "30f8ea50a49592bbd9b6b999a0bd8464afcba9113961cc15a8f9896473b29718"
+    },
+    "controllers-and-observations/closed-implicit-state13-install-first-coherent-checkpoint-v1.py": {
+      "bytes": 5960,
+      "sha256": "a8a9df76b9106cbc1beb68142a1cf0c8cf8608871c8a29e00948a438ddeebb0a"
+    },
+    "controllers-and-observations/closed-implicit-state13-install-residual-start-v1.py": {
+      "bytes": 6261,
+      "sha256": "d8163e17f739777c539cca06b4ea1ef7823bf3c6df48e04b371821e8c1385575"
+    },
+    "controllers-and-observations/closed-implicit-state13-native-proposal-compile-v1.py": {
+      "bytes": 2234,
+      "sha256": "49efdb171078bd73026e746a789af6706099ed39389c6039565b1ca5784e0367"
+    },
+    "controllers-and-observations/closed-implicit-state13-original-main-startup-diagnostic-v1.py": {
+      "bytes": 6588,
+      "sha256": "ec50640952473829c826b419c669d0658b392f1d0a960f37b4c03950bfd7ea1b"
+    },
+    "controllers-and-observations/closed-implicit-state13-original-output-isolation-v1.py": {
+      "bytes": 2159,
+      "sha256": "ac78004152f9c49edf07505a41ddbc99be56e0985bca3ee56372781f55903165"
+    },
+    "controllers-and-observations/closed-implicit-state13-original-reader-discovery-v1.py": {
+      "bytes": 5250,
+      "sha256": "94232e83118023ca5a35ca64c6c4150b82ddc0c1c30b4857dc198b65f0e88116"
+    },
+    "controllers-and-observations/closed-implicit-state13-original-swap-startup-v2.py": {
+      "bytes": 5380,
+      "sha256": "fff6ef5487afba50c5899002cf86188f329008126e97c1221cb37b77fb6f1db6"
+    },
+    "controllers-and-observations/closed-implicit-state13-output-preflight-v2.py": {
+      "bytes": 2511,
+      "sha256": "3989597d2b37a97c258792369b63d91c64bb2cb0163c051953c21345daedc543"
+    },
+    "controllers-and-observations/closed-implicit-state13-partial-plateau-observer-v1.py": {
+      "bytes": 4910,
+      "sha256": "4af84ea24be67f3fd0c879ce4a22498251ff1d7772d36b87a17b065425a1293a"
+    },
+    "controllers-and-observations/closed-implicit-state13-prepare-canonical-proposal-v3.py": {
+      "bytes": 4817,
+      "sha256": "4a6e13d82d430dc83480f4065331341dd92b2eae5a62a2f1727a15a85798cd6e"
+    },
+    "controllers-and-observations/closed-implicit-state13-prepare-controllers-v1.py": {
+      "bytes": 5434,
+      "sha256": "5cca98d6c2c60c68ab86f317f2604431c745e9d21698de27952f492f251da5a7"
+    },
+    "controllers-and-observations/closed-implicit-state13-prepare-readonly-input-reuse-v2.py": {
+      "bytes": 3308,
+      "sha256": "f8ae91232e8cbc3619e7ad83cacbc3f99af69eabac1f9ca358f11eb3f242fb8f"
+    },
+    "controllers-and-observations/closed-implicit-state13-prepare-source-proposal-v1.py": {
+      "bytes": 4808,
+      "sha256": "5a66365957a049c41cbfdc4de7214d6feff1d1c9535da1c674f2dedcc22d3eb8"
+    },
+    "controllers-and-observations/closed-implicit-state13-refine-derivative-fd-v2.py": {
+      "bytes": 1447,
+      "sha256": "a7e36556e0e8f5986e8bd6f7d72b34fad23720aa8f28c4ee0e4328979177a934"
+    },
+    "controllers-and-observations/closed-implicit-state13-residual-precheck-prototype-v1.py": {
+      "bytes": 5285,
+      "sha256": "83c78156950a2f9a5f19d14b306cb01c3b27c084b862f2687351f8dda9b56e94"
+    },
+    "controllers-and-observations/closed-implicit-state13-run-repaired-feedback-v2.py": {
+      "bytes": 1987,
+      "sha256": "a9c18be9fe68a272f865b8c7e8411411db4034d4e2b00e851188de36c5f2540f"
+    },
+    "controllers-and-observations/closed-implicit-state13-run-residual-feedback-v1.py": {
+      "bytes": 2860,
+      "sha256": "1cc83a52964f3f0d62a47a8cff59cf61aa369bd934c18b8a4a4a55c1447c7db5"
+    },
+    "controllers-and-observations/closed-implicit-state13-run-residual-feedback-v2.py": {
+      "bytes": 2883,
+      "sha256": "531436bc0f7e1291390ec716e996e02d80fa785b6e0a4ce8aaea4e818ed5c28a"
+    },
+    "controllers-and-observations/closed-implicit-state13-seal-censor-prototype-v3.py": {
+      "bytes": 5437,
+      "sha256": "7f259fdd5d58ab3ab6357e28ce9cc8b68e3d9fedc69f34485f56d8bba1137943"
+    },
+    "controllers-and-observations/closed-implicit-state13-seal-discovery-v1.py": {
+      "bytes": 2881,
+      "sha256": "0a4d806e173f064b646a726bfdfa909d71838be047c09ce4ad8f71e7293398e4"
+    },
+    "controllers-and-observations/closed-implicit-state13-seal-first-local-feedback-v1.py": {
+      "bytes": 4476,
+      "sha256": "85b4d1317e671fb9c23243591c8444d04c9a3e2a4b800e8f4b6add03e147ed6f"
+    },
+    "controllers-and-observations/closed-implicit-state13-seal-output-feedback-v2.py": {
+      "bytes": 3720,
+      "sha256": "4e109899042412421222a6ee98369556fd7e9afb21869edc44dbb4f858bed1cc"
+    },
+    "controllers-and-observations/closed-implicit-state13-seal-precheck-regression-v5.py": {
+      "bytes": 3181,
+      "sha256": "a0f23cdd354c687cabc29a0350bae6ee566393d59aa04d4e54e53bbdcd01093b"
+    },
+    "controllers-and-observations/closed-implicit-state13-seal-residual-investigation-v4.py": {
+      "bytes": 5493,
+      "sha256": "cfc7c0961929b23fcec8476687ba9e06cb0b0a6b217b66d958510c62c80ecf10"
+    },
+    "controllers-and-observations/closed-implicit-state13-seal-startup-diagnostic-v1.py": {
+      "bytes": 2127,
+      "sha256": "5c52558a35b6043bb651ada28f02b5a1ff8be1aac01f675260874ca048ebd592"
+    },
+    "controllers-and-observations/closed-implicit-state13-select-local-feedback-v1.py": {
+      "bytes": 1812,
+      "sha256": "079a99de11ac439eed653471756502519379d6ba77fd7ec141dba10ad8ae5568"
+    },
+    "controllers-and-observations/closed-implicit-state13-select-repaired-feedback-v3.py": {
+      "bytes": 1517,
+      "sha256": "144d7d520f500766a7e8fa8d9d3890472b4847150ecaa483c12577afa65cf647"
+    },
+    "controllers-and-observations/closed-implicit-state13-signed-residual-prototype-v2.py": {
+      "bytes": 4828,
+      "sha256": "122861b42861958f4e2786b69d6bc669cf9c735a267f0c47c4733fd77c8dd7d3"
+    },
+    "controllers-and-observations/closed-implicit-state13-signed-residual-snow-prototype-v2.py": {
+      "bytes": 4885,
+      "sha256": "96aace0c64f65d35e8e75fc88474c9d33e40265e175052bc96b03a27a8910831"
+    },
+    "controllers-and-observations/closed-implicit-state13-snow-newton-observer-v1.py": {
+      "bytes": 4934,
+      "sha256": "b0aa9d296d28c6b9f2632d49cb53a65bf1852724c2891f7a493fe33f801776b2"
+    },
+    "controllers-and-observations/closed-implicit-state13-snow-progress-observer-v1.py": {
+      "bytes": 4639,
+      "sha256": "15f55b4bd77b3488691071a01c76db2befe45091145b0706b88a9762e9a9c97b"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_ACTUAL_SOURCE_CONTRACT_V4.json": {
+      "bytes": 3757,
+      "sha256": "18d9c6c766a7d09ea636c43beda9a309472b42479db14900d29b08f4d5477c76"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_ACTUAL_SOURCE_CONTRACT_V5.json": {
+      "bytes": 4832,
+      "sha256": "df4182f7244f0a231480b27ba44a5a518de94d3a34c40d9af5b8eeba184ad1c9"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_ACTUAL_SOURCE_CONTRACT_V6.json": {
+      "bytes": 4834,
+      "sha256": "29801d4b0f28e49df79a34639f32471784b295a0ba93ebdd209a775c4883c6c5"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_ANALYTICAL_DERIVATIVE_PROTOTYPE_V1.json": {
+      "bytes": 45851,
+      "sha256": "f26d93e1a194d56c434a2998e5d2708351faf2277c6db8ef1d08d3da16868e0c"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_ANALYTICAL_DERIVATIVE_PROTOTYPE_V2.json": {
+      "bytes": 49208,
+      "sha256": "e5ffe90664819e1764ae8bfe2ed65e18efed309466d6f70101e5dd2422620e46"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_CLOCK_OBSERVER_V1.json": {
+      "bytes": 29756,
+      "sha256": "2003eff81f3208f61fc803da27d26d176764f7e99fc7b27e44bcee0d19eb2cc4"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_CURRENT_ALL_PUBLIC_INPUTS_V1.json": {
+      "bytes": 36056,
+      "sha256": "1fa1d56a20ca0545c8ec5a85ae1d9790589501c68eecd2a40a34353177e71838"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_DESATURATION_PROTOTYPE_V1.json": {
+      "bytes": 31787,
+      "sha256": "5f695595079619e18a6f43bdffd251bb090bda9c9a2aa75de0e663cbfaeba0a9"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_FINITE_CASE_PLAN_PROPOSED_V1.json": {
+      "bytes": 6754,
+      "sha256": "21d5e4e7da42da2733e37fa7cfa0a2fc33717853d57e716f1eb880ca7f178a3e"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_FIRST_ACTUAL_CHECKPOINT_V1.json": {
+      "bytes": 2357,
+      "sha256": "dd60f7bcbac5e4c03356531577e836b27b185f2b3b76a3e271735f2190eaaf2e"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_FIRST_ACTUAL_SOURCE_CONTRACT_V1.json": {
+      "bytes": 2160,
+      "sha256": "2caad33911740091b8ac0376efebcf67bda1a0e140551bc60fcc7b645758fbd5"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_FIRST_LOCAL_FAILURE_SUMMARY_V1.json": {
+      "bytes": 5144,
+      "sha256": "17e502956d3c9b4ad649d18ff30cf1c6e22b72140cda0c4450e15fec7260061b"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_FIRST_LOCAL_FAILURES_RAW_V1.json": {
+      "bytes": 88610,
+      "sha256": "9a3a2581d8b3371f2c8ffea07c63768c074f3c0a9bcfb0737d29e04e87c134fc"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_FIRST_REPAIRED_FROST_INDEPENDENT_SCIENCE_V1.json": {
+      "bytes": 6753,
+      "sha256": "30b212917bdf19ad33515f458f19924e278fe8f94d88a1b8aa2088be9842262f"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_ORIGINAL_MAIN_STARTUP_DIAGNOSTIC_V1.json": {
+      "bytes": 48652,
+      "sha256": "7926519cdd851953467c8c8dd47264f9515bb074d507240803bf18326748fb56"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_ORIGINAL_MAIN_STARTUP_RAW_V1.json": {
+      "bytes": 6044,
+      "sha256": "591e002dc4405d863a519663ed4309e3223fc199bec625df8889151d517041e1"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_ORIGINAL_OUTPUT_ISOLATION_V1.json": {
+      "bytes": 3852,
+      "sha256": "e03b207f2f126e7c4c3480607499ed8cc0256fd7d444d78bb9ad75849d9df5df"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_ORIGINAL_READER_DISCOVERY_V1.json": {
+      "bytes": 41042,
+      "sha256": "094866bcb8ccffd04693cba812f853cba42b0a69dfe9838e4ed84c75b0f98512"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_ORIGINAL_SWAP_STARTUP_V2.json": {
+      "bytes": 15683,
+      "sha256": "ee8e751b06b69eee188b4d9bcec456b9818470b125d192ebcbeff421c4c3835a"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_ORIGINAL_SWAP_VERSUS_SDK_V1.json": {
+      "bytes": 390,
+      "sha256": "701d9016d60891f81fa361992ff45fe3988f77e71f6e8a6b5e06aa90bb62ed79"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_ORIGINAL_ZERO_DAY_AND_PROPOSED_NATIVE_RAW_V1.json": {
+      "bytes": 55966,
+      "sha256": "edecd6b3c9f34292e3852ffe1fa0074c9872d7af9f2ac80435b8ab72d0695b2b"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_OUTPUT_FEEDBACK_AND_CLOCK_OBSERVATION_RAW_V2.json": {
+      "bytes": 153028,
+      "sha256": "3970609770fbcbed23be399d1c0fd1723c73e8e55994ca625aa19048ee770a2a"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_OUTPUT_PREFLIGHT_V2.json": {
+      "bytes": 56589,
+      "sha256": "8ab32828c48d4a6eed16e43150e27010aabb73070ccc93a47bc8a93f632d27c6"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_OUTPUT_PREFLIGHT_V3.json": {
+      "bytes": 56761,
+      "sha256": "9aa4e7b44a20c14d2832e7f3f5fb0d554dbea130ec8ee636dcd11952bc3e2adc"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_PARTIAL_PLATEAU_OBSERVER_V1.json": {
+      "bytes": 30979,
+      "sha256": "6a69c50dc0cdfb87eafe8ce70ff04d94115672b6d69e197fb81e4db9498c1678"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_PROPOSED_NATIVE_COMPILE_V1.json": {
+      "bytes": 10031,
+      "sha256": "683ce33e25d122a6a129379ccf317b44fe534b3ce616b972da3528e80a96b9e8"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_REPAIRED_ACTUAL_SOURCE_CONTRACT_V3.json": {
+      "bytes": 3431,
+      "sha256": "b115eef90513488bb6c39ccd6d40edddd4e5db610cd8b39df17d7c3247fb8ba2"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_RESIDUAL_FAILURES_SUCCESSES_AND_CAUSAL_PROTOTYPES_RAW_V4.json": {
+      "bytes": 763099,
+      "sha256": "aa5f42ce5c71a91729f5d212e8b48dc57645a9592b98b3e3612decbfda564162"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_RESIDUAL_INVESTIGATION_SUMMARY_V4.json": {
+      "bytes": 4060,
+      "sha256": "1eb3ac30ebf0f884e93342bf25021a2f92fad7aee18ece7205def38cc63f8bc8"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_RESIDUAL_PRECHECK_PROTOTYPE_V1.json": {
+      "bytes": 33583,
+      "sha256": "770e41903dc32b9502eec44032e1ccc7f363b3e31a4c046ad1cc922902975f01"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_SIGNED_RESIDUAL_PROTOTYPE_V2.json": {
+      "bytes": 31754,
+      "sha256": "99749530bde4e998113d986b6769b29bf5a513c7ad353fe748e33e1dd0d2c31f"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_SIGNED_RESIDUAL_SNOW_PROTOTYPE_V2.json": {
+      "bytes": 36039,
+      "sha256": "b22b71a198366a144301c3198b506b6a37996721182e545e81629f79b49a68a7"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_SNOW_CENSOR_AND_NUMERICAL_PROTOTYPE_RAW_V3.json": {
+      "bytes": 160012,
+      "sha256": "8705cf60ae69eb31fd3d15d21bd38cb39f27881015f255391681464266b4078b"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_SNOW_CENSOR_AND_PROTOTYPE_SUMMARY_V3.json": {
+      "bytes": 1621,
+      "sha256": "73ebb54859e88fce4c8dafcaa620b380f3282d20d36cac66af88b866ee0e49a7"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_SNOW_NEWTON_OBSERVER_V1.json": {
+      "bytes": 32575,
+      "sha256": "9115bd2371517e9d53c54e293e0834e1c2dafb4fe4ba81c759d8cbd49154e73e"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_SNOW_PROGRESS_OBSERVER_V1.json": {
+      "bytes": 32572,
+      "sha256": "188eb635f02fb2d98623d1023bee42b6a309405526b9ef3ec5000b6bddc8df64"
+    },
+    "controllers-and-observations/CLOSED_IMPLICIT_STATE13_SOURCE_PROPOSAL_V1.json": {
+      "bytes": 7851,
+      "sha256": "9a62df7316a663d4bb9cec10219e350316f1b78d0a73bf7af390de5f62de35a7"
+    }
+  },
+  "observations": [
+    {
+      "case": "closed-frost-mixed4-5-cde",
+      "optimization": "O0",
+      "actual_source": "3ee4db1ceeb9d923d44fd833f82d196e116a23c0",
+      "primary_days": 4,
+      "status": "FAILED_ACTUAL_CLOSED_IMPLICIT_FEEDBACK_NOT_QUALIFIED",
+      "error": "RuntimeError(\"Missing {'HYBRID_DAY_RETURN'}, process exited with 1\")",
+      "complete": false
+    },
+    {
+      "case": "closed-ordinary-model6-snow-cde-profile",
+      "optimization": "O0",
+      "actual_source": "3ee4db1ceeb9d923d44fd833f82d196e116a23c0",
+      "primary_days": 1,
+      "status": "FAILED_ACTUAL_CLOSED_IMPLICIT_FEEDBACK_NOT_QUALIFIED",
+      "error": "RuntimeError(\"Missing {'HYBRID_DAY_RETURN'}, process exited with 1\")",
+      "complete": false
+    },
+    {
+      "case": "closed-frost-mixed8-9-water",
+      "optimization": "O2",
+      "actual_source": "3ee4db1ceeb9d923d44fd833f82d196e116a23c0",
+      "primary_days": 1,
+      "status": "FAILED_ACTUAL_CLOSED_IMPLICIT_FEEDBACK_NOT_QUALIFIED",
+      "error": "RuntimeError(\"Missing {'HYBRID_DAY_RETURN'}, process exited with 1\")",
+      "complete": false
+    },
+    {
+      "case": "closed-ordinary-model5-cde-profile",
+      "optimization": "O2",
+      "actual_source": "3ee4db1ceeb9d923d44fd833f82d196e116a23c0",
+      "primary_days": 1,
+      "status": "FAILED_ACTUAL_CLOSED_IMPLICIT_FEEDBACK_NOT_QUALIFIED",
+      "error": "RuntimeError(\"Missing {'HYBRID_DAY_RETURN'}, process exited with 1\")",
+      "complete": false
+    }
+  ],
+  "complete_contexts": 0,
+  "new_qualified_contexts": 0,
+  "canonical_admission": false,
+  "next_repair": "A failed complete convergence check must require actual Newton progress before checking the same iterate again. The unchanged mandatory polish check may evaluate the already feasible iterate again."
+}

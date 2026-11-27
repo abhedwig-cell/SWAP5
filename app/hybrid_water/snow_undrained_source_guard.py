@@ -89,7 +89,8 @@ def validate_source(bundle,project,identity,reference):
     from implicit_interception_partition import source as exact_partition
     original_meteo=(Path(reference)/'build/swap-selected/MOD_meteo.f90').read_text(encoding='cp1252')
     equal('MOD_meteo.f90',exact_partition(original_meteo))
-    source=actual('headcalc.f90')
+    from implicit_closed_desaturation import restore as restore_desaturation
+    source=restore_desaturation(actual('headcalc.f90'))
     if not selected['swkimpl']:source=inverse(source,head,HEAD_TEMPLATE)
     template=('   use hybrid_step_budget, only: projected_water_residual\n\n   implicit none\n'
         '         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.\n')
@@ -149,7 +150,9 @@ def validate_source(bundle,project,identity,reference):
         root='      use hybrid_snow_undrained_root_state,only:snow_undrained_root_checkpoint\n'
         event='      use hybrid_implicit_pond_event_state,only:assert_no_implicit_pond_event\n'
         expected=state.replace(expected,root+event,event+root)
-    body=actual('macropore.f90').split(begin,1)[1].split(end,1)[0]
+    from implicit_hydraulic_state import restore_macro
+    parent_macro=restore_macro(actual('macropore.f90'),project)
+    body=parent_macro.split(begin,1)[1].split(end,1)[0]
     if body!=expected:raise ValueError('Foreign complete original undrained Snow checkpoint procedure')
     raw=(originals/'integral.f90').read_text(encoding='cp1252');stock=(originals/'watstor.f90').read_text(encoding='cp1252')
     equal('integral.f90',build.integral(raw,stock,selected))

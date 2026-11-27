@@ -1,0 +1,69 @@
+{
+  "status": "FIRST_FIVE_LOCAL_CONTEXT_FAILURES_RETAINED_THREE_OUTPUT_OWNER_GUARDS_AND_TWO_DAY33_CLOCK_RESOLUTION_FAILURES_NOT_QUALIFIED",
+  "actual_source": "2215b9d93d3616160d5ac813bd0c7b879536171a",
+  "contexts": [
+    {
+      "case": "closed-ordinary-gardner-water",
+      "optimization": "O0",
+      "actual_source": "2215b9d93d3616160d5ac813bd0c7b879536171a",
+      "primary_days_returned": 0,
+      "original_error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'tools/solute/run_water.py', '--model', 'HYBRID_NOMACRO_WATER', '--experimental-project', 'C:\\\\Users\\\\Veldh012\\\\SWAP5-work\\\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\\\evidence\\\\closure13-local-feedback-v1\\\\O0\\\\closed-ordinary-gardner-water\\\\inputs', '--original-output', '--experimental-time-step-policy', 'original-adaptive-day-seed-v1', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--build-only', '--donor-opt', 'O0', '--kernel-opt', 'O0', '--output', 'C:\\\\Users\\\\Veldh012\\\\SWAP5-work\\\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\\\closure13-feedback-O0-v1\\\\current\\\\closed-ordinary-gardner-water\\\\bundle'], None, None)",
+      "classification": "COMPOSITION_MISSING",
+      "complete_PASS_claimed": false
+    },
+    {
+      "case": "closed-ordinary-model6-snow-cde-profile",
+      "optimization": "O0",
+      "actual_source": "2215b9d93d3616160d5ac813bd0c7b879536171a",
+      "primary_days_returned": 0,
+      "original_error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'tools/solute/run_water.py', '--model', 'HYBRID_NOMACRO_WATER', '--experimental-project', 'C:\\\\Users\\\\Veldh012\\\\SWAP5-work\\\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\\\evidence\\\\closure13-local-feedback-v1\\\\O0\\\\closed-ordinary-model6-snow-cde-profile\\\\inputs', '--original-output', '--experimental-time-step-policy', 'original-adaptive-day-seed-v1', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--build-only', '--donor-opt', 'O0', '--kernel-opt', 'O0', '--output', 'C:\\\\Users\\\\Veldh012\\\\SWAP5-work\\\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\\\closure13-feedback-O0-v1\\\\current\\\\closed-ordinary-model6-snow-cde-profile\\\\bundle'], None, None)",
+      "classification": "COMPOSITION_MISSING",
+      "complete_PASS_claimed": false
+    },
+    {
+      "case": "closed-frost-mixed4-5-cde",
+      "optimization": "O0",
+      "actual_source": "2215b9d93d3616160d5ac813bd0c7b879536171a",
+      "primary_days_returned": 32,
+      "original_error": "RuntimeError(\"Missing {'HYBRID_DAY_RETURN'}, process exited with 1\")",
+      "classification": "NUMERICAL_DEFECT",
+      "complete_PASS_claimed": false,
+      "partial_independent_budgets": {
+        "days": 32,
+        "water_daily_max_cm": "1.0E-14",
+        "cde_daily_max_mg_cm2": "2.4E-14",
+        "cde_every_prefix_max_mg_cm2": "2.4E-14"
+      }
+    },
+    {
+      "case": "closed-ordinary-model5-cde-profile",
+      "optimization": "O2",
+      "actual_source": "2215b9d93d3616160d5ac813bd0c7b879536171a",
+      "primary_days_returned": 0,
+      "original_error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'tools/solute/run_water.py', '--model', 'HYBRID_NOMACRO_WATER', '--experimental-project', 'C:\\\\Users\\\\Veldh012\\\\SWAP5-work\\\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\\\evidence\\\\closure13-local-feedback-v1\\\\O2\\\\closed-ordinary-model5-cde-profile\\\\inputs', '--original-output', '--experimental-time-step-policy', 'original-adaptive-day-seed-v1', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--build-only', '--donor-opt', 'O2', '--kernel-opt', 'O2', '--output', 'C:\\\\Users\\\\Veldh012\\\\SWAP5-work\\\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\\\closure13-feedback-O2-v1\\\\current\\\\closed-ordinary-model5-cde-profile\\\\bundle'], None, None)",
+      "classification": "COMPOSITION_MISSING",
+      "complete_PASS_claimed": false
+    },
+    {
+      "case": "closed-frost-mixed8-9-water",
+      "optimization": "O2",
+      "actual_source": "2215b9d93d3616160d5ac813bd0c7b879536171a",
+      "primary_days_returned": 32,
+      "original_error": "RuntimeError(\"Missing {'HYBRID_DAY_RETURN'}, process exited with 1\")",
+      "classification": "NUMERICAL_DEFECT",
+      "complete_PASS_claimed": false,
+      "partial_independent_budgets": {
+        "days": 32,
+        "water_daily_max_cm": "2.0997E-14",
+        "cde_daily_max_mg_cm2": "0",
+        "cde_every_prefix_max_mg_cm2": "0"
+      }
+    }
+  ],
+  "complete_contexts": 0,
+  "partial_days_returned": 64,
+  "output_configuration_in_first_plan_misdescribed_as_dense": true,
+  "actual_original_output_input_bytes_never_changed": true,
+  "original_main_reference_causality": "UNKNOWN",
+  "canonical_admission": false
+}

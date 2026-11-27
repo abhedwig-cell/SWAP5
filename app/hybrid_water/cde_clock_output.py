@@ -45,12 +45,14 @@ def active_selection(project):
     bottom=inspect(project.input_directory,original_output=True)['boundary']['SWBOTB']
     from prescribed_head_flux_boundary import selection as paired_selection
     paired_bottom=bottom==9 and paired_selection(project.input_directory,project.original_output) is not None
-    if bottom not in (1,5,8) and not paired_bottom:
+    from closed_zero_boundary import implicit_selection as closed_implicit_selection
+    closed_implicit=closed_implicit_selection(project) is not None
+    if bottom not in (1,5,8) and not paired_bottom and not closed_implicit:
         from analytical_cde_calendar import bottom6_selected
         if bottom!=6 or not bottom6_selected(project):return None
     drainage=one('SWDRA')
     if drainage not in (0,1):return None
-    if bottom!=1 and drainage!=1 and not paired_bottom:
+    if bottom!=1 and drainage!=1 and not paired_bottom and not closed_implicit:
         from analytical_cde_calendar import vapor_selected
         if not vapor_selected(project):return None
     reset=0 if monthly else one('SWRES');fmt=one('SWCSV',0);hys=one('SWHYST')
@@ -62,6 +64,7 @@ def active_selection(project):
         swhyst=hys,swcsv=fmt,nprintday=nprint,swmonth=monthly,swodat=dates,swres=reset,requested_period=requested,period=1,flprintdt=perstep,
         groups=one('INLIST_CSV',quoted=True) if fmt else None,num_decimals=precision,
         **({'analytical_bottom6_calendar':True} if bottom==6 else {}),
+        **({'closed_implicit_calendar':True} if closed_implicit else {}),
         **({'paired_head_flux_cde_calendar':True} if paired_bottom else {}),
         **({'analytical_vapor_calendar':True} if __import__('analytical_cde_calendar').vapor_selected(project) else {}),
         **({'groundwater_cde_clock':True} if bottom==1 else {}),
@@ -160,7 +163,7 @@ else
         old="(swbotb/=5.and.swbotb/=8))error stop 'Foreign original ordinary Darcy trial domain'"
         assert source.count(old)==1
         source=source.replace(old,old.replace('swbotb/=8','swbotb/=6.and.swbotb/=8'),1)
-    if selected.get('analytical_vapor_calendar') and selected['swdra']==0:
+    if (selected.get('analytical_vapor_calendar') or selected.get('closed_implicit_calendar') and not selected['swsnow']) and selected['swdra']==0:
         old='swmacro/=0.or.swsnow/=0.or.swdra/=1'
         assert source.count(old)==2
         source=source.replace(old,'swmacro/=0.or.swsnow/=0.or.(swdra/=0.and.swdra/=1)')

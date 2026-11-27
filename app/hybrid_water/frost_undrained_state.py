@@ -43,9 +43,10 @@ def selection(directory,original_output=True):
             analytical=model_domain(active,values,allow_model1=True)
             if analytical is None:return None
         elif models and re.fullmatch(r'\+?0*1(?:[ \t]+\+?0*1)*[ \t]*',models[0]) is None:
-            # Original non1+hysteresis is invalid. Implicit closed non1 still
-            # requires its separate explicit per-layer native admission.
-            return None
+            if values['SWKIMPL']!=1 or values['SWHYST']!=0:return None
+            from implicit_hydraulic_state import input_models
+            implicit_analytical=input_models(text,values,values,original_output)
+            if implicit_analytical is None:return None
     elif models and re.fullmatch(r'\+?0*1(?:[ \t]+\+?0*1)*[ \t]*',models[0]) is None:
         if values['SWKIMPL']==1:
             from implicit_hydraulic_state import input_models

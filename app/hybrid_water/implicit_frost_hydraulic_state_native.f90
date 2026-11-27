@@ -17,7 +17,8 @@ contains
     character(len=8)::tag
     if(numnod<1.or.numlay<1.or.numlay>size(iHWCKmodel).or.swmacro/=0.or.swsolu<0.or.swsolu>1.or. &
        swsnow/=1.or.swfrost/=1.or.swhyst/=0.or.(swdra/=0.and.swdra/=1).or.swhea/=1.or.swcalt/=2.or. &
-       swsophy/=0.or.swkimpl/=1.or.(swbotb/=5.and.swbotb/=8))error stop 'Foreign implicit Frost hydraulic native domain'
+       swsophy/=0.or.swkimpl/=1.or.(swbotb/=5.and.swbotb/=6.and.swbotb/=8))error stop 'Foreign implicit Frost hydraulic native domain'
+    if(swbotb==6.and.swdra/=0)error stop 'Closed implicit Frost hydraulic boundary requires drainage off'
     partition_active=0
     if(swdra==1)then
       if(swdivd/=1)error stop 'Foreign implicit Frost hydraulic drainage partition'

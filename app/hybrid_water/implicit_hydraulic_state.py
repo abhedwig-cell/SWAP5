@@ -21,13 +21,15 @@ def input_models(text,selectors,boundary,original_output=None):
                SWHEA=1,SWCALT=2,SWBR=0,SWMETDETAIL=0)
     if any(selectors.get(k)!=v for k,v in fixed.items()):return None
     if (selectors.get('SWSOLU') not in (0,1) or selectors.get('SWSNOW') not in (0,1)
-            or selectors.get('SWINCO') not in (1,2) or boundary.get('SWBOTB') not in (5,8)):
+            or selectors.get('SWINCO') not in (1,2) or boundary.get('SWBOTB') not in (5,6,8)):
         return None
+    closed=boundary.get('SWBOTB')==6
+    if closed and selectors.get('SWDRA')!=0:return None
     frost=selectors.get('SWFROST')
     if frost==1:
         if (selectors.get('SWSNOW')!=1 or selectors.get('SWDRA') not in (0,1)
                 or selectors.get('SWBBCFILE')!=0 or selectors.get('SWTOPBHEA')!=2):return None
-    elif frost!=0 or selectors.get('SWDRA')!=1:return None
+    elif frost!=0 or selectors.get('SWDRA')!=(0 if closed else 1):return None
     active='\n'.join(line.split('!',1)[0] for line in text.splitlines()
                      if not line.lstrip().startswith('*'))
     # Original scalar replication is validated against the actual grid. Gardner
@@ -83,6 +85,7 @@ def selected(project):
             raise ValueError('Invalid original implicit drainage partition')
     result=dict(models=models,solute=s['SWSOLU'],snow=s['SWSNOW'],bottom=boundary['SWBOTB'],partition=partition)
     if s['SWFROST']==1:result.update(frost=1,drainage=s['SWDRA'])
+    elif boundary['SWBOTB']==6:result['drainage']=0
     return result
 
 
@@ -99,11 +102,13 @@ def native_tag(item):return b'S5IFX001' if item.get('frost') else TAG
 def metadata(project):
     item=selected(project)
     if item is None:return None
+    from implicit_closed_desaturation import metadata as trial_metadata,selected as trial_selected
     folder=Path(__file__).parent;sha=lambda p:hashlib.sha256(p.read_bytes().replace(b'\r\n',b'\n')).hexdigest()
     return dict(policy=POLICY,**item,native_extension_tag=native_tag(item).decode(),native_extension_version=1,
                 native_extension_bytes=8+8*len(header(item,project.nodes)),
                 providers={n:sha(folder/n) for n in ['implicit_hydraulic_state.py',native_provider(item)+'.f90']},
-                parent_state_layout_preserved=True,physical_equations_changed=False,new_physical_state=False)
+                parent_state_layout_preserved=True,physical_equations_changed=False,new_physical_state=False,
+                **({'closed_desaturation_trial_start':trial_metadata(item)} if trial_selected(item) else {}))
 
 
 def validate_candidate(raw,project):
@@ -151,6 +156,9 @@ def parent_native(raw,project):
 def apply_build(output,project,patched):
     item=selected(project)
     if item is None:return patched
+    from implicit_closed_desaturation import selected as desaturation_selected,source as desaturation_source
+    if desaturation_selected(item):
+        head=output/'headcalc.f90';head.write_text(desaturation_source(head.read_text(encoding='cp1252')),encoding='cp1252')
     name=native_provider(item)
     if name in patched:raise ValueError('Multiple implicit hydraulic native owners')
     (output/(name+'.f90')).write_bytes(Path(__file__).with_name(name+'.f90').read_bytes())
@@ -163,6 +171,8 @@ def validate(bundle,project,identity):
     expected=metadata(project)
     if identity.get('implicit_hydraulic_state')!=expected:raise ValueError('Foreign implicit hydraulic state policy')
     if expected is None:return
+    from implicit_closed_desaturation import validate as validate_desaturation
+    validate_desaturation(bundle,selected(project))
     name=native_provider(selected(project));path=Path(bundle)/(name+'.f90')
     if path.read_bytes().replace(b'\r\n',b'\n')!=Path(__file__).with_name(name+'.f90').read_bytes().replace(b'\r\n',b'\n'):
         raise ValueError('Foreign complete implicit hydraulic native provider')

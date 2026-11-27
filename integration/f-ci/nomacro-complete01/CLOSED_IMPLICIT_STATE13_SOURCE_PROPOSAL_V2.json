@@ -1,0 +1,272 @@
+{
+  "status": "PROPOSED_FIVE_FILE_CLOSED_IMPLICIT_ORIGINAL_DOMAIN_COMPOSITION_NOT_INSTALLED_NOT_QUALIFIED",
+  "actual_input_source": "07cb2850e2cd45deb1e197161409a3784a8975e7",
+  "original_reachability_observation": "CLOSED_IMPLICIT_STATE13_ORIGINAL_READER_DISCOVERY_V1.json",
+  "files": {
+    "app/hybrid_water/implicit_hydraulic_state.py": {
+      "before_lf_sha256": "3193d10a8ae33e55571df74f8f23e4715c3f1f9979a07a996ae6bf07e6fcfde5",
+      "proposed_after_lf_sha256": "53dc813fd9ed4e2f91b1a7cd1c0a33b15b9050a1d8318ef03705c5e8b7d75512",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1001,
+          "base_end": 1001,
+          "before": "",
+          "after": "6,"
+        },
+        {
+          "base_start": 1014,
+          "base_end": 1014,
+          "before": "",
+          "after": "return None\n    closed=boundary.get('SWBOTB')==6\n    if closed and selectors.get('SWDRA')!=0:"
+        },
+        {
+          "base_start": 1296,
+          "base_end": 1296,
+          "before": "",
+          "after": "(0 if closed else "
+        },
+        {
+          "base_start": 1297,
+          "base_end": 1297,
+          "before": "",
+          "after": ")"
+        },
+        {
+          "base_start": 4484,
+          "base_end": 4484,
+          "before": "",
+          "after": "\n    elif boundary['SWBOTB']==6:result['drainage']=0"
+        }
+      ],
+      "new_file": false,
+      "after_lf_sha256": "53dc813fd9ed4e2f91b1a7cd1c0a33b15b9050a1d8318ef03705c5e8b7d75512"
+    },
+    "app/hybrid_water/frost_undrained_state.py": {
+      "before_lf_sha256": "53450d691a4c97ac3d9733d9bfd3b429483ebb0be4fc08abcbe75610de69a71f",
+      "proposed_after_lf_sha256": "d990856595e8cf4d1b941f43dd9ff862f75b3b1fd0d7b4db14bec8b8a84d3950",
+      "ordered_literal_edits": [
+        {
+          "base_start": 2591,
+          "base_end": 2592,
+          "before": "#",
+          "after": "if"
+        },
+        {
+          "base_start": 2593,
+          "base_end": 2623,
+          "before": "Original non1+hysteresis is in",
+          "after": ""
+        },
+        {
+          "base_start": 2626,
+          "base_end": 2629,
+          "before": "id.",
+          "after": "ues['SWKIMPL']!=1"
+        },
+        {
+          "base_start": 2630,
+          "base_end": 2633,
+          "before": "Imp",
+          "after": "or va"
+        },
+        {
+          "base_start": 2634,
+          "base_end": 2637,
+          "before": "ici",
+          "after": "ues['SWHYST']!=0:re"
+        },
+        {
+          "base_start": 2638,
+          "base_end": 2638,
+          "before": "",
+          "after": "urn"
+        },
+        {
+          "base_start": 2639,
+          "base_end": 2647,
+          "before": "closed n",
+          "after": "N"
+        },
+        {
+          "base_start": 2649,
+          "base_end": 2656,
+          "before": "1 still",
+          "after": "e"
+        },
+        {
+          "base_start": 2669,
+          "base_end": 2671,
+          "before": "# ",
+          "after": "f"
+        },
+        {
+          "base_start": 2672,
+          "base_end": 2679,
+          "before": "equires",
+          "after": "om"
+        },
+        {
+          "base_start": 2681,
+          "base_end": 2695,
+          "before": "ts separate ex",
+          "after": "m"
+        },
+        {
+          "base_start": 2701,
+          "base_end": 2704,
+          "before": " pe",
+          "after": "_hyd"
+        },
+        {
+          "base_start": 2705,
+          "base_end": 2706,
+          "before": "-",
+          "after": "au"
+        },
+        {
+          "base_start": 2707,
+          "base_end": 2713,
+          "before": "ayer n",
+          "after": "ic_st"
+        },
+        {
+          "base_start": 2715,
+          "base_end": 2717,
+          "before": "iv",
+          "after": ""
+        },
+        {
+          "base_start": 2719,
+          "base_end": 2720,
+          "before": "a",
+          "after": "import input_mo"
+        },
+        {
+          "base_start": 2721,
+          "base_end": 2723,
+          "before": "mi",
+          "after": "el"
+        },
+        {
+          "base_start": 2724,
+          "base_end": 2729,
+          "before": "sion.",
+          "after": ""
+        },
+        {
+          "base_start": 2742,
+          "base_end": 2742,
+          "before": "",
+          "after": "implicit_analytical=input_models(text,values,values,original_output)\n            if implicit_analytical is None:"
+        }
+      ],
+      "new_file": false,
+      "after_lf_sha256": "d990856595e8cf4d1b941f43dd9ff862f75b3b1fd0d7b4db14bec8b8a84d3950"
+    },
+    "app/hybrid_water/closed_zero_boundary.py": {
+      "before_lf_sha256": "64978e3ceb2c0c17796ad536badba270e24ffd8d3dd722234324b3dbf3a9bb51",
+      "proposed_after_lf_sha256": "8639d1033a2673c43980e5b2a2889582890e465e5db588ad372ee35b9b11b5c6",
+      "ordered_literal_edits": [
+        {
+          "base_start": 976,
+          "base_end": 976,
+          "before": "",
+          "after": "\n        if selectors['SWKIMPL']!=1 or selectors['SWHYST']!=0:return False\n        from implicit_hydraulic_state import input_models\n        if input_models(text,selectors,selectors,original_output) is None:"
+        }
+      ],
+      "new_file": false,
+      "after_lf_sha256": "8639d1033a2673c43980e5b2a2889582890e465e5db588ad372ee35b9b11b5c6"
+    },
+    "app/hybrid_water/implicit_frost_hydraulic_state_native.f90": {
+      "before_lf_sha256": "f02511df671f048c220c234c94ad4b1ff8223b921e1558353cd6f8322f8e3bf3",
+      "proposed_after_lf_sha256": "b945d0d08025dc864b27069a8790efe36c4c09124bf8d06dfdd2e3c5fbef53d8",
+      "ordered_literal_edits": [
+        {
+          "base_start": 875,
+          "base_end": 875,
+          "before": "",
+          "after": "6.and.swbotb/="
+        },
+        {
+          "base_start": 936,
+          "base_end": 936,
+          "before": "",
+          "after": "'\n    if(swbotb==6.and.swdra/=0)error stop 'Closed implicit Frost hydraulic boundary requires drainage off"
+        }
+      ],
+      "new_file": false,
+      "after_lf_sha256": "b945d0d08025dc864b27069a8790efe36c4c09124bf8d06dfdd2e3c5fbef53d8"
+    },
+    "app/hybrid_water/implicit_hydraulic_state_native.f90": {
+      "before_lf_sha256": "b684a9f1bd665abb00e063b136a4211b42279826b4e7bb2c24864e55c2fae337",
+      "proposed_after_lf_sha256": "bc6a6cdc61299bb5c9fdfd215de484975f8ac4eabb9b7ab90ba1c8f8d6e1fdec",
+      "ordered_literal_edits": [
+        {
+          "base_start": 566,
+          "base_end": 566,
+          "before": "",
+          "after": ",partition_active"
+        },
+        {
+          "base_start": 755,
+          "base_end": 755,
+          "before": "",
+          "after": "(swdra/=0.and."
+        },
+        {
+          "base_start": 763,
+          "base_end": 763,
+          "before": "",
+          "after": ")"
+        },
+        {
+          "base_start": 853,
+          "base_end": 853,
+          "before": "",
+          "after": "6.and.swbotb/="
+        },
+        {
+          "base_start": 910,
+          "base_end": 910,
+          "before": "",
+          "after": "    if((swbotb==6).neqv.(swdra==0))error stop 'Foreign closed implicit hydraulic drainage selection'\n    partition_active=0\n    if(swdra==1)then\n  "
+        },
+        {
+          "base_start": 1001,
+          "base_end": 1001,
+          "before": "",
+          "after": "  "
+        },
+        {
+          "base_start": 1083,
+          "base_end": 1083,
+          "before": "",
+          "after": "\n      partition_active=swdivd\n    end if"
+        },
+        {
+          "base_start": 1582,
+          "base_end": 1585,
+          "before": "swd",
+          "after": "partition_act"
+        },
+        {
+          "base_start": 1587,
+          "base_end": 1588,
+          "before": "d",
+          "after": "e"
+        }
+      ],
+      "new_file": false,
+      "after_lf_sha256": "bc6a6cdc61299bb5c9fdfd215de484975f8ac4eabb9b7ab90ba1c8f8d6e1fdec"
+    }
+  },
+  "physical_equations_changed": false,
+  "new_physical_state": false,
+  "new_numerical_policy": false,
+  "original_parameters_fluxes_stocks_tolerances_or_dates_changed": false,
+  "model_executions": 0,
+  "compiler_executions": 0,
+  "canonical_admission": false,
+  "actual_canonical_parent": "2e98506b4fb469bbf5995a8ab0b49c88ead0972c",
+  "actual_original_source_proposal": "CLOSED_IMPLICIT_STATE13_SOURCE_PROPOSAL_V1.json"
+}
