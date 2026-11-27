@@ -42,8 +42,9 @@ def source_contract(producer):
     assert set(names)==set(proposal['files'])
     for name,v in proposal['files'].items():
         after=git('show',producer+':'+name);assert SHA(after)==v['after_lf_sha256']
-        if v['new_file']:assert after.decode()==v['complete_source'];continue
-        before=git('show',PARENT+':'+name);assert SHA(before)==v['before_lf_sha256'];replay=before.decode()
+        if v['new_file'] and 'complete_source' in v:assert after.decode()==v['complete_source'];continue
+        before=b'' if v['new_file'] else git('show',PARENT+':'+name)
+        assert SHA(before)==v['before_lf_sha256'];replay=before.decode()
         for edit in reversed(v['ordered_literal_edits']):
             lo,hi=edit['base_start'],edit['base_end'];assert replay[lo:hi]==edit['before'];replay=replay[:lo]+edit['after']+replay[hi:]
         assert replay.encode()==after
