@@ -31,7 +31,7 @@ def selection(directory,original_output=True,*,hysteresis=0,snow=False):
  if re.search(r'(?i)\bIHWCKMODEL\b',remainder) or len(models)>1 or models and re.fullmatch(r'[+]?[0-9]+(?:[ \t]+[+]?[0-9]+)*[ \t]*',models[0]) is None:return None
  if models:
   analytical=tuple(map(int,models[0].split()))
-  if not all(value in (1,3,4,5,6,7,8,9,10,11) for value in analytical):return None
+  if not all(value in (1,3,4,5,6,7,8,9,10,11) or value==2 and snow and hysteresis==0 for value in analytical):return None
   if any(value!=1 for value in analytical):
    if integer('SWSOLU') not in (0,1):return None
    vapor=re.findall(r'(?mi)^[ \t]*SWVAPOR[ \t]*=[ \t]*([^\r\n]+)',active)

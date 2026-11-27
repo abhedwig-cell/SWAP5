@@ -33,7 +33,10 @@ def selection(directory,original_output=True):
  active='\n'.join(line.split('!',1)[0] for line in text.splitlines() if not line.lstrip().startswith('*'))
  models=re.findall(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[ \t]*([^\r\n]*)',active)
  if models and any(int(value)!=1 for value in models[0].split()):
-  if s.get('SWHYST')!=0 or any(int(value) not in (1,3,4,5,6,7,8,9,10,11) for value in models[0].split()):return None
+  if s.get('SWHYST')!=0 or any(int(value) not in range(1,12) for value in models[0].split()):return None
+  if 2 in list(map(int,models[0].split())):
+   from implicit_hydraulic_state import _models_from_grid
+   if _models_from_grid(active,list(map(int,models[0].split()))) is None:return None
  vapor=re.findall(r'(?mi)^[ \t]*SWVAPOR[ \t]*=[ \t]*([^\r\n]*)',active)
  if len(vapor)>1:return None
  if vapor and (re.fullmatch(r'[+-]?[0-9]+(?:[ \t]+[+-]?[0-9]+)*[ \t]*',vapor[0]) is None or any(int(value)!=0 for value in vapor[0].split())):return None

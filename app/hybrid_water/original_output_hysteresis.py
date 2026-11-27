@@ -39,6 +39,9 @@ def selection(project):
     if project.solute and (nprint!=1 or monthly or dates or requested!=1 or perstep):raise ValueError('Original hysteresis CDE output requires daily interval reset cadence')
     for key,value in dict(SWMACRO=0,SWSNOW=0,SWBR=0,SWFROST=0,SWDRA=1,SWMETDETAIL=0,SWSOPHY=0).items():
         if key=='SWDRA':
+            from closed_zero_boundary import input_domain as closed_domain
+            from experimental_project import switches
+            if closed_domain(text,switches(text),project.original_output):continue
             from prescribed_history_boundary import enabled as paired_history_enabled
             if paired_history_enabled(project):continue
         if key=='SWDRA' and one(key)==2:

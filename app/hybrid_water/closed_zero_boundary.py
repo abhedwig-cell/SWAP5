@@ -17,7 +17,9 @@ def input_domain(text,selectors,original_output=True):
         # Ordinary non-daily initialization needs its own complete output-owner
         # qualification; this predicate does not claim that remaining gap.
         dense=dict(NPRINTDAY=1,PERIOD=1,SWMONTH=0,SWODAT=0,SWRES=1)
-        if any(selectors.get(k)!=v for k,v in dense.items()):return False
+        for key,value in dense.items():
+            rows=re.findall(r'(?mi)^[ \t]*'+key+r'[ \t]*=[ \t]*([^\r\n]*)',active)
+            if len(rows)!=1 or re.fullmatch(r'[+-]?[0-9]+[ \t]*',rows[0]) is None or int(rows[0])!=value:return False
         step=re.findall(r'(?mi)^[ \t]*FLPRINTDT[ \t]*=[ \t]*([^\r\n]*)',active)
         if len(step)>1 or step and step[0].strip().upper() not in ('.FALSE.','FALSE','.F.','F'):return False
     return True
