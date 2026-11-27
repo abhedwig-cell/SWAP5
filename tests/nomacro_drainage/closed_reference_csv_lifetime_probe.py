@@ -13,7 +13,7 @@ SHA=lambda raw:hashlib.sha256(raw).hexdigest()
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--build-O0',type=Path,required=True);p.add_argument('--build-O2',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--reuse-builds-from',type=Path);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--build-O0',type=Path,required=True);p.add_argument('--build-O2',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--reuse-builds-from',type=Path);p.add_argument('--reuse-observations-from',type=Path);a=p.parse_args()
     assert not a.output.exists();a.output.mkdir()
     head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=R,text=True).strip()
     assert not subprocess.check_output(['git','status','--porcelain=v1','--untracked-files=all','--ignored'],cwd=R)
@@ -73,6 +73,8 @@ end program swap_main
         report['commands'].append(dict(command=list(map(str,cmd)),returncode=child.returncode,seconds=time.perf_counter()-start,kind=kind));report[kind+'_executions']+=1;save();child.check_returncode()
     executables=[]
     previous=json.loads(a.reuse_builds_from.read_text()) if a.reuse_builds_from else None
+    observed=json.loads(a.reuse_observations_from.read_text()) if a.reuse_observations_from else None
+    report['process_executions']=0
     if previous:
         assert len(previous['commands'])==8 and all(v['returncode']==0 for v in previous['commands'])
         report['reused_actual_compiler_source']=previous['actual_controller_source']
@@ -101,22 +103,37 @@ end program swap_main
         original_inputs={v['case']:v['identical_input_inventory'] for v in original_observation['cases']}
         for opt,mode,exe in executables:
             for case in CASES:
-                root=a.output/(opt+'-'+mode+'-'+case);root.mkdir();prefix='actual/closure12-original-causal-v1/'+case+'/'
+                label=opt+'-'+mode+'-'+case
+                reused=next((v for v in observed['observations'] if (v['optimization'],v['mode'],v['case'])==(opt,mode,case)),None) if observed else None
+                root=(a.reuse_observations_from.parent if reused else a.output)/label
+                if not reused:root.mkdir()
+                prefix='actual/closure12-original-causal-v1/'+case+'/'
                 inventory={}
                 expected=original_inputs.get(case,original_inputs['gardner-snow-paired9-explicit-water'])
                 for relative,digest in expected.items():
                     raw=store.get(prefix+relative)
                     if case!='original-model3-snow9-control-stack64-v1' or relative!='swap.swp':assert SHA(raw)==digest
-                    dest=root/relative;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(raw);inventory[relative]=SHA(raw)
+                    dest=root/relative
+                    if reused:assert dest.read_bytes()==raw
+                    else:dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(raw)
+                    inventory[relative]=SHA(raw)
                 assert 'swap.swp' in inventory
-                start=time.perf_counter();child=subprocess.run([str(exe),'./swap.swp'],cwd=root,capture_output=True,timeout=15)
-                (root/'stdout.txt').write_bytes(child.stdout);(root/'stderr.txt').write_bytes(child.stderr)
-                item=dict(optimization=opt,mode=mode,case=case,command=[str(exe),'./swap.swp'],executable_sha256=SHA(exe.read_bytes()),returncode=child.returncode,seconds=time.perf_counter()-start,input_inventory=inventory,task1_completed=b'REFERENCE_TASK1_INITIALIZED_ZERO_DYNAMIC_DAYS' in child.stdout,lifecycle_completed=b'REFERENCE_BINARY_LIFECYCLE_ZERO_DYNAMIC_DAYS_COMPLETE' in child.stdout)
+                if reused:
+                    assert reused['executable_sha256']==SHA(exe.read_bytes()) and reused['input_inventory']==inventory
+                    child=subprocess.CompletedProcess(reused['command'],reused['returncode'],(root/'stdout.txt').read_bytes(),(root/'stderr.txt').read_bytes());seconds=reused['seconds']
+                else:
+                    start=time.perf_counter();child=subprocess.run([str(exe),'./swap.swp'],cwd=root,capture_output=True,timeout=15);seconds=time.perf_counter()-start;report['process_executions']+=1
+                    (root/'stdout.txt').write_bytes(child.stdout);(root/'stderr.txt').write_bytes(child.stderr)
+                item=dict(optimization=opt,mode=mode,case=case,command=[str(exe),'./swap.swp'],executable_sha256=SHA(exe.read_bytes()),returncode=child.returncode,seconds=seconds,input_inventory=inventory,task1_completed=b'REFERENCE_TASK1_INITIALIZED_ZERO_DYNAMIC_DAYS' in child.stdout,lifecycle_completed=b'REFERENCE_BINARY_LIFECYCLE_ZERO_DYNAMIC_DAYS_COMPLETE' in child.stdout,actual_observation_root=str(root),reused_unchanged_observation=bool(reused),original_observer=observed['actual_controller_source'] if reused else head)
                 report['observations'].append(item);save()
                 if mode=='original':assert child.returncode!=0 and not item['task1_completed']
                 else:
                     assert child.returncode==0 and item['task1_completed'] and item['lifecycle_completed'],child.stderr
-                    first=(root/'first-output.bin').read_bytes();second=(root/'second-output.bin').read_bytes();parlen=struct.unpack_from('<4i',second)[3];record=19+4*(parlen-1)
+                    first=(root/'first-output.bin').read_bytes();second=(root/'second-output.bin').read_bytes()
+                    # Original writehead emits five fixed 80-character records before
+                    # make_header's four integers; no byte or header normalization.
+                    assert second.startswith(b'* Project:') and second[320:336]==b'* Generated at: '
+                    parlen=struct.unpack_from('<4i',second,5*80)[3];record=19+4*(parlen-1)
                     assert len(first)-len(second)==record and first[-2*record:]==second[-2*record:] and second[-2*record:-record]==second[-record:]
                     item['binary_record_bytes']=record;item['unchanged_state_repeated_records_exact']=True;item['close_reopen_records_exact']=True;item['first_binary_sha256']=SHA(first);item['second_binary_sha256']=SHA(second);save()
                 for name,digest in inventory.items():assert SHA((root/name).read_bytes())==digest
