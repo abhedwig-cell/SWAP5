@@ -12,7 +12,7 @@ from closed_initialization_calendar_inherited_selection import audit as inherite
 from closed_default_calendar_inherited_domains import audit as inherited56
 from closed_initialization_calendar_ci_custody import audit as ci_custody
 import closed_default_calendar_verify as previous
-SEALED='9b32bf113db2ec59d56fb53f5b1df0c1dc618c32'
+SEALED='349340db4e80f7dff0e01ee6dc450dad75cd6879'
 
 
 def data_source():return GitArchiveSource(ROOT,git('rev-parse','HEAD').decode().strip())
