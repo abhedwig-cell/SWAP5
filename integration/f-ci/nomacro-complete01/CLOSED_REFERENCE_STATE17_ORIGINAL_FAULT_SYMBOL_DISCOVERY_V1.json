@@ -1,0 +1,122 @@
+{
+  "status": "STATIC_ORIGINAL_REFERENCE_BACKTRACE_SYMBOL_ANALYSIS_NO_MODEL_REEXECUTION",
+  "actual_archive_sha256": "280f57ca5554a5bcd746fa3cb56460da35c668952b52f64e267d6c7aba6a8089",
+  "actual_original_executable_sha256": "7f63c0325b7f5c8f50b303fc6a1fa65fef0a3a4e72870ee359cc19db9ceb0d45",
+  "actual_PE_preferred_image_base": "0x140000000",
+  "source_observer": "bd9b3b2e74e93fccb8bbcc8b06822efcd740f349",
+  "address_base_inference_not_yet_runtime_verified": true,
+  "original_failures": [
+    {
+      "original_case": "gardner-snow-paired9-explicit-water",
+      "frames": [
+        {
+          "actual_low32": "0xff11107f",
+          "inferred_low32_image_base": "0xff110000",
+          "preferred_address": "0x14000107f",
+          "nearest_symbol": "t __mingw_SEH_signal_dispatcher",
+          "offset_from_symbol": 63
+        },
+        {
+          "actual_low32": "0xff1b51d9",
+          "inferred_low32_image_base": "0xff110000",
+          "preferred_address": "0x1400a51d9",
+          "nearest_symbol": "T __swap_csv_output_MOD_csv_out",
+          "offset_from_symbol": 2009
+        },
+        {
+          "actual_low32": "0xff1bde9b",
+          "inferred_low32_image_base": "0xff110000",
+          "preferred_address": "0x1400ade9b",
+          "nearest_symbol": "T soilwateroutput_",
+          "offset_from_symbol": 427
+        },
+        {
+          "actual_low32": "0xff19972c",
+          "inferred_low32_image_base": "0xff110000",
+          "preferred_address": "0x14008972c",
+          "nearest_symbol": "T swap_",
+          "offset_from_symbol": 1308
+        },
+        {
+          "actual_low32": "0xff1b6365",
+          "inferred_low32_image_base": "0xff110000",
+          "preferred_address": "0x1400a6365",
+          "nearest_symbol": "t MAIN__",
+          "offset_from_symbol": 357
+        },
+        {
+          "actual_low32": "0xff1f8a4f",
+          "inferred_low32_image_base": "0xff110000",
+          "preferred_address": "0x1400e8a4f",
+          "nearest_symbol": "t .text.startup",
+          "offset_from_symbol": 47
+        },
+        {
+          "actual_low32": "0xff111156",
+          "inferred_low32_image_base": "0xff110000",
+          "preferred_address": "0x140001156",
+          "nearest_symbol": "t __tmainCRTStartup",
+          "offset_from_symbol": 182
+        }
+      ]
+    },
+    {
+      "original_case": "original-model3-snow9-control-stack64-v1",
+      "frames": [
+        {
+          "actual_low32": "0xf197107f",
+          "inferred_low32_image_base": "0xf1970000",
+          "preferred_address": "0x14000107f",
+          "nearest_symbol": "t __mingw_SEH_signal_dispatcher",
+          "offset_from_symbol": 63
+        },
+        {
+          "actual_low32": "0xf1a151d9",
+          "inferred_low32_image_base": "0xf1970000",
+          "preferred_address": "0x1400a51d9",
+          "nearest_symbol": "T __swap_csv_output_MOD_csv_out",
+          "offset_from_symbol": 2009
+        },
+        {
+          "actual_low32": "0xf1a1de9b",
+          "inferred_low32_image_base": "0xf1970000",
+          "preferred_address": "0x1400ade9b",
+          "nearest_symbol": "T soilwateroutput_",
+          "offset_from_symbol": 427
+        },
+        {
+          "actual_low32": "0xf19f972c",
+          "inferred_low32_image_base": "0xf1970000",
+          "preferred_address": "0x14008972c",
+          "nearest_symbol": "T swap_",
+          "offset_from_symbol": 1308
+        },
+        {
+          "actual_low32": "0xf1a16365",
+          "inferred_low32_image_base": "0xf1970000",
+          "preferred_address": "0x1400a6365",
+          "nearest_symbol": "t MAIN__",
+          "offset_from_symbol": 357
+        },
+        {
+          "actual_low32": "0xf1a58a4f",
+          "inferred_low32_image_base": "0xf1970000",
+          "preferred_address": "0x1400e8a4f",
+          "nearest_symbol": "t .text.startup",
+          "offset_from_symbol": 47
+        },
+        {
+          "actual_low32": "0xf1971156",
+          "inferred_low32_image_base": "0xf1970000",
+          "preferred_address": "0x140001156",
+          "nearest_symbol": "t __tmainCRTStartup",
+          "offset_from_symbol": 182
+        }
+      ]
+    }
+  ],
+  "compiler_executions": 0,
+  "link_executions": 0,
+  "model_executions": 0,
+  "scientific_causality": "UNKNOWN_PENDING_FAULT_LOCATION_AND_VALID_ORIGINAL_FULL_REFERENCE_CONTROL"
+}

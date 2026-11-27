@@ -1,0 +1,36 @@
+{
+  "status": "PREREGISTERED_ZERO_DAY_ORIGINAL_BINARY_OUTPUT_LIFETIME_DIAGNOSIS_NOT_REFERENCE_QUALIFICATION",
+  "canonical": "bd9b3b2e74e93fccb8bbcc8b06822efcd740f349",
+  "original_raw_sha256": "280f57ca5554a5bcd746fa3cb56460da35c668952b52f64e267d6c7aba6a8089",
+  "original_provider": "J_windows_provider",
+  "original_provider_is_mixed_SDK": true,
+  "hypothesis": "Original csv_out allocatable local binary buffer is automatically deallocated on return from iTask1; the immediately following iTask2 writes to absent storage.",
+  "static_address_inference_runtime_verified": false,
+  "unchanged_original_case_inputs": [
+    "original-model3-snow9-control-stack64-v1",
+    "gardner-snow-paired9-explicit-water",
+    "gardner-mixed2-1-snow-paired9-explicit-cde"
+  ],
+  "first_control": "accepted model3 positive must initialize before Gardner can support any full-reference causal claim",
+  "baseline": "original SDK objects plus only a task1-only caller; same ABI and unchanged project inputs",
+  "candidate": "explicit diagnostic corrected-reference candidate: buffer SAVE and deallocation at csv_out task3; no physical source or input changes",
+  "acceptance": [
+    "Original caller reproduces original initialization SIGSEGV before task1 completion with original SWCSV3 input.",
+    "Candidate O0/O2 initialized model3 and both Gardner inputs with original task1; no task2 model execution.",
+    "Original input file bytes and every unchanged SDK object remain exact.",
+    "Repeated binary output task2 calls and close/reopen lifecycle produce identical records from unchanged initial state.",
+    "All original failures remain failures; candidate is never identified as original SDK or qualified B1.",
+    "Full-period Gardner/Snow causality remains UNKNOWN until independently valid original or admitted corrected reference exists."
+  ],
+  "compiler_profiles": [
+    "O0",
+    "O2"
+  ],
+  "model_dynamic_tasks": 0,
+  "model_periods_to_repeat": 0,
+  "maximum_seconds_per_process": 15,
+  "architecture_invariants": "No production state, trial commit/rollback, water/solute accounting, dates, tolerances or accepted reference authority changed.",
+  "global_status": "PARTIAL",
+  "scientific_equivalence": "NOT_QUALIFIED",
+  "next_functional_batch": "Repair reference output ownership if confirmed, then classify original Gardner/Snow before selecting dependency-ordered remaining composition blocks."
+}

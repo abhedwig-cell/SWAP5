@@ -3689,7 +3689,7 @@
     },
     "qualified_contexts": 56
   },
-  "canonical": "857b25a81c88626075b91f46a3fb42e9fce801f3",
+  "canonical": "bd9b3b2e74e93fccb8bbcc8b06822efcd740f349",
   "closed_implicit_state13_admission": {
     "status": "ACTUAL_CANONICAL1004_CLOSED_IMPLICIT_STATE_ADMISSION_VERIFIED",
     "PR": 1812,
@@ -3846,12 +3846,12 @@
     "classification": "COMPOSITION_MISSING",
     "actual_parent": "857b25a81c88626075b91f46a3fb42e9fce801f3",
     "scope": "Original fitted model1 implicit/history1or2 initial1or2 non-daily ordinary closed water/CDE state composition; original physical parameters and controls remain exact.",
-    "status": "24_PORTABLE_CONTEXTS_AND_LOCAL_ORIGINAL_NATIVE_RECOVERY_PASS_CURRENT_PUBLIC_PENDING",
+    "status": "ACTUAL_CANONICAL1068_ADMITTED",
     "local_scientific_contexts": 12,
     "local_primary_days": 420,
     "new_qualified_contexts": 24,
-    "new_admitted_contexts": 0,
-    "canonical_admission": false,
+    "new_admitted_contexts": 24,
+    "canonical_admission": true,
     "original_failure_roles_retained": true,
     "unchanged_model_periods_replayed": false,
     "current_native_positives": 28,
@@ -3864,6 +3864,18 @@
     "portable_compiled_refusals": 744,
     "portable_external_transactions": 24,
     "original_gap_classification": "COMPOSITION_MISSING",
-    "remaining_classification": "EVIDENCE_ONLY"
+    "remaining_classification": "CLOSED_FOR_DECLARED_FINITE_BATCH",
+    "actual_canonical": "bd9b3b2e74e93fccb8bbcc8b06822efcd740f349",
+    "receipt": "CLOSED_JOINT_HISTORY_STATE16_MERGE_RECEIPT_V1.json",
+    "admission_archive_sha256": "4d8e66f7cc3996da651fb024625dadea43edfff29eece7703e7d08c3570b8683",
+    "next_action": "Continue source-ordered functional gap closure; original failed native roles and two Gardner/Snow gaps remain explicit."
+  },
+  "closed_reference_state17": {
+    "status": "PREREGISTERED_ZERO_DAY_BINARY_OUTPUT_LIFETIME_DIAGNOSIS",
+    "classification": "EVIDENCE_ONLY",
+    "contract": "CLOSED_REFERENCE_STATE17_BINARY_BUFFER_DIAGNOSTIC_CONTRACT_V1.json",
+    "original_full_reference_causality": "UNKNOWN",
+    "qualified_B1": false,
+    "new_admitted_contexts": 0
   }
 }
