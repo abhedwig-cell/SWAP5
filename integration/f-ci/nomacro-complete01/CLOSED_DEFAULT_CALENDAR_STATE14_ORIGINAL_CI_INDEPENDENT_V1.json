@@ -1,0 +1,53 @@
+{
+  "status": "FOUR_ACTUAL_PORTABLE_ORIGINAL_CI_IDENTITIES_AND_OFFICIAL_ZIP_DIGESTS_PASS_FOUR_ORIGINAL_PREMODEL_FAILURE_ROLES_PRESERVED",
+  "jobs": [
+    {
+      "platform": "Ubuntu",
+      "optimization": "O0",
+      "job_id": 140658811865,
+      "artifact_id": 15220524197,
+      "run_id": 46044072466,
+      "actual_producer": "94c86c2918278ffd9595b9960eb8e1522652277a",
+      "original_log_sha256": "8f0572ccac6a8ed126c646e54120950a0d8ea3f6d452eb041195ef5c744f6a6c",
+      "official_artifact_sha256": "00c35c2ce89443f05465f4731a8d6b276ee0746d384d7666497004523fabed62",
+      "official_artifact_bytes": 37469608
+    },
+    {
+      "platform": "Ubuntu",
+      "optimization": "O2",
+      "job_id": 140658812222,
+      "artifact_id": 15222030264,
+      "run_id": 46044072466,
+      "actual_producer": "94c86c2918278ffd9595b9960eb8e1522652277a",
+      "original_log_sha256": "e9a62bf7ebd086fd235135ad5319af3d12634ceb26b98c811a9391ac3ca10852",
+      "official_artifact_sha256": "08e9519e826a5f5adadf5690d410bbb52b7195ff32eaf1bb624072d60cdd0e6a",
+      "official_artifact_bytes": 37532081
+    },
+    {
+      "platform": "Windows",
+      "optimization": "O0",
+      "job_id": 140658812547,
+      "artifact_id": 15220429480,
+      "run_id": 46044072519,
+      "actual_producer": "94c86c2918278ffd9595b9960eb8e1522652277a",
+      "original_log_sha256": "22a8dc5ffe970cbdb9aab37768d123991f1b74ef64261d2043e08a102bbd7bb0",
+      "official_artifact_sha256": "ebffcc329b6bdcf4695b412df55eebfe7d81444ef55dd9103397b9b527f3d2f0",
+      "official_artifact_bytes": 38146233
+    },
+    {
+      "platform": "Windows",
+      "optimization": "O2",
+      "job_id": 140658812995,
+      "artifact_id": 15220374450,
+      "run_id": 46044072519,
+      "actual_producer": "94c86c2918278ffd9595b9960eb8e1522652277a",
+      "original_log_sha256": "bc74a6adfc1f80114a70246b1f2ee3468e1fec404fba8e98b9f68f6bb5ca394e",
+      "official_artifact_sha256": "f03981445cf17f9c6d4628b33ad6947a8a8841e0a11e1f86b3e70ea374901d50",
+      "official_artifact_bytes": 38252452
+    }
+  ],
+  "original_preflight_failures": 4,
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "canonical_admission": false
+}

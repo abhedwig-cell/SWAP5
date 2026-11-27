@@ -23,7 +23,14 @@ ten exact own positives reach READY. The five cases also independently pass on
 Windows/Ubuntu O0/O2:20 contexts,700 primary days,140 native samples,60 exact
 cold windows,584 compiled native refusals and20 external transaction contexts.
 All four original artifact ZIPs and source/controller/SDK identities are retained.
-Unchanged-domain preservation and complete canonical admission remain pending.
+Forty older compiler contexts retain all1046 complete numerical objects exactly.
+Twenty-four actual original native positives restore the exact original stocks
+and heads;96 native corruptions refuse before model progression. All56 accepted
+non1 closed ordinary/Snow/Frost inputs demonstrably exclude the new model1
+branch and retain their complete original native and numerical owners. All1063
+MCSOL dependency files remain unchanged; no MCSOL period or new PASS is claimed.
+Complete current PUBLIC, ordinary publication, real negative controls, required
+CI and canonical admission remain pending.
 Complete source
 literal inverses must preserve every original physical equation, parameter,
 tolerance, iteration limit and native calendar/counter. No numerical policy is
