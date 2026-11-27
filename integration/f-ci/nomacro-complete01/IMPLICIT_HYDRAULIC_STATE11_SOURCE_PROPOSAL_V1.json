@@ -1,0 +1,42 @@
+{
+  "status": "INSTALLED_FIRST_SAFE_GUARD_POSTIMAGE_PENDING_REAL_READER_FEEDBACK_SAME_COHERENT_STATE_BATCH",
+  "actual_parent": "22520105f5a3ccac2bd2ae1b726f27b7b0d67b1e",
+  "classification": "GUARD_ONLY",
+  "scope": "Original implicit SWHYST0 decks may omit the inactive ALFAW column; original ReadSwap reads ALFAW only when SWHYST>0. Keep ALFAW mandatory for active hysteresis. No physical default or value is assigned.",
+  "original_proof": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "member": "SWAP/readswap.f90",
+    "reader": "if (swhyst > 0) then; call rdfdor (alfaw,...); end if"
+  },
+  "files": {
+    "app/hybrid_water/implicit_conductivity.py": {
+      "before_lf_sha256": "0b175c9519c35edb3b61dea66678467e5abef8f83b57e9677bd5e41d400daa21",
+      "proposed_lf_sha256": "1f1b51e09c81bb3e076b642dfa311ac882105cd05ad796fcab1f10585e56b7ce",
+      "ordered_literal_edits": [
+        {
+          "before": "    if len(set(names)) != len(names) or not {'ORES','OSAT','ALFA','ALFAW','NPAR','LEXP','H_ENPR'} <= set(names):\n",
+          "after": "    required_columns={'ORES','OSAT','ALFA','NPAR','LEXP','H_ENPR'}\n    if selectors['SWHYST']>0:required_columns.add('ALFAW')\n    if len(set(names)) != len(names) or not required_columns <= set(names):\n",
+          "base_start": 2395,
+          "base_end": 2508
+        }
+      ]
+    }
+  },
+  "architecture_affected_invariants": [
+    3,
+    4,
+    7,
+    13,
+    23
+  ],
+  "new_physics": false,
+  "new_numerical_policy": false,
+  "new_native_state": false,
+  "unused_input_value_normalized": false,
+  "solver_or_mass_tolerances_changed": false,
+  "full_unchanged_model_period_replay": "NOT_SELECTED_IMPACT",
+  "feedback_selection": "Original real zero-day reader and public input contract on original hys0 deck with only inactive ALFAW column removed; active hysteresis missing-column refusal; exact unchanged generated-source/whole-object postimages under actual compiler; no model period needed for this guard-only seam",
+  "broader_batch": "Reconcile and implement valid original implicit constitutive model/state couplings (including existing model2 owner), grouping hydraulic/thermal boundaries and preserving original forbidden/nonqualified conditions. No micro-PR for this guard.",
+  "scientific_limits": "1e-10 unchanged; existing frost/Snow/CDE/AGE/vapor source authorities retained; no new RIA/RossFast campaign or physical table invented",
+  "actual_before_source": "22520105f5a3ccac2bd2ae1b726f27b7b0d67b1e"
+}

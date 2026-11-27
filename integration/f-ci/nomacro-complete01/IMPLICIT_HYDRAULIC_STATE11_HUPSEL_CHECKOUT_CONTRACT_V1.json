@@ -1,0 +1,27 @@
+{
+  "status": "EXACT_CHECKOUT_ONLY_HUPSEL_WORKER_CONTRACT_ORIGINAL_MODEL_COMMANDS_CAPS_TIMEOUTS_UNCHANGED",
+  "actual_before_source": "fdea74b3914fe37c05a6a5301af6661773e1e5e3",
+  "actual_canonical_dependency": "22520105f5a3ccac2bd2ae1b726f27b7b0d67b1e",
+  "files": {
+    ".github/workflows/hupsel51-water-balance.yml": {
+      "before_lf_sha256": "f74d0df2d0fd2792ac3df02a0653a9f6fca9a7f4697eba650d55e37cc4d1edc0",
+      "proposed_lf_sha256": "9d33dc4e881ce470bb3f2d4258448de3a2da89706a6581320cff97542a5292a0",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1537,
+          "base_end": 1537,
+          "before": "",
+          "after": "        with:\n          filter: blob:none\n          sparse-checkout-cone-mode: false\n          sparse-checkout: |\n            /*\n            !/integration/**/*.zip\n            !/integration/**/*.zip.part*\n            !/integration/**/*.tar.xz\n            !/integration/**/*.tar.xz.part*\n            !/integration/**/*.tar.gz\n            !/integration/**/*.tar.gz.part*\n"
+        }
+      ]
+    }
+  },
+  "omitted_working_bytes": "Only integration ZIP/tar proof archives and byte-parts; retained in genuine Git objects, not required by fresh Hupsel model worker",
+  "retained_sources_inputs_and_commands": "Whole app/src/tools/tests/reference/examples and every compact integration record",
+  "scientific_equations_changed": false,
+  "model_commands_changed": false,
+  "model_caps_changed": false,
+  "job_timeout_changed": false,
+  "compiler_executions": 0,
+  "model_executions": 0
+}

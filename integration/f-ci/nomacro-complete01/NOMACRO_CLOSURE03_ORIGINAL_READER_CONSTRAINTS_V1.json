@@ -1,0 +1,140 @@
+{
+  "status": "ORIGINAL_READER_EXECUTION_CONSTRAINTS_SOURCE_OBSERVATION_NOT_EXHAUSTIVE_RELEASE_REVIEW",
+  "actual_canonical": "9af88c3de6198ddec40c2674dd1542a89fa9c0d7",
+  "archive_path": "reference/swap-4.3.1/source-archives/SWAP.ZIP",
+  "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+  "members": {
+    "SWAP/readswap.f90": {
+      "bytes": 61300,
+      "sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+      "snippets": [
+        {
+          "first_line": 410,
+          "lines": [
+            "      end if",
+            "",
+            "!     combination of soilphysical tables and hysteresis is not possible",
+            "      if (swhyst >= 1 .AND. swsophy /= 0) call swap_error ('readswap', 'Combination of hysteresis (swhyst=1) and tabulated soil physics (swsophy=1) is not possible !')",
+            "      ",
+            "! --- MVG-functions: parameters of functions of each soil layer",
+            "      alfa_2(1:maho) = 0.0d0"
+          ]
+        },
+        {
+          "first_line": 780,
+          "lines": [
+            "!        SwkMean=3,4:unweighted geometric mean, weighted geometric mean",
+            "!        SwkMean=5,6:unweighted harmonic mean, weighted harmonic mean",
+            "      call rdsinr ('SWkmean',1,7,SWkmean)",
+            "      if (swkmean == 7) call sub_Kavg_Szym(1, 0, 0.0d0, 0.0d0, dum)      ",
+            "!     Switch for implicit solution with hydraulic conductivity: 0 = explicit, 1 = implicit",
+            "      call rdsinr ('SwkImpl',0,1,SwkImpl)",
+            "      if (swkmean == 7 .AND. swkimpl == 1) call swap_error('readwsap', 'not allowed: swkmean = 7 .AND. swkimpl = 1')      "
+          ]
+        },
+        {
+          "first_line": 783,
+          "lines": [
+            "      if (swkmean == 7) call sub_Kavg_Szym(1, 0, 0.0d0, 0.0d0, dum)      ",
+            "!     Switch for implicit solution with hydraulic conductivity: 0 = explicit, 1 = implicit",
+            "      call rdsinr ('SwkImpl',0,1,SwkImpl)",
+            "      if (swkmean == 7 .AND. swkimpl == 1) call swap_error('readwsap', 'not allowed: swkmean = 7 .AND. swkimpl = 1')      ",
+            "!     Maximum cputime, introduced to be able to interrupt (near) endless iterations",
+            "      flMaxIterTime = .FALSE.",
+            "      if (rdinqr('flMaxIterTime')) then"
+          ]
+        },
+        {
+          "first_line": 1169,
+          "lines": [
+            "",
+            "!     final checks (typically for bi-modal situation",
+            "      if (any(iHWCKmodel(1:numlay) > 1)) then",
+            "         if (swhyst >= 1)                   call swap_error ('readswap', 'Combination of hysteresis (swhyst=1 or 2) and iHWCKmodel > 1 is not possible!')",
+            "         if (swsophy == 1)                  call swap_error ('readswap', 'Combination of tabulated input (swsophy=1) and iHWCKmodel > 1 is impossible!')",
+            "         if (swdiscrvert == 1)              call swap_error ('readswap', 'Combination of output coarse discretization (swdiscrvert=1) and iHWCKmodel > 1 is not (yet) possible!')",
+            "         if (swmacro == 1)                  call swap_error ('readswap', 'Combination of macro-pore option (swmacro == 1) and iHWCKmodel > 1 is impossible!')"
+          ]
+        },
+        {
+          "first_line": 1170,
+          "lines": [
+            "!     final checks (typically for bi-modal situation",
+            "      if (any(iHWCKmodel(1:numlay) > 1)) then",
+            "         if (swhyst >= 1)                   call swap_error ('readswap', 'Combination of hysteresis (swhyst=1 or 2) and iHWCKmodel > 1 is not possible!')",
+            "         if (swsophy == 1)                  call swap_error ('readswap', 'Combination of tabulated input (swsophy=1) and iHWCKmodel > 1 is impossible!')",
+            "         if (swdiscrvert == 1)              call swap_error ('readswap', 'Combination of output coarse discretization (swdiscrvert=1) and iHWCKmodel > 1 is not (yet) possible!')",
+            "         if (swmacro == 1)                  call swap_error ('readswap', 'Combination of macro-pore option (swmacro == 1) and iHWCKmodel > 1 is impossible!')",
+            "         if (minval(h_enpr_global) < 0.0d0) call swap_warning ('readswap', 'User-input of h_enpr_global < 0 not used in combination with iHWCKmodel > 1.')"
+          ]
+        },
+        {
+          "first_line": 1171,
+          "lines": [
+            "      if (any(iHWCKmodel(1:numlay) > 1)) then",
+            "         if (swhyst >= 1)                   call swap_error ('readswap', 'Combination of hysteresis (swhyst=1 or 2) and iHWCKmodel > 1 is not possible!')",
+            "         if (swsophy == 1)                  call swap_error ('readswap', 'Combination of tabulated input (swsophy=1) and iHWCKmodel > 1 is impossible!')",
+            "         if (swdiscrvert == 1)              call swap_error ('readswap', 'Combination of output coarse discretization (swdiscrvert=1) and iHWCKmodel > 1 is not (yet) possible!')",
+            "         if (swmacro == 1)                  call swap_error ('readswap', 'Combination of macro-pore option (swmacro == 1) and iHWCKmodel > 1 is impossible!')",
+            "         if (minval(h_enpr_global) < 0.0d0) call swap_warning ('readswap', 'User-input of h_enpr_global < 0 not used in combination with iHWCKmodel > 1.')",
+            "      end if"
+          ]
+        },
+        {
+          "first_line": 1172,
+          "lines": [
+            "         if (swhyst >= 1)                   call swap_error ('readswap', 'Combination of hysteresis (swhyst=1 or 2) and iHWCKmodel > 1 is not possible!')",
+            "         if (swsophy == 1)                  call swap_error ('readswap', 'Combination of tabulated input (swsophy=1) and iHWCKmodel > 1 is impossible!')",
+            "         if (swdiscrvert == 1)              call swap_error ('readswap', 'Combination of output coarse discretization (swdiscrvert=1) and iHWCKmodel > 1 is not (yet) possible!')",
+            "         if (swmacro == 1)                  call swap_error ('readswap', 'Combination of macro-pore option (swmacro == 1) and iHWCKmodel > 1 is impossible!')",
+            "         if (minval(h_enpr_global) < 0.0d0) call swap_warning ('readswap', 'User-input of h_enpr_global < 0 not used in combination with iHWCKmodel > 1.')",
+            "      end if",
+            ""
+          ]
+        }
+      ]
+    },
+    "SWAP/headcalc.f90": {
+      "bytes": 26096,
+      "sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+      "snippets": []
+    },
+    "SWAP/boundbottom.f90": {
+      "bytes": 6054,
+      "sha256": "5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e",
+      "snippets": []
+    },
+    "SWAP/MOD_Kavg_Szym.f90": {
+      "bytes": 5818,
+      "sha256": "8fbde60630f9af3c49daaf0c07d1ff3c763c730e107e515d3c00ae5f70980a91",
+      "snippets": []
+    }
+  },
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "global_functional_inventory_complete": false,
+  "proven_not_historically_supported": [
+    {
+      "condition": "any(iHWCKmodel(1:numlay)>1) AND SWHYST>=1",
+      "classification": "NOT_HISTORICALLY_SUPPORTED",
+      "proof": "SWAP/readswap.f90:1171-1172",
+      "scope": "Original reader refuses non1 analytical or mixed hydraulic models with hysteresis; do not invent missing coupling"
+    },
+    {
+      "condition": "any(iHWCKmodel(1:numlay)>1) AND SWSOPHY==1",
+      "classification": "NOT_HISTORICALLY_SUPPORTED",
+      "proof": "SWAP/readswap.f90:1171-1173"
+    },
+    {
+      "condition": "SWKMEAN==7 AND SWKIMPL==1",
+      "classification": "NOT_HISTORICALLY_SUPPORTED",
+      "proof": "SWAP/readswap.f90:782-786"
+    }
+  ],
+  "not_inferred": [
+    "No proof that SWKMEAN7 is unsupported with explicit conductivity",
+    "Absence of a prohibition does not independently prove successful original implicit analytical execution",
+    "No claim that every Frost or thermal boundary combination is historically valid",
+    "No whole-family closure claim from finite representative tests"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "status": "ORIGINAL_UBUNTU_MODELS_AND_COMPILED_CONTROLS_PASS_OBSERVER_WINDOWS_FILENAME_ASSUMPTION_REFUSED_PENDING_READ_ONLY_REOBSERVATION",
+  "actual_scientific_source": "c40ca084d8e5eb638e0b4ac5c471463d9aad01c3",
+  "original_run_id": 45828074684,
+  "original_jobs": [
+    139937316712,
+    139937317658
+  ],
+  "model_contexts_passed": 28,
+  "compiled_native_refusals_passed": 160,
+  "first_job_conclusions": [
+    "failure",
+    "failure"
+  ],
+  "cause": "Independent observer required day_donor.exe/day_kernel.exe on Linux, where actual builds correctly produce extensionless files.",
+  "selected_observer_fix": "Require exactly one actual platform filename and verify its complete original BUILD executable SHA256; missing or ambiguous binaries still refuse.",
+  "physical_or_model_or_input_source_changed": false,
+  "compiler_or_model_replay_required": false,
+  "original_logs_and_artifacts_retained": true,
+  "original_first_failure_reclassified_as_success": false
+}

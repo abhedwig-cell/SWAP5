@@ -170,12 +170,15 @@ def inspect(directory, *, original_output=None):
         initial_calendar=initial_calendar_selection(directory,original_output)
         from analytical_snow_undrained import selection as initial_analytical_snow_selection
         initial_analytical_snow=initial_analytical_snow_selection(directory,original_output)
-        if not state_supported and initial_calendar is None and initial_frost is None and initial_groundwater is None and paired_boundary is None and initial_analytical_snow is None:
+        from implicit_hydraulic_state import input_models as implicit_hydraulic_models
+        initial_implicit_hydraulic=(selected.get('SWBBCFILE')==0 and
+            implicit_hydraulic_models(text,selected,selected,original_output) is not None)
+        if not state_supported and initial_calendar is None and initial_frost is None and initial_groundwater is None and paired_boundary is None and initial_analytical_snow is None and not initial_implicit_hydraulic:
             raise ValueError('Unqualified original pressure-profile state-owner cross composition')
         flags=re.findall(r'(?mi)^[ \t]*FLPRINTDT[ \t]*=[ \t]*([^!\r\n]+)',text)
         if (int(one(text,'NPRINTDAY',r'[+-]?\d+'))!=1 or int(one(text,'PERIOD',r'[+-]?\d+'))!=1
                 or selected.get('SWMONTH')!=0 or selected.get('SWODAT')!=0 or selected.get('SWRES')!=1
-                or len(flags)>1 or flags and flags[0].strip().upper() not in ('.FALSE.','FALSE','.F.','F')) and initial_calendar is None and initial_age is None and initial_groundwater is None and paired_boundary is None and initial_analytical_snow is None and not (initial_frost or {}).get('frost_calendar'):
+                or len(flags)>1 or flags and flags[0].strip().upper() not in ('.FALSE.','FALSE','.F.','F')) and initial_calendar is None and initial_age is None and initial_groundwater is None and paired_boundary is None and initial_analytical_snow is None and not initial_implicit_hydraulic and not (initial_frost or {}).get('frost_calendar'):
             raise ValueError('Original pressure-profile initialization requires dense original daily output')
         allowed['SWINCO']={1,2,3}
     if (selected['SWSOLU']==2 and selected.get('SWMONTH')==0 and selected.get('SWODAT')==0

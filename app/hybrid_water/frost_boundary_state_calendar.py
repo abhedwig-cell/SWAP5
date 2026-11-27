@@ -43,11 +43,16 @@ def selection(directory,original_output=True):
     models=re.findall(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[ \t]*([^\r\n]*)',active)
     rest=re.sub(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[^\r\n]*','',active)
     if re.search(r'(?i)\bIHWCKMODEL\b',rest) or len(models)>1:return None
-    analytical=None
+    analytical=None;implicit_analytical=None
     if models and re.fullmatch(r'\+?0*1(?:[ \t]+\+?0*1)*[ \t]*',models[0]) is None:
-        from frost_analytical_composition import model_domain
-        analytical=model_domain(active,values)
-        if analytical is None:return None
+        if values['SWKIMPL']==1:
+            from implicit_hydraulic_state import input_models
+            implicit_analytical=input_models(text,values,values,original_output)
+            if implicit_analytical is None:return None
+        else:
+            from frost_analytical_composition import model_domain
+            analytical=model_domain(active,values)
+            if analytical is None:return None
     if values['SWBOTB']==6 and analytical is None:return None
     name=one(text,'DRFIL',r"'[^']+'").strip("'");prefix=one(text,'PATHDRAIN',r"'[^']*'").strip("'").strip();drain=folder/(prefix+name+'.dra')
     if not drain.is_file() or switches(drain.read_text(encoding='cp1252')).get('SWDIVD')!=1:return None
@@ -62,6 +67,8 @@ def selection(directory,original_output=True):
     if analytical is not None:
         from frost_analytical_composition import BOUNDARY_POLICY
         result.update(analytical_frost_models=analytical,policy=BOUNDARY_POLICY,drainage=1,requires_divdra=True)
+    if implicit_analytical is not None:
+        result.update(implicit_hydraulic_models=implicit_analytical,drainage=1,requires_divdra=True)
     return result
 
 

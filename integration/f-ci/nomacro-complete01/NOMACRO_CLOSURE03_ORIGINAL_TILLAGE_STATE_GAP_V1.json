@@ -1,0 +1,352 @@
+{
+  "status": "SOURCE_REACHABLE_SOIL_TILLAGE_FUNCTION_NOT_CLOSED_BY_EXISTING26_FAMILY_ROWS",
+  "actual_canonical": "22520105f5a3ccac2bd2ae1b726f27b7b0d67b1e",
+  "classification": "COMPOSITION_MISSING",
+  "function": "Original water-only soil tillage, reconsolidation and hydraulic parameter updates",
+  "original_implementation": "Retained original MOD_tillage and three DoTillage driver calls; not a missing physical process body",
+  "original_source_sha256": "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486",
+  "original_reader_sites": [
+    {
+      "unit": "SWAP/tillage.f90",
+      "source_raw_sha256": "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486",
+      "first_line": 448,
+      "last_line": 448,
+      "containing_routine": "adapt_wc_h",
+      "callee": "rdsinr",
+      "arguments": [
+        "'swtill'",
+        "0",
+        "1",
+        "swtill"
+      ],
+      "original_logical_statement": "call RDsinr ('swtill', 0, 1, swtill)",
+      "input_keyword": "swtill",
+      "dynamic_first_argument": false
+    },
+    {
+      "unit": "SWAP/tillage.f90",
+      "source_raw_sha256": "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486",
+      "first_line": 453,
+      "last_line": 453,
+      "containing_routine": "adapt_wc_h",
+      "callee": "rdsinr",
+      "arguments": [
+        "'i_n_model'",
+        "1",
+        "3",
+        "i_n_model"
+      ],
+      "original_logical_statement": "call RDsinr ('i_n_model', 1, 3, i_n_model)",
+      "input_keyword": "i_n_model",
+      "dynamic_first_argument": false
+    },
+    {
+      "unit": "SWAP/tillage.f90",
+      "source_raw_sha256": "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486",
+      "first_line": 457,
+      "last_line": 457,
+      "containing_routine": "adapt_wc_h",
+      "callee": "rdsinr",
+      "arguments": [
+        "'iRedist'",
+        "0",
+        "2",
+        "iRedist"
+      ],
+      "original_logical_statement": "call RDsinr ('iRedist', 0, 2, iRedist)",
+      "input_keyword": "iRedist",
+      "dynamic_first_argument": false
+    },
+    {
+      "unit": "SWAP/tillage.f90",
+      "source_raw_sha256": "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486",
+      "first_line": 470,
+      "last_line": 470,
+      "containing_routine": "adapt_wc_h",
+      "callee": "rdftim",
+      "arguments": [
+        "'Date_tillage'",
+        "Date_tillage",
+        "Ntill",
+        "Ntill"
+      ],
+      "original_logical_statement": "call RDftim ('Date_tillage', Date_tillage, Ntill, Ntill)",
+      "input_keyword": "Date_tillage",
+      "dynamic_first_argument": false
+    },
+    {
+      "unit": "SWAP/tillage.f90",
+      "source_raw_sha256": "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486",
+      "first_line": 471,
+      "last_line": 471,
+      "containing_routine": "adapt_wc_h",
+      "callee": "rdfdor",
+      "arguments": [
+        "'Z_tillage'",
+        "0.0d0",
+        "-zbotcp(NumNod)",
+        "Z_tillage",
+        "Ntill",
+        "Ntill"
+      ],
+      "original_logical_statement": "call RDfdor ('Z_tillage',    0.0d0, -zbotcp(NumNod), Z_tillage, Ntill, Ntill)",
+      "input_keyword": "Z_tillage",
+      "dynamic_first_argument": false
+    },
+    {
+      "unit": "SWAP/tillage.f90",
+      "source_raw_sha256": "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486",
+      "first_line": 472,
+      "last_line": 472,
+      "containing_routine": "adapt_wc_h",
+      "callee": "rdfdor",
+      "arguments": [
+        "'I_tillage'",
+        "0.0d0",
+        "1.0d0",
+        "I_tillage",
+        "Ntill",
+        "Ntill"
+      ],
+      "original_logical_statement": "call RDfdor ('I_tillage',    0.0d0, 1.0d0, I_tillage, Ntill, Ntill)",
+      "input_keyword": "I_tillage",
+      "dynamic_first_argument": false
+    },
+    {
+      "unit": "SWAP/tillage.f90",
+      "source_raw_sha256": "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486",
+      "first_line": 473,
+      "last_line": 473,
+      "containing_routine": "adapt_wc_h",
+      "callee": "rdfint",
+      "arguments": [
+        "'Type_tillage'",
+        "Type_tillage",
+        "Ntill",
+        "Ntill"
+      ],
+      "original_logical_statement": "call RDfint ('Type_tillage', Type_tillage, Ntill, Ntill)",
+      "input_keyword": "Type_tillage",
+      "dynamic_first_argument": false
+    },
+    {
+      "unit": "SWAP/tillage.f90",
+      "source_raw_sha256": "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486",
+      "first_line": 490,
+      "last_line": 490,
+      "containing_routine": "adapt_wc_h",
+      "callee": "rdfinr",
+      "arguments": [
+        "'iType_Tillage'",
+        "tmin",
+        "tmax",
+        "iType_Tillage",
+        "Ntypes",
+        "Ntypes"
+      ],
+      "original_logical_statement": "call RDfinr ('iType_Tillage', tmin,     tmax,     iType_Tillage,     Ntypes, Ntypes)",
+      "input_keyword": "iType_Tillage",
+      "dynamic_first_argument": false
+    },
+    {
+      "unit": "SWAP/tillage.f90",
+      "source_raw_sha256": "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486",
+      "first_line": 491,
+      "last_line": 491,
+      "containing_routine": "adapt_wc_h",
+      "callee": "rdfdor",
+      "arguments": [
+        "'Rho_cons'",
+        "100.0d0",
+        "3000.0d0",
+        "TAB_Rho_cons",
+        "Ntypes",
+        "Ntypes"
+      ],
+      "original_logical_statement": "call RDfdor ('Rho_cons',      100.0d0,  3000.0d0, TAB_Rho_cons,      Ntypes, Ntypes)",
+      "input_keyword": "Rho_cons",
+      "dynamic_first_argument": false
+    },
+    {
+      "unit": "SWAP/tillage.f90",
+      "source_raw_sha256": "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486",
+      "first_line": 492,
+      "last_line": 492,
+      "containing_routine": "adapt_wc_h",
+      "callee": "rdfdor",
+      "arguments": [
+        "'Rho_tillage'",
+        "100.0d0",
+        "3000.0d0",
+        "TAB_Rho_tillage",
+        "Ntypes",
+        "Ntypes"
+      ],
+      "original_logical_statement": "call RDfdor ('Rho_tillage',   100.0d0,  3000.0d0, TAB_Rho_tillage,   Ntypes, Ntypes)",
+      "input_keyword": "Rho_tillage",
+      "dynamic_first_argument": false
+    },
+    {
+      "unit": "SWAP/tillage.f90",
+      "source_raw_sha256": "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486",
+      "first_line": 493,
+      "last_line": 493,
+      "containing_routine": "adapt_wc_h",
+      "callee": "rdfdor",
+      "arguments": [
+        "'k_R'",
+        "1.0d-4",
+        "10.0d0",
+        "TAB_K_R_cons",
+        "Ntypes",
+        "Ntypes"
+      ],
+      "original_logical_statement": "call RDfdor ('k_R',             1.0d-4,   10.0d0, TAB_K_R_cons,      Ntypes, Ntypes)",
+      "input_keyword": "k_R",
+      "dynamic_first_argument": false
+    },
+    {
+      "unit": "SWAP/tillage.f90",
+      "source_raw_sha256": "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486",
+      "first_line": 496,
+      "last_line": 496,
+      "containing_routine": "adapt_wc_h",
+      "callee": "rdfdor",
+      "arguments": [
+        "'Rho_match'",
+        "100.0d0",
+        "3000.0d0",
+        "TAB_Rho_match",
+        "Ntypes",
+        "Ntypes"
+      ],
+      "original_logical_statement": "call RDfdor('Rho_match', 100.0d0, 3000.0d0, TAB_Rho_match, Ntypes, Ntypes)",
+      "input_keyword": "Rho_match",
+      "dynamic_first_argument": false
+    },
+    {
+      "unit": "SWAP/tillage.f90",
+      "source_raw_sha256": "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486",
+      "first_line": 497,
+      "last_line": 497,
+      "containing_routine": "adapt_wc_h",
+      "callee": "rdfdor",
+      "arguments": [
+        "'N_match'",
+        "1.001d0",
+        "10.0d0",
+        "TAB_N_match",
+        "Ntypes",
+        "Ntypes"
+      ],
+      "original_logical_statement": "call RDfdor('N_match',   1.001d0,   10.0d0, TAB_N_match,   Ntypes, Ntypes)",
+      "input_keyword": "N_match",
+      "dynamic_first_argument": false
+    },
+    {
+      "unit": "SWAP/tillage.f90",
+      "source_raw_sha256": "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486",
+      "first_line": 448,
+      "last_line": 448,
+      "containing_routine": "adapt_wc_h",
+      "callee": "rdinqr",
+      "arguments": [
+        "'swtill'"
+      ],
+      "original_logical_statement": "rdinqr('swtill')",
+      "kind": "INPUT_PRESENCE_OR_SHAPE_QUERY"
+    },
+    {
+      "unit": "SWAP/tillage.f90",
+      "source_raw_sha256": "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486",
+      "first_line": 453,
+      "last_line": 453,
+      "containing_routine": "adapt_wc_h",
+      "callee": "rdinqr",
+      "arguments": [
+        "'i_n_model'"
+      ],
+      "original_logical_statement": "rdinqr('i_n_model')",
+      "kind": "INPUT_PRESENCE_OR_SHAPE_QUERY"
+    },
+    {
+      "unit": "SWAP/tillage.f90",
+      "source_raw_sha256": "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486",
+      "first_line": 457,
+      "last_line": 457,
+      "containing_routine": "adapt_wc_h",
+      "callee": "rdinqr",
+      "arguments": [
+        "'iRedist'"
+      ],
+      "original_logical_statement": "rdinqr('iRedist')",
+      "kind": "INPUT_PRESENCE_OR_SHAPE_QUERY"
+    },
+    {
+      "unit": "SWAP/tillage.f90",
+      "source_raw_sha256": "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486",
+      "first_line": 460,
+      "last_line": 460,
+      "containing_routine": "adapt_wc_h",
+      "callee": "rdinqr",
+      "arguments": [
+        "'date_tillage'"
+      ],
+      "original_logical_statement": "rdinqr('date_tillage')",
+      "kind": "INPUT_PRESENCE_OR_SHAPE_QUERY"
+    },
+    {
+      "unit": "SWAP/tillage.f90",
+      "source_raw_sha256": "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486",
+      "first_line": 478,
+      "last_line": 478,
+      "containing_routine": "adapt_wc_h",
+      "callee": "rdinqr",
+      "arguments": [
+        "'itype_tillage'"
+      ],
+      "original_logical_statement": "rdinqr('itype_tillage')",
+      "kind": "INPUT_PRESENCE_OR_SHAPE_QUERY"
+    }
+  ],
+  "original_driver_calls": [
+    {
+      "unit": "SWAP/swap.f90",
+      "source_raw_sha256": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a",
+      "first_line": 256,
+      "last_line": 256,
+      "containing_routine": "swap_ok",
+      "callee": "dotillage"
+    },
+    {
+      "unit": "SWAP/swap.f90",
+      "source_raw_sha256": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a",
+      "first_line": 404,
+      "last_line": 404,
+      "containing_routine": "swap_ok",
+      "callee": "dotillage"
+    },
+    {
+      "unit": "SWAP/swap.f90",
+      "source_raw_sha256": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a",
+      "first_line": 526,
+      "last_line": 526,
+      "containing_routine": "swap_ok",
+      "callee": "dotillage"
+    }
+  ],
+  "current_missing": "Explicit SWTILL1 input admission and complete private MOD_tillage saved-state native rollback/restart coupling have no owning adapter. Do not call this merely GUARD_ONLY.",
+  "current_dependency_bytes": {
+    "frontend_sha256": "6cb5c8dee988c8a575751cd0b859ba5401d1ec1ed32042978cc04ebefd460264",
+    "generic_native_adapter_sha256": "f4aa03debbf613f9cbe7912dba6d0e86798e4fa6919d78e58849a7214e4ace83"
+  },
+  "original_proven_restrictions": "DoTillage initialization rejects SWHYST>0, SWSOLU>0, SWCROPSNM1, SWMACRO1, examinedKsat and coarse vertical output; scope proof remains conditional on the original source predicates",
+  "existing_legacy_corrections": [
+    "SWAP-002 tillage start-event indexing is already separately documented/qualified as a candidate; must not be silently added to the current original provider",
+    "SWAP-004 tillage type indexing/allocation is separately documented; preserve source-contract eligibility"
+  ],
+  "scientific_input_status": "No SWTILL/date_tillage/density tables found in the56 retained original project files; genuine active original input evidence must be obtained or the missing data explicitly retained as a qualification dependency. No table or management density may be invented.",
+  "no_new_family_completeness_denominator": true,
+  "compiler_executions": 0,
+  "model_executions": 0
+}

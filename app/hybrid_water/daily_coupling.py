@@ -203,8 +203,18 @@ def validate_bundle(bundle, reference, project):
         expected_saturation=implicit_saturation_source(original)
         from extended_implicit_saturation import enabled as continuous_saturation_enabled,source as continuous_saturation_source
         if continuous_saturation_enabled(project):expected_saturation=continuous_saturation_source(expected_saturation)
+        from implicit_analytical_saturation import enabled as analytical_saturation_enabled,source as analytical_saturation_source
+        if analytical_saturation_enabled(project):expected_saturation=analytical_saturation_source(expected_saturation)
+        from implicit_model5_derivative import enabled as model5_derivative_enabled,source as model5_derivative_source
+        if model5_derivative_enabled(project):expected_saturation=model5_derivative_source(expected_saturation)
         if (bundle/'MOD_MvG_functions.f90').read_text(encoding='cp1252')!=expected_saturation:
             raise ValueError('Foreign actual original implicit saturated derivative provider')
+    from implicit_analytical_saturation import metadata as analytical_saturation_metadata
+    if identity.get('implicit_analytical_saturation')!=analytical_saturation_metadata(project):
+        raise ValueError('Foreign actual per-model implicit constant-conductivity policy')
+    from implicit_model5_derivative import metadata as model5_derivative_metadata
+    if identity.get('implicit_model5_derivative')!=model5_derivative_metadata(project):
+        raise ValueError('Foreign actual original model5 exact chain-rule derivative policy')
     from implicit_finite_newton import metadata as implicit_finite_metadata
     if identity.get('implicit_finite_newton')!=implicit_finite_metadata(project):
         raise ValueError('Foreign original implicit finite Newton rollback policy')
@@ -444,6 +454,8 @@ def validate_bundle(bundle, reference, project):
             raise ValueError('Kernel source differs: ' + name)
     from model7_capacity import validate as validate_model7_capacity
     validate_model7_capacity(bundle,reference,project,identity)
+    from implicit_hydraulic_state import validate as validate_implicit_hydraulic
+    validate_implicit_hydraulic(bundle,project,identity)
     from hydraulic_vapor import validate as validate_hydraulic_vapor
     validate_hydraulic_vapor(bundle,reference,project,identity)
     from model7_terminal_water import validate as validate_model7_terminal
@@ -735,6 +747,8 @@ class CoupledDailyColumn:
             candidate = trial / f"accepted-column-1-day-{raw['day']}.zip"
             ready = trial / 'verified-candidate'
             checked = h.verify_checkpoint(candidate, self._day+1, host.binding, ready)
+            from implicit_hydraulic_state import validate_candidate as validate_implicit_hydraulic_candidate
+            validate_implicit_hydraulic_candidate((ready/'macro.bin').read_bytes(),self.project)
             if (self.meta['identity'].get('frost_drainage_composition') or {}).get('analytical_frost_models'):
                 from frost_analytical_composition import validate_candidate as validate_analytical_frost
                 validate_analytical_frost((ready/'macro.bin').read_bytes(),self.project)
@@ -801,6 +815,8 @@ class CoupledDailyColumn:
         if h.sha(candidate) != digest:
             raise ValueError('Private proposal changed')
         # Verify the bytes actually being published, not only the retained ZIP.
+        from implicit_hydraulic_state import validate_candidate as validate_implicit_hydraulic_candidate
+        validate_implicit_hydraulic_candidate((ready/'macro.bin').read_bytes(),self.project)
         if (self.meta['identity'].get('frost_drainage_composition') or {}).get('analytical_frost_models'):
             from frost_analytical_composition import validate_candidate as validate_analytical_frost
             validate_analytical_frost((ready/'macro.bin').read_bytes(),self.project)
